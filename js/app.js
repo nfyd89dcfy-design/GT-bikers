@@ -292,7 +292,7 @@
       '<div class="mdl__i"><div class="card__brand">' + esc(p.brand || '') + ' · ' + esc((CAT[p.cat] || {}).name || '') + '</div><h2>' + esc(p.name) + '</h2>' + (p.sku ? '<div class="muted">Артикул: ' + esc(p.sku) + '</div>' : '') +
       '<div class="mdl__price">' + esc(money(p)) + '</div>' +
       '<div class="mdl__btns"><button class="btn btn--blue" id="mKp" type="button">Скачать КП (PDF)</button><button class="btn btn--line" id="mAdd" type="button">' + (inKp ? 'Убрать из КП' : 'Добавить в КП') + '</button>' + (imgs[0] ? '<button class="btn btn--ghost2" id="mSim" type="button">Похожие по фото</button>' : '') + '</div>' +
-      (p.desc ? '<p class="mdl__d">' + esc(p.desc) + '</p>' : '') + spec + extra + (p.src ? '<p class="muted src">Источник: ' + esc(p.src) + (p.page ? ', стр. ' + p.page : '') + (p.ocr ? '. Данные распознаны автоматически, сверяйте с оригиналом каталога.' : '') + '</p>' : '') + '</div></div>';
+      (p.desc ? '<p class="mdl__d">' + esc(p.desc) + '</p>' : '') + spec + extra + (p.src ? '<p class="muted src">Источник: ' + srcLink(p.src) + (p.page ? ', стр. ' + p.page : '') + (p.ocr ? '. Данные распознаны автоматически, сверяйте с оригиналом каталога.' : '') + '</p>' : '') + '</div></div>';
     if (!m.open) m.showModal();
     m.scrollTop = 0;
     $('#mKp').onclick = function () { makeKp([{ p: p, qty: 1 }], this); };
@@ -393,6 +393,11 @@
     }).catch(function (e) { console.error(e); st.textContent = 'Не удалось обработать фото: ' + e.message; });
   }
   $('#photoRes').addEventListener('click', function (e) { var b = e.target.closest('[data-open2]'); if (b) { pm.close(); openModel(b.dataset.open2); } });
+
+  function srcLink(src) {
+    var id = (window.DRIVE_FILES || {})[src];
+    return id ? '<a href="https://drive.google.com/file/d/' + id + '/view" target="_blank" rel="noopener">' + esc(src) + ' ↗</a>' : esc(src);
+  }
 
   /* ---------- старт ---------- */
   function init() {
