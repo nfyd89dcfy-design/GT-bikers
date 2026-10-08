@@ -73,10 +73,6 @@
       <div class="catalog__tools">
         <input id="q" type="search" placeholder="Название, бренд, артикул" aria-label="Поиск по названию">
         <select id="sort" aria-label="Сортировка">
-          <option value="rel">По умолчанию</option>
-          <option value="price-asc">Цена по возрастанию</option>
-          <option value="price-desc">Цена по убыванию</option>
-          <option value="name">По названию</option>
         </select>
         <button class="btn btn--line filters-toggle" id="filtersToggle" type="button">Фильтры</button>
       </div>
@@ -120,6 +116,10 @@
     <span id="dropText">Перетащите фото сюда или нажмите для выбора</span>
   </label>
   <div class="photo-status" id="photoStatus"></div>
+  <div class="photo-tools" id="photoTools" hidden>
+    <label>Сортировать по параметру <select id="photoSort" aria-label="Сортировка результатов"></select></label>
+    <button class="btn btn--blue btn--sm" id="photoToCatalog" type="button">Открыть в каталоге с фильтрами</button>
+  </div>
   <div class="photo-res" id="photoRes"></div>
 </dialog>
 

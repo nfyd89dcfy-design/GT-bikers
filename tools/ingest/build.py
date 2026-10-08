@@ -26,6 +26,31 @@ def clean_name(p):
     p["name"] = n
     return p
 
+def _n(s):
+    m = re.search(r"\d[\d\s]*(?:[.,]\d+)?", str(s))
+    if not m: return None
+    try: return float(m.group(0).replace(" ", "").replace(",", "."))
+    except ValueError: return None
+
+def derive(p):
+    """Достаёт числовые параметры из строк таблицы характеристик, чтобы по ним работали фильтры и сортировка."""
+    if p["cat"] in ("gear", "parts"): return p
+    for lab, val in p.get("extra", []):
+        l = lab.lower(); n = _n(val)
+        if n is None: continue
+        def put(k, v, lo, hi):
+            if k not in p and v is not None and lo <= v <= hi: p[k] = round(v, 1)
+        mm = n * 10 if "см" in l and "мм" not in l else n
+        if l.startswith("колёсная база") or l.startswith("колесная база"): put("wheelbase_mm", mm, 400, 4000)
+        elif l.startswith("высота сиденья"): put("seat_height_mm", mm, 300, 1500)
+        elif l.startswith("дорожный просвет") or l.startswith("клиренс"): put("ground_clearance_mm", mm if mm > 60 or "мм" in l else n * 10, 30, 600)
+        elif l.startswith("габариты"):
+            if "упаков" not in l: put("length_mm", mm, 600, 8000)
+        elif ("момент" in l) and "тормоз" not in l: put("torque_nm", n, 2, 2500)
+        elif l.startswith("пиковая мощность"):
+            put("peak_power_kw", n / 1000 if re.search(r"\d\s*вт", str(val).lower()) and "квт" not in str(val).lower() else n, 0.1, 400)
+    return p
+
 def sane(p):
     """Убирает заведомо неправдоподобные числа, которые могли получиться при распознавании."""
     def drop(k, lo, hi):
@@ -45,7 +70,7 @@ def main():
             p = {k: v for k, v in p.items() if v is not None and v != "" and v != []}
             if "images" not in p: p["images"] = []
             if any(str(p.get("src", "")).startswith(s) for s in OCR_SRC): p["ocr"] = True
-            p = sane(clean_name(p))
+            p = sane(derive(clean_name(p)))
             k = key(p)
             if k in seen:                       # повтор: дополняем недостающее
                 q = seen[k]

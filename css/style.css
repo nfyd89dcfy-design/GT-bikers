@@ -205,3 +205,10 @@ dialog::backdrop{background:rgba(7,8,11,.7);backdrop-filter:blur(4px)}
   .kp-form{grid-template-columns:1fr}
   .catalog__tools input,.catalog__tools select{min-width:0;flex:1}
 }
+
+.photo-tools{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin:6px 0 4px}
+.photo-tools label{font-size:13px;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:8px}
+.photo-tools select{border:1px solid #d5dbe8;border-radius:10px;padding:8px 10px;background:#fff;color:var(--text);max-width:260px}
+.pr small{display:block;padding:2px 10px 0;color:var(--muted);font-size:12px}.pr small b{color:var(--text);padding:0;display:inline;font-size:12px}
+.card__s li.hl{background:var(--blue-l);border-radius:6px;padding:3px 6px;border-bottom:0;margin-bottom:2px}.card__s li.hl b{color:var(--blue-d)}
+.photo-res{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}

@@ -11,7 +11,7 @@
   var FLD = {}; CFG.fields.forEach(function (f) { FLD[f.key] = f; });
   var BYID = {}; P.forEach(function (p, i) { p._i = i; BYID[p.id] = p; });
 
-  var state = { cats: new Set(), f: {}, q: '', sort: 'rel', shown: PAGE, nearest: null };
+  var state = { cats: new Set(), f: {}, q: '', sort: 'rel', shown: PAGE, nearest: null, ids: null };
   var kp = load('gt_kp', []).filter(function (x) { return BYID[x.id]; });
   var kpMeta = load('gt_kp_meta', { client: '', manager: '', contact: '', days: 7, markup: 0 });
 
@@ -34,18 +34,34 @@
     if (f.type === 'number') return num(v) + (f.unit ? ' ' + f.unit : '');
     return String(v);
   }
+  /* ---------- сортировки по параметрам каталога ---------- */
+  var SORTS = [['price-asc', 'Цена ↑'], ['price-desc', 'Цена ↓'], ['power_kw-desc', 'Мощность ↓'], ['power_kw-asc', 'Мощность ↑'], ['top_speed-desc', 'Скорость ↓'], ['range_km-desc', 'Запас хода ↓'],
+    ['battery_wh-desc', 'Ёмкость батареи ↓'], ['engine_cc-desc', 'Объём двигателя ↓'], ['torque_nm-desc', 'Крутящий момент ↓'], ['weight_kg-asc', 'Масса ↑'], ['weight_kg-desc', 'Масса ↓'],
+    ['max_load_kg-desc', 'Нагрузка ↓'], ['seats-desc', 'Мест ↓'], ['seat_height_mm-asc', 'Высота сиденья ↑'], ['ground_clearance_mm-desc', 'Дорожный просвет ↓'], ['length_mm-asc', 'Длина ↑'], ['name', 'По названию']];
+  function sortKey(code) { return /-(asc|desc)$/.test(code) && code.indexOf('price') !== 0 ? code.replace(/-(asc|desc)$/, '') : null; }
+  function cmpBy(code) {
+    if (code === 'name') return function (a, b) { return a.name.localeCompare(b.name, 'ru'); };
+    if (code === 'price-asc') return function (a, b) { return priceUsd(a) - priceUsd(b); };
+    if (code === 'price-desc') return function (a, b) { return (b.price == null ? -1 : priceUsd(b)) - (a.price == null ? -1 : priceUsd(a)); };
+    var k = sortKey(code), dir = /-asc$/.test(code) ? 1 : -1;
+    return function (a, b) {
+      var x = a[k], y = b[k];
+      if (x == null && y == null) return 0; if (x == null) return 1; if (y == null) return -1;
+      return (x - y) * dir;
+    };
+  }
+  function sortOptions(first) { return '<option value="rel">' + first + '</option>' + SORTS.map(function (s) { return '<option value="' + s[0] + '">' + s[1] + '</option>'; }).join(''); }
   function hay(p) {
     if (!p._h) p._h = [p.name, p.brand, p.sku, (CAT[p.cat] || {}).name, p.gear_type, p.part_type, (p.extra || []).map(function (r) { return r[1]; }).join(' ')].join(' ').toLowerCase().replace(/ё/g, 'е');
     return p._h;
   }
 
   /* ---------- применимость полей и данные для фильтров ---------- */
-  function pool() { return state.cats.size ? P.filter(function (p) { return state.cats.has(p.cat); }) : P; }
+  function base() { return state.ids ? state.ids.map(function (id) { return BYID[id]; }).filter(Boolean) : P; }
+  function pool() { var b = base(); return state.cats.size ? b.filter(function (p) { return state.cats.has(p.cat); }) : b; }
   function fieldsFor() {
-    var sel = Array.from(state.cats), pl = pool();
+    var pl = pool();
     return CFG.fields.filter(function (f) {
-      if (f.cats && sel.length && !f.cats.some(function (c) { return sel.indexOf(c) >= 0; })) return false;
-      if (f.cats && !sel.length) return false;
       return pl.some(function (p) { var v = p[f.key]; return v != null && v !== '' && !(Array.isArray(v) && !v.length); });
     });
   }
@@ -78,7 +94,8 @@
   function priceUsd(p) { return p.price == null ? Infinity : p.price * (USD_RATE[p.cur] || 1); }
 
   function results() {
-    var out = P.filter(function (p) {
+    var B = base();
+    var out = B.filter(function (p) {
       if (state.cats.size && !state.cats.has(p.cat)) return false;
       for (var k in state.f) if (!critOK(p, k, state.f[k])) return false;
       return qOK(p);
@@ -86,15 +103,12 @@
     state.nearest = null;
     var crit = Object.keys(state.f).length + (state.q ? 1 : 0) + (state.cats.size ? 1 : 0);
     if (!out.length && crit >= 2) {
-      var sc = P.map(function (p) { return { p: p, s: score(p)[0] }; }).filter(function (x) { return x.s > 0; });
+      var sc = B.map(function (p) { return { p: p, s: score(p)[0] }; }).filter(function (x) { return x.s > 0; });
       var top = sc.reduce(function (m, x) { return Math.max(m, x.s); }, 0);
       sc = sc.filter(function (x) { return x.s === top && top < crit; });
       if (sc.length) { out = sc.map(function (x) { return x.p; }); state.nearest = { top: top, crit: crit }; }
     }
-    var s = state.sort;
-    if (s === 'price-asc') out.sort(function (a, b) { return priceUsd(a) - priceUsd(b); });
-    else if (s === 'price-desc') out.sort(function (a, b) { return (b.price == null ? -1 : priceUsd(b)) - (a.price == null ? -1 : priceUsd(a)); });
-    else if (s === 'name') out.sort(function (a, b) { return a.name.localeCompare(b.name, 'ru'); });
+    if (state.sort !== 'rel') out.sort(cmpBy(state.sort));
     return out;
   }
 
@@ -110,7 +124,7 @@
     var fs = fieldsFor(), pl = pool(), groups = {};
     fs.forEach(function (f) { (groups[f.group] = groups[f.group] || []).push(f); });
     var html = '';
-    if (!state.cats.size) html += '<p class="hint">Выберите категорию выше, чтобы увидеть все параметры: мощность, батарею, запас хода, привод и другие.</p>';
+    if (!state.cats.size) html += '<p class="hint">Диапазоны посчитаны по всем моделям. Выберите категорию выше, чтобы они стали точнее.</p>';
     CFG.groups.forEach(function (g) {
       if (!groups[g]) return;
       html += '<details class="fg" open><summary>' + esc(g) + '</summary>';
@@ -151,6 +165,7 @@
       else t = f.label + (v.min != null && v.max != null ? ': ' + num(v.min) + '–' + num(v.max) : v.min != null ? ' от ' + num(v.min) : ' до ' + num(v.max)) + (f.unit ? ' ' + f.unit : '');
       c.push(['f', k, t]);
     });
+    if (state.ids) c.push(['ids', '', 'Результат поиска по фото: ' + state.ids.length]);
     if (state.q) c.push(['q', '', '«' + state.q + '»']);
     $('#chips').innerHTML = c.map(function (x) { return '<button class="chip" data-t="' + x[0] + '" data-k="' + esc(x[1]) + '" type="button">' + esc(x[2]) + ' <span aria-hidden="true">×</span></button>'; }).join('');
     $('#resetAll').hidden = !c.length;
@@ -158,7 +173,8 @@
 
   function cardSpecs(p) {
     var order = ['power_kw', 'power_hp', 'engine_cc', 'top_speed', 'range_km', 'battery_wh', 'seats', 'max_load_kg', 'weight_kg', 'gear_type', 'part_type'];
-    var out = [];
+    var out = [], sk = state.sort !== 'rel' ? sortKey(state.sort) : null;
+    if (sk && FLD[sk]) { var st = fieldText(p, FLD[sk]); out.push('<li class="hl"><span>' + esc(FLD[sk].label) + '</span><b>' + esc(st || 'нет данных') + '</b></li>'); order = order.filter(function (k) { return k !== sk; }); }
     order.forEach(function (k) { var f = FLD[k], t = f && fieldText(p, f); if (t && out.length < 3) out.push('<li><span>' + esc(f.label) + '</span><b>' + esc(t) + '</b></li>'); });
     return out.join('');
   }
@@ -220,11 +236,13 @@
     var b = e.target.closest('.chip'); if (!b) return;
     if (b.dataset.t === 'cat') { state.cats.delete(b.dataset.k); pruneFilters(); }
     else if (b.dataset.t === 'f') delete state.f[b.dataset.k];
+    else if (b.dataset.t === 'ids') { state.ids = null; if (state.sort === 'rel') state.sort = 'rel'; }
     else { state.q = ''; $('#q').value = ''; }
     state.shown = PAGE; renderAll();
   });
-  $('#resetAll').addEventListener('click', function () { state.cats.clear(); state.f = {}; state.q = ''; $('#q').value = ''; $('#aiInput').value = ''; state.shown = PAGE; renderAll(); });
+  $('#resetAll').addEventListener('click', function () { state.ids = null; state.sort = 'rel'; $('#sort').value = 'rel'; state.cats.clear(); state.f = {}; state.q = ''; $('#q').value = ''; $('#aiInput').value = ''; state.shown = PAGE; renderAll(); });
   $('#q').addEventListener('input', function (e) { state.q = e.target.value.trim(); state.shown = PAGE; clearTimeout(renderAll.t); renderAll.t = setTimeout(function () { renderChips(); renderGrid(); }, 200); });
+  $('#sort').innerHTML = sortOptions('По умолчанию');
   $('#sort').addEventListener('change', function (e) { state.sort = e.target.value; renderGrid(); });
   $('#more').addEventListener('click', function () { state.shown += PAGE; renderGrid(); });
   $('#filtersToggle').addEventListener('click', function () { $('#filters').classList.toggle('open'); });
@@ -339,18 +357,37 @@
     var items = (e.clipboardData || {}).items || [];
     for (var i = 0; i < items.length; i++) if (items[i].type.indexOf('image') === 0) { var f = items[i].getAsFile(); openPhoto(); runPhoto(URL.createObjectURL(f)); return; }
   });
+  var lastPhoto = null;
+  $('#photoSort').innerHTML = sortOptions('По сходству с фото');
+  function renderPhotoRes() {
+    if (!lastPhoto) return;
+    var code = $('#photoSort').value, list = lastPhoto.list.slice(), sk = code !== 'rel' ? sortKey(code) : null;
+    if (code !== 'rel') list.sort(function (x, y) { return cmpBy(code)(BYID[x.id], BYID[y.id]); });
+    $('#photoRes').innerHTML = list.map(function (x) {
+      var p = BYID[x.id], pct = Math.max(0, Math.min(99, Math.round((lastPhoto.mode === 'clip' ? (x.s - 0.5) / 0.45 : x.s) * 100)));
+      var extra = sk && FLD[sk] ? '<small>' + esc(FLD[sk].label) + ': <b>' + esc(fieldText(p, FLD[sk]) || 'нет данных') + '</b></small>' : (code === 'price-asc' || code === 'price-desc' ? '<small><b>' + esc(money(p)) + '</b></small>' : '');
+      return '<button class="pr" data-open2="' + esc(p.id) + '" type="button"><img loading="lazy" src="' + esc(x.path) + '" alt=""><b>' + esc(p.name) + '</b><span>' + esc(p.brand || '') + '</span>' + extra + '<em>' + pct + '%</em></button>';
+    }).join('');
+  }
+  $('#photoSort').addEventListener('change', renderPhotoRes);
+  $('#photoToCatalog').addEventListener('click', function () {
+    if (!lastPhoto) return;
+    state.ids = lastPhoto.list.map(function (x) { return x.id; });
+    state.cats.clear(); state.f = {}; state.q = ''; $('#q').value = '';
+    state.sort = $('#photoSort').value; $('#sort').value = state.sort; state.shown = PAGE;
+    pm.close(); renderAll(); $('#catalog').scrollIntoView({ behavior: 'smooth' });
+  });
   function runPhoto(src, excludeId) {
     openPhoto();
     var st = $('#photoStatus'), res = $('#photoRes');
+    $('#photoTools').hidden = true;
     $('#dropText').innerHTML = '<img class="qimg" src="' + esc(src) + '" alt="Загруженное фото">';
     res.innerHTML = ''; st.textContent = 'Подготовка…';
-    window.IMG.search(src, P, function (m) { st.textContent = m; }, 13).then(function (r) {
-      var list = r.results.filter(function (x) { return x.id !== excludeId; }).slice(0, 12);
+    window.IMG.search(src, P, function (m) { st.textContent = m; }, 41).then(function (r) {
+      var list = r.results.filter(function (x) { return x.id !== excludeId; }).slice(0, 40);
+      lastPhoto = { list: list, mode: r.mode }; $('#photoSort').value = 'rel'; $('#photoTools').hidden = !list.length;
       st.textContent = r.mode === 'clip' ? 'Найдено ближайших моделей: ' + list.length : 'Нейросеть недоступна, подбор по цветам и композиции: ' + list.length + ' вариантов';
-      res.innerHTML = list.map(function (x) {
-        var p = BYID[x.id], pct = Math.max(0, Math.min(99, Math.round((r.mode === 'clip' ? (x.s - 0.5) / 0.45 : x.s) * 100)));
-        return '<button class="pr" data-open2="' + esc(p.id) + '" type="button"><img loading="lazy" src="' + esc(x.path) + '" alt=""><b>' + esc(p.name) + '</b><span>' + esc(p.brand || '') + '</span><em>' + pct + '%</em></button>';
-      }).join('');
+      renderPhotoRes();
     }).catch(function (e) { console.error(e); st.textContent = 'Не удалось обработать фото: ' + e.message; });
   }
   $('#photoRes').addEventListener('click', function (e) { var b = e.target.closest('[data-open2]'); if (b) { pm.close(); openModel(b.dataset.open2); } });

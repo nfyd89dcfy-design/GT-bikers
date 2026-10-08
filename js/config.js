@@ -45,6 +45,8 @@ window.CFG = {
       { key: 'engine_cc', label: 'Объём двигателя', unit: 'см³', type: 'number', cats: ICE, group: 'Двигатель', kw: ['объем', 'объём', 'кубов', 'куб', 'см3', 'cc'] },
       { key: 'engine_stroke', label: 'Тактность', type: 'enum', cats: ICE, group: 'Двигатель', alias: { '2T': ['2т', '2-так', 'двухтакт'], '4T': ['4т', '4-так', 'четырехтакт', 'четырёхтакт'] } },
       { key: 'cooling', label: 'Охлаждение', type: 'enum', cats: ICE, group: 'Двигатель', alias: { 'Воздушное': ['воздушн'], 'Жидкостное': ['жидкост', 'водян'] } },
+      { key: 'peak_power_kw', label: 'Пиковая мощность', unit: 'кВт', type: 'number', cats: VEH, group: 'Двигатель', kw: ['пиков'] },
+      { key: 'torque_nm', label: 'Крутящий момент', unit: 'Н·м', type: 'number', cats: VEH, group: 'Двигатель', kw: ['момент', 'крутящ'] },
       { key: 'fuel_tank_l', label: 'Топливный бак', unit: 'л', type: 'number', cats: ICE, group: 'Двигатель', kw: ['бак'] },
 
       { key: 'battery_v', label: 'Напряжение', unit: 'В', type: 'number', cats: EL, group: 'Батарея', kw: ['напряж', 'вольт'] },
@@ -61,6 +63,10 @@ window.CFG = {
       { key: 'seats', label: 'Мест', type: 'number', cats: ['quad', 'utv', 'golf', 'car'], group: 'Ходовая', kw: ['мест', 'местн', 'пассажир'] },
       { key: 'brakes', label: 'Тормоза', type: 'enum', cats: VEH, group: 'Ходовая', alias: { 'Дисковые': ['диск'], 'Барабанные': ['барабан'], 'Гидравлические': ['гидравл'] } },
 
+      { key: 'length_mm', label: 'Длина', unit: 'мм', type: 'number', cats: VEH, group: 'Габариты' },
+      { key: 'wheelbase_mm', label: 'Колёсная база', unit: 'мм', type: 'number', cats: VEH, group: 'Габариты' },
+      { key: 'seat_height_mm', label: 'Высота сиденья', unit: 'мм', type: 'number', cats: VEH, group: 'Габариты' },
+      { key: 'ground_clearance_mm', label: 'Дорожный просвет', unit: 'мм', type: 'number', cats: VEH, group: 'Габариты' },
       { key: 'weight_kg', label: 'Масса', unit: 'кг', type: 'number', cats: VEH, group: 'Габариты', kw: ['вес', 'масса', 'легч', 'тяжел'] },
       { key: 'max_load_kg', label: 'Макс. нагрузка', unit: 'кг', type: 'number', cats: VEH, group: 'Габариты', kw: ['нагруз', 'грузоподъем', 'грузоподъём', 'выдерж'] },
 
