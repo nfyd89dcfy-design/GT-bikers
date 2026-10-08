@@ -27,12 +27,12 @@ def slug(s, n=40):
 
 
 def dhash(im):
-    g = im.convert("L").resize((9, 8), Image.LANCZOS)
+    g = im.convert("L").resize((17, 16), Image.LANCZOS)
     px = list(g.getdata())
     bits = 0
-    for r in range(8):
-        for c in range(8):
-            bits = (bits << 1) | (px[r * 9 + c] > px[r * 9 + c + 1])
+    for r in range(16):
+        for k in range(16):
+            bits = (bits << 1) | (px[r * 17 + k] > px[r * 17 + k + 1])
     return bits
 
 
@@ -55,7 +55,7 @@ def save_image(data, name, max_side=900, min_side=120, quality=80):
         im = im.convert("RGB")
     h = dhash(im)
     for oh, path in _HASHES.items():
-        if bin(oh ^ h).count("1") <= 2 and abs(oh.bit_length() - h.bit_length()) < 64:
+        if bin(oh ^ h).count("1") <= 6:
             return path
     k = min(1.0, max_side / max(im.size))
     if k < 1:
@@ -139,8 +139,8 @@ def ru_value(v):
     v = re.sub(r"\s+", " ", str(v).replace("\xa0", " ")).strip()
     for rx, ru in UNIT_RU:
         v = re.sub(rx, ru, v, flags=re.I)
-    v = re.sub(r"\b4-?stroke\b|four-?stroke", "4-тактный", v, flags=re.I)
-    v = re.sub(r"\b2-?stroke\b|two-?stroke", "2-тактный", v, flags=re.I)
+    v = re.sub(r"\b4[- ]?strokes?\b|four[- ]?strokes?", "4-тактный", v, flags=re.I)
+    v = re.sub(r"\b2[- ]?strokes?\b|two[- ]?strokes?", "2-тактный", v, flags=re.I)
     v = re.sub(r"air[- ]cool(ed|ing)", "воздушное охлаждение", v, flags=re.I)
     v = re.sub(r"(water|liquid)[- ]cool(ed|ing)", "жидкостное охлаждение", v, flags=re.I)
     v = re.sub(r"single[- ]cylinder", "одноцилиндровый", v, flags=re.I)
@@ -167,9 +167,9 @@ def apply_specs(p, pairs):
             cc = first_num(r"(\d{2,4})\s*(?:cc|cm3|куб)", V)
             if cc and "engine_cc" not in p:
                 p["engine_cc"] = cc
-            if re.search(r"4-?stroke|four-?stroke|4t\b", V):
+            if re.search(r"4[- ]?strokes?|four[- ]?strokes?|4t\b", V):
                 p.setdefault("engine_stroke", "4T")
-            if re.search(r"2-?stroke|two-?stroke|2t\b", V):
+            if re.search(r"2[- ]?strokes?|two[- ]?strokes?|2t\b", V):
                 p.setdefault("engine_stroke", "2T")
             if re.search(r"air[- ]cool", V):
                 p.setdefault("cooling", "Воздушное")
@@ -251,3 +251,40 @@ def cell_images(path):
         if t in names:
             out[m.group(1)] = z.read(t)
     return out
+
+
+_XT = {}
+
+def _xform(doc, xref):
+    key = id(doc)
+    if key not in _XT:
+        m = {}
+        for pg in doc:
+            for i in pg.get_image_info(xrefs=True):
+                m.setdefault(i["xref"], i["transform"])
+        _XT[key] = m
+    return _XT[key].get(xref)
+
+
+def px_image(doc, xref):
+    """Картинка PDF по xref: учитывает маску прозрачности (прозрачное → белое) и отражение при выводе на страницу."""
+    from PIL import ImageOps
+    t = _xform(doc, xref)
+    info = doc.extract_image(xref)
+    im = Image.open(io.BytesIO(info["image"]))
+    im.load()
+    if info.get("smask"):
+        try:
+            m = Image.open(io.BytesIO(doc.extract_image(info["smask"])["image"])).convert("L")
+            if m.size != im.size:
+                m = m.resize(im.size)
+            im = im.convert("RGB")
+            im.putalpha(m)
+        except Exception:
+            pass
+    if t:
+        if t[3] < 0:
+            im = ImageOps.flip(im.convert("RGBA") if im.mode == "RGBA" else im.convert("RGB"))
+        if t[0] < 0:
+            im = ImageOps.mirror(im.convert("RGBA") if im.mode == "RGBA" else im.convert("RGB"))
+    return im

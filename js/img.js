@@ -88,9 +88,12 @@ window.IMG = (function () {
     if (index) return;
     if (window.EMBEDDINGS && window.EMBEDDINGS.items && window.EMBEDDINGS.items.length) {
       var byPath = {};
-      products.forEach(function (p) { (p.images || []).forEach(function (im) { byPath[im] = p.id; }); });
-      index = window.EMBEDDINGS.items.filter(function (it) { return byPath[it.p]; }).map(function (it) {
-        return { id: byPath[it.p], path: it.p, v: b64ToVec(it.v) };
+      products.forEach(function (p) { (p.images || []).forEach(function (im) { (byPath[im] = byPath[im] || []).push(p.id); }); });
+      index = [];
+      window.EMBEDDINGS.items.forEach(function (it) {
+        var ids = byPath[it.p]; if (!ids) return;
+        var v = b64ToVec(it.v);
+        ids.forEach(function (id) { index.push({ id: id, path: it.p, v: v }); });
       });
       indexMode = 'clip';
       return;

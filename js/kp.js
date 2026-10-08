@@ -1,9 +1,8 @@
 /* Коммерческое предложение в PDF.
-   Страницы КП собираются как обычный HTML (A4), затем html2pdf.js превращает их в PDF прямо в браузере.
+   Страницы КП собираются как обычный HTML (A4), html2canvas делает из них картинки, jsPDF складывает в PDF прямо в браузере.
    Кириллица и фото работают без дополнительных шрифтов. */
 window.KP = (function () {
   var CFG = window.CFG;
-  var LIB = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
   var CURSYM = { USD: '$', RMB: '¥', RUB: '₽', EUR: '€' };
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -59,7 +58,7 @@ window.KP = (function () {
   function productPage(it, meta, num, pageNo, total) {
     var p = it.p, img = (p.images && p.images[0]) || '';
     var hl = highlights(p).map(function (h) { return '<div class="kpp-hl"><b>' + esc(h[1]) + '</b><span>' + esc(h[0]) + '</span></div>'; }).join('');
-    var rows = specRows(p).slice(0, 26).map(function (r) { return '<tr><td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td></tr>'; }).join('');
+    var rows = specRows(p).slice(0, 13).map(function (r) { return '<tr><td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td></tr>'; }).join('');
     var thumbs = (p.images || []).slice(1, 4).map(function (s) { return '<img src="' + esc(s) + '" alt="">'; }).join('');
     return '<section class="kpp">' + head(meta, num, pageNo, total) +
       (meta.client ? '<div class="kpp-client">Для: <b>' + esc(meta.client) + '</b></div>' : '') +
@@ -88,13 +87,17 @@ window.KP = (function () {
       '<div class="kpp-price"><div><span>Итого</span>' + (tot || '<b>по запросу</b>') + '</div></div>' + foot(meta) + '</section>';
   }
 
-  function loadLib() {
-    if (window.html2pdf) return Promise.resolve();
+  var LIBS = ['https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'];
+  function loadScript(src) {
     return new Promise(function (res, rej) {
       var s = document.createElement('script');
-      s.src = LIB; s.onload = res; s.onerror = function () { rej(new Error('Не удалось загрузить генератор PDF (нужен интернет)')); };
+      s.src = src; s.onload = res; s.onerror = function () { rej(new Error('Не удалось загрузить генератор PDF (нужен интернет)')); };
       document.head.appendChild(s);
     });
+  }
+  function loadLib() {
+    if (window.html2canvas && window.jspdf) return Promise.resolve();
+    return Promise.all(LIBS.map(loadScript));
   }
 
   async function make(items, meta) {
@@ -108,21 +111,26 @@ window.KP = (function () {
     var multi = items.length > 1, total = items.length + (multi ? 1 : 0), html = '', n = 1;
     if (multi) html += summaryPage(items, meta, num, total), n = 2;
     items.forEach(function (it) { html += productPage(it, meta, num, n++, total); });
-    var stage = document.getElementById('kpStage');
-    stage.innerHTML = html;
-    // дождёмся загрузки фото
-    await Promise.all(Array.prototype.map.call(stage.querySelectorAll('img'), function (im) {
-      return im.complete ? Promise.resolve() : new Promise(function (r) { im.onload = im.onerror = r; });
-    }));
-    var name = 'КП_' + (items[0].p.name || 'модель').replace(/[^\wа-яА-Я\-]+/g, '_').slice(0, 40) + (multi ? '_и_др' : '') + '_' + num + '.pdf';
-    await window.html2pdf().set({
-      margin: 0, filename: name,
-      image: { type: 'jpeg', quality: 0.92 },
-      html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff', windowWidth: 794 },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: ['css'] }
-    }).from(stage).save();
-    stage.innerHTML = '';
+    var el = document.createElement('div');
+    el.className = 'kp-render';
+    el.innerHTML = html;
+    document.body.appendChild(el);
+    try {
+      await Promise.all(Array.prototype.map.call(el.querySelectorAll('img'), function (im) {
+        return im.complete ? Promise.resolve() : new Promise(function (r) { im.onload = im.onerror = r; });
+      }));
+      var name = 'КП_' + (items[0].p.name || 'модель').replace(/[^\wа-яА-Я\-]+/g, '_').slice(0, 40) + (multi ? '_и_др' : '') + '_' + num + '.pdf';
+      var pdf = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+      var pages = el.querySelectorAll('.kpp');
+      for (var i = 0; i < pages.length; i++) {
+        var canvas = await window.html2canvas(pages[i], { scale: 2, useCORS: true, backgroundColor: '#ffffff', width: 794, height: 1120, scrollX: 0, scrollY: 0, windowWidth: 794 });
+        if (i) pdf.addPage();
+        pdf.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, 210, 210 * 1120 / 794);
+      }
+      pdf.save(name);
+    } finally {
+      document.body.removeChild(el);
+    }
     return name;
   }
 

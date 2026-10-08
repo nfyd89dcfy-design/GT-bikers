@@ -21,6 +21,7 @@ FILES = [
  ("1ljsCkT6L1OFjHvZBb2j7zNJtjKucJeI6", "Protaper 202609 price list.xlsx", "ProTaper", "parts"),
  ("1kFbU1LCBMJG8yMS-fueu7kXW5_8OIFda", "Polisport 260902.xlsx", "Polisport", "parts"),
  ("1lZBa3z6U2lHTCpCiP5TaBtM6p_mF1lqP", "Mobius price list.xlsx", "Mobius", "gear"),
+ ("1PaBmJ1XqDDTHu890dWGM65WAZUphmwN6", "Twinair price list.xlsx", "Twin Air", "parts"),
 ]
 GEAR_TYPES = [(r"goggle|风镜|lens|nose guard|tear|roll.?off", "Очки"), (r"glove|手套|mitt", "Перчатки"), (r"boot|靴", "Обувь"),
               (r"helmet|шлем|头盔", "Шлемы"), (r"jersey|jacket|shirt|tee|hoodie|ls |long sleeve|vest|fleece|短袖|衣", "Куртки и джерси"),

@@ -64,9 +64,8 @@ def main():
                 if cand:
                     best = max(cand, key=lambda i: (i["bbox"][2] - i["bbox"][0]) * (i["bbox"][3] - i["bbox"][1]))
                     try:
-                        px = pymupdf.Pixmap(d, best["xref"])
-                        if px.n - px.alpha >= 4: px = pymupdf.Pixmap(pymupdf.csRGB, px)
-                        pil = Image.open(io.BytesIO(px.tobytes("png")))
+                        pxi = px_image(d, best["xref"])
+                        pil = pxi
                         img = save_image(pil, f"minibus/{slug(fname[:2] + model)}-{pn+1}-{k+1}")
                     except Exception as e: print("img", e)
                 model = re.sub(r"^(Model Name|Quotation\s*\.?)\s*", "", model).strip()

@@ -272,7 +272,7 @@
       '<div class="mdl__i"><div class="card__brand">' + esc(p.brand || '') + ' · ' + esc((CAT[p.cat] || {}).name || '') + '</div><h2>' + esc(p.name) + '</h2>' + (p.sku ? '<div class="muted">Артикул: ' + esc(p.sku) + '</div>' : '') +
       '<div class="mdl__price">' + esc(money(p)) + '</div>' +
       '<div class="mdl__btns"><button class="btn btn--blue" id="mKp" type="button">Скачать КП (PDF)</button><button class="btn btn--line" id="mAdd" type="button">' + (inKp ? 'Убрать из КП' : 'Добавить в КП') + '</button>' + (imgs[0] ? '<button class="btn btn--ghost2" id="mSim" type="button">Похожие по фото</button>' : '') + '</div>' +
-      (p.desc ? '<p class="mdl__d">' + esc(p.desc) + '</p>' : '') + spec + extra + (p.src ? '<p class="muted src">Источник: ' + esc(p.src) + '</p>' : '') + '</div></div>';
+      (p.desc ? '<p class="mdl__d">' + esc(p.desc) + '</p>' : '') + spec + extra + (p.src ? '<p class="muted src">Источник: ' + esc(p.src) + (p.page ? ', стр. ' + p.page : '') + (p.ocr ? '. Данные распознаны автоматически, сверяйте с оригиналом каталога.' : '') + '</p>' : '') + '</div></div>';
     if (!m.open) m.showModal();
     m.scrollTop = 0;
     $('#mKp').onclick = function () { makeKp([{ p: p, qty: 1 }], this); };
@@ -348,7 +348,7 @@
       var list = r.results.filter(function (x) { return x.id !== excludeId; }).slice(0, 12);
       st.textContent = r.mode === 'clip' ? 'Найдено ближайших моделей: ' + list.length : 'Нейросеть недоступна, подбор по цветам и композиции: ' + list.length + ' вариантов';
       res.innerHTML = list.map(function (x) {
-        var p = BYID[x.id], pct = Math.max(0, Math.min(99, Math.round((r.mode === 'clip' ? (x.s - 0.5) / 0.5 : x.s) * 100)));
+        var p = BYID[x.id], pct = Math.max(0, Math.min(99, Math.round((r.mode === 'clip' ? (x.s - 0.5) / 0.45 : x.s) * 100)));
         return '<button class="pr" data-open2="' + esc(p.id) + '" type="button"><img loading="lazy" src="' + esc(x.path) + '" alt=""><b>' + esc(p.name) + '</b><span>' + esc(p.brand || '') + '</span><em>' + pct + '%</em></button>';
       }).join('');
     }).catch(function (e) { console.error(e); st.textContent = 'Не удалось обработать фото: ' + e.message; });
