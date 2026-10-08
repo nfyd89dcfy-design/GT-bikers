@@ -36,7 +36,7 @@ def dhash(im):
     return bits
 
 
-def save_image(data, name, max_side=900, min_side=120):
+def save_image(data, name, max_side=900, min_side=120, quality=80):
     """Сохраняет картинку в images/<name>.jpg (до 900 px). Возвращает относительный путь,
     либо None для слишком мелких. Одинаковые картинки не дублируются."""
     try:
@@ -63,7 +63,7 @@ def save_image(data, name, max_side=900, min_side=120):
     rel = "images/%s.jpg" % name
     full = os.path.join(REPO, rel)
     os.makedirs(os.path.dirname(full), exist_ok=True)
-    im.save(full, "JPEG", quality=80, optimize=True, progressive=True)
+    im.save(full, "JPEG", quality=quality, optimize=True, progressive=True)
     _HASHES[h] = rel
     return rel
 
@@ -223,3 +223,31 @@ def apply_specs(p, pairs):
             extra.append(list(row))
             seen.add(row)
     return p
+
+
+# ---------- картинки WPS (формула =DISPIMG("ID_...")) ----------
+def cell_images(path):
+    """Возвращает {ID: байты картинки} для файлов WPS с вставкой картинок в ячейки."""
+    import zipfile
+    z = zipfile.ZipFile(path)
+    names = z.namelist()
+    if "xl/cellimages.xml" not in names:
+        return {}
+    xml = z.read("xl/cellimages.xml").decode("utf8", "ignore")
+    relp = [n for n in names if n.endswith("cellimages.xml.rels")]
+    if not relp:
+        return {}
+    rels = z.read(relp[0]).decode("utf8", "ignore")
+    rid2t = dict((m.group(2), m.group(1)) for m in re.finditer(r'Target="([^"]+)"[^>]*Id="([^"]+)"', rels))
+    rid2t.update(dict((m.group(1), m.group(2)) for m in re.finditer(r'Id="([^"]+)"[^>]*Target="([^"]+)"', rels)))
+    out = {}
+    for m in re.finditer(r'<xdr:cNvPr[^>]*name="(ID_[^"]+)"[^>]*/?>.*?r:embed="([^"]+)"', xml, re.S):
+        t = rid2t.get(m.group(2))
+        if not t:
+            continue
+        t = t.lstrip("/")
+        if not t.startswith("xl/"):
+            t = "xl/" + t
+        if t in names:
+            out[m.group(1)] = z.read(t)
+    return out

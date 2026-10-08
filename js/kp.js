@@ -7,11 +7,11 @@ window.KP = (function () {
   var CURSYM = { USD: '$', RMB: '¥', RUB: '₽', EUR: '€' };
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  var MK = 0; // наценка, % (задаётся при формировании КП)
+  function unit(p) { return Math.round(p.price * (1 + MK / 100)); }
   function money(p) {
     if (p.price == null || p.price === '') return 'Цена по запросу';
-    var n = Number(p.price).toLocaleString('ru-RU');
-    var s = CURSYM[p.cur] || p.cur || '';
-    return n + ' ' + s + (p.priceNote ? ' · ' + p.priceNote : '');
+    return unit(p).toLocaleString('ru-RU') + ' ' + (CURSYM[p.cur] || p.cur || '');
   }
   function fieldVal(p, f) {
     var v = p[f.key];
@@ -28,7 +28,7 @@ window.KP = (function () {
       var v = fieldVal(p, f);
       if (v != null) rows.push([f.label + (f.unit && f.type !== 'number' ? ', ' + f.unit : ''), v]);
     });
-    (p.extra || []).forEach(function (r) { rows.push([r[0], r[1]]); });
+    (p.extra || []).forEach(function (r) { if (!/цен|доплат|артикул|контейнер|описание поставщика|серия/i.test(r[0])) rows.push([r[0], r[1]]); });
     return rows;
   }
   function highlights(p) {
@@ -70,14 +70,14 @@ window.KP = (function () {
       '<div class="kpp-hls">' + hl + '</div>' +
       '<table class="kpp-spec">' + rows + '</table>' +
       '<div class="kpp-price"><div><span>Стоимость за единицу</span><b>' + esc(money(p)) + '</b></div>' +
-      (it.qty > 1 && p.price != null ? '<div><span>' + it.qty + ' шт.</span><b>' + esc((p.price * it.qty).toLocaleString('ru-RU') + ' ' + (CURSYM[p.cur] || p.cur || '')) + '</b></div>' : '') + '</div>' +
+      (it.qty > 1 && p.price != null ? '<div><span>' + it.qty + ' шт.</span><b>' + esc((unit(p) * it.qty).toLocaleString('ru-RU') + ' ' + (CURSYM[p.cur] || p.cur || '')) + '</b></div>' : '') + '</div>' +
       foot(meta) + '</section>';
   }
 
   function summaryPage(items, meta, num, total) {
     var sums = {};
     var rows = items.map(function (it, i) {
-      var p = it.p, line = p.price != null ? p.price * it.qty : null;
+      var p = it.p, line = p.price != null ? unit(p) * it.qty : null;
       if (line != null) sums[p.cur || ''] = (sums[p.cur || ''] || 0) + line;
       return '<tr><td>' + (i + 1) + '</td><td>' + (p.images && p.images[0] ? '<img src="' + esc(p.images[0]) + '" alt="">' : '') + '</td><td><b>' + esc(p.name) + '</b><br><small>' + esc(p.brand || '') + (p.sku ? ' · ' + esc(p.sku) : '') + '</small></td><td>' + it.qty + '</td><td>' + esc(money(p)) + '</td><td>' + (line != null ? esc(line.toLocaleString('ru-RU') + ' ' + (CURSYM[p.cur] || p.cur || '')) : '—') + '</td></tr>';
     }).join('');
@@ -103,6 +103,7 @@ window.KP = (function () {
     var d = new Date(), until = new Date(d.getTime() + (meta.days || 7) * 864e5);
     var fmt = function (x) { return x.toLocaleDateString('ru-RU'); };
     meta.date = fmt(d); meta.until = fmt(until);
+    MK = Number(meta.markup) || 0;
     var num = d.toISOString().slice(2, 10).replace(/-/g, '') + '-' + String(Math.floor(Math.random() * 900) + 100);
     var multi = items.length > 1, total = items.length + (multi ? 1 : 0), html = '', n = 1;
     if (multi) html += summaryPage(items, meta, num, total), n = 2;

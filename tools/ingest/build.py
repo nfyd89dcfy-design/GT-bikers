@@ -6,7 +6,7 @@ ORDER = ["ebike-sport", "ebike-city", "ebike-enduro", "moto", "quad", "utv", "go
 
 def key(p):
     s = re.sub(r"[^0-9a-zа-я]+", "", (p.get("sku") or p["name"]).lower())
-    return (p.get("brand", "").lower(), p["cat"], s)
+    return (p.get("brand", "").lower(), p["cat"], s, p.get("power_kw"), p.get("battery_wh"))
 
 def main():
     items, seen = [], {}

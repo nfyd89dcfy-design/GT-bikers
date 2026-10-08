@@ -13,14 +13,17 @@
 
   var state = { cats: new Set(), f: {}, q: '', sort: 'rel', shown: PAGE, nearest: null };
   var kp = load('gt_kp', []).filter(function (x) { return BYID[x.id]; });
-  var kpMeta = load('gt_kp_meta', { client: '', manager: '', contact: '', days: 7 });
+  var kpMeta = load('gt_kp_meta', { client: '', manager: '', contact: '', days: 7, markup: 0 });
 
   function load(k, d) { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } }
   function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* без хранилища тоже работает */ } }
   function toast(msg) { var t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(function () { t.classList.remove('on'); }, 3200); }
   function money(p) {
     if (p.price == null) return 'Цена по запросу';
-    return Number(p.price).toLocaleString('ru-RU') + ' ' + (CURSYM[p.cur] || p.cur || '') + (p.priceNote ? ' · ' + p.priceNote : '');
+    var sym = ' ' + (CURSYM[p.cur] || p.cur || '');
+    var s = Number(p.price).toLocaleString('ru-RU') + sym + (p.priceNote ? ' · ' + p.priceNote : '');
+    if (p.price2 != null) s += ' / ' + Number(p.price2).toLocaleString('ru-RU') + sym + (p.price2Note ? ' · ' + p.price2Note : '');
+    return s;
   }
   function num(v) { return Number(v).toLocaleString('ru-RU', { maximumFractionDigits: 2 }); }
   function fieldText(p, f) {
@@ -292,11 +295,11 @@
   }
   function updKp() { $('#kpCount').textContent = kp.length; $('#kpCount').classList.toggle('on', kp.length > 0); }
   function readMeta() {
-    kpMeta = { client: $('#kpClient').value.trim(), manager: $('#kpManager').value.trim(), contact: $('#kpContact').value.trim(), days: parseInt($('#kpDays').value, 10) || 7 };
+    kpMeta = { client: $('#kpClient').value.trim(), manager: $('#kpManager').value.trim(), contact: $('#kpContact').value.trim(), days: parseInt($('#kpDays').value, 10) || 7, markup: parseFloat($('#kpMarkup').value) || 0 };
     save('gt_kp_meta', kpMeta); return kpMeta;
   }
   function renderKp() {
-    $('#kpClient').value = kpMeta.client || ''; $('#kpManager').value = kpMeta.manager || ''; $('#kpContact').value = kpMeta.contact || ''; $('#kpDays').value = kpMeta.days || 7;
+    $('#kpClient').value = kpMeta.client || ''; $('#kpManager').value = kpMeta.manager || ''; $('#kpContact').value = kpMeta.contact || ''; $('#kpDays').value = kpMeta.days || 7; $('#kpMarkup').value = kpMeta.markup || 0;
     $('#kpItems').innerHTML = kp.length ? kp.map(function (x) {
       var p = BYID[x.id];
       return '<div class="kpi"><img src="' + esc((p.images || [])[0] || '') + '" alt=""><div class="kpi__t"><b>' + esc(p.name) + '</b><span>' + esc(money(p)) + '</span></div><div class="qty"><button data-q="-1" data-id="' + esc(x.id) + '" type="button" aria-label="Меньше">−</button><span>' + x.qty + '</span><button data-q="1" data-id="' + esc(x.id) + '" type="button" aria-label="Больше">+</button></div><button class="del" data-del="' + esc(x.id) + '" type="button" aria-label="Убрать">×</button></div>';
@@ -312,7 +315,7 @@
     if (d) kp = kp.filter(function (x) { return x.id !== d.dataset.del; });
     if (q || d) { save('gt_kp', kp); updKp(); renderKp(); renderGrid(); }
   });
-  ['kpClient', 'kpManager', 'kpContact', 'kpDays'].forEach(function (id) { $('#' + id).addEventListener('change', readMeta); });
+  ['kpClient', 'kpManager', 'kpContact', 'kpDays', 'kpMarkup'].forEach(function (id) { $('#' + id).addEventListener('change', readMeta); });
   $('#kpMake').addEventListener('click', function () {
     makeKp(kp.map(function (x) { return { p: BYID[x.id], qty: x.qty }; }), this, readMeta());
   });
