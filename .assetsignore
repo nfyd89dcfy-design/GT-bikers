@@ -5,3 +5,5 @@ wrangler.jsonc
 .gitignore
 .nojekyll
 node_modules
+.git
+.git/
