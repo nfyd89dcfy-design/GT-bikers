@@ -398,9 +398,6 @@
   function init() {
     var brands = {}; P.forEach(function (p) { if (p.brand) brands[p.brand] = 1; });
     $('#heroStats').innerHTML = '<div><b>' + P.length + '</b><span>моделей</span></div><div><b>' + Object.keys(brands).length + '</b><span>брендов</span></div><div><b>' + CFG.categories.filter(function (c) { return P.some(function (p) { return p.cat === c.id; }); }).length + '</b><span>категорий</span></div>';
-    var c = CFG.company;
-    $('#footNote').textContent = c.note;
-    $('#footContacts').innerHTML = [c.phone, c.email, c.address].filter(Boolean).map(function (x) { return '<p>' + esc(x) + '</p>'; }).join('') || '<p class="muted">Контакты компании добавляются в js/config.js</p>';
     updKp(); renderAll();
   }
   init();
