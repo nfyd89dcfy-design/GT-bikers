@@ -1,6 +1,8 @@
 (function () {
   'use strict';
-  var CFG = window.CFG, P = window.PRODUCTS || [];
+  var CFG = window.CFG, P = (window.PRODUCTS || []).concat((window.CUSTOM_PRODUCTS || []).map(function (p, i) {
+    return Object.assign({ id: 'custom-' + (i + 1), images: [], extra: [], src: 'добавлено вручную' }, p);
+  }));
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var CURSYM = { USD: '$', RMB: '¥', RUB: '₽', EUR: '€' };

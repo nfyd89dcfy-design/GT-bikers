@@ -51,6 +51,17 @@ def derive(p):
             put("peak_power_kw", n / 1000 if re.search(r"\d\s*вт", str(val).lower()) and "квт" not in str(val).lower() else n, 0.1, 400)
     return p
 
+def powertrain(p):
+    """Тип двигателя: бензин или электро (по полям ДВС и батареи, по категории и названию)."""
+    if p["cat"] in ("gear", "parts") or "powertrain" in p: return p
+    name = (p.get("name", "") + " " + p.get("sku", "")).lower()
+    petrol = any(k in p for k in ("engine_cc", "engine_stroke", "fuel_tank_l"))
+    electric = p["cat"].startswith("ebike") or any(k in p for k in ("battery_v", "battery_ah", "battery_wh", "battery_type", "removable_battery")) or "electric" in name or "электро" in name
+    if petrol and not electric: p["powertrain"] = "Бензин"
+    elif electric and not petrol: p["powertrain"] = "Электро"
+    elif petrol and electric: p["powertrain"] = "Электро" if p["cat"].startswith("ebike") else "Бензин"
+    return p
+
 def sane(p):
     """Убирает заведомо неправдоподобные числа, которые могли получиться при распознавании."""
     def drop(k, lo, hi):
@@ -70,7 +81,7 @@ def main():
             p = {k: v for k, v in p.items() if v is not None and v != "" and v != []}
             if "images" not in p: p["images"] = []
             if any(str(p.get("src", "")).startswith(s) for s in OCR_SRC): p["ocr"] = True
-            p = sane(derive(clean_name(p)))
+            p = sane(powertrain(derive(clean_name(p))))
             k = key(p)
             if k in seen:                       # повтор: дополняем недостающее
                 q = seen[k]

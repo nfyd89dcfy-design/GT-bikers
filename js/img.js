@@ -112,13 +112,29 @@ window.IMG = (function () {
     indexMode = 'hist';
   }
 
+  var embedded = {};
+  async function embedMissing(products, onStatus) {
+    var have = {}; index.forEach(function (it) { have[it.path] = 1; });
+    var todo = [];
+    products.forEach(function (p) { (p.images || []).slice(0, 3).forEach(function (im) { if (!have[im] && !embedded[im]) todo.push([p.id, im]); }); });
+    for (var i = 0; i < todo.length; i++) {
+      onStatus && onStatus('Индексирую новые фото каталога… ' + (i + 1) + ' из ' + todo.length);
+      try {
+        var img = await loadImage(todo[i][1]);
+        var v = await clipVec(toCanvas(img, 448));
+        index.push({ id: todo[i][0], path: todo[i][1], v: v });
+      } catch (e) { /* пропускаем */ }
+      embedded[todo[i][1]] = 1;
+    }
+  }
+
   async function search(source, products, onStatus, k) {
     await ensureIndex(products, onStatus);
     var im = await loadImage(source);
     var canvas = toCanvas(im, 448), mode = indexMode, q;
     if (indexMode === 'clip') {
       var ok = await loadModel(onStatus);
-      if (ok) { onStatus && onStatus('Анализирую фото…'); q = await clipVec(canvas); }
+      if (ok) { await embedMissing(products, onStatus); onStatus && onStatus('Анализирую фото…'); q = await clipVec(canvas); }
       else {
         // нейросеть недоступна: строим цветовой индекс заново
         index = null; window.EMBEDDINGS = null; await ensureIndex(products, onStatus);

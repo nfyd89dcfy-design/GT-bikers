@@ -40,6 +40,7 @@ window.CFG = {
       { key: 'cur', label: 'Валюта цены', type: 'enum', group: 'Основное' },
       { key: 'price', label: 'Цена', type: 'number', group: 'Основное', kw: ['цен', 'стоимост', 'бюджет', 'дешев', 'дорож'] },
 
+      { key: 'powertrain', label: 'Тип двигателя', type: 'enum', cats: VEH, group: 'Двигатель', alias: { 'Бензин': ['бензин', 'двс'], 'Электро': ['электрическ', 'электродвиг', 'электро'] } },
       { key: 'power_kw', label: 'Мощность', unit: 'кВт', type: 'number', cats: VEH, group: 'Двигатель', kw: ['мощност', 'квт', 'kw'] },
       { key: 'power_hp', label: 'Мощность', unit: 'л.с.', type: 'number', cats: ICE, group: 'Двигатель', kw: ['л.с', 'лс', 'hp', 'лошад'] },
       { key: 'engine_cc', label: 'Объём двигателя', unit: 'см³', type: 'number', cats: ICE, group: 'Двигатель', kw: ['объем', 'объём', 'кубов', 'куб', 'см3', 'cc'] },
