@@ -20,15 +20,36 @@ window.KP = (function () {
     if (f.type === 'number') return Number(v).toLocaleString('ru-RU') + (f.unit ? ' ' + f.unit : '');
     return v;
   }
-  function specRows(p) {
-    var rows = [], skip = { brand: 1, cur: 1, price: 1 };
+  /* Строки характеристик по группам: поля каталога (по группам из config) + все строки из таблицы поставщика.
+     Повторы убираются: если значение уже показано как поле каталога, строка поставщика не дублируется. */
+  var EXTRA_FIELD = [[/^колёсная база/i, 'wheelbase_mm'], [/^высота сиденья/i, 'seat_height_mm'], [/^(дорожный просвет|клиренс)/i, 'ground_clearance_mm'], [/^масса, кг/i, 'weight_kg'],
+    [/^макс\. скорость/i, 'top_speed'], [/^макс\. момент|^крутящий момент/i, 'torque_nm'], [/^топливный бак/i, 'fuel_tank_l'], [/^объ[её]м/i, 'engine_cc'], [/^запас хода при 60/i, 'range_km'], [/^макс\. мощность/i, 'power_kw'], [/^время полной зарядки/i, 'charge_h']];
+  function specGroups(p) {
+    var skip = { brand: 1, cur: 1, price: 1 }, hasDims = (p.extra || []).some(function (r) { return /^габариты/i.test(r[0]) && !/упаков/i.test(r[0]); });
+    var groups = {}, order = [];
+    function add(g, label, val) { if (!groups[g]) { groups[g] = []; order.push(g); } groups[g].push([label, val]); }
+    var shown = {};
     CFG.fields.forEach(function (f) {
-      if (skip[f.key]) return;
+      if (skip[f.key] || (f.key === 'length_mm' && hasDims)) return;
       var v = fieldVal(p, f);
-      if (v != null) rows.push([f.label + (f.unit && f.type !== 'number' ? ', ' + f.unit : ''), v]);
+      if (v != null) { shown[f.key] = 1; add(f.group || 'Основное', f.label + (f.unit && f.type !== 'number' ? ', ' + f.unit : ''), v); }
     });
-    (p.extra || []).forEach(function (r) { if (!/цен|доплат|артикул|контейнер|описание поставщика|серия/i.test(r[0])) rows.push([r[0], r[1]]); });
-    return rows;
+    var mainLabels = {};
+    Object.keys(groups).forEach(function (g) { groups[g].forEach(function (r) { mainLabels[r[0].toLowerCase()] = 1; }); });
+    (p.extra || []).forEach(function (r) {
+      var lab = String(r[0]), val = String(r[1]);
+      if (/^(цен|доплат|артикул|описание поставщика|серия)/i.test(lab) || /^мин\. партия/i.test(lab)) return;
+      if (EXTRA_FIELD.some(function (m) { return m[0].test(lab) && shown[m[1]]; })) return;
+      if (mainLabels[lab.toLowerCase()]) return;
+      add(lab === '•' ? 'Особенности' : 'Дополнительно', lab, val);
+    });
+    var gs = CFG.groups.concat(['Дополнительно', 'Особенности']);
+    return gs.filter(function (g) { return groups[g]; }).map(function (g) { return { name: g, rows: groups[g] }; });
+  }
+  function specRows(p) {
+    var out = [];
+    specGroups(p).forEach(function (g) { g.rows.forEach(function (r) { out.push(r); }); });
+    return out;
   }
   function highlights(p) {
     var keys = ['power_kw', 'power_hp', 'engine_cc', 'top_speed', 'range_km', 'battery_wh', 'removable_battery', 'seats', 'max_load_kg', 'drivetrain', 'weight_kg', 'gear_type'];
@@ -55,22 +76,57 @@ window.KP = (function () {
     return '<div class="kpp-foot"><span>' + bits.join(' · ') + '</span><span>Предложение действительно до ' + esc(meta.until) + '</span></div>';
   }
 
+  var FIRST_ROWS = 9, COL_UNITS = 34;
+  function rowUnits(r) { return 1 + Math.floor((String(r[1]).length - 1) / 30) + (String(r[0]).length > 34 ? 1 : 0); }
+  function specPageSets(p) {
+    // раскладка всех групп в две колонки по страницам
+    var cols = [], cur = [], used = 0;
+    specGroups(p).forEach(function (g) {
+      var firstOfGroup = true;
+      g.rows.forEach(function (r) {
+        var u = rowUnits(r) + (firstOfGroup ? 1.4 : 0);
+        if (used + u > COL_UNITS && cur.length) { cols.push(cur); cur = []; used = 0; firstOfGroup = true; u = rowUnits(r) + 1.4; }
+        if (firstOfGroup) cur.push({ g: g.name });
+        cur.push({ r: r }); used += u; firstOfGroup = false;
+      });
+    });
+    if (cur.length) cols.push(cur);
+    var pages = [];
+    for (var i = 0; i < cols.length; i += 2) pages.push([cols[i], cols[i + 1] || []]);
+    return pages;
+  }
+  function colHtml(items) {
+    return '<table class="kpp-spec kpp-spec--col">' + items.map(function (x) {
+      return x.g ? '<tr class="kpp-g"><td colspan="2">' + esc(x.g) + '</td></tr>' : x.r[0] === '•' ? '<tr><td colspan="2">• ' + esc(x.r[1]) + '</td></tr>' : '<tr><td>' + esc(x.r[0]) + '</td><td>' + esc(x.r[1]) + '</td></tr>';
+    }).join('') + '</table>';
+  }
+  function pageCount(it) {
+    var rows = specRows(it.p);
+    return 1 + (rows.length > FIRST_ROWS ? specPageSets(it.p).length : 0);
+  }
   function productPage(it, meta, num, pageNo, total) {
-    var p = it.p, img = (p.images && p.images[0]) || '';
+    var p = it.p, img = (p.images && p.images[0]) || '', all = specRows(p), long = all.length > FIRST_ROWS;
     var hl = highlights(p).map(function (h) { return '<div class="kpp-hl"><b>' + esc(h[1]) + '</b><span>' + esc(h[0]) + '</span></div>'; }).join('');
-    var rows = specRows(p).slice(0, 13).map(function (r) { return '<tr><td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td></tr>'; }).join('');
+    var rows = all.slice(0, FIRST_ROWS).map(function (r) { return r[0] === '•' ? '<tr><td colspan="2">• ' + esc(r[1]) + '</td></tr>' : '<tr><td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td></tr>'; }).join('');
     var thumbs = (p.images || []).slice(1, 4).map(function (s) { return '<img src="' + esc(s) + '" alt="">'; }).join('');
-    return '<section class="kpp">' + head(meta, num, pageNo, total) +
+    var html = '<section class="kpp">' + head(meta, num, pageNo, total) +
       (meta.client ? '<div class="kpp-client">Для: <b>' + esc(meta.client) + '</b></div>' : '') +
       '<div class="kpp-cat">' + esc(catName(p.cat)) + (p.brand ? ' · ' + esc(p.brand) : '') + '</div>' +
       '<h1>' + esc(p.name) + '</h1>' + (p.sku ? '<div class="kpp-sku">Артикул: ' + esc(p.sku) + '</div>' : '') +
       '<div class="kpp-photo">' + (img ? '<img src="' + esc(img) + '" alt="">' : '') + '</div>' +
       (thumbs ? '<div class="kpp-thumbs">' + thumbs + '</div>' : '') +
       '<div class="kpp-hls">' + hl + '</div>' +
-      '<table class="kpp-spec">' + rows + '</table>' +
+      '<table class="kpp-spec">' + rows + '</table>' + (long ? '<div class="kpp-more">Полные технические характеристики: на следующей странице</div>' : '') +
       '<div class="kpp-price"><div><span>Стоимость за единицу</span><b>' + esc(money(p)) + '</b></div>' +
       (it.qty > 1 && p.price != null ? '<div><span>' + it.qty + ' шт.</span><b>' + esc((unit(p) * it.qty).toLocaleString('ru-RU') + ' ' + (CURSYM[p.cur] || p.cur || '')) + '</b></div>' : '') + '</div>' +
       foot(meta) + '</section>';
+    if (long) specPageSets(p).forEach(function (pg, k) {
+      html += '<section class="kpp">' + head(meta, num, pageNo + 1 + k, total) +
+        '<div class="kpp-cat">' + esc(catName(p.cat)) + (p.brand ? ' · ' + esc(p.brand) : '') + '</div>' +
+        '<h2 class="kpp-h2">' + esc(p.name) + ' <small>Технические характеристики' + (k ? ' (продолжение)' : '') + '</small></h2>' +
+        '<div class="kpp-cols">' + colHtml(pg[0]) + colHtml(pg[1]) + '</div>' + foot(meta) + '</section>';
+    });
+    return html;
   }
 
   function summaryPage(items, meta, num, total) {
@@ -108,9 +164,10 @@ window.KP = (function () {
     meta.date = fmt(d); meta.until = fmt(until);
     MK = Number(meta.markup) || 0;
     var num = d.toISOString().slice(2, 10).replace(/-/g, '') + '-' + String(Math.floor(Math.random() * 900) + 100);
-    var multi = items.length > 1, total = items.length + (multi ? 1 : 0), html = '', n = 1;
+    var multi = items.length > 1, total = (multi ? 1 : 0), html = '', n = 1;
+    items.forEach(function (it) { total += pageCount(it); });
     if (multi) html += summaryPage(items, meta, num, total), n = 2;
-    items.forEach(function (it) { html += productPage(it, meta, num, n++, total); });
+    items.forEach(function (it) { html += productPage(it, meta, num, n, total); n += pageCount(it); });
     var el = document.createElement('div');
     el.className = 'kp-render';
     el.innerHTML = html;

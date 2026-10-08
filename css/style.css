@@ -213,3 +213,9 @@ dialog::backdrop{background:rgba(7,8,11,.7);backdrop-filter:blur(4px)}
 .card__s li.hl{background:var(--blue-l);border-radius:6px;padding:3px 6px;border-bottom:0;margin-bottom:2px}.card__s li.hl b{color:var(--blue-d)}
 .photo-res{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
 .src a{color:var(--blue,#2d7dff);text-decoration:none}.src a:hover{text-decoration:underline}
+
+.kpp-more{margin-top:8px;font-size:11px;color:#2d7dff;font-weight:600}
+.kpp-h2{margin:6px 0 14px;font-size:22px;line-height:1.15}.kpp-h2 small{display:block;font-size:12px;font-weight:600;color:#6b7385;margin-top:2px}
+.kpp-cols{display:flex;gap:26px;align-items:flex-start}.kpp-spec--col{width:50%;font-size:11px;table-layout:fixed}
+.kpp-spec--col td{padding:4px 0;vertical-align:top;word-wrap:break-word}.kpp-spec--col td:first-child{width:44%;padding-right:8px}
+.kpp-spec--col .kpp-g td{padding:9px 0 3px;font-size:10.5px;font-weight:800;color:#2d7dff;text-transform:uppercase;letter-spacing:.08em;border-bottom:2px solid #2d7dff}

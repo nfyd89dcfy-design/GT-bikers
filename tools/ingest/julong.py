@@ -20,12 +20,16 @@ def main():
             c = min(left, key=lambda b: h[0] - b[2])
             code = c[4].strip().upper().replace("0", "0")
             cx = c[0]
-            reg = sorted([b for b in o if h[1] + 6 < b[1] < h[1] + 80 and cx - 10 <= b[0] < cx + 285], key=lambda b: (round(b[1] / 6), b[0]))
+            side = [g for g in heads if g is not h and abs(g[1] - h[1]) < 12 and g[0] > h[0] + 30]
+            xr = (min(g[0] for g in side) - (h[0] - cx) - 8) if side else d[pn].rect.width
+            below_ = [g[1] for g in heads if g is not h and g[1] > h[1] + 20 and g[0] < xr and g[2] > cx]
+            yb = min([h[1] + 135] + [y - 3 for y in below_])
+            reg = sorted([b for b in o if h[1] + 6 < b[1] < yb and cx - 10 <= b[0] < xr], key=lambda b: (round(b[1] / 6), b[0]))
             txt = " ".join(b[4] for b in reg)
-            dm = re.search(r"DIMENSI.N\s*:?\s*(\d{3,4})\s*[XxХ×*]\s*(\d{3,4})\s*[XxХ×*]\s*(\d{3,4})", txt, re.I)
-            bat = re.search(r"BATTERY CAPACITY\s*:?\s*([\w/\-\. ]+?)\s*(?:MOTOR|TYRE|MAXIMUM|RANGE|$)", txt, re.I)
+            dm = re.search(r"D.MENS.{1,2}N\s*:?\s*(\d{3,4})\s*[XxХ×*]\s*(\d{3,4})\s*[XxХ×*]\s*(\d{3,4})", txt, re.I)
+            bat = re.search(r"BATTERY\s*CAPACITY\s*:?\s*([\w/\-\. ]+?)\s*(?:MOTOR|TYRE|MAXIMUM|RANGE|BRAKE|CONTROLLER|$)", txt, re.I)
             mot = re.search(r"MOTOR\s*:?\s*([\d\-]+)\s*W", txt, re.I)
-            tyr = re.search(r"TYRE\s*:?\s*([\w\.\-;/ ]+?)\s*(?:MAXIMUM|RANGE|BATTERY|DIMENS|$)", txt, re.I)
+            tyr = re.search(r"TYRE\s*:?\s*([\w\.\-;/\* ,]+?)\s*(?:MAXIMUM|RANGE|BATTERY|DIMENS|CONTROLLER|BRAKE|$)", txt, re.I)
             spd = re.search(r"MAXIMUM\s*SPEED\s*:?\s*(\d{2,3})", txt, re.I)
             rng = re.search(r"RANGE DISTANCE\s*:?\s*(\d{2,3})(?:\s*KM)?(?:\s*-\s*(\d{2,3}))?", txt, re.I)
             if not (dm or mot or spd): continue
@@ -43,6 +47,15 @@ def main():
                 w = max(int(x) for x in re.findall(r"\d+", mot.group(1)))
                 if w >= 100: p["power_kw"] = w / 1000; p["extra"].append(["Мощность мотора", f"{w} Вт"])
             if tyr: p["extra"].append(["Шины", tyr.group(1).strip()])
+            brk = re.search(r"BRAKE\s*:?\s*([A-Z ,]+?)\s*(?:CONTROLLER|TYRE|MOTOR|BATTERY|MAXIMUM|RANGE|DIMENS|PARAMETER|$)", txt, re.I)
+            if brk:
+                b_ = brk.group(1).upper(); b_ru = None
+                if re.search(r"FRONT\s*DISC.*REAR\s*DRUM", b_): b_ru, p["brakes"] = "передний дисковый, задний барабанный", "Дисковые"
+                elif "DISC" in b_ and "DRUM" not in b_: b_ru, p["brakes"] = "дисковые", "Дисковые"
+                elif "DRUM" in b_: b_ru, p["brakes"] = "барабанные", "Барабанные"
+                if b_ru: p["extra"].append(["Тормоза", b_ru])
+            ctl = re.search(r"CONTROLLER\s*:?\s*(\d+)?\s*TUBE", txt, re.I)
+            if ctl: p["extra"].append(["Контроллер", (ctl.group(1) + "-ламповый") if ctl.group(1) else "ламповый"])
             if spd: p["top_speed"] = int(spd.group(1)); p["extra"].append(["Макс. скорость", f"{spd.group(1)} км/ч"])
             if rng:
                 p["range_km"] = int(rng.group(2) or rng.group(1)); p["extra"].append(["Запас хода", f"{rng.group(1)}" + (f"–{rng.group(2)}" if rng.group(2) else "") + " км"])

@@ -1,4 +1,5 @@
 """Собирает data/products.js из промежуточных json (out/*.json): убирает повторы, чистит поля."""
+from polish import polish
 import glob, json, os, re, sys
 from common import OUT, REPO
 
@@ -81,7 +82,7 @@ def main():
             p = {k: v for k, v in p.items() if v is not None and v != "" and v != []}
             if "images" not in p: p["images"] = []
             if any(str(p.get("src", "")).startswith(s) for s in OCR_SRC): p["ocr"] = True
-            p = sane(powertrain(derive(clean_name(p))))
+            p = sane(powertrain(derive(polish(clean_name(p)))))
             k = key(p)
             if k in seen:                       # повтор: дополняем недостающее
                 q = seen[k]

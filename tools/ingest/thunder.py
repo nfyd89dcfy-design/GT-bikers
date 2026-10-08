@@ -49,6 +49,28 @@ def main():
             elif re.search(r"Drum", txt, re.I): p["brakes"] = "Барабанные"; p["extra"].append(["Тормоза", "барабанные"])
             mt = re.search(r"(\d{2,3}/\d{2,3}-\d{2}|\d\.\d{2}-\d{2}|\d{3}-\d{2})\s*Vacuum", txt, re.I)
             if mt: p["extra"].append(["Шины", mt.group(1) + " бескамерные"])
+            # строки таблицы по подписям: все значения как в каталоге, переведённые на русский
+            LB = r"(Motor\s*Power|Speed|Range|Battery|Brake|Tyre|Tire|Charging\s*Time|Controller|Climbing|Max\.?\s*Load|Load|Seats?)"
+            parts = re.split(LB + r"\s+", txt)
+            rows = []
+            for i in range(1, len(parts) - 1, 2):
+                rows.append((re.sub(r"\s+", " ", parts[i]).strip().lower(), re.sub(r"\s+", " ", parts[i + 1]).strip(" |")))
+            def rv(v):
+                v = re.sub(r"Lead\s*Acid\s*/?\s*Lithium", "свинцово-кислотный / литиевый", v, flags=re.I)
+                v = re.sub(r"\bLithium\b", "литиевый", v, flags=re.I); v = re.sub(r"Lead\s*Acid", "свинцово-кислотный", v, flags=re.I)
+                v = re.sub(r"Front\s*Disk\s*Rear\s*Disk", "передний и задний дисковые", v, flags=re.I); v = re.sub(r"Front\s*Drum\s*Rear\s*Drum", "передний и задний барабанные", v, flags=re.I)
+                v = re.sub(r"Front\s*Disk\s*Rear\s*Drum", "передний дисковый, задний барабанный", v, flags=re.I)
+                v = re.sub(r"Hydraulic\s*Disk\s*Brake", "гидравлические дисковые", v, flags=re.I); v = re.sub(r"Vacuum\s*Tire", "бескамерные", v, flags=re.I)
+                v = re.sub(r"(\d)\s*KM\b", r"\1 км", v, flags=re.I); v = re.sub(r"(\d)\s*km\s*/\s*h", r"\1 км/ч", v, flags=re.I)
+                v = re.sub(r"(\d)\s*Ah", r"\1 А·ч", v, flags=re.I); v = re.sub(r"(\d)\s*KW", r"\1 кВт", v, flags=re.I); v = re.sub(r"(\d)\s*W\b", r"\1 Вт", v)
+                v = re.sub(r"\s*www\.\S+", "", v); v = re.sub(r"км/h", "км/ч", v); v = re.sub(r"(\d)h\b", r"\1 ч", v)
+                v = re.sub(r"(Hydraulic\s*Disk)(?!\s*Brake)", "гидравлические дисковые", v, flags=re.I)
+                v = re.sub(r"(?<=[A-Za-zА-я\d·])(свинцово|литиев)", r" \1", v); v = re.sub(r"(кВт|Вт)(?=\d)", r"\1 / ", v)
+                return v.replace("\u2013", "–")
+            names = {"motor power": "Мощность мотора", "speed": "Макс. скорость", "range": "Запас хода", "battery": "Аккумулятор", "brake": "Тормоза", "tyre": "Шины", "tire": "Шины",
+                     "charging time": "Время зарядки", "controller": "Контроллер", "climbing": "Угол подъёма", "max. load": "Макс. нагрузка", "max load": "Макс. нагрузка", "load": "Нагрузка", "seat": "Мест", "seats": "Мест"}
+            full_rows = [[names.get(re.sub(r"\s+", " ", l), l), rv(v)] for l, v in rows if v]
+            if len(full_rows) >= len(p["extra"]): p["extra"] = full_rows
             # страница целиком — одна картинка: вырезаем фото из ячейки
             full = pageimg.get(pn)
             if full is None:

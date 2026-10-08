@@ -286,7 +286,7 @@
     var spec = CFG.groups.filter(function (g) { return rows[g]; }).map(function (g) {
       return '<h4>' + esc(g) + '</h4><table>' + rows[g].map(function (r) { return '<tr><td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td></tr>'; }).join('') + '</table>';
     }).join('');
-    var extra = (p.extra || []).length ? '<h4>Дополнительно</h4><table>' + p.extra.map(function (r) { return '<tr><td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td></tr>'; }).join('') + '</table>' : '';
+    var extra = (p.extra || []).length ? '<h4>Дополнительно</h4><table>' + p.extra.map(function (r) { return r[0] === '•' ? '<tr><td colspan="2">• ' + esc(r[1]) + '</td></tr>' : '<tr><td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td></tr>'; }).join('') + '</table>' : '';
     m.innerHTML = '<button class="x" data-close aria-label="Закрыть">×</button><div class="mdl"><div class="mdl__g"><div class="mdl__main">' + (imgs[0] ? '<img id="mainImg" src="' + esc(imgs[0]) + '" alt="' + esc(p.name) + '">' : '<span class="noimg">Нет фото</span>') + '</div>' +
       (imgs.length > 1 ? '<div class="mdl__th">' + imgs.slice(0, 8).map(function (s, i) { return '<button type="button" data-img="' + esc(s) + '" class="' + (i ? '' : 'on') + '"><img loading="lazy" src="' + esc(s) + '" alt=""></button>'; }).join('') + '</div>' : '') + '</div>' +
       '<div class="mdl__i"><div class="card__brand">' + esc(p.brand || '') + ' · ' + esc((CAT[p.cat] || {}).name || '') + '</div><h2>' + esc(p.name) + '</h2>' + (p.sku ? '<div class="muted">Артикул: ' + esc(p.sku) + '</div>' : '') +
