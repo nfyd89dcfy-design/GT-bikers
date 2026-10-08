@@ -4,7 +4,7 @@
 set -e
 cd "$(dirname "$0")"
 rm -rf ../../images && mkdir -p ../../images
-for s in atv_moto electric_cn gear_xlsx oubor_pptx minibus_quotes minibusev zuumav jiaqi gelan beiguma bike79 nicot juhool thunder jy sunsuki siekon kingche opai_m1 julong mimbob; do
+for s in atv_moto electric_cn gear_xlsx oubor_pptx minibus_quotes minibusev zuumav jiaqi gelan beiguma bike79 nicot juhool thunder jy sunsuki siekon kingche opai_m1 julong mimbob loose_images; do
   echo "== $s"; python3 $s.py 2>&1 | grep -v -i warn | head -3
 done
 python3 build.py

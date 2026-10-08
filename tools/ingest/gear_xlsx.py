@@ -82,6 +82,8 @@ def main():
                 if not cells: continue
                 rt = num_(cells.get(retail)) if retail else None
                 texts = [(c, str(v).strip()) for c, v in sorted(cells.items()) if isinstance(v, str) and not str(v).startswith("=") and c not in (retail, whole)]
+                texts += [(c, str(int(v))) for c, v in cells.items() if isinstance(v, (int, float)) and float(v).is_integer() and c <= 3 and c not in (retail, whole) and v > 9999]
+                texts.sort()
                 if rt is None or rt <= 0:
                     if len(texts) == 1 and re.search(r"[A-Za-z一-鿿]", texts[0][1]) and texts[0][0] <= 3: series = texts[0][1]
                     continue
@@ -96,7 +98,7 @@ def main():
                     suf = re.split(r"[-/]", code.split("/")[0])[-1].upper()
                     if suf in SIZES: size = suf
                 wh = num_(cells.get(whole)) if whole else None
-                key = (ws.title, name, str(cells.get(fitc)) if fitc else '')
+                key = (ws.title, name, str(cells.get(fitc)) if fitc else '', code if defcat == 'parts' else '')
                 g = groups.get(key)
                 if not g:
                     g = groups[key] = {"name": name, "codes": [], "sizes": [], "retail": rt, "whole": wh, "series": series, "row": r, "fit": None, "intro": None, "img": None, "sheet": ws.title}
