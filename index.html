@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GT Bikers — каталог техники</title>
+<meta name="description" content="Внутренний каталог GT Bikers: электробайки, квадроциклы, багги, гольфкары, снегоходы, экипировка. Поиск по параметрам и по фото, КП в PDF.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0b0f'/%3E%3Cpath d='M7 21l5-10h4l-3 6h5l3-6h4l-5 10z' fill='%232d7dff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="top" id="top">
+  <div class="wrap top__in">
+    <a class="logo" href="#top"><span class="logo__mark"></span>GT<b>Bikers</b></a>
+    <nav class="nav">
+      <a href="#catalog">Каталог</a>
+      <a href="#features">Возможности</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+    <button class="btn btn--ghost" id="openPhoto" type="button">Поиск по фото</button>
+    <button class="btn btn--blue kp-open" id="openKp" type="button">КП <span class="badge" id="kpCount">0</span></button>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap hero__in">
+    <p class="eyebrow">Внутренний каталог для сотрудников</p>
+    <h1>Вся техника и экипировка <span>в одном каталоге</span></h1>
+    <p class="lead">Электробайки, мотоциклы, квадроциклы, багги, гольфкары, снегоходы и экипировка. Подберите модель по параметрам или фото клиента и соберите КП в один клик.</p>
+
+    <form class="ai" id="aiForm" autocomplete="off">
+      <span class="ai__tag">AI-поиск</span>
+      <input id="aiInput" type="text" placeholder="Например: электробайк от 5 кВт, съёмный аккумулятор, запас хода от 80 км, до 3000 $" aria-label="Запрос на естественном языке">
+      <button class="btn btn--blue" type="submit">Подобрать</button>
+    </form>
+    <div class="ai__examples" id="aiExamples"></div>
+    <div class="hero__stats" id="heroStats"></div>
+  </div>
+</section>
+
+<section class="cats wrap" id="cats" aria-label="Категории"></section>
+
+<section class="features" id="features">
+  <div class="wrap feat">
+    <article>
+      <i>01</i>
+      <h3>AI-поиск по параметрам</h3>
+      <p>Опишите задачу клиента обычными словами: мощность, запас хода, съёмный аккумулятор, привод, бюджет. Параметры превращаются в фильтры, которые можно поправить вручную.</p>
+    </article>
+    <article>
+      <i>02</i>
+      <h3>Поиск по фото-референсу</h3>
+      <p>Клиент прислал картинку? Загрузите её, и каталог покажет самые похожие модели с процентом совпадения.</p>
+    </article>
+    <article>
+      <i>03</i>
+      <h3>КП в PDF по одной кнопке</h3>
+      <p>Выжимка по модели, фото, характеристики и цена. Добавьте несколько моделей и получите одно КП для клиента.</p>
+    </article>
+  </div>
+</section>
+
+<section class="catalog" id="catalog">
+  <div class="wrap">
+    <div class="catalog__head">
+      <h2>Каталог</h2>
+      <div class="catalog__tools">
+        <input id="q" type="search" placeholder="Название, бренд, артикул" aria-label="Поиск по названию">
+        <select id="sort" aria-label="Сортировка">
+          <option value="rel">По умолчанию</option>
+          <option value="price-asc">Цена по возрастанию</option>
+          <option value="price-desc">Цена по убыванию</option>
+          <option value="name">По названию</option>
+        </select>
+        <button class="btn btn--line filters-toggle" id="filtersToggle" type="button">Фильтры</button>
+      </div>
+    </div>
+
+    <div class="chips" id="chips"></div>
+
+    <div class="layout">
+      <aside class="filters" id="filters" aria-label="Фильтры"></aside>
+      <div class="results">
+        <div class="results__bar"><span id="count"></span><button class="link" id="resetAll" type="button">Сбросить всё</button></div>
+        <div class="notice" id="notice" hidden></div>
+        <div class="grid" id="grid"></div>
+        <div class="more"><button class="btn btn--line" id="more" type="button" hidden>Показать ещё</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot" id="contacts">
+  <div class="wrap foot__in">
+    <div>
+      <a class="logo" href="#top"><span class="logo__mark"></span>GT<b>Bikers</b></a>
+      <p id="footNote"></p>
+    </div>
+    <div id="footContacts"></div>
+  </div>
+</footer>
+
+<!-- Карточка модели -->
+<dialog class="modal" id="modal" aria-label="Модель"></dialog>
+
+<!-- Поиск по фото -->
+<dialog class="modal modal--photo" id="photoModal" aria-label="Поиск по фото">
+  <button class="x" data-close aria-label="Закрыть">×</button>
+  <h3>Поиск по фото-референсу</h3>
+  <p class="muted">Загрузите фото, скриншот или перетащите картинку клиента. Можно вставить из буфера (Ctrl+V).</p>
+  <label class="drop" id="drop">
+    <input type="file" id="photoFile" accept="image/*" hidden>
+    <span id="dropText">Перетащите фото сюда или нажмите для выбора</span>
+  </label>
+  <div class="photo-status" id="photoStatus"></div>
+  <div class="photo-res" id="photoRes"></div>
+</dialog>
+
+<!-- Корзина КП -->
+<dialog class="modal modal--kp" id="kpModal" aria-label="Коммерческое предложение">
+  <button class="x" data-close aria-label="Закрыть">×</button>
+  <h3>Коммерческое предложение</h3>
+  <div class="kp-form">
+    <label>Клиент<input id="kpClient" type="text" placeholder="Название компании или имя"></label>
+    <label>Менеджер<input id="kpManager" type="text" placeholder="Ваше имя"></label>
+    <label>Телефон / e-mail<input id="kpContact" type="text" placeholder="+7 …"></label>
+    <label>Действует, дней<input id="kpDays" type="number" min="1" value="7"></label>
+  </div>
+  <div class="kp-items" id="kpItems"></div>
+  <div class="kp-foot">
+    <div class="kp-total" id="kpTotal"></div>
+    <button class="btn btn--blue" id="kpMake" type="button">Скачать КП (PDF)</button>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="kp-stage" id="kpStage" aria-hidden="true"></div>
+
+<script src="data/products.js"></script>
+<script src="js/config.js"></script>
+<script src="js/nl.js"></script>
+<script src="js/img.js"></script>
+<script src="js/kp.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
