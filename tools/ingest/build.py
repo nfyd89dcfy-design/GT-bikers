@@ -13,6 +13,19 @@ def key(p):
         return ("minibus", s)
     return (p.get("brand", "").lower(), p["cat"], s, p.get("power_kw"), p.get("battery_wh"))
 
+CJK = re.compile(r"[\u2e80-\u9fff\u3000-\u303f\uff00-\uffef]+")
+
+def clean_name(p):
+    n = re.sub(r"\s+", " ", p["name"].replace("\n", " ")).strip()
+    cn = CJK.findall(n)
+    if cn:
+        p.setdefault("extra", []).append(["Название в прайсе (кит.)", " ".join(cn)])
+        n = re.sub(r"\s+", " ", CJK.sub(" ", n)).strip(" -–/")
+    if len(n) > 60 and "(" in n:
+        n = re.sub(r"\s*\(.*?\)", "", n).strip()
+    p["name"] = n
+    return p
+
 def sane(p):
     """Убирает заведомо неправдоподобные числа, которые могли получиться при распознавании."""
     def drop(k, lo, hi):
@@ -32,7 +45,7 @@ def main():
             p = {k: v for k, v in p.items() if v is not None and v != "" and v != []}
             if "images" not in p: p["images"] = []
             if any(str(p.get("src", "")).startswith(s) for s in OCR_SRC): p["ocr"] = True
-            p = sane(p)
+            p = sane(clean_name(p))
             k = key(p)
             if k in seen:                       # повтор: дополняем недостающее
                 q = seen[k]
