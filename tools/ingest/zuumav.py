@@ -39,7 +39,7 @@ def main():
                 if mm: pairs.append((mm.group(1).strip(), mm.group(2).strip()))
             if len(pairs) < 3: continue
             kind = next((l for l in lines[:ti] if re.search(r"BIKE|MOTORCYCLE|PITBIKE|ENDURO|MOTO", l)), "")
-            cand = [i for i in ims if lo <= (i["bbox"][0] + i["bbox"][2]) / 2 < hi]
+            cand = [i for i in ims if lo <= (i["bbox"][0] + i["bbox"][2]) / 2 < hi and (i["bbox"][2] - i["bbox"][0]) < 0.8 * pg.rect.width]
             img = None
             if cand:
                 best = max(cand, key=lambda i: (i["bbox"][2] - i["bbox"][0]) * (i["bbox"][3] - i["bbox"][1]))

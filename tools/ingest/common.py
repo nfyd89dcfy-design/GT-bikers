@@ -288,3 +288,25 @@ def px_image(doc, xref):
         if t[0] < 0:
             im = ImageOps.mirror(im.convert("RGBA") if im.mode == "RGBA" else im.convert("RGB"))
     return im
+
+
+_CLIPDOC = {}
+
+
+def render_clip(doc, pn, rect, zoom=2.0, strip_text=True):
+    """Картинка того, что видно на странице в области rect: фон и наложенные поверх фото (вырезанные модели) вместе.
+    Текст поверх фото убирается. Нужна для каталогов, где модель лежит отдельным слоем над фоном."""
+    import pymupdf
+    key = (doc.name, pn)
+    if key not in _CLIPDOC:
+        d2 = pymupdf.open(doc.name)
+        pg = d2[pn]
+        if strip_text:
+            for b in pg.get_text("blocks"):
+                pg.add_redact_annot(pymupdf.Rect(b[:4]), fill=False)
+            pg.apply_redactions(images=pymupdf.PDF_REDACT_IMAGE_NONE, graphics=pymupdf.PDF_REDACT_LINE_ART_REMOVE_IF_TOUCHED)
+        _CLIPDOC[key] = d2
+    pg = _CLIPDOC[key][pn]
+    r = pymupdf.Rect(rect) & pg.rect
+    pix = pg.get_pixmap(matrix=pymupdf.Matrix(zoom, zoom), clip=r, alpha=False)
+    return Image.open(io.BytesIO(pix.tobytes("png"))).convert("RGB")

@@ -49,10 +49,24 @@ def main():
             if code in THREE: p["cat"] = "car"; p["name"] = f"Электротрицикл JULONG {code}"
             elif p.get("power_kw", 0) >= 3: p["cat"] = "ebike-sport"
             cand = [i for i in imgs if cx - 30 <= (i["bbox"][0] + i["bbox"][2]) / 2 < cx + 290 and h[1] - 245 <= i["bbox"][3] <= h[1] + 12]
-            if cand:
-                best = max(cand, key=lambda i: (i["bbox"][2] - i["bbox"][0]) * (i["bbox"][3] - i["bbox"][1]))
+            # фото под таблицей-плашкой (плашка лежит прямо на фото) или над ней; модель может лежать отдельным слоем поверх фона,
+            # поэтому берём не «сырую» картинку, а отрисованную область страницы без текста
+            under = [i for i in imgs if i["bbox"][0] <= h[0] + 5 <= i["bbox"][2] and i["bbox"][1] <= h[1] + 3 <= i["bbox"][3] and i["bbox"][2] - i["bbox"][0] > 250 and i["bbox"][3] - i["bbox"][1] > 100]
+            best = max(under, key=lambda i: (i["bbox"][2] - i["bbox"][0]) * (i["bbox"][3] - i["bbox"][1])) if under else (max(cand, key=lambda i: (i["bbox"][2] - i["bbox"][0]) * (i["bbox"][3] - i["bbox"][1])) if cand else None)
+            if not best:
+                # фото стоит сбоку от плашки: ближайшая крупная картинка, а не плашка-полоска и не логотип
+                hx, hy = (h[0] + h[2]) / 2, (h[1] + h[3]) / 2
+                near = []
+                for i in imgs:
+                    w, hh = i["bbox"][2] - i["bbox"][0], i["bbox"][3] - i["bbox"][1]
+                    if w * hh < 8000 or w > 3 * hh: continue
+                    if any(g is not h and -12 <= g[1] - i["bbox"][3] <= 70 and i["bbox"][0] - 150 <= g[0] <= i["bbox"][2] + 150 for g in heads): continue  # фото чужой плашки
+                    dist = ((hx - (i["bbox"][0] + i["bbox"][2]) / 2) ** 2 + (hy - (i["bbox"][1] + i["bbox"][3]) / 2) ** 2) ** 0.5
+                    if dist < 330: near.append((dist - w * hh / 400, i))
+                if near: best = min(near, key=lambda t: t[0])[1]; print("FALLBACK", code, round(hx), round(hy), [round(x) for x in best["bbox"]])
+            if best:
                 try:
-                    img = save_image(px_image(d, best["xref"]), f"julong/{slug(code)}-{pn+1}", min_side=60)
+                    img = save_image(render_clip(d, pn, best["bbox"]), f"julong/{slug(code)}-{pn+1}", min_side=60)
                     if img: p["images"].append(img)
                 except Exception as e: print("img", code, e)
             out.append(p)
