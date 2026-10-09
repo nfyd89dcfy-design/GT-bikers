@@ -9,26 +9,26 @@
 /* общее */
 .k2-top{display:flex;justify-content:space-between;align-items:center;padding:30px 0 0;font-size:11px;color:var(--mut)}
 .k2-logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:17px;color:#fff;letter-spacing:-.01em}
-.k2-logo i{font-style:normal;width:28px;height:28px;border-radius:8px;background:#efe6d3;color:#2d7dff;display:grid;place-items:center;font-size:14px;font-weight:800;letter-spacing:-.02em}
+.k2-logo i{line-height:1;font-style:normal;width:28px;height:28px;border-radius:8px;background:#efe6d3;color:#2d7dff;display:grid;place-items:center;font-size:14px;font-weight:800;letter-spacing:-.02em}
 .k2-foot{position:absolute;left:48px;right:48px;bottom:26px;display:flex;justify-content:space-between;font-size:10.5px;color:var(--mut)}
-.k2-pill{display:inline-block;background:var(--pill);color:var(--pillf);font-size:11px;font-weight:700;padding:6px 12px;border-radius:999px}
+.k2-pill{display:inline-flex;align-items:center;justify-content:center;height:26px;background:var(--pill);color:var(--pillf);font-size:11px;line-height:1;font-weight:700;padding:0 13px;border-radius:999px;vertical-align:top}
 .k2-pill--blue{background:var(--blue);color:#fff}
-.k2-h1{margin:14px 0 4px;font-size:36px;line-height:1.08;font-weight:800;letter-spacing:-.03em}
+.k2-h1{margin:14px 0 6px;font-size:36px;line-height:1.08;font-weight:800;letter-spacing:-.03em}
 .k2-h2{margin:22px 0 12px;font-size:23px;line-height:1.15;font-weight:800;letter-spacing:-.02em}
-.k2-sku{font-size:12.5px;color:var(--mut)}
+.k2-sku{font-size:12.5px;color:var(--mut);margin-top:8px}
 .k2 small{font-size:.5em;font-weight:700;margin-left:.3em;opacity:.8;letter-spacing:0}
 /* обложка */
 .k2-cover-h{position:absolute;left:48px;right:48px;top:125px;font-size:60px;line-height:1.03;font-weight:800;letter-spacing:-.03em}
 .k2-cover-sub{position:absolute;left:48px;right:48px;top:330px;font-size:17px;line-height:1.45;color:#b9c6e0;max-width:600px}
 .k2-chips{position:absolute;left:48px;right:48px;bottom:44px;display:flex;gap:8px;flex-wrap:wrap}
-.k2-chip{background:var(--chip);border:1px solid var(--chipb);border-radius:14px;padding:9px 13px;font-size:11px;color:#dfe7f7}.k2-chip b{display:block;color:#fff;font-size:13px;margin-top:2px}
+.k2-chip{line-height:1.25;background:var(--chip);border:1px solid var(--chipb);border-radius:14px;padding:9px 13px;font-size:11px;color:#dfe7f7}.k2-chip b{display:block;color:#fff;font-size:13px;margin-top:2px}
 .k2-hero{position:absolute;left:48px;right:48px;top:405px;bottom:200px;border-radius:30px;overflow:hidden;display:grid;place-items:center}
 .k2-hero img{width:100%;height:100%;object-fit:contain}.k2-hero img.fill{object-fit:cover}.k2-hero img.fit{width:auto;max-width:100%;max-height:100%;height:auto;border-radius:30px}
 .k2-hero .nm{position:absolute;left:18px;bottom:16px;background:rgba(11,27,58,.9);color:#fff;font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:999px}
 /* выжимка */
-.k2-lead{font-size:15px;line-height:1.55;opacity:.92;margin:16px 0 18px;max-width:650px}
+.k2-lead{font-size:15px;line-height:1.55;opacity:.92;margin:20px 0 20px;max-width:650px}
 .k2-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px}
-.k2-stat{border-radius:20px;padding:16px 16px 14px;min-height:96px}
+.k2-stat{border-radius:20px;padding:14px 16px;min-height:96px;display:flex;flex-direction:column;justify-content:center;text-align:left}
 .k2-stat b{display:block;font-size:25px;line-height:1.1;font-weight:800;letter-spacing:-.02em}
 .k2-stat span{display:block;margin-top:8px;font-size:11px;line-height:1.3;opacity:.78}
 .k2-sum-row{display:flex;align-items:center;gap:14px;background:var(--row);border-radius:18px;padding:9px 16px;margin-bottom:8px}
@@ -42,18 +42,18 @@
 .k2-photo img{width:auto;height:auto;max-width:100%;max-height:316px;border-radius:26px;display:block}
 .k2-thumbs{display:flex;gap:8px;margin-top:9px}.k2-thumbs img{width:76px;height:50px;object-fit:cover;border-radius:12px}
 .k2-hls{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:6px}
-.k2-hl{border-radius:18px;padding:15px 16px 13px}
+.k2-hl{border-radius:18px;padding:14px 16px;min-height:84px;display:flex;flex-direction:column;justify-content:center}
 .k2-hl b{display:block;font-size:30px;line-height:1;font-weight:800;letter-spacing:-.02em}
 .k2-hl span{display:block;margin-top:7px;font-size:11.5px;opacity:.78}
 .k2-c0{background:var(--s1);color:var(--s1f);border:1px solid var(--plate-b)}.k2-c1{background:var(--s3);color:var(--s3f)}.k2-c2{background:var(--s2);color:var(--s2f)}
 .k2-price{position:absolute;left:48px;right:48px;bottom:62px;background:var(--price);color:var(--pricef);border-radius:24px;padding:18px 26px;display:flex;align-items:center;gap:30px;border:1px solid var(--plate-b)}
 .k2-price span{display:block;font-size:11.5px;opacity:.78}.k2-price b{display:block;font-size:30px;letter-spacing:-.02em;margin-top:2px}.k2-price em{display:block;font-style:normal;font-size:11px;opacity:.72;margin-top:3px}
-.k2-price .gap{flex:1}.k2-price .until{background:var(--cream);color:#0b1b3a;border-radius:999px;font-size:11px;font-weight:700;padding:7px 13px;opacity:1}
+.k2-price .gap{flex:1}.k2-price .until{display:inline-flex;align-items:center;height:28px;background:var(--cream);color:#0b1b3a;border-radius:999px;font-size:11px;line-height:1;font-weight:700;padding:0 14px;opacity:1}
 .k2-more{margin-top:12px;font-size:12px;color:var(--mut)}
 /* характеристики */
 .k2-cols{display:flex;gap:22px;align-items:flex-start;margin-top:6px}.k2-col{width:50%}
-.k2-g{display:inline-block;background:var(--pill);color:var(--pillf);font-size:11px;font-weight:700;padding:6px 13px;border-radius:999px;margin:12px 0 6px}
-.k2-row{display:flex;gap:10px;padding:6.5px 12px;border-radius:10px;font-size:11px;line-height:1.35}.k2-row:nth-child(odd){background:var(--row)}
+.k2-g{display:inline-flex;align-items:center;height:26px;background:var(--pill);color:var(--pillf);font-size:11px;line-height:1;font-weight:700;padding:0 13px;border-radius:999px;margin:12px 0 6px}
+.k2-row{display:flex;align-items:center;gap:10px;padding:6px 12px;border-radius:10px;font-size:11px;line-height:1.35}.k2-row:nth-child(odd){background:var(--row)}
 .k2-row u{text-decoration:none;color:var(--mut);width:44%;flex:none}.k2-row b{font-weight:600}
 .k2-row--note{display:block}
 /* финал */

@@ -355,7 +355,6 @@ window.KP = (function () {
 
   async function make(rawItems, meta) {
     await loadLib();
-    if (document.fonts && document.fonts.ready) await document.fonts.ready;
     var usedRates = {}; meta.usedRates = usedRates;
     var items = rawItems.map(effective).map(function (it) { return toRub(it, meta.rates, usedRates); });
     FEAT = pickFeatured(items, meta);
@@ -373,6 +372,11 @@ window.KP = (function () {
     el.className = 'kp-render';
     el.innerHTML = html;
     document.body.appendChild(el);
+    /* шрифты грузим после вставки страниц: иначе html2canvas измеряет текст запасным шрифтом, и строки съезжают */
+    if (document.fonts && document.fonts.load) {
+      await Promise.all(['400', '500', '600', '700', '800'].map(function (w) { return document.fonts.load(w + ' 16px Inter', 'Аа Aa 0123'); }).concat([document.fonts.load('700 24px Caveat', 'Аа Aa')])).catch(function () {});
+      await document.fonts.ready;
+    }
     var name = '';
     try {
       await Promise.all(Array.prototype.map.call(el.querySelectorAll('img'), function (im) {
