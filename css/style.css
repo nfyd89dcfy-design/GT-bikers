@@ -154,6 +154,7 @@ dialog::backdrop{background:rgba(7,8,11,.7);backdrop-filter:blur(4px)}
 .kpi{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #eef1f7}
 .kpi img{width:64px;height:48px;object-fit:contain;background:#f3f5fa;border-radius:8px}
 .kpi__t{flex:1;min-width:0}.kpi__t b{display:block;line-height:1.25}.kpi__t span{color:var(--muted);font-size:14px}
+.kpi__p{display:flex;gap:6px;margin-top:4px}.kpi__p input{color:var(--text);width:130px;border:1px solid #d5dbe8;border-radius:8px;padding:5px 8px;font-size:14px}.kpi__p select{color:var(--text);border:1px solid #d5dbe8;border-radius:8px;padding:5px 6px;font-size:14px;background:#fff}
 .qty{display:flex;align-items:center;gap:8px}.qty button{width:30px;height:30px;border-radius:8px;border:1px solid #d5dbe8;background:#fff;cursor:pointer}
 .del{background:none;border:0;font-size:22px;color:var(--muted);cursor:pointer}
 .kp-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px;flex-wrap:wrap}
@@ -161,33 +162,6 @@ dialog::backdrop{background:rgba(7,8,11,.7);backdrop-filter:blur(4px)}
 
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--black);color:#fff;padding:12px 18px;border-radius:12px;border:1px solid #2a3142;opacity:0;pointer-events:none;transition:.25s;z-index:100;max-width:90vw;text-align:center}
 .toast.on{opacity:1;transform:translate(-50%,0)}
-
-/* страницы КП (рендерятся вне экрана, затем в PDF) */
-.kp-render{position:fixed;left:0;top:0;width:794px;z-index:-1;background:#fff;color:#0d0f14;font-family:Inter,Arial,sans-serif}
-.kpp{width:794px;height:1120px;padding:36px 44px;position:relative;overflow:hidden;page-break-after:always;break-after:page;background:#fff}
-.kpp:last-child{page-break-after:auto}
-.kpp-head{display:flex;justify-content:space-between;align-items:center;background:#07080b;color:#fff;margin:-36px -44px 22px;padding:20px 44px;border-bottom:4px solid #2d7dff}
-.kpp-brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:22px}
-.kpp-mark{width:24px;height:24px;border-radius:6px;background:#2d7dff;display:inline-block}
-.kpp-meta{text-align:right;font-size:12px;color:#c7d0e3;line-height:1.5}
-.kpp-client{font-size:14px;color:#3a4152;margin-bottom:6px}
-.kpp-cat{font-size:12px;font-weight:700;color:#2d7dff;text-transform:uppercase;letter-spacing:.08em}
-.kpp h1{margin:4px 0 2px;font-size:30px;line-height:1.1;letter-spacing:-.02em}
-.kpp-sku{font-size:13px;color:#6b7385;margin-bottom:10px}
-.kpp-photo{height:300px;background:#fff;border:1px solid #e6eaf3;border-radius:14px;display:grid;place-items:center;overflow:hidden;margin:10px 0}
-.kpp-photo img{max-width:100%;max-height:300px;object-fit:contain}
-.kpp-thumbs{display:flex;gap:8px;margin-bottom:10px}.kpp-thumbs img{height:62px;width:90px;object-fit:cover;border-radius:8px;background:#f3f5fa}
-.kpp-hls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
-.kpp-hl{background:#e8f0ff;border-radius:10px;padding:10px 12px}.kpp-hl b{display:block;font-size:17px;color:#1a5fd6}.kpp-hl span{font-size:11px;color:#3a4152}
-.kpp-spec{width:100%;border-collapse:collapse;font-size:12px}
-.kpp-spec td{padding:4.5px 0;border-bottom:1px solid #eef1f7}.kpp-spec td:first-child{color:#6b7385;width:46%}
-.kpp-price{position:absolute;left:44px;right:44px;bottom:70px;background:#07080b;color:#fff;border-radius:14px;padding:16px 22px;display:flex;gap:40px;align-items:center}
-.kpp-price span{display:block;font-size:12px;color:#9aa3b5}.kpp-price b{font-size:24px;color:#fff}
-.kpp-foot{position:absolute;left:44px;right:44px;bottom:26px;display:flex;justify-content:space-between;font-size:11px;color:#6b7385;border-top:1px solid #e1e6f0;padding-top:10px}
-.kpp-sum{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
-.kpp-sum th{text-align:left;font-size:11px;color:#6b7385;border-bottom:2px solid #07080b;padding:6px 4px}
-.kpp-sum td{padding:8px 4px;border-bottom:1px solid #eef1f7;vertical-align:middle}.kpp-sum img{width:70px;height:50px;object-fit:contain;background:#f3f5fa;border-radius:6px}
-.kpp-sum small{color:#6b7385}
 
 @media (max-width:980px){
   .layout{grid-template-columns:1fr}
