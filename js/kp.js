@@ -225,7 +225,7 @@ window.KP = (function () {
     var u = meta.usedRates || {}, parts = Object.keys(u).map(function (c) { return '1 ' + RATE_SYM[c] + ' = ' + String(u[c]).replace('.', ',') + ' ₽'; });
     return parts.length ? '<div class="k2-note">Цены пересчитаны в рубли по курсу: ' + esc(parts.join(', ')) + '</div>' : '';
   }
-  var SUM_FIRST = 4, SUM_NEXT = 10;
+  var SUM_FIRST = 5, SUM_NEXT = 10;
   function summaryCount(items) { return 1 + Math.ceil(Math.max(0, items.length - SUM_FIRST) / SUM_NEXT); }
   function summaryPages(items, meta, num, pageNo, total) {
     var d = digest(items, meta), html = '', keys = Object.keys(d.sums);
@@ -246,7 +246,8 @@ window.KP = (function () {
 
   /* ---------- сравнение моделей (если в КП больше одной) ---------- */
   var CMP_KEYS = [['power_kw', 1], ['power_hp', 1], ['engine_cc', 1], ['top_speed', 1], ['range_km', 1], ['battery_wh', 1], ['battery_v', 0], ['removable_battery', 0], ['charge_h', -1], ['torque_nm', 1], ['seats', 1], ['max_load_kg', 1], ['weight_kg', -1], ['drivetrain', 0], ['powertrain', 0], ['transmission', 0], ['brakes', 0], ['seat_height_mm', 0], ['ground_clearance_mm', 1], ['wheelbase_mm', 0], ['fuel_tank_l', 1]];
-  var CMP_PER = 4, CMP_ROWS = 16;
+  var CMP_PER = 5, CMP_ROWS = 16;
+  function cmpPer(n) { return Math.ceil(n / Math.ceil(n / CMP_PER)); }
   function cmpRows(items) {
     var rows = [];
     CMP_KEYS.forEach(function (kk) {
@@ -262,12 +263,13 @@ window.KP = (function () {
     });
     return rows.slice(0, CMP_ROWS);
   }
-  function cmpPageCount(items) { return items.length > 1 ? Math.ceil(items.length / CMP_PER) * Math.ceil(Math.max(1, cmpRows(items).length) / CMP_ROWS) : 0; }
+  function cmpPageCount(items) { return items.length > 1 ? Math.ceil(items.length / cmpPer(items.length)) : 0; }
   function comparePages(items, meta, num, pageNo, total) {
     var rows = cmpRows(items), html = '', pg = pageNo;
     var rowChunks = []; for (var r = 0; r < Math.max(1, rows.length); r += CMP_ROWS) rowChunks.push(rows.slice(r, r + CMP_ROWS));
-    for (var c = 0; c < items.length; c += CMP_PER) {
-      var cols = items.slice(c, c + CMP_PER);
+    var per = cmpPer(items.length);
+    for (var c = 0; c < items.length; c += per) {
+      var cols = items.slice(c, c + per);
       rowChunks.forEach(function (chunk, ci) {
         var head = '<div class="k2-cmp-h"><div class="k2-cmp-l"></div>' + cols.map(function (it) {
           var p = it.p, priced = p.price != null;
@@ -315,8 +317,9 @@ window.KP = (function () {
       return x.r[0] === '•' ? '<div class="k2-row k2-row--note">• ' + esc(x.r[1]) + '</div>' : '<div class="k2-row"><u>' + esc(x.r[0]) + '</u><b>' + esc(x.r[1]) + '</b></div>';
     }).join('') + '</div>';
   }
-  var COMPACT_MAX = 20;
-  function isCompact(p) { return specRows(p).length <= COMPACT_MAX; }
+  var COMPACT_MAX = 20, WINDOW_PHOTO = 32, WINDOW_NOPHOTO = 56;
+  function specUnits(p) { var u = 0; specGroups(p).forEach(function (g) { u += 2.2; g.rows.forEach(function (r) { u += rowUnits(r); }); }); return u; }
+  function isCompact(p) { var im = p.images && p.images.length; return specRows(p).length <= COMPACT_MAX && specUnits(p) <= (im ? WINDOW_PHOTO : WINDOW_NOPHOTO); }
   function specSets(p) { return isCompact(p) ? [] : specPageSets(p); }
   function pageCount(it) { return 1 + specSets(it.p).length; }
   function compactTable(p, used) {
@@ -345,9 +348,9 @@ window.KP = (function () {
     var qr = specRows(p).filter(function (r) { return !used[r[0]] && r[0] !== '•' && String(r[1]).length < 34; }).slice(0, ph.thumbs.length ? 3 : 4);
     var quick = compact ? compactTable(p, used) : (qr.length ? '<div style="margin-top:12px">' + qr.map(function (r) { return '<div class="k2-row"><u>' + esc(r[0]) + '</u><b>' + esc(r[1]) + '</b></div>'; }).join('') + '</div>' : '');
     var sparse = specRows(p).length <= 4 && hl.length <= 2;
-    var photo = '<div class="k2-photo' + (sparse ? ' k2-photo--xl' : '') + '">' + (img ? '<img src="' + esc(img) + '" alt="">' : '') + '</div>' + (thumbs ? '<div class="k2-thumbs">' + thumbs + '</div>' : '');
+    var photo = (img ? '<div class="k2-photo' + (sparse ? ' k2-photo--xl' : '') + '"><img src="' + esc(img) + '" alt=""></div>' : '<div style="height:18px"></div>') + (thumbs ? '<div class="k2-thumbs">' + thumbs + '</div>' : '');
     var priced = p.price != null, u = priced ? unit(p) : 0;
-    var dense = compact && specRows(p).length > 8;
+    var dense = compact && specUnits(p) > 14 && !!img;
     var html = sec(top(meta, num, pageNo, total) +
       '<div style="margin-top:20px"><span class="k2-pill">' + esc(catName(p.cat)) + '</span>' + (p.brand ? ' <span class="k2-pill k2-pill--blue">' + esc(p.brand) + '</span>' : '') + '</div>' +
       '<h1 class="k2-h1">' + esc(p.name) + '</h1>' + (p.sku ? '<div class="k2-sku">Артикул: ' + esc(p.sku) + '</div>' : '') +

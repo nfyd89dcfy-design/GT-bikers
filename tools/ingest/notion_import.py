@@ -44,19 +44,32 @@ WORD = {"ebike-sport": "Электромотоцикл", "ebike-city": "Элек
         "golf": "Электромобиль", "car": "Транспорт", "snow": "Снегоход/вездеход", "parts": "Комплектующие"}
 
 
+def num(x):
+    try:
+        return float(str(x).replace(",", ".").replace("\u00a0", "").strip()) if str(x).strip() else None
+    except ValueError:
+        return None
+
+
 def main():
+    import csv
+    src = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "notion_catalog.csv")
     rows = []
-    for f in sorted(glob.glob(os.path.join(WORK, "notion", "part_*.json"))):
-        rows += json.load(open(f, encoding="utf8"))
+    for d in csv.DictReader(open(src, encoding="utf-8-sig")):
+        rows.append({"u": d["Модель"] + "|" + d["Бренд"] + "|" + d["Страница в каталоге"], "b": d["Бренд"] or None, "m": d["Модель"], "t": d["Тип"], "w": num(d["Мощность, Вт"]),
+                     "cc": num(d["Объем, куб. см"]), "wh": num(d["Батарея, Вт·ч"]), "v": num(d["Напряжение, В"]), "sp": num(d["Макс. скорость, км/ч"]), "r": num(d["Запас хода, км"]),
+                     "kg": num(d["Вес, кг"]), "ld": num(d["Макс. нагрузка, кг"]), "e": d["Двигатель/привод"], "s": d["Подвеска/тормоза/колеса"], "x": d["Выжимка"],
+                     "n": d["Примечания"], "pg": d["Страница в каталоге"], "who": d["Для кого"], "sup": d["Поставщик"]})
     out, seen = [], set()
     for r in rows:
         if r["u"] in seen: continue
         seen.add(r["u"])
         brand = BRAND_FIX.get(r.get("b"), r.get("b")) or r.get("sup") or "Поставщик не указан"
         model = re.sub(r"\s+", " ", r["m"]).strip()
+        if (brand == "ZZSSV" and model.startswith("ZZ-1400")) or (brand == "mimbob" and "TK5" in model): continue  # уже есть на сайте с фото
         cat = category(r)
         name = model if (brand.lower() in model.lower() or cat == "parts") else "%s %s" % (brand, model)
-        p = {"id": "nt-" + slug(brand + "-" + model, 60) + "-" + r["u"][-6:], "cat": cat, "brand": brand, "name": name, "sku": model, "images": [],
+        p = {"id": "nt-" + slug(brand + "-" + model, 60) + "-" + str(abs(hash(r["u"])) % 10**5), "cat": cat, "brand": brand, "name": name, "sku": model, "images": [],
              "src": r.get("pg") or "каталог поставщика", "extra": []}
         if r.get("w"): p["power_kw"] = round(r["w"] / 1000, 2)
         if r.get("cc"): p["engine_cc"] = round(r["cc"])
@@ -74,7 +87,8 @@ def main():
         p["desc"] = (p["desc"] + " " if p["desc"] else "") + "Цена и фото в источнике не указаны."
         out.append(p)
     json.dump(out, open(OUT + "/notion.json", "w"), ensure_ascii=False)
-    print(len(out))
+    import collections
+    print(len(out), dict(collections.Counter(p["cat"] for p in out)))
 
 
 main()
