@@ -9,7 +9,7 @@
 /* общее */
 .k2-top{display:flex;justify-content:space-between;align-items:center;padding:30px 0 0;font-size:11px;color:var(--mut)}
 .k2-logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:17px;color:#fff;letter-spacing:-.01em}
-.k2-logo i{font-style:normal;width:28px;height:28px;border-radius:8px;background:#e19d29;color:#0b1b3a;display:grid;place-items:center;font-size:14px;font-weight:800;letter-spacing:-.02em}
+.k2-logo i{font-style:normal;width:28px;height:28px;border-radius:8px;background:#efe6d3;color:#2d7dff;display:grid;place-items:center;font-size:14px;font-weight:800;letter-spacing:-.02em}
 .k2-foot{position:absolute;left:48px;right:48px;bottom:26px;display:flex;justify-content:space-between;font-size:10.5px;color:var(--mut)}
 .k2-pill{display:inline-block;background:var(--pill);color:var(--pillf);font-size:11px;font-weight:700;padding:6px 12px;border-radius:999px}
 .k2-pill--blue{background:var(--blue);color:#fff}
@@ -21,10 +21,8 @@
 .k2-cover-h{position:absolute;left:48px;right:48px;top:125px;font-size:60px;line-height:1.03;font-weight:800;letter-spacing:-.03em}
 .k2-cover-sub{position:absolute;left:48px;right:48px;top:330px;font-size:17px;line-height:1.45;color:#b9c6e0;max-width:600px}
 .k2-evo{position:absolute;left:48px;right:48px;top:405px;bottom:200px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:12px}
-.k2-evo-c{border-radius:26px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:14px 18px 38px}
+.k2-evo-c{border-radius:26px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:18px}
 .k2-evo-c img{width:92%;height:100%;object-fit:contain}
-.k2-evo-c .cap{position:absolute;left:20px;bottom:14px;font-size:12px;color:#c4d0e8;display:flex;gap:9px;align-items:center}
-.k2-evo-c .cap b{font-size:11px;background:#e19d29;color:#0b1b3a;border-radius:999px;padding:3px 8px}
 .k2-chips{position:absolute;left:48px;right:48px;bottom:44px;display:flex;gap:8px;flex-wrap:wrap}
 .k2-chip{background:var(--chip);border:1px solid var(--chipb);border-radius:14px;padding:9px 13px;font-size:11px;color:#dfe7f7}.k2-chip b{display:block;color:#fff;font-size:13px;margin-top:2px}
 /* выжимка */

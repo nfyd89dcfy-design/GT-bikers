@@ -142,43 +142,45 @@ window.KP = (function () {
   function linkA(c, cls) { return c && c.url ? '<span class="' + (cls || '') + '" data-href="' + attr(c.url) + '">' + esc(c.text) + '</span>' : esc(c ? c.text : ''); }
 
   /* ---------- «эволюция байков»: прозрачная графика ---------- */
-  var SAND = '#eadfc6', AMB = '#e19d29', BLU = '#4d94ff';
+  var LINE = '#e6eaf2';
+  function tw(w) { return Math.max(1.7, w * 0.5); }
   function wheel(cx, cy, r, w, n) {
-    var s = '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="' + SAND + '" stroke-width="' + w + '"/>';
-    for (var i = 0; i < n; i++) { var a = i * Math.PI * 2 / n; s += '<line x1="' + cx + '" y1="' + cy + '" x2="' + (cx + Math.cos(a) * (r - w / 2)).toFixed(1) + '" y2="' + (cy + Math.sin(a) * (r - w / 2)).toFixed(1) + '" stroke="' + SAND + '" stroke-width="1" opacity=".38"/>'; }
-    return s + '<circle cx="' + cx + '" cy="' + cy + '" r="3.4" fill="' + SAND + '"/>';
+    var s = '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="' + LINE + '" stroke-width="' + tw(w) + '"/>';
+    for (var i = 0; i < n; i++) { var a = i * Math.PI * 2 / n; s += '<line x1="' + cx + '" y1="' + cy + '" x2="' + (cx + Math.cos(a) * (r - 2)).toFixed(1) + '" y2="' + (cy + Math.sin(a) * (r - 2)).toFixed(1) + '" stroke="' + LINE + '" stroke-width=".6" opacity=".5"/>'; }
+    return s + '<circle cx="' + cx + '" cy="' + cy + '" r="2.6" fill="none" stroke="' + LINE + '" stroke-width="1.6"/>';
   }
-  function ln(x1, y1, x2, y2, w, col) { return '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + (col || SAND) + '" stroke-width="' + w + '" stroke-linecap="round"/>'; }
-  function pth(d, w, col, fill) { return '<path d="' + d + '" fill="' + (fill || 'none') + '" stroke="' + (col || SAND) + '" stroke-width="' + w + '" stroke-linecap="round" stroke-linejoin="round"/>'; }
+  function ln(x1, y1, x2, y2, w) { return '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + LINE + '" stroke-width="' + tw(w) + '" stroke-linecap="round"/>'; }
+  function pth(d, w) { return '<path d="' + d + '" fill="none" stroke="' + LINE + '" stroke-width="' + tw(w) + '" stroke-linecap="round" stroke-linejoin="round"/>'; }
+  function box(x, y, w, h, r, sw) { return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="' + r + '" fill="none" stroke="' + LINE + '" stroke-width="' + (sw || 1.8) + '"/>'; }
+  function ring(cx, cy, r) { return '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="' + LINE + '" stroke-width="1.8"/>'; }
   var ART = [
     function () { // старинный велосипед с большим колесом
-      return wheel(66, 156, 66, 5, 28) + wheel(170, 200, 22, 4, 12) + ln(80, 92, 66, 156, 4) + pth('M80,92 C124,82 164,122 170,198', 5) +
-        pth('M104,86 q18,-9 36,0', 8) + pth('M80,92 L72,82', 4) + ln(60, 82, 86, 82, 5) + ln(66, 156, 86, 178, 4) + ln(80, 180, 94, 180, 6);
+      return wheel(66, 156, 66, 5, 32) + wheel(170, 200, 22, 4, 14) + ln(80, 92, 66, 156, 4) + pth('M80,92 C124,82 164,122 170,198', 4) +
+        pth('M104,86 q18,-9 36,0', 6) + pth('M80,92 L72,82', 4) + ln(60, 82, 86, 82, 4) + ln(66, 156, 86, 178, 4) + ln(80, 180, 94, 180, 5);
     },
     function () { // современный велосипед
-      return wheel(34, 190, 32, 4, 20) + wheel(156, 190, 32, 4, 20) + ln(34, 190, 88, 192, 4) + ln(34, 190, 72, 140, 3) + ln(88, 192, 72, 140, 4) + ln(72, 140, 134, 138, 4) +
-        ln(88, 192, 140, 152, 4) + ln(134, 138, 140, 152, 5) + ln(140, 152, 156, 190, 4) + ln(72, 140, 72, 128, 3) + ln(58, 126, 86, 126, 7) + ln(134, 138, 136, 126, 4) +
-        pth('M136,126 h14 q10,0 10,10 q0,8 -8,8', 4) + '<circle cx="88" cy="192" r="6" fill="none" stroke="' + SAND + '" stroke-width="3"/>' + ln(88, 192, 100, 206, 3) + ln(94, 206, 108, 206, 5);
+      return wheel(34, 190, 32, 4, 24) + wheel(156, 190, 32, 4, 24) + ln(34, 190, 88, 192, 4) + ln(34, 190, 72, 140, 3) + ln(88, 192, 72, 140, 4) + ln(72, 140, 134, 138, 4) +
+        ln(88, 192, 140, 152, 4) + ln(134, 138, 140, 152, 4) + ln(140, 152, 156, 190, 4) + ln(72, 140, 72, 128, 3) + ln(58, 126, 86, 126, 5) + ln(134, 138, 136, 126, 4) +
+        pth('M136,126 h14 q10,0 10,10 q0,8 -8,8', 4) + ring(88, 192, 6) + ln(88, 192, 100, 206, 3) + ln(94, 206, 108, 206, 4);
     },
     function () { // бензиновый мотоцикл
-      return wheel(36, 190, 32, 6, 22) + wheel(162, 190, 32, 6, 22) + ln(162, 190, 142, 124, 5) + ln(142, 124, 132, 112, 4) + ln(122, 112, 148, 112, 5) +
-        '<circle cx="154" cy="130" r="9" fill="' + AMB + '"/>' + ln(142, 130, 102, 134, 4) + ln(142, 132, 114, 178, 4) +
-        pth('M96,128 C108,110 134,110 142,124 L138,138 L100,140 Z', 4, SAND, SAND) + pth('M48,132 C62,122 86,122 98,130 L96,140 L50,142 Z', 4, SAND, 'rgba(234,223,198,.2)') +
-        '<rect x="96" y="144" width="42" height="36" rx="7" fill="none" stroke="' + SAND + '" stroke-width="4"/>' + ln(104, 152, 130, 152, 3, AMB) + ln(104, 160, 130, 160, 3, AMB) + ln(104, 168, 130, 168, 3, AMB) +
-        ln(100, 176, 36, 190, 6) + ln(84, 136, 64, 180, 4, AMB) + ln(112, 182, 70, 190, 5, AMB) + ln(72, 190, 30, 184, 10, AMB) + pth('M144,150 C152,140 172,140 180,150', 4);
+      return wheel(36, 190, 32, 6, 26) + wheel(162, 190, 32, 6, 26) + ln(162, 190, 142, 124, 4) + ln(142, 124, 132, 112, 4) + ln(122, 112, 148, 112, 4) +
+        ring(154, 130, 8) + ln(142, 130, 102, 134, 3) + ln(142, 132, 114, 178, 3) +
+        pth('M96,128 C108,110 134,110 142,124 L138,138 L100,140 Z', 4) + pth('M48,132 C62,122 86,122 98,130 L96,140 L50,142 Z', 4) +
+        box(96, 144, 42, 36, 7, 1.8) + ln(104, 152, 130, 152, 2) + ln(104, 160, 130, 160, 2) + ln(104, 168, 130, 168, 2) +
+        ln(100, 176, 36, 190, 4) + ln(84, 136, 64, 180, 3) + ln(112, 182, 70, 190, 3) + box(30, 182, 44, 9, 4, 1.8) + pth('M144,150 C152,140 172,140 180,150', 4);
     },
     function () { // электробайк
-      return wheel(36, 190, 32, 8, 22) + wheel(166, 190, 32, 8, 22) + ln(166, 190, 150, 120, 6) + ln(150, 120, 140, 108, 4) + ln(124, 106, 154, 106, 5) +
-        '<rect x="152" y="124" width="12" height="9" rx="2" fill="' + BLU + '"/>' + pth('M70,126 L132,126 L150,120', 5) + ln(70, 126, 52, 176, 5) +
-        '<rect x="74" y="130" width="62" height="54" rx="9" fill="' + BLU + '"/><path d="M107,137 L92,161 L103,161 L97,178 L119,152 L107,152 Z" fill="#fff"/>' +
-        ln(40, 122, 120, 120, 9) + ln(84, 178, 36, 190, 7) + ln(82, 126, 62, 176, 4, BLU) + pth('M12,172 C16,156 36,148 58,160', 5);
+      return wheel(36, 190, 32, 6, 26) + wheel(166, 190, 32, 6, 26) + ln(166, 190, 150, 120, 4) + ln(150, 120, 140, 108, 4) + ln(124, 106, 154, 106, 4) +
+        box(152, 124, 12, 9, 2, 1.6) + pth('M70,126 L132,126 L150,120', 4) + ln(70, 126, 52, 176, 4) +
+        box(74, 130, 62, 54, 9, 1.9) + pth('M107,137 L92,161 L103,161 L97,178 L119,152 L107,152 Z', 2) +
+        ln(40, 122, 120, 120, 6) + ln(84, 178, 36, 190, 4) + ln(82, 126, 62, 176, 3) + pth('M12,172 C16,156 36,148 58,160', 4);
     }
   ];
   function artImg(i) {
-    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="636" height="528" viewBox="-6 56 212 176"><line x1="-6" y1="222" x2="206" y2="222" stroke="' + SAND + '" stroke-width="1.5" opacity=".28"/>' + ART[i]() + '</svg>';
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="636" height="528" viewBox="-6 56 212 176">' + ART[i]() + '</svg>';
     return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
   }
-  var ART_CAP = [['01', 'Классика'], ['02', 'Велосипед'], ['03', 'Бензин'], ['04', 'Электро']];
 
   /* ---------- общие куски ---------- */
   function logo() { return '<div class="k2-logo"><i>GT</i>Bikes</div>'; }
@@ -199,7 +201,7 @@ window.KP = (function () {
   function coverPage(items, meta, num) {
     var cs = contacts(meta), n = items.length;
     var sub = (meta.client ? 'Для ' + esc(meta.client) + '. ' : '') + (n > 1 ? n + ' ' + plural(n, 'модель', 'модели', 'моделей') + ' с характеристиками и ценами.' : esc(items[0].p.name) + ': характеристики и цена.');
-    var evo = '<div class="k2-evo">' + ART.map(function (_, i) { return '<div class="k2-evo-c"><img src="' + artImg(i) + '" alt=""><div class="cap"><b>' + ART_CAP[i][0] + '</b>' + ART_CAP[i][1] + '</div></div>'; }).join('') + '</div>';
+    var evo = '<div class="k2-evo">' + ART.map(function (_, i) { return '<div class="k2-evo-c"><img src="' + artImg(i) + '" alt=""></div>'; }).join('') + '</div>';
     var chips = '<div class="k2-chip">Действует до<b>' + esc(meta.until) + '</b></div>' +
       (meta.manager ? '<div class="k2-chip">Ваш менеджер<b>' + esc(meta.manager) + '</b></div>' : '') +
       (cs.phone ? '<div class="k2-chip">Телефон<b>' + linkA(cs.phone) + '</b></div>' : '') +
