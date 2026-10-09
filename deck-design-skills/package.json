@@ -1,0 +1,14 @@
+{
+  "name": "deck-design-skills",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Дизайн-навык для презентаций: типографика, Liquid Glass, проверка рендера",
+  "scripts": {
+    "lint": "node tools/lint-deck.mjs examples/deck.html",
+    "render": "node tools/render.mjs examples/deck.html out"
+  },
+  "dependencies": {
+    "playwright": "1.56.1"
+  }
+}
