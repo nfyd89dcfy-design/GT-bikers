@@ -201,7 +201,7 @@ window.KP = (function () {
     if (n === 1) {
       var p = items[0].p, hl = highlights(p).slice(0, 3).map(function (h) { return h[0].toLowerCase() + ' ' + h[1]; });
       parts.push('Предлагаем ' + (p.brand ? p.brand + ' ' : '') + p.name + (hl.length ? ': ' + hl.join(', ') : '') + '.');
-      parts.push(p.price != null ? 'Цена за единицу ' + moneyText(unit(p), p.cur) + (items[0].qty > 1 ? ', на ' + items[0].qty + ' шт. ' + totalText : '') + '.' : 'Цену уточним под ваш заказ.');
+      parts.push(p.price != null ? 'Цена за единицу ' + moneyText(unit(p), p.cur) + (items[0].qty > 1 ? ', на ' + items[0].qty + ' шт. ' + totalText : '') + '.' : p.priceLabel ? 'Цена: ' + p.priceLabel + '.' : 'Цену уточним под ваш заказ.');
     } else {
       parts.push('В предложении ' + n + ' ' + plural(n, 'модель', 'модели', 'моделей') + (qty > n ? ' (' + qty + ' ' + plural(qty, 'единица', 'единицы', 'единиц') + ' техники)' : '') + (cats.length ? ': ' + cats.join(', ') : '') + '.');
       if (brands.length) parts.push((brands.length > 1 ? 'Бренды: ' : 'Бренд: ') + brands.join(', ') + '.');
@@ -210,7 +210,7 @@ window.KP = (function () {
     parts.push('Дальше по каждой модели: фото, главные цифры и полные характеристики.');
     var stats = [[String(n), plural(n, 'модель', 'модели', 'моделей') + ' в предложении']];
     if (qty > n) stats.push([String(qty), 'единиц техники всего']); else if (cats.length > 1) stats.push([String(cats.length), 'категории техники']);
-    stats.push(totalHtml ? [totalHtml, n > 1 ? 'итого по предложению' : 'стоимость', true] : ['По запросу', 'цена']);
+    stats.push(totalHtml ? [totalHtml, n > 1 ? 'итого по предложению' : 'стоимость', true] : [n === 1 && items[0].p.priceLabel ? items[0].p.priceLabel : 'По запросу', 'цена']);
     if (sp) stats.push([sp + '<small>км/ч</small>', 'макс. скорость' + (n > 1 ? ' среди моделей' : ''), true]);
     else if (pw) stats.push([String(pw).replace('.', ',') + '<small>кВт</small>', 'макс. мощность' + (n > 1 ? ' среди моделей' : ''), true]);
     else if (rg) stats.push([rg + '<small>км</small>', 'макс. запас хода', true]);
@@ -219,7 +219,11 @@ window.KP = (function () {
   }
   function sumRow(it, i) {
     var p = it.p, line = p.price != null ? unit(p) * it.qty : null;
-    return '<div class="k2-sum-row"><div class="n">' + (i + 1) + '</div><div class="im">' + (p.images && p.images[0] ? '<img src="' + esc(p.images[0]) + '" alt="">' : '') + '</div><div class="t">' + esc(p.name) + '<small>' + esc(p.brand || '') + (p.sku ? ' · ' + esc(p.sku) : '') + '</small></div><div class="q">' + it.qty + ' шт.</div><div class="p">' + (p.price != null ? esc(moneyText(unit(p), p.cur)) : 'Цена по запросу') + '</div><div class="s">' + (line != null ? esc(moneyText(line, p.cur)) : '–') + '</div></div>';
+    return '<div class="k2-sum-row"><div class="n">' + (i + 1) + '</div><div class="im">' + (p.images && p.images[0] ? '<img src="' + esc(p.images[0]) + '" alt="">' : '') + '</div><div class="t">' + esc(p.name) + '<small>' + esc(p.brand || '') + (p.sku ? ' · ' + esc(p.sku) : '') + '</small></div><div class="q">' + it.qty + ' шт.</div><div class="p">' + (p.price != null ? esc(moneyText(unit(p), p.cur)) : esc(p.priceLabel || 'Цена по запросу')) + '</div><div class="s">' + (line != null ? esc(moneyText(line, p.cur)) : '–') + '</div></div>';
+  }
+  function rateNote(meta) {
+    var u = meta.usedRates || {}, parts = Object.keys(u).map(function (c) { return '1 ' + RATE_SYM[c] + ' = ' + String(u[c]).replace('.', ',') + ' ₽'; });
+    return parts.length ? '<div class="k2-note">Цены пересчитаны в рубли по курсу: ' + esc(parts.join(', ')) + '</div>' : '';
   }
   var SUM_FIRST = 4, SUM_NEXT = 10;
   function summaryCount(items) { return 1 + Math.ceil(Math.max(0, items.length - SUM_FIRST) / SUM_NEXT); }
@@ -235,7 +239,7 @@ window.KP = (function () {
       html += sec(top(meta, num, pageNo + k, total) +
         (k === 0 ? '<h1 class="k2-h1" style="margin-top:28px">Коротко <span class="sc">о предложении</span></h1><div class="k2-lead">' + esc(d.text) + '</div><div class="k2-stats">' + stats + '</div><h2 class="k2-h2" style="margin-top:4px">Состав</h2>'
           : '<h1 class="k2-h1" style="margin-top:28px">Состав <span class="sc">(продолжение)</span></h1>') +
-        rows + totalBar + foot(meta));
+        rows + totalBar + (k === pages - 1 ? rateNote(meta) : '') + foot(meta));
     }
     return html;
   }
@@ -286,7 +290,7 @@ window.KP = (function () {
       '<h1 class="k2-h1">' + esc(p.name) + '</h1>' + (p.sku ? '<div class="k2-sku">Артикул: ' + esc(p.sku) + '</div>' : '') +
       photo + '<h2 class="k2-h2">Главное <span class="sc">о модели</span></h2><div class="k2-hls">' + cards + '</div>' + quick +
       (sets.length ? '<div class="k2-more">Все характеристики по группам: на следующей странице →</div>' : '') +
-      '<div class="k2-price"><div><span>Стоимость за единицу</span><b>' + (priced ? moneyHtml(u, p.cur) : 'Цена по запросу') + '</b>' + (priced ? '<em>' + esc(moneyWords(u, p.cur)) + '</em>' : '') + '</div><div class="gap"></div>' +
+      '<div class="k2-price"><div><span>Стоимость за единицу</span><b' + (!priced && (p.priceLabel || '').length > 20 ? ' style="font-size:20px"' : '') + '>' + (priced ? moneyHtml(u, p.cur) : esc(p.priceLabel || 'Цена по запросу')) + '</b>' + (priced ? '<em>' + esc(moneyWords(u, p.cur)) + '</em>' : '') + '</div><div class="gap"></div>' +
       (it.qty > 1 && priced ? '<div style="text-align:right"><span>' + it.qty + ' шт.</span><b>' + moneyHtml(u * it.qty, p.cur) + '</b></div>' : '<div class="until">до ' + esc(meta.until) + '</div>') + '</div>' +
       foot(meta));
     sets.forEach(function (pg, k) {
@@ -333,15 +337,27 @@ window.KP = (function () {
   /* строка цены можно переопределить на этапе КП: it.price / it.cur */
   function effective(it) {
     var p = it.p;
-    if (it.price != null && it.price !== '' && !isNaN(Number(it.price))) p = Object.assign({}, p, { price: Number(it.price), cur: it.cur || p.cur || 'RMB' });
+    if (it.mode === 'req') p = Object.assign({}, p, { price: null, priceLabel: null });
+    else if (it.mode === 'text') p = Object.assign({}, p, { price: null, priceLabel: String(it.text || '').trim() || null });
+    else if (it.price != null && it.price !== '' && !isNaN(Number(it.price))) p = Object.assign({}, p, { price: Number(it.price), cur: it.cur || p.cur || 'RMB' });
     else if (it.cur && p.price != null) p = Object.assign({}, p, { cur: it.cur });
     return Object.assign({}, it, { p: p });
+  }
+
+  /* цены поставщиков (юани, доллары, евро) пересчитываются в рубли по курсам из формы; без курса цена остаётся в своей валюте */
+  var RATE_SYM = { RMB: '¥', USD: '$', EUR: '€' };
+  function toRub(it, rates, used) {
+    var p = it.p, r = Number(rates && rates[p.cur]);
+    if (p.price == null || !p.cur || p.cur === 'RUB' || !(r > 0)) return it;
+    used[p.cur] = r;
+    return Object.assign({}, it, { p: Object.assign({}, p, { price: p.price * r, cur: 'RUB' }) });
   }
 
   async function make(rawItems, meta) {
     await loadLib();
     if (document.fonts && document.fonts.ready) await document.fonts.ready;
-    var items = rawItems.map(effective);
+    var usedRates = {}; meta.usedRates = usedRates;
+    var items = rawItems.map(effective).map(function (it) { return toRub(it, meta.rates, usedRates); });
     FEAT = pickFeatured(items, meta);
     var d = new Date(), until = new Date(d.getTime() + (meta.days || 7) * 864e5);
     var f = function (x) { return x.toLocaleDateString('ru-RU'); };
