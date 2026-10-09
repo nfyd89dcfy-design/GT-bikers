@@ -315,7 +315,7 @@ window.KP = (function () {
       return x.r[0] === '•' ? '<div class="k2-row k2-row--note">• ' + esc(x.r[1]) + '</div>' : '<div class="k2-row"><u>' + esc(x.r[0]) + '</u><b>' + esc(x.r[1]) + '</b></div>';
     }).join('') + '</div>';
   }
-  var COMPACT_MAX = 14;
+  var COMPACT_MAX = 20;
   function isCompact(p) { return specRows(p).length <= COMPACT_MAX; }
   function specSets(p) { return isCompact(p) ? [] : specPageSets(p); }
   function pageCount(it) { return 1 + specSets(it.p).length; }
@@ -347,6 +347,7 @@ window.KP = (function () {
     var sparse = specRows(p).length <= 4 && hl.length <= 2;
     var photo = '<div class="k2-photo' + (sparse ? ' k2-photo--xl' : '') + '">' + (img ? '<img src="' + esc(img) + '" alt="">' : '') + '</div>' + (thumbs ? '<div class="k2-thumbs">' + thumbs + '</div>' : '');
     var priced = p.price != null, u = priced ? unit(p) : 0;
+    var dense = compact && specRows(p).length > 8;
     var html = sec(top(meta, num, pageNo, total) +
       '<div style="margin-top:20px"><span class="k2-pill">' + esc(catName(p.cat)) + '</span>' + (p.brand ? ' <span class="k2-pill k2-pill--blue">' + esc(p.brand) + '</span>' : '') + '</div>' +
       '<h1 class="k2-h1">' + esc(p.name) + '</h1>' + (p.sku ? '<div class="k2-sku">Артикул: ' + esc(p.sku) + '</div>' : '') +
@@ -354,7 +355,7 @@ window.KP = (function () {
       (sets.length ? '<div class="k2-more">Все характеристики по группам: на следующей странице →</div>' : '') +
       '<div class="k2-price"><div><span>Стоимость за единицу</span><b' + (!priced && (p.priceLabel || '').length > 20 ? ' style="font-size:20px"' : '') + '>' + (priced ? moneyHtml(u, p.cur) : esc(p.priceLabel || 'Цена по запросу')) + '</b>' + (priced ? '<em>' + esc(moneyWords(u, p.cur)) + '</em>' : '') + '</div><div class="gap"></div>' +
       (it.qty > 1 && priced ? '<div style="text-align:right"><span>' + it.qty + ' шт.</span><b>' + moneyHtml(u * it.qty, p.cur) + '</b></div>' : '<div class="until">до ' + esc(meta.until) + '</div>') + '</div>' +
-      foot(meta));
+      foot(meta), dense ? 'k2--dense' : '');
     sets.forEach(function (pg, k) {
       html += sec(top(meta, num, pageNo + 1 + k, total) +
         '<div style="margin-top:20px"><span class="k2-pill">' + esc(p.brand || catName(p.cat)) + '</span></div>' +
