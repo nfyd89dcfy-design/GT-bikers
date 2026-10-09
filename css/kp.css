@@ -22,8 +22,8 @@
 .k2-cover-sub{position:absolute;left:48px;right:48px;top:330px;font-size:17px;line-height:1.45;color:#b9c6e0;max-width:600px}
 .k2-chips{position:absolute;left:48px;right:48px;bottom:44px;display:flex;gap:8px;flex-wrap:wrap}
 .k2-chip{background:var(--chip);border:1px solid var(--chipb);border-radius:14px;padding:9px 13px;font-size:11px;color:#dfe7f7}.k2-chip b{display:block;color:#fff;font-size:13px;margin-top:2px}
-.k2-hero{position:absolute;left:48px;right:48px;top:405px;bottom:200px;border-radius:30px;background:var(--cream);overflow:hidden;display:grid;place-items:center}
-.k2-hero img{width:100%;height:100%;object-fit:contain}.k2-hero img.fill{object-fit:cover}.k2-hero img.fit{width:auto;max-width:94%;max-height:94%;height:auto}
+.k2-hero{position:absolute;left:48px;right:48px;top:405px;bottom:200px;border-radius:30px;overflow:hidden;display:grid;place-items:center}
+.k2-hero img{width:100%;height:100%;object-fit:contain}.k2-hero img.fill{object-fit:cover}.k2-hero img.fit{width:auto;max-width:100%;max-height:100%;height:auto;border-radius:30px}
 .k2-hero .nm{position:absolute;left:18px;bottom:16px;background:rgba(11,27,58,.9);color:#fff;font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:999px}
 /* выжимка */
 .k2-lead{font-size:15px;line-height:1.55;opacity:.92;margin:6px 0 18px;max-width:650px}
@@ -33,14 +33,14 @@
 .k2-stat span{display:block;margin-top:8px;font-size:11px;line-height:1.3;opacity:.78}
 .k2-sum-row{display:flex;align-items:center;gap:14px;background:var(--row);border-radius:18px;padding:9px 16px;margin-bottom:8px}
 .k2-sum-row .n{width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;font-weight:700;font-size:12px;display:grid;place-items:center;flex:none}
-.k2-sum-row .im{width:84px;height:58px;border-radius:12px;background:var(--photo);display:grid;place-items:center;flex:none;overflow:hidden}.k2-sum-row .im img{max-width:100%;max-height:100%;object-fit:contain}
+.k2-sum-row .im{width:84px;height:58px;border-radius:12px;display:grid;place-items:center;flex:none;overflow:hidden}.k2-sum-row .im img{max-width:100%;max-height:100%;object-fit:contain;border-radius:12px}
 .k2-sum-row .t{flex:1;font-weight:700;font-size:13.5px;line-height:1.25}.k2-sum-row .t small{display:block;color:var(--mut);font-weight:500;font-size:11px;margin:2px 0 0;opacity:1}
 .k2-sum-row .q{width:42px;text-align:center;font-size:12.5px;color:var(--mut)}.k2-sum-row .p{width:118px;text-align:right;font-size:12px}.k2-sum-row .s{width:128px;text-align:right;font-weight:800;font-size:13.5px}
 .k2-total{margin-top:12px;background:var(--price);color:var(--pricef);border-radius:22px;padding:18px 26px;display:flex;justify-content:space-between;align-items:center;gap:20px}.k2-total span{display:block;font-size:12px;opacity:.78}.k2-total em{display:block;font-style:normal;font-size:11px;opacity:.7;margin-top:4px;max-width:330px;line-height:1.35}.k2-total b{font-size:28px;letter-spacing:-.02em;white-space:nowrap}
 /* страница модели */
-.k2-photo{margin-top:16px;height:350px;border-radius:26px;background:var(--photo);display:grid;place-items:center;overflow:hidden;position:relative}
-.k2-photo img{max-width:92%;max-height:322px;object-fit:contain}
-.k2-thumbs{position:absolute;left:16px;bottom:14px;display:flex;gap:8px}.k2-thumbs img{width:78px;height:54px;object-fit:cover;border-radius:12px;background:#fff}
+.k2-photo{margin-top:14px;height:316px;display:flex;align-items:center;justify-content:center}
+.k2-photo img{width:auto;height:auto;max-width:100%;max-height:316px;border-radius:26px;display:block}
+.k2-thumbs{display:flex;gap:8px;margin-top:9px}.k2-thumbs img{width:76px;height:50px;object-fit:cover;border-radius:12px}
 .k2-hls{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:6px}
 .k2-hl{border-radius:18px;padding:15px 16px 13px}
 .k2-hl b{display:block;font-size:30px;line-height:1;font-weight:800;letter-spacing:-.02em}

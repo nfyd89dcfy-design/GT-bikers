@@ -277,9 +277,9 @@ window.KP = (function () {
     var cc = ['k2-c0', 'k2-c1', 'k2-c2', 'k2-c2', 'k2-c0', 'k2-c1'];
     var cards = hl.map(function (h, i) { return '<div class="k2-hl ' + cc[i] + '"><b>' + bigVal(h[1]) + '</b><span>' + esc(h[0]) + '</span></div>'; }).join('');
     var used = {}; hl.forEach(function (h) { used[h[0]] = 1; });
-    var qr = specRows(p).filter(function (r) { return !used[r[0]] && r[0] !== '•' && String(r[1]).length < 34; }).slice(0, 4);
+    var qr = specRows(p).filter(function (r) { return !used[r[0]] && r[0] !== '•' && String(r[1]).length < 34; }).slice(0, ph.thumbs.length ? 3 : 4);
     var quick = qr.length ? '<div style="margin-top:12px">' + qr.map(function (r) { return '<div class="k2-row"><u>' + esc(r[0]) + '</u><b>' + esc(r[1]) + '</b></div>'; }).join('') + '</div>' : '';
-    var photo = '<div class="k2-photo">' + (img ? '<img src="' + esc(img) + '" alt="">' : '') + (thumbs ? '<div class="k2-thumbs">' + thumbs + '</div>' : '') + '</div>';
+    var photo = '<div class="k2-photo">' + (img ? '<img src="' + esc(img) + '" alt="">' : '') + '</div>' + (thumbs ? '<div class="k2-thumbs">' + thumbs + '</div>' : '');
     var priced = p.price != null, u = priced ? unit(p) : 0;
     var html = sec(top(meta, num, pageNo, total) +
       '<div style="margin-top:20px"><span class="k2-pill">' + esc(catName(p.cat)) + '</span>' + (p.brand ? ' <span class="k2-pill k2-pill--blue">' + esc(p.brand) + '</span>' : '') + '</div>' +
