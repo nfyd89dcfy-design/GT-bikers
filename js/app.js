@@ -15,6 +15,7 @@
 
   var state = { cats: new Set(), f: {}, q: '', sort: 'rel', shown: PAGE, nearest: null, ids: null };
   var kp = load('gt_kp', []).filter(function (x) { return BYID[x.id]; });
+  var kpCover = load('gt_kp_cover', '');
   var kpMeta = load('gt_kp_meta', { client: '', manager: '', contact: '', tg: '', wa: '', pay: '', terms: '', time: '', days: 7, markup: 0 });
 
   function load(k, d) { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } }
@@ -318,11 +319,12 @@
     kpMeta = { client: $('#kpClient').value.trim(), manager: $('#kpManager').value.trim(), contact: $('#kpContact').value.trim(), tg: $('#kpTg').value.trim(), wa: $('#kpWa').value.trim(), pay: $('#kpPay').value.trim(), terms: $('#kpTerms').value.trim(), time: $('#kpTime').value.trim(), days: parseInt($('#kpDays').value, 10) || 7, markup: parseFloat($('#kpMarkup').value) || 0 };
     save('gt_kp_meta', kpMeta); return kpMeta;
   }
+  function coverId() { return kp.some(function (x) { return x.id === kpCover; }) ? kpCover : (kp[0] ? kp[0].id : ''); }
   function renderKp() {
     $('#kpClient').value = kpMeta.client || ''; $('#kpManager').value = kpMeta.manager || ''; $('#kpContact').value = kpMeta.contact || ''; $('#kpTg').value = kpMeta.tg || ''; $('#kpWa').value = kpMeta.wa || ''; $('#kpPay').value = kpMeta.pay || ''; $('#kpTerms').value = kpMeta.terms || ''; $('#kpTime').value = kpMeta.time || ''; $('#kpDays').value = kpMeta.days || 7; $('#kpMarkup').value = kpMeta.markup || 0;
     $('#kpItems').innerHTML = kp.length ? kp.map(function (x) {
       var p = BYID[x.id];
-      return '<div class="kpi"><img src="' + esc((p.images || [])[0] || '') + '" alt=""><div class="kpi__t"><b>' + esc(p.name) + '</b><span class="kpi__p"><input type="number" min="0" step="any" data-price="' + esc(x.id) + '" value="' + esc(x.price != null ? x.price : (p.price != null ? p.price : '')) + '" placeholder="цена по запросу" aria-label="Цена за единицу"><select data-cur="' + esc(x.id) + '" aria-label="Валюта">' + ['RMB', 'USD', 'RUB', 'EUR'].map(function (c) { return '<option value="' + c + '"' + ((x.cur || p.cur || 'RMB') === c ? ' selected' : '') + '>' + (CURSYM[c] || c) + '</option>'; }).join('') + '</select></span></div><div class="qty"><button data-q="-1" data-id="' + esc(x.id) + '" type="button" aria-label="Меньше">−</button><span>' + x.qty + '</span><button data-q="1" data-id="' + esc(x.id) + '" type="button" aria-label="Больше">+</button></div><button class="del" data-del="' + esc(x.id) + '" type="button" aria-label="Убрать">×</button></div>';
+      return '<div class="kpi"><img src="' + esc((p.images || [])[0] || '') + '" alt=""><div class="kpi__t"><b>' + esc(p.name) + '</b><span class="kpi__p"><input type="number" min="0" step="any" data-price="' + esc(x.id) + '" value="' + esc(x.price != null ? x.price : (p.price != null ? p.price : '')) + '" placeholder="цена по запросу" aria-label="Цена за единицу"><select data-cur="' + esc(x.id) + '" aria-label="Валюта">' + ['RMB', 'USD', 'RUB', 'EUR'].map(function (c) { return '<option value="' + c + '"' + ((x.cur || p.cur || 'RMB') === c ? ' selected' : '') + '>' + (CURSYM[c] || c) + '</option>'; }).join('') + '</select></span></div><label class="kpi__c" title="Фото этой модели будет на обложке КП"><input type="radio" name="kpCover" data-cover="' + esc(x.id) + '"' + (x.id === coverId() ? ' checked' : '') + '>на обложку</label><div class="qty"><button data-q="-1" data-id="' + esc(x.id) + '" type="button" aria-label="Меньше">−</button><span>' + x.qty + '</span><button data-q="1" data-id="' + esc(x.id) + '" type="button" aria-label="Больше">+</button></div><button class="del" data-del="' + esc(x.id) + '" type="button" aria-label="Убрать">×</button></div>';
     }).join('') : '<p class="muted">В КП пока нет моделей. Нажмите «+ В КП» на карточке.</p>';
     var sums = {}; kp.forEach(function (x) { var p = BYID[x.id], pr = x.price != null && x.price !== '' ? Number(x.price) : p.price, cu = x.cur || p.cur || ''; if (pr != null && !isNaN(pr)) sums[cu] = (sums[cu] || 0) + pr * x.qty; });
     $('#kpTotal').innerHTML = Object.keys(sums).length ? 'Итого: <b>' + Object.keys(sums).map(function (c) { return sums[c].toLocaleString('ru-RU') + ' ' + (CURSYM[c] || c); }).join(' + ') + '</b>' : '';
@@ -336,6 +338,7 @@
     if (q || d) { save('gt_kp', kp); updKp(); renderKp(); renderGrid(); }
   });
   $('#kpItems').addEventListener('change', function (e) {
+    var cv = e.target.closest('[data-cover]'); if (cv) { kpCover = cv.dataset.cover; save('gt_kp_cover', kpCover); return; }
     var pr = e.target.closest('[data-price]'), cu = e.target.closest('[data-cur]');
     var id = pr ? pr.dataset.price : cu ? cu.dataset.cur : null; if (!id) return;
     var it = kp.filter(function (x) { return x.id === id; })[0]; if (!it) return;
@@ -345,7 +348,7 @@
   });
   ['kpClient', 'kpManager', 'kpContact', 'kpTg', 'kpWa', 'kpPay', 'kpTerms', 'kpTime', 'kpDays', 'kpMarkup'].forEach(function (id) { $('#' + id).addEventListener('change', readMeta); });
   $('#kpMake').addEventListener('click', function () {
-    makeKp(kp.map(function (x) { return { p: BYID[x.id], qty: x.qty, price: x.price, cur: x.cur }; }), this, readMeta());
+    makeKp(kp.map(function (x) { return { p: BYID[x.id], qty: x.qty, price: x.price, cur: x.cur }; }), this, Object.assign({}, readMeta(), { cover: coverId() }));
   });
   function makeKp(items, btn, meta) {
     meta = Object.assign({}, meta || kpMeta);

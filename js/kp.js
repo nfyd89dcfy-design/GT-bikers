@@ -141,47 +141,6 @@ window.KP = (function () {
   }
   function linkA(c, cls) { return c && c.url ? '<span class="' + (cls || '') + '" data-href="' + attr(c.url) + '">' + esc(c.text) + '</span>' : esc(c ? c.text : ''); }
 
-  /* ---------- «эволюция байков»: прозрачная графика ---------- */
-  var LINE = '#e6eaf2';
-  function tw(w) { return Math.max(1.7, w * 0.5); }
-  function wheel(cx, cy, r, w, n) {
-    var s = '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="' + LINE + '" stroke-width="' + tw(w) + '"/>';
-    for (var i = 0; i < n; i++) { var a = i * Math.PI * 2 / n; s += '<line x1="' + cx + '" y1="' + cy + '" x2="' + (cx + Math.cos(a) * (r - 2)).toFixed(1) + '" y2="' + (cy + Math.sin(a) * (r - 2)).toFixed(1) + '" stroke="' + LINE + '" stroke-width=".6" opacity=".5"/>'; }
-    return s + '<circle cx="' + cx + '" cy="' + cy + '" r="2.6" fill="none" stroke="' + LINE + '" stroke-width="1.6"/>';
-  }
-  function ln(x1, y1, x2, y2, w) { return '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + LINE + '" stroke-width="' + tw(w) + '" stroke-linecap="round"/>'; }
-  function pth(d, w) { return '<path d="' + d + '" fill="none" stroke="' + LINE + '" stroke-width="' + tw(w) + '" stroke-linecap="round" stroke-linejoin="round"/>'; }
-  function box(x, y, w, h, r, sw) { return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="' + r + '" fill="none" stroke="' + LINE + '" stroke-width="' + (sw || 1.8) + '"/>'; }
-  function ring(cx, cy, r) { return '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="' + LINE + '" stroke-width="1.8"/>'; }
-  var ART = [
-    function () { // старинный велосипед с большим колесом
-      return wheel(66, 156, 66, 5, 32) + wheel(170, 200, 22, 4, 14) + ln(80, 92, 66, 156, 4) + pth('M80,92 C124,82 164,122 170,198', 4) +
-        pth('M104,86 q18,-9 36,0', 6) + pth('M80,92 L72,82', 4) + ln(60, 82, 86, 82, 4) + ln(66, 156, 86, 178, 4) + ln(80, 180, 94, 180, 5);
-    },
-    function () { // современный велосипед
-      return wheel(34, 190, 32, 4, 24) + wheel(156, 190, 32, 4, 24) + ln(34, 190, 88, 192, 4) + ln(34, 190, 72, 140, 3) + ln(88, 192, 72, 140, 4) + ln(72, 140, 134, 138, 4) +
-        ln(88, 192, 140, 152, 4) + ln(134, 138, 140, 152, 4) + ln(140, 152, 156, 190, 4) + ln(72, 140, 72, 128, 3) + ln(58, 126, 86, 126, 5) + ln(134, 138, 136, 126, 4) +
-        pth('M136,126 h14 q10,0 10,10 q0,8 -8,8', 4) + ring(88, 192, 6) + ln(88, 192, 100, 206, 3) + ln(94, 206, 108, 206, 4);
-    },
-    function () { // бензиновый мотоцикл
-      return wheel(36, 190, 32, 6, 26) + wheel(162, 190, 32, 6, 26) + ln(162, 190, 142, 124, 4) + ln(142, 124, 132, 112, 4) + ln(122, 112, 148, 112, 4) +
-        ring(154, 130, 8) + ln(142, 130, 102, 134, 3) + ln(142, 132, 114, 178, 3) +
-        pth('M96,128 C108,110 134,110 142,124 L138,138 L100,140 Z', 4) + pth('M48,132 C62,122 86,122 98,130 L96,140 L50,142 Z', 4) +
-        box(96, 144, 42, 36, 7, 1.8) + ln(104, 152, 130, 152, 2) + ln(104, 160, 130, 160, 2) + ln(104, 168, 130, 168, 2) +
-        ln(100, 176, 36, 190, 4) + ln(84, 136, 64, 180, 3) + ln(112, 182, 70, 190, 3) + box(30, 182, 44, 9, 4, 1.8) + pth('M144,150 C152,140 172,140 180,150', 4);
-    },
-    function () { // электробайк
-      return wheel(36, 190, 32, 6, 26) + wheel(166, 190, 32, 6, 26) + ln(166, 190, 150, 120, 4) + ln(150, 120, 140, 108, 4) + ln(124, 106, 154, 106, 4) +
-        box(152, 124, 12, 9, 2, 1.6) + pth('M70,126 L132,126 L150,120', 4) + ln(70, 126, 52, 176, 4) +
-        box(74, 130, 62, 54, 9, 1.9) + pth('M107,137 L92,161 L103,161 L97,178 L119,152 L107,152 Z', 2) +
-        ln(40, 122, 120, 120, 6) + ln(84, 178, 36, 190, 4) + ln(82, 126, 62, 176, 3) + pth('M12,172 C16,156 36,148 58,160', 4);
-    }
-  ];
-  function artImg(i) {
-    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="636" height="528" viewBox="-6 56 212 176">' + ART[i]() + '</svg>';
-    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-  }
-
   /* ---------- общие куски ---------- */
   function logo() { return '<div class="k2-logo"><i>GT</i>Bikes</div>'; }
   function top(meta, num, pageNo, total) {
@@ -198,17 +157,29 @@ window.KP = (function () {
   function sec(inner, cls) { return '<section class="k2' + (cls ? ' ' + cls : '') + '">' + inner + '</section>'; }
 
   /* ---------- обложка ---------- */
+  /* заглавная модель: выбранная менеджером (meta.cover) или первая с фото; её первое фото идёт на обложку, дальше в КП другие */
+  var FEAT = null;
+  function pickFeatured(items, meta) {
+    var f = items.filter(function (it) { return it.p.id === meta.cover && it.p.images && it.p.images[0]; })[0] || items.filter(function (it) { return it.p.images && it.p.images[0]; })[0];
+    return f ? f.p.id : null;
+  }
+  function modelPhotos(it) {
+    var im = it.p.images || [];
+    if (it.p.id === FEAT && im.length > 1) return { main: im[1], thumbs: im.slice(2, 5) };
+    return { main: im[0] || '', thumbs: im.slice(1, 4) };
+  }
   function coverPage(items, meta, num) {
     var cs = contacts(meta), n = items.length;
+    var fi = items.filter(function (it) { return it.p.id === FEAT; })[0], img = fi && fi.p.images[0];
     var sub = (meta.client ? 'Для ' + esc(meta.client) + '. ' : '') + (n > 1 ? n + ' ' + plural(n, 'модель', 'модели', 'моделей') + ' с характеристиками и ценами.' : esc(items[0].p.name) + ': характеристики и цена.');
-    var evo = '<div class="k2-evo">' + ART.map(function (_, i) { return '<div class="k2-evo-c"><img src="' + artImg(i) + '" alt=""></div>'; }).join('') + '</div>';
+    var hero = '<div class="k2-hero">' + (img ? '<img src="' + esc(img) + '" alt="">' : '') + (fi ? '<div class="nm">' + esc(fi.p.name) + '</div>' : '') + '</div>';
     var chips = '<div class="k2-chip">Действует до<b>' + esc(meta.until) + '</b></div>' +
       (meta.manager ? '<div class="k2-chip">Ваш менеджер<b>' + esc(meta.manager) + '</b></div>' : '') +
       (cs.phone ? '<div class="k2-chip">Телефон<b>' + linkA(cs.phone) + '</b></div>' : '') +
       (cs.tg ? '<div class="k2-chip">Telegram<b>' + linkA(cs.tg) + '</b></div>' : '') +
       (cs.wa ? '<div class="k2-chip">WhatsApp<b>' + linkA(cs.wa) + '</b></div>' : '');
     return sec('<div class="k2-top">' + logo() + '<div>КП № ' + esc(num) + ' · ' + esc(meta.date) + '</div></div>' +
-      '<div class="k2-cover-h">Подобрали модели <span class="sc">специально для вас</span></div><div class="k2-cover-sub">' + sub + '</div>' + evo + '<div class="k2-chips">' + chips + '</div>', 'k2--cover');
+      '<div class="k2-cover-h">Подобрали модели <span class="sc">специально для вас</span></div><div class="k2-cover-sub">' + sub + '</div>' + hero + '<div class="k2-chips">' + chips + '</div>', 'k2--cover');
   }
 
   /* ---------- коротко о предложении (текст зависит от наполнения) ---------- */
@@ -301,8 +272,8 @@ window.KP = (function () {
   function pageCount(it) { return 1 + specPageSets(it.p).length; }
 
   function productPages(it, meta, num, pageNo, total) {
-    var p = it.p, img = (p.images && p.images[0]) || '', hl = highlights(p), sets = specPageSets(p);
-    var thumbs = (p.images || []).slice(1, 4).map(function (s) { return '<img src="' + esc(s) + '" alt="">'; }).join('');
+    var p = it.p, ph = modelPhotos(it), img = ph.main, hl = highlights(p), sets = specPageSets(p);
+    var thumbs = ph.thumbs.map(function (s) { return '<img src="' + esc(s) + '" alt="">'; }).join('');
     var cc = ['k2-c0', 'k2-c1', 'k2-c2', 'k2-c2', 'k2-c0', 'k2-c1'];
     var cards = hl.map(function (h, i) { return '<div class="k2-hl ' + cc[i] + '"><b>' + bigVal(h[1]) + '</b><span>' + esc(h[0]) + '</span></div>'; }).join('');
     var used = {}; hl.forEach(function (h) { used[h[0]] = 1; });
@@ -371,6 +342,7 @@ window.KP = (function () {
     await loadLib();
     if (document.fonts && document.fonts.ready) await document.fonts.ready;
     var items = rawItems.map(effective);
+    FEAT = pickFeatured(items, meta);
     var d = new Date(), until = new Date(d.getTime() + (meta.days || 7) * 864e5);
     var f = function (x) { return x.toLocaleDateString('ru-RU'); };
     meta.date = f(d); meta.until = f(until);
@@ -390,6 +362,10 @@ window.KP = (function () {
       await Promise.all(Array.prototype.map.call(el.querySelectorAll('img'), function (im) {
         return im.complete ? Promise.resolve() : new Promise(function (r) { im.onload = im.onerror = r; });
       }));
+      Array.prototype.forEach.call(el.querySelectorAll('.k2-hero img'), function (im) {
+        var ar = im.naturalWidth / (im.naturalHeight || 1);
+        im.className = ar >= 1.0 && ar <= 1.85 ? 'fill' : 'fit';
+      });
       name = 'КП_' + (items[0].p.name || 'модель').replace(/[^\wа-яА-Я\-]+/g, '_').slice(0, 40) + (items.length > 1 ? '_и_др' : '') + '_' + num + '.pdf';
       var pdf = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
       var pages = el.querySelectorAll('.k2'), k = 210 / 794;
