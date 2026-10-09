@@ -1,5 +1,5 @@
 /* Коммерческое предложение в PDF.
-   Страницы КП собираются как обычный HTML (A4), html2canvas делает из них картинки, jsPDF складывает в PDF прямо в браузере.
+   Страницы КП собираются как обычный HTML (A4), html-to-image рисует текст так же, как браузер, фото кладутся в PDF отдельно в исходном качестве, jsPDF собирает файл прямо в браузере.
    Ссылки (Telegram, WhatsApp, телефон) в PDF кликабельные, рядом QR-коды. В тексте нет буквы ё и длинного тире:
    все строки проходят через esc(). Цены пишутся по-русски (юаней, долларов, рублей, евро), сумма также прописью. */
 window.KP = (function () {
@@ -244,6 +244,47 @@ window.KP = (function () {
     return html;
   }
 
+  /* ---------- сравнение моделей (если в КП больше одной) ---------- */
+  var CMP_KEYS = [['power_kw', 1], ['power_hp', 1], ['engine_cc', 1], ['top_speed', 1], ['range_km', 1], ['battery_wh', 1], ['battery_v', 0], ['removable_battery', 0], ['charge_h', -1], ['torque_nm', 1], ['seats', 1], ['max_load_kg', 1], ['weight_kg', -1], ['drivetrain', 0], ['powertrain', 0], ['transmission', 0], ['brakes', 0], ['seat_height_mm', 0], ['ground_clearance_mm', 1], ['wheelbase_mm', 0], ['fuel_tank_l', 1]];
+  var CMP_PER = 4, CMP_ROWS = 16;
+  function cmpRows(items) {
+    var rows = [];
+    CMP_KEYS.forEach(function (kk) {
+      var f = CFG.fields.filter(function (x) { return x.key === kk[0]; })[0]; if (!f) return;
+      var vals = items.map(function (it) { return fieldVal(it.p, f); });
+      if (vals.every(function (v) { return v == null; })) return;
+      var best = -1;
+      if (kk[1] && f.type === 'number') {
+        var nums = items.map(function (it) { return typeof it.p[f.key] === 'number' ? it.p[f.key] : null; }), ok = nums.filter(function (x) { return x != null; });
+        if (ok.length > 1 && Math.max.apply(null, ok) !== Math.min.apply(null, ok)) { var t = kk[1] > 0 ? Math.max.apply(null, ok) : Math.min.apply(null, ok); best = nums.indexOf(t); }
+      }
+      rows.push({ label: f.label + (f.unit && f.type !== 'number' ? ', ' + f.unit : ''), vals: vals, best: best });
+    });
+    return rows.slice(0, CMP_ROWS);
+  }
+  function cmpPageCount(items) { return items.length > 1 ? Math.ceil(items.length / CMP_PER) * Math.ceil(Math.max(1, cmpRows(items).length) / CMP_ROWS) : 0; }
+  function comparePages(items, meta, num, pageNo, total) {
+    var rows = cmpRows(items), html = '', pg = pageNo;
+    var rowChunks = []; for (var r = 0; r < Math.max(1, rows.length); r += CMP_ROWS) rowChunks.push(rows.slice(r, r + CMP_ROWS));
+    for (var c = 0; c < items.length; c += CMP_PER) {
+      var cols = items.slice(c, c + CMP_PER);
+      rowChunks.forEach(function (chunk, ci) {
+        var head = '<div class="k2-cmp-h"><div class="k2-cmp-l"></div>' + cols.map(function (it) {
+          var p = it.p, priced = p.price != null;
+          return '<div class="k2-cmp-m"><div class="ph">' + (p.images && p.images[0] ? '<img src="' + esc(p.images[0]) + '" alt="">' : '') + '</div><b>' + esc(p.name) + '</b><span>' + (priced ? esc(moneyText(unit(p), p.cur)) : esc(p.priceLabel || 'Цена по запросу')) + '</span></div>';
+        }).join('') + '</div>';
+        var body = chunk.map(function (row) {
+          return '<div class="k2-cmp-r"><div class="k2-cmp-l">' + esc(row.label) + '</div>' + cols.map(function (it, j) {
+            var v = row.vals[c + j]; return '<div class="k2-cmp-c' + (row.best === c + j ? ' best' : '') + '">' + (v == null ? '–' : esc(v)) + '</div>';
+          }).join('') + '</div>';
+        }).join('');
+        html += sec(top(meta, num, pg++, total) + '<h1 class="k2-h1" style="margin-top:28px">Сравнение <span class="sc">моделей</span></h1><div class="k2-sku" style="margin-bottom:16px">Лучшее значение в строке выделено синим' + (ci || c ? ' (продолжение)' : '') + '</div>' +
+          '<div class="k2-cmp k2-cmp--' + cols.length + '">' + head + body + '</div>' + foot(meta));
+      });
+    }
+    return html;
+  }
+
   /* ---------- страницы моделей ---------- */
   var COL_UNITS = 34;
   function rowUnits(r) { return 1 + Math.floor((String(r[1]).length - 1) / 28) + (String(r[0]).length > 34 ? 1 : 0); }
@@ -260,8 +301,9 @@ window.KP = (function () {
       if (chunk.length && chunk[chunk.length - 1].g) { chunk.pop(); i--; }
       var total = chunk.reduce(function (a, x) { return a + x.u; }, 0), acc = 0, cut = chunk.length;
       for (var k = 0; k < chunk.length; k++) { acc += chunk[k].u; if (acc >= total / 2) { cut = k + 1; break; } }
-      if (cut < chunk.length && chunk[cut - 1] && chunk[cut - 1].g) cut--;
+      if (cut < chunk.length && cut > 1 && chunk[cut - 1] && chunk[cut - 1].g) cut--;
       var c1 = chunk.slice(0, cut), c2 = chunk.slice(cut);
+      if (!c1.length) { c1 = c2; c2 = []; }
       if (c2.length && !c2[0].g && c2[0].gn) c2.unshift({ g: c2[0].gn + ' (продолжение)', u: 2.2 });
       pages.push([c1, c2]);
     }
@@ -273,22 +315,42 @@ window.KP = (function () {
       return x.r[0] === '•' ? '<div class="k2-row k2-row--note">• ' + esc(x.r[1]) + '</div>' : '<div class="k2-row"><u>' + esc(x.r[0]) + '</u><b>' + esc(x.r[1]) + '</b></div>';
     }).join('') + '</div>';
   }
-  function pageCount(it) { return 1 + specPageSets(it.p).length; }
+  var COMPACT_MAX = 14;
+  function isCompact(p) { return specRows(p).length <= COMPACT_MAX; }
+  function specSets(p) { return isCompact(p) ? [] : specPageSets(p); }
+  function pageCount(it) { return 1 + specSets(it.p).length; }
+  function compactTable(p, used) {
+    var seq = [];
+    specGroups(p).forEach(function (g) {
+      var rows = g.rows.filter(function (r) { return !used[r[0]]; });
+      if (!rows.length) return;
+      seq.push({ g: g.name });
+      rows.forEach(function (r) { seq.push({ r: r }); });
+    });
+    if (!seq.length) return '';
+    if (seq.length <= 8) return '<div class="k2-cols k2-cols--c k2-cols--one">' + colHtml(seq) + '</div>';
+    var half = Math.ceil(seq.length / 2);
+    if (seq[half - 1] && seq[half - 1].g) half--;
+    var a = seq.slice(0, half), b = seq.slice(half);
+    if (b.length && !b[0].g) { var gn = ''; for (var i = half - 1; i >= 0; i--) if (seq[i].g) { gn = seq[i].g; break; } b.unshift({ g: gn + ' (продолжение)' }); }
+    return '<div class="k2-cols k2-cols--c">' + colHtml(a) + colHtml(b) + '</div>';
+  }
 
   function productPages(it, meta, num, pageNo, total) {
-    var p = it.p, ph = modelPhotos(it), img = ph.main, hl = highlights(p), sets = specPageSets(p);
+    var p = it.p, ph = modelPhotos(it), img = ph.main, hl = highlights(p), sets = specSets(p), compact = isCompact(p);
     var thumbs = ph.thumbs.map(function (s) { return '<img src="' + esc(s) + '" alt="">'; }).join('');
     var cc = ['k2-c0', 'k2-c1', 'k2-c2', 'k2-c2', 'k2-c0', 'k2-c1'];
     var cards = hl.map(function (h, i) { return '<div class="k2-hl ' + cc[i] + '"><b>' + bigVal(h[1]) + '</b><span>' + esc(h[0]) + '</span></div>'; }).join('');
     var used = {}; hl.forEach(function (h) { used[h[0]] = 1; });
     var qr = specRows(p).filter(function (r) { return !used[r[0]] && r[0] !== '•' && String(r[1]).length < 34; }).slice(0, ph.thumbs.length ? 3 : 4);
-    var quick = qr.length ? '<div style="margin-top:12px">' + qr.map(function (r) { return '<div class="k2-row"><u>' + esc(r[0]) + '</u><b>' + esc(r[1]) + '</b></div>'; }).join('') + '</div>' : '';
-    var photo = '<div class="k2-photo">' + (img ? '<img src="' + esc(img) + '" alt="">' : '') + '</div>' + (thumbs ? '<div class="k2-thumbs">' + thumbs + '</div>' : '');
+    var quick = compact ? compactTable(p, used) : (qr.length ? '<div style="margin-top:12px">' + qr.map(function (r) { return '<div class="k2-row"><u>' + esc(r[0]) + '</u><b>' + esc(r[1]) + '</b></div>'; }).join('') + '</div>' : '');
+    var sparse = specRows(p).length <= 4 && hl.length <= 2;
+    var photo = '<div class="k2-photo' + (sparse ? ' k2-photo--xl' : '') + '">' + (img ? '<img src="' + esc(img) + '" alt="">' : '') + '</div>' + (thumbs ? '<div class="k2-thumbs">' + thumbs + '</div>' : '');
     var priced = p.price != null, u = priced ? unit(p) : 0;
     var html = sec(top(meta, num, pageNo, total) +
       '<div style="margin-top:20px"><span class="k2-pill">' + esc(catName(p.cat)) + '</span>' + (p.brand ? ' <span class="k2-pill k2-pill--blue">' + esc(p.brand) + '</span>' : '') + '</div>' +
       '<h1 class="k2-h1">' + esc(p.name) + '</h1>' + (p.sku ? '<div class="k2-sku">Артикул: ' + esc(p.sku) + '</div>' : '') +
-      photo + '<h2 class="k2-h2">Главное <span class="sc">о модели</span></h2><div class="k2-hls">' + cards + '</div>' + quick +
+      photo + (cards ? '<h2 class="k2-h2">Главное <span class="sc">о модели</span></h2><div class="k2-hls">' + cards + '</div>' : '') + (compact && quick ? '<h2 class="k2-h2" style="margin-top:' + (cards ? 16 : 22) + 'px">Характеристики</h2>' : '') + quick + (sparse ? '<div class="k2-more">Подробные технические данные в каталоге поставщика не указаны, уточним по запросу.</div>' : '') +
       (sets.length ? '<div class="k2-more">Все характеристики по группам: на следующей странице →</div>' : '') +
       '<div class="k2-price"><div><span>Стоимость за единицу</span><b' + (!priced && (p.priceLabel || '').length > 20 ? ' style="font-size:20px"' : '') + '>' + (priced ? moneyHtml(u, p.cur) : esc(p.priceLabel || 'Цена по запросу')) + '</b>' + (priced ? '<em>' + esc(moneyWords(u, p.cur)) + '</em>' : '') + '</div><div class="gap"></div>' +
       (it.qty > 1 && priced ? '<div style="text-align:right"><span>' + it.qty + ' шт.</span><b>' + moneyHtml(u * it.qty, p.cur) + '</b></div>' : '<div class="until">до ' + esc(meta.until) + '</div>') + '</div>' +
@@ -321,7 +383,7 @@ window.KP = (function () {
       '<div class="k2-me">' + left + (right ? '<div class="k2-me-r">' + right + '</div>' : '') + '</div>', 'k2--cover');
   }
 
-  var LIBS = ['https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js'];
+  var LIBS = ['https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js'];
   function loadScript(src) {
     return new Promise(function (res, rej) {
       var s = document.createElement('script');
@@ -330,7 +392,7 @@ window.KP = (function () {
     });
   }
   function loadLib() {
-    if (window.html2canvas && window.jspdf && window.qrcode) return Promise.resolve();
+    if (window.htmlToImage && window.jspdf && window.qrcode) return Promise.resolve();
     return Promise.all(LIBS.map(loadScript));
   }
 
@@ -353,6 +415,26 @@ window.KP = (function () {
     return Object.assign({}, it, { p: Object.assign({}, p, { price: p.price * r, cur: 'RUB' }) });
   }
 
+  /* CSS шрифтов Google читать из страницы нельзя (чужой домен), поэтому качаем его сами и вшиваем шрифты в картинку (только кириллица и латиница) */
+  var FONT_CSS = null;
+  async function fontEmbed() {
+    if (FONT_CSS !== null) return FONT_CSS;
+    var out = '';
+    try {
+      var url = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Caveat:wght@700&display=swap&subset=cyrillic';
+      var css = await (await fetch(url)).text();
+      var blocks = css.split('/*').slice(1).map(function (b) { return '/*' + b; }).filter(function (b) { return /^\/\*\s*(cyrillic|latin)\s*\*\//.test(b); });
+      for (var i = 0; i < blocks.length; i++) {
+        var m = /url\((https:[^)]+)\)/.exec(blocks[i]); if (!m) continue;
+        var bl = await (await fetch(m[1])).blob();
+        var d = await new Promise(function (res) { var fr = new FileReader(); fr.onload = function () { res(fr.result); }; fr.readAsDataURL(bl); });
+        out += blocks[i].replace(m[0], 'url(' + d + ')');
+      }
+    } catch (e) { out = ''; }
+    FONT_CSS = out;
+    return out;
+  }
+
   async function make(rawItems, meta) {
     await loadLib();
     var usedRates = {}; meta.usedRates = usedRates;
@@ -363,9 +445,9 @@ window.KP = (function () {
     meta.date = f(d); meta.until = f(until);
     MK = Number(meta.markup) || 0;
     var num = d.toISOString().slice(2, 10).replace(/-/g, '') + '-' + String(Math.floor(Math.random() * 900) + 100);
-    var total = 2 + summaryCount(items), html = '', n = 2 + summaryCount(items);
+    var cmpN = cmpPageCount(items), total = 2 + summaryCount(items) + cmpN, html = '', n = 2 + summaryCount(items) + cmpN;
     items.forEach(function (it) { total += pageCount(it); });
-    html += coverPage(items, meta, num) + summaryPages(items, meta, num, 2, total);
+    html += coverPage(items, meta, num) + summaryPages(items, meta, num, 2, total) + (cmpN ? comparePages(items, meta, num, 2 + summaryCount(items), total) : '');
     items.forEach(function (it) { html += productPages(it, meta, num, n, total); n += pageCount(it); });
     html += closingPage(meta, num, total, total);
     var el = document.createElement('div');
@@ -387,13 +469,39 @@ window.KP = (function () {
         im.className = ar >= 1.0 && ar <= 1.85 ? 'fill' : 'fit';
       });
       name = 'КП_' + (items[0].p.name || 'модель').replace(/[^\wа-яА-Я\-]+/g, '_').slice(0, 40) + (items.length > 1 ? '_и_др' : '') + '_' + num + '.pdf';
-      var pdf = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
-      var pages = el.querySelectorAll('.k2'), k = 210 / 794;
+      var pdf = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
+      var pages = el.querySelectorAll('.k2'), k = 210 / 794, fontCSS = '';
+      fontCSS = await fontEmbed();
+      var cache = {};
+      async function dataOf(src) {
+        if (cache[src]) return cache[src];
+        var r = await fetch(src), bl = await r.blob();
+        cache[src] = await new Promise(function (res) { var fr = new FileReader(); fr.onload = function () { res(fr.result); }; fr.readAsDataURL(bl); });
+        return cache[src];
+      }
       for (var i = 0; i < pages.length; i++) {
-        var canvas = await window.html2canvas(pages[i], { scale: 2, useCORS: true, backgroundColor: '#ffffff', width: 794, height: 1120, scrollX: 0, scrollY: 0, windowWidth: 794 });
+        var pr = pages[i].getBoundingClientRect(), imgs = Array.prototype.slice.call(pages[i].querySelectorAll('img')), info = [];
+        imgs = imgs.filter(function (im) { return !/^data:/.test(im.getAttribute('src') || ''); });
+        imgs.forEach(function (im) {
+          var r = im.getBoundingClientRect(), cs = getComputedStyle(im);
+          info.push({ src: im.getAttribute('src'), x: r.left - pr.left, y: r.top - pr.top, w: r.width, h: r.height, fit: cs.objectFit, rad: parseFloat(cs.borderTopLeftRadius) || 0, nw: im.naturalWidth, nh: im.naturalHeight });
+          im.style.visibility = 'hidden';
+        });
+        var canvas = await window.htmlToImage.toCanvas(pages[i], { pixelRatio: 2, width: 794, height: 1120, backgroundColor: '#12151a', fontEmbedCSS: fontCSS, cacheBust: false });
+        imgs.forEach(function (im) { im.style.visibility = ''; });
         if (i) pdf.addPage();
-        pdf.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, 210, 210 * 1120 / 794);
-        var pr = pages[i].getBoundingClientRect();
+        pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, 210, 210 * 1120 / 794, undefined, 'FAST');
+        for (var q = 0; q < info.length; q++) {
+          var m = info[q]; if (!m.w || !m.h || !m.nw) continue;
+          var dx = m.x, dy = m.y, dw = m.w, dh = m.h;
+          if (m.fit === 'cover') { var sc = Math.max(m.w / m.nw, m.h / m.nh); dw = m.nw * sc; dh = m.nh * sc; dx = m.x + (m.w - dw) / 2; dy = m.y + (m.h - dh) / 2; }
+          else if (m.fit === 'contain') { var sc2 = Math.min(m.w / m.nw, m.h / m.nh); dw = m.nw * sc2; dh = m.nh * sc2; dx = m.x + (m.w - dw) / 2; dy = m.y + (m.h - dh) / 2; }
+          var data = await dataOf(m.src);
+          pdf.saveGraphicsState();
+          if (m.rad > 0) { var rr = Math.min(m.rad, m.w / 2, m.h / 2) * k; pdf.roundedRect(m.x * k, m.y * k, m.w * k, m.h * k, rr, rr, null); pdf.clip(); pdf.discardPath(); }
+          pdf.addImage(data, /^data:image\/png/.test(data) ? 'PNG' : 'JPEG', dx * k, dy * k, dw * k, dh * k, undefined, 'NONE');
+          pdf.restoreGraphicsState();
+        }
         Array.prototype.forEach.call(pages[i].querySelectorAll('[data-href]'), function (a) {
           var r = a.getBoundingClientRect();
           pdf.link((r.left - pr.left) * k, (r.top - pr.top) * k, r.width * k, r.height * k, { url: a.getAttribute('data-href') });
