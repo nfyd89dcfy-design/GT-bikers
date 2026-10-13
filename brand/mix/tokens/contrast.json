@@ -1,0 +1,155 @@
+[
+ {
+  "fg": "bone",
+  "bg": "ink",
+  "label": "Текст на известняке",
+  "ratio": 14.19,
+  "AA_text": true,
+  "AA_large": true,
+  "AAA_text": true
+ },
+ {
+  "fg": "ink",
+  "bg": "bone",
+  "label": "Текст на хвое-ночи",
+  "ratio": 14.19,
+  "AA_text": true,
+  "AA_large": true,
+  "AAA_text": true
+ },
+ {
+  "fg": "ink",
+  "bg": "lime",
+  "label": "Текст на лайме (кнопка)",
+  "ratio": 12.98,
+  "AA_text": true,
+  "AA_large": true,
+  "AAA_text": true
+ },
+ {
+  "fg": "lime",
+  "bg": "ink",
+  "label": "Лайм на хвое-ночи",
+  "ratio": 12.98,
+  "AA_text": true,
+  "AA_large": true,
+  "AAA_text": true
+ },
+ {
+  "fg": "stone",
+  "bg": "bone",
+  "label": "Вторичный текст на известняке",
+  "ratio": 4.7,
+  "AA_text": true,
+  "AA_large": true,
+  "AAA_text": false
+ },
+ {
+  "fg": "mist",
+  "bg": "ink",
+  "label": "Вторичный текст на хвое-ночи",
+  "ratio": 8.05,
+  "AA_text": true,
+  "AA_large": true,
+  "AAA_text": true
+ },
+ {
+  "fg": "stone",
+  "bg": "paper",
+  "label": "Вторичный текст на бумаге",
+  "ratio": 5.18,
+  "AA_text": true,
+  "AA_large": true,
+  "AAA_text": false
+ },
+ {
+  "fg": "bone",
+  "bg": "spruce-600",
+  "label": "Известняк на мох-хвое",
+  "ratio": 8.26,
+  "AA_text": true,
+  "AA_large": true,
+  "AAA_text": true
+ },
+ {
+  "fg": "lime",
+  "bg": "spruce-800",
+  "label": "Лайм на карточке",
+  "ratio": 10.71,
+  "AA_text": true,
+  "AA_large": true,
+  "AAA_text": true
+ },
+ {
+  "fg": "violet",
+  "bg": "bone",
+  "label": "Фиалка на известняке (текст, ссылки)",
+  "ratio": 4.54,
+  "AA_text": true,
+  "AA_large": true,
+  "AAA_text": false
+ },
+ {
+  "fg": "violet-soft",
+  "bg": "ink",
+  "label": "Фиалка светлая на хвое-ночи",
+  "ratio": 7.99,
+  "AA_text": true,
+  "AA_large": true,
+  "AAA_text": true
+ },
+ {
+  "fg": "bone",
+  "bg": "violet",
+  "label": "Известняк на фиалке (кнопка Клуба)",
+  "ratio": 4.54,
+  "AA_text": true,
+  "AA_large": true,
+  "AAA_text": false
+ },
+ {
+  "fg": "ink",
+  "bg": "violet-soft",
+  "label": "Хвоя-ночь на светлой фиалке (кнопка Клуба)",
+  "ratio": 7.99,
+  "AA_text": true,
+  "AA_large": true,
+  "AAA_text": true
+ },
+ {
+  "fg": "ember",
+  "bg": "bone",
+  "label": "Сигнал на известняке",
+  "ratio": 4.7,
+  "AA_text": true,
+  "AA_large": true,
+  "AAA_text": false
+ },
+ {
+  "fg": "bone",
+  "bg": "ember",
+  "label": "Известняк на сигнале",
+  "ratio": 4.7,
+  "AA_text": true,
+  "AA_large": true,
+  "AAA_text": false
+ },
+ {
+  "fg": "lime",
+  "bg": "bone",
+  "label": "Лайм на известняке (не использовать для текста)",
+  "ratio": 1.09,
+  "AA_text": false,
+  "AA_large": false,
+  "AAA_text": false
+ },
+ {
+  "fg": "ink",
+  "bg": "dust",
+  "label": "Текст на пыли (бейдж Lite)",
+  "ratio": 10.05,
+  "AA_text": true,
+  "AA_large": true,
+  "AAA_text": true
+ }
+]
