@@ -1,0 +1,92 @@
+/* Тропа: дизайн-токены. Источник правды: tokens.json */
+:root {
+  /* Палитра: базовые цвета */
+  --tr-ink: #1B1530;        /* Чернила: основной текст, темные поверхности */
+  --tr-bone: #F6F1E7;       /* Кость: основной светлый фон */
+  --tr-paper-2: #EDE6D6;    /* Кость 2: карточки на светлом */
+  --tr-line: #D9D2C3;       /* Линия: границы на светлом */
+  --tr-slate: #625C78;      /* Сланец: вторичный текст */
+  --tr-lime: #C8F03C;       /* Лайм: акцент молодежного режима */
+  --tr-fire: #FF5B2E;       /* Огонь: действие, внимание */
+  --tr-fire-deep: #C73A12;  /* Огонь глубокий: текст и кнопки на светлом */
+  --tr-violet: #7A52FF;     /* Фиолет: графика линейки Ultra */
+  --tr-violet-deep: #5B35E0;/* Фиолет глубокий: заливки под белый текст */
+  --tr-pine: #1F6B58;       /* Сосна: спокойный режим для родителей */
+  --tr-mist: #E4EFE9;       /* Туман: фон спокойного режима */
+  --tr-white: #FFFFFF;
+
+  /* Роли: молодежный режим (по умолчанию) */
+  --bg: var(--tr-bone);
+  --surface: var(--tr-white);
+  --surface-alt: var(--tr-paper-2);
+  --text: var(--tr-ink);
+  --text-muted: var(--tr-slate);
+  --border: var(--tr-line);
+  --accent: var(--tr-lime);
+  --on-accent: var(--tr-ink);
+  --action: var(--tr-fire-deep);
+  --on-action: var(--tr-white);
+  --focus: var(--tr-violet-deep);
+
+  /* Линейка */
+  --tier-lite: var(--tr-lime);
+  --tier-lite-text: var(--tr-ink);
+  --tier-pro: var(--tr-fire);
+  --tier-pro-text: var(--tr-ink);
+  --tier-ultra: var(--tr-violet-deep);
+  --tier-ultra-text: var(--tr-white);
+
+  /* Типографика */
+  --font-display: 'Unbounded', 'Arial Black', sans-serif;
+  --font-body: 'Onest', 'Segoe UI', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+  --fs-display: clamp(2.5rem, 1.6rem + 4.2vw, 5rem);
+  --fs-h1: clamp(2rem, 1.5rem + 2.4vw, 3.5rem);
+  --fs-h2: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
+  --fs-h3: 1.25rem;
+  --fs-body: 1rem;
+  --fs-small: 0.875rem;
+  --fs-caption: 0.75rem;
+  --lh-tight: 1.05;
+  --lh-heading: 1.15;
+  --lh-body: 1.55;
+
+  /* Отступы (шаг 4) */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 24px;
+  --sp-6: 32px; --sp-7: 48px; --sp-8: 64px; --sp-9: 96px;
+  --gutter: 16px;
+  --container: 1200px;
+
+  /* Формы */
+  --radius-s: 8px; --radius-m: 16px; --radius-l: 28px; --radius-pill: 999px;
+  --stroke: 2px;
+  --shadow-sticker: 4px 4px 0 var(--tr-ink);
+  --shadow-soft: 0 8px 24px rgba(27, 21, 48, 0.12);
+
+  /* Движение */
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --dur-fast: 120ms; --dur: 220ms; --dur-slow: 420ms;
+
+  /* Брейкпоинты (для справки; в media query подставлять числа) */
+  --bp-sm: 600px; --bp-md: 900px; --bp-lg: 1200px;
+}
+
+/* Спокойный режим: родители, "вы". Включается атрибутом data-mode="parent" */
+[data-mode="parent"] {
+  --bg: var(--tr-mist);
+  --surface: var(--tr-white);
+  --surface-alt: #D3E5DC;
+  --text: var(--tr-ink);
+  --text-muted: #4D4862;
+  --border: #B9D0C5;
+  --accent: var(--tr-pine);
+  --on-accent: var(--tr-white);
+  --action: var(--tr-pine);
+  --on-action: var(--tr-white);
+  --shadow-sticker: none;
+  --radius-m: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-fast: 0ms; --dur: 0ms; --dur-slow: 0ms; }
+}
