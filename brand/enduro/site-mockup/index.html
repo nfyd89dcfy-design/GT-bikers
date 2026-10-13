@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ТЯГА – электробайки, квадроциклы, UTV (макет главной)</title>
+<meta name="description" content="Макет главной страницы ТЯГА: подбор за минуту, линейка lite / pro / ultra, конфигуратор, сравнение, шоурум в Ростове-на-Дону, запись на тест-драйв. Все модели и цифры примерные.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%20width%3D%2232%22%20height%3D%2232%22%20role%3D%22img%22%20aria-label%3D%22%D0%A2%D0%AF%D0%93%D0%90%20%E2%80%93%20%D1%84%D0%B0%D0%B2%D0%B8%D0%BA%D0%BE%D0%BD%22%3E%3Ctitle%3E%D0%A2%D0%AF%D0%93%D0%90%20%E2%80%93%20%D1%84%D0%B0%D0%B2%D0%B8%D0%BA%D0%BE%D0%BD%3C%2Ftitle%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%2314110C%22%2F%3E%3Cg%20transform%3D%22translate%28-0.5%200%29%20scale%280.27%29%22%3E%3Cpath%20fill%3D%22%23D4F04A%22%20d%3D%22M18%2020H46L38%2050H10Z%22%2F%3E%3Cpath%20fill%3D%22%23D4F04A%22%20d%3D%22M50%2020H78L70%2050H42Z%22%2F%3E%3Cpath%20fill%3D%22%23D4F04A%22%20d%3D%22M82%2020H110L102%2050H74Z%22%2F%3E%3Cpath%20fill%3D%22%23F6F2E9%22%20d%3D%22M47%2056H73V104H57L47%2094Z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Onest:wght@400;500;700&family=Oswald:wght@500;600;700&display=swap&subset=cyrillic" rel="stylesheet">
+<style>
+/* ТЯГА – дизайн-токены (рабочее название бренда, версия 0.1) */
+:root{
+  --color-mud-950: #14110C;
+  --color-mud-800: #26211A;
+  --color-mud-600: #4A4136;
+  --color-clay-600: #6A5D4A;
+  --color-sand-400: #B3A68F;
+  --color-dust-200: #E3DACB;
+  --color-bone-50: #F6F2E9;
+  --color-signal-400: #D4F04A;
+  --color-rust-600: #B93A18;
+  --color-rust-300: #F0825C;
+  --color-ford-600: #2F6F73;
+  --color-ford-300: #6FC0C4;
+  /* roles */
+  --bg: var(--color-bone-50);
+  --bg-alt: var(--color-dust-200);
+  --bg-dark: var(--color-mud-950);
+  --surface-dark: var(--color-mud-800);
+  --text: var(--color-mud-950);
+  --text-muted: var(--color-clay-600);
+  --text-on-dark: var(--color-bone-50);
+  --text-muted-on-dark: var(--color-sand-400);
+  --accent: var(--color-signal-400);
+  --accent-text: var(--color-mud-950);
+  --danger: var(--color-rust-600);
+  --info: var(--color-ford-600);
+  --line: var(--color-mud-600);
+  --focus: var(--color-ford-600);
+  --focus-on-dark: var(--color-signal-400);
+  --font-display: 'Oswald','Arial Narrow','DejaVu Sans Condensed',Impact,sans-serif;
+  --font-body: 'Onest','Segoe UI','Helvetica Neue',Arial,sans-serif;
+  --font-mono: 'JetBrains Mono','DejaVu Sans Mono',Consolas,monospace;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 17px;
+  --text-lg: 20px;
+  --text-h3: 26px;
+  --text-h2: clamp(30px,4vw,44px);
+  --text-h1: clamp(38px,6vw,72px);
+  --text-display: clamp(48px,9vw,120px);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+  --cut: 14px;
+  --lh-tight: 1.05;
+  --lh-body: 1.55;
+  --tracking-caps: 0.08em;
+  --ease: cubic-bezier(.2,.7,.2,1);
+  --dur-fast: 120ms;
+  --dur: 220ms;
+  --container: 1200px;
+  --tap: 44px;
+}
+@media (prefers-reduced-motion: reduce){:root{--dur-fast:0ms;--dur:0ms}}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--text);font:400 var(--text-base)/var(--lh-body) var(--font-body);overflow-x:hidden}
+svg,img{max-width:100%}
+a{color:var(--color-ford-600)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.dark :focus-visible,.top :focus-visible{outline-color:var(--focus-on-dark)}
+.wrap{max-width:var(--container);margin:0 auto;padding:0 16px}
+@media(min-width:720px){.wrap{padding:0 32px}}
+h1,h2,h3,h4{font-family:var(--font-display);text-transform:uppercase;line-height:var(--lh-tight);margin:0 0 .5em;font-weight:700}
+h1{font-size:var(--text-h1)} h2{font-size:var(--text-h2)} h3{font-size:var(--text-h3)} h4{font-size:var(--text-lg)}
+p{margin:0 0 1em;max-width:62ch}
+.eyebrow{font:700 12px/1 var(--font-mono);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-muted);margin-bottom:14px;display:block}
+.dark .eyebrow{color:var(--text-muted-on-dark)}
+.note{font:500 12px/1.45 var(--font-mono);color:var(--text-muted)} .dark .note{color:var(--text-muted-on-dark)}
+section{padding:64px 0}
+@media(min-width:720px){section{padding:96px 0}}
+.dark{background:var(--bg-dark);color:var(--text-on-dark)} .dark a{color:var(--color-ford-300)}
+.alt{background:var(--bg-alt)}
+.skip{position:absolute;left:-999px;top:0;background:var(--accent);color:var(--accent-text);padding:12px;z-index:100;font-weight:700}
+.skip:focus{left:8px;top:8px}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:var(--tap);padding:0 22px;font:700 15px/1 var(--font-display);text-transform:uppercase;letter-spacing:.06em;text-decoration:none;border:0;cursor:pointer;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));transition:background var(--dur-fast) var(--ease),transform var(--dur-fast) var(--ease)}
+.btn svg{width:18px;height:18px;flex:none}
+.btn.p{background:var(--accent);color:var(--accent-text)} .btn.p:hover{background:#e3f77a}
+.btn.d{background:var(--color-mud-950);color:var(--color-bone-50)} .btn.d:hover{background:var(--color-mud-800)}
+.btn.o{background:transparent;color:inherit;box-shadow:inset 0 0 0 2px currentColor}
+.btn:active{transform:translateY(1px)}
+.dark a.btn.d{color:var(--color-bone-50)} .dark a.btn.p{color:var(--accent-text)}
+/* header */
+.top{position:sticky;top:0;z-index:30;background:var(--bg-dark);color:var(--text-on-dark);border-bottom:1px solid var(--color-mud-600)}
+.top .wrap{display:flex;align-items:center;gap:16px;min-height:60px}
+.top .lg{display:block;flex:none} .top .lg svg{height:30px;width:auto;display:block}
+.top nav{display:none;gap:2px;margin-left:12px}
+.top nav a{color:var(--text-muted-on-dark);text-decoration:none;font:500 14px/1 var(--font-body);padding:0 12px;min-height:44px;display:flex;align-items:center}
+.top nav a:hover{color:var(--accent)}
+.top .cta{margin-left:auto;display:none}
+details.menu{margin-left:auto}
+details.menu summary{list-style:none;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;font:700 14px var(--font-display);text-transform:uppercase;letter-spacing:.08em;padding:0 10px;border:2px solid var(--color-mud-600)}
+details.menu summary::-webkit-details-marker{display:none}
+details.menu[open] summary{border-color:var(--accent);color:var(--accent)}
+details.menu .panel{position:absolute;left:0;right:0;top:100%;background:var(--bg-dark);border-bottom:1px solid var(--color-mud-600);padding:8px 16px 20px;display:grid}
+details.menu .panel a{color:var(--text-on-dark);text-decoration:none;font:500 18px/1 var(--font-display);text-transform:uppercase;padding:16px 0;border-bottom:1px solid var(--color-mud-800)}
+details.menu .panel .btn{margin-top:16px;border:0}
+@media(min-width:960px){.top nav{display:flex}.top .cta{display:inline-flex}details.menu{display:none}}
+/* hero */
+.hero{background:var(--bg-dark);color:var(--text-on-dark);padding:48px 0 0;overflow:hidden;position:relative}
+.hero .wrap{display:grid;gap:32px;align-items:center}
+@media(min-width:960px){.hero .wrap{grid-template-columns:1.05fr 1fr}.hero{padding-top:72px}}
+.hero h1{font-size:clamp(46px,8.5vw,112px);margin:0 0 20px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .lead{font-size:var(--text-lg);color:var(--text-muted-on-dark);max-width:46ch}
+.hero .acts{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0 0}
+.stage{position:relative;aspect-ratio:1.15/1;min-width:0}
+.stage .bk{position:absolute;inset:0;width:100%;height:100%}
+.callout{position:absolute;background:var(--bg-dark);border:1px solid var(--color-mud-600);padding:8px 10px;font:500 11px/1.3 var(--font-mono);color:var(--text-muted-on-dark)}
+.callout b{display:block;font:700 clamp(18px,3.4vw,26px)/1 var(--font-mono);color:var(--accent);letter-spacing:-.03em}
+.hero .band{margin-top:40px;height:64px;position:relative}
+.hero .band svg{position:absolute;inset:0;width:100%;height:100%}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--color-mud-600);margin-top:0}
+.facts div{padding:16px 12px;border-right:1px solid var(--color-mud-600);font:500 12px/1.4 var(--font-mono);color:var(--text-muted-on-dark);min-width:0}
+.facts div:last-child{border-right:0}
+.facts b{display:block;font:700 clamp(20px,4vw,30px)/1.1 var(--font-display);text-transform:uppercase;color:var(--text-on-dark);margin-bottom:4px}
+/* quiz */
+.quiz{display:grid;gap:24px}
+@media(min-width:960px){.quiz{grid-template-columns:1.4fr 1fr;align-items:start}}
+fieldset{border:0;margin:0 0 24px;padding:0;min-width:0}
+legend{font:700 20px/1.1 var(--font-display);text-transform:uppercase;margin-bottom:12px;padding:0}
+legend span{font:700 12px/1 var(--font-mono);color:var(--text-muted);margin-right:8px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.opt span{display:inline-flex;align-items:center;min-height:var(--tap);padding:0 18px;border:2px solid var(--color-mud-600);background:#fff;font:500 16px var(--font-body)}
+.opt input:checked+span{background:var(--color-mud-950);color:var(--accent);border-color:var(--color-mud-950)}
+.opt input:focus-visible+span{outline:3px solid var(--focus);outline-offset:2px}
+.result{background:var(--bg-dark);color:var(--text-on-dark);padding:24px;position:sticky;top:84px}
+.result .pic{color:var(--color-bone-50);max-width:260px;margin:0 0 12px}
+.result h3{margin:8px 0 8px}
+.result .st{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 20px;border-top:1px solid var(--color-mud-600);padding-top:12px}
+.result .st b{display:block;font:700 20px/1 var(--font-mono);color:var(--accent)}
+.result .st small{font:500 11px/1.3 var(--font-mono);color:var(--text-muted-on-dark)}
+.badge{display:inline-block;font:700 12px/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;padding:6px 8px}
+.b-lite{background:var(--color-dust-200);color:var(--color-mud-950);border:1px solid var(--color-clay-600)}
+.b-pro{background:var(--accent);color:var(--accent-text)}
+.b-ultra{background:var(--color-rust-600);color:var(--color-bone-50)}
+/* lineup */
+.tiers{display:grid;gap:16px;margin-top:32px}
+@media(min-width:800px){.tiers{grid-template-columns:repeat(3,1fr)}}
+.tier{background:#fff;border:1px solid #cfc4b0;display:flex;flex-direction:column;min-width:0}
+.tier.hl{outline:3px solid var(--color-mud-950);outline-offset:-3px}
+.tier .pic{background:var(--color-dust-200);color:var(--color-mud-950);padding:44px 12px 8px;position:relative}
+.tier .pic .badge{position:absolute;left:12px;top:12px}
+.tier .pic svg{display:block;width:100%;max-width:280px;height:auto;margin:0 auto}
+.tier .bd{padding:18px;display:flex;flex-direction:column;flex:1}
+.tier h3{font-size:24px;margin:0 0 4px}
+.tier .for{font:500 13px/1.4 var(--font-mono);color:var(--text-muted);margin-bottom:12px}
+.tier .st{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 0;border-top:1px solid var(--color-dust-200);border-bottom:1px solid var(--color-dust-200);margin-bottom:14px}
+.tier .st b{display:block;font:700 19px/1 var(--font-mono)}
+.tier .st small{font:500 11px/1.3 var(--font-mono);color:var(--text-muted)}
+.tier ul{margin:0 0 16px;padding:0 0 0 18px;font-size:15px}
+.tier .ft{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.tier .pr{font:700 20px/1 var(--font-mono)}
+.cats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:40px}
+@media(min-width:800px){.cats{grid-template-columns:repeat(4,minmax(0,1fr))}.cat{font-size:17px;padding:16px}}
+.cat{display:flex;gap:10px;align-items:center;background:var(--bg-dark);color:var(--text-on-dark);padding:14px 12px;text-decoration:none;min-height:72px;font:700 15px/1.1 var(--font-display);text-transform:uppercase;min-width:0;overflow-wrap:anywhere}.cat span{min-width:0}
+.cat svg{width:28px;height:28px;color:var(--accent);flex:none}
+.cat:hover{background:var(--color-mud-800)}
+.dark a.cat{color:var(--text-on-dark)}
+.cat small{display:block;font:500 11px/1.3 var(--font-mono);color:var(--text-muted-on-dark);text-transform:none;margin-top:4px}
+/* configurator */
+.conf{display:grid;gap:24px}
+@media(min-width:960px){.conf{grid-template-columns:1.1fr 1fr;align-items:center}}
+.view{background:var(--color-mud-800);padding:24px 16px;position:relative;min-width:0}
+.view svg{display:block;width:100%;max-width:440px;height:auto;margin:0 auto}
+.view .tag{position:absolute;left:12px;top:12px;font:700 11px/1 var(--font-mono);letter-spacing:.1em;color:var(--text-muted-on-dark);text-transform:uppercase}
+.cfg fieldset{margin-bottom:20px}
+.cfg legend{color:var(--text-on-dark);font-size:17px}
+.cfg .opt span{background:transparent;color:var(--text-on-dark);border-color:var(--color-mud-600)}
+.cfg .opt input:checked+span{background:var(--accent);color:var(--accent-text);border-color:var(--accent)}
+.cfg .opt input:focus-visible+span{outline-color:var(--focus-on-dark)}
+.sw{display:inline-block;width:14px;height:14px;margin-right:8px;border:1px solid var(--color-bone-50)}
+.readout{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;border-top:1px solid var(--color-mud-600);padding-top:16px;margin-bottom:20px}
+.readout b{display:block;font:700 clamp(20px,3.6vw,28px)/1 var(--font-mono);color:var(--accent)}
+.readout small{font:500 11px/1.3 var(--font-mono);color:var(--text-muted-on-dark)}
+/* compare */
+.cmp{overflow-x:auto;border:1px solid #cfc4b0;background:#fff;margin-top:24px}
+.cmp table{border-collapse:collapse;width:100%;min-width:620px;font-size:15px}
+.cmp th,.cmp td{padding:14px 16px;text-align:left;border-bottom:1px solid var(--color-dust-200);vertical-align:top}
+.cmp thead th{background:var(--color-mud-950);color:var(--text-on-dark);font:700 18px/1.1 var(--font-display);text-transform:uppercase;position:relative}
+.cmp tbody th{font:500 13px/1.4 var(--font-mono);color:var(--text-muted);background:var(--color-dust-200);width:26%}
+.cmp td b{font:700 18px/1.2 var(--font-mono)}
+.cmp td small{display:block;font:500 11px/1.35 var(--font-mono);color:var(--text-muted)}
+.cmp td.best{background:#f3fbc4}
+/* showroom */
+.show{display:grid;gap:32px}
+@media(min-width:960px){.show{grid-template-columns:1fr 1fr;align-items:center}}
+.map{background:var(--color-mud-800);padding:16px;min-width:0}
+.map svg{display:block;width:100%;height:auto}
+.addr{display:grid;gap:12px;margin:20px 0}
+.addr div{display:flex;gap:12px;align-items:flex-start;font-size:16px}
+.addr svg{width:24px;height:24px;color:var(--accent);flex:none}
+.regions{display:grid;gap:12px;margin-top:32px}
+@media(min-width:720px){.regions{grid-template-columns:repeat(3,1fr)}}
+.region{border-top:4px solid var(--accent);background:var(--color-mud-800);padding:16px}
+.region h4{margin-bottom:6px}
+.region p{font-size:15px;color:var(--text-muted-on-dark);margin:0}
+.svc{display:grid;gap:12px;margin-top:32px}
+@media(min-width:720px){.svc{grid-template-columns:repeat(3,1fr)}}
+.svc>div{background:#fff;border:1px solid #cfc4b0;padding:20px;display:flex;gap:14px}
+.svc svg{width:32px;height:32px;flex:none}
+.svc h4{margin:0 0 4px;font-size:18px} .svc p{margin:0;font-size:15px;color:var(--text-muted)}
+/* custom */
+.custom{display:grid;gap:24px;align-items:center}
+@media(min-width:960px){.custom{grid-template-columns:1fr 1fr}}
+.custom .pic{background:var(--color-dust-200);padding:16px;position:relative;overflow:hidden}
+.custom .pic svg.b{display:block;width:100%;max-width:360px;margin:0 auto;color:var(--color-mud-950);position:relative}
+/* testdrive */
+.td{background:var(--accent);color:var(--accent-text);position:relative;overflow:hidden}
+.td .wrap{display:grid;gap:32px;position:relative;z-index:1}
+@media(min-width:960px){.td .wrap{grid-template-columns:1fr 1fr;align-items:center}}
+.td h2{font-size:clamp(34px,6vw,64px)}
+.td form{background:var(--bg-dark);color:var(--text-on-dark);padding:24px;position:relative}
+.field{margin-bottom:16px}
+.field label{display:block;font:700 12px/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;color:var(--text-muted-on-dark)}
+.field input,.field select{width:100%;min-height:48px;padding:0 12px;border:2px solid var(--color-mud-600);background:var(--color-mud-800);color:var(--text-on-dark);font:400 16px var(--font-body)}
+.field input:focus-visible,.field select:focus-visible{border-color:var(--accent);outline:3px solid var(--focus-on-dark);outline-offset:2px}
+.td .note{color:var(--color-mud-800)}
+.td form .note{color:var(--text-muted-on-dark)}
+.td .tr{position:absolute;left:0;right:0;bottom:0;height:34%;pointer-events:none}
+.td .tr svg{width:100%;height:100%}
+.msg{margin-top:12px;font:500 14px/1.4 var(--font-mono);color:var(--accent);min-height:20px}
+/* footer */
+footer{background:var(--bg-dark);color:var(--text-muted-on-dark);padding:48px 0 32px;font-size:15px}
+footer .cols{display:grid;gap:28px}
+@media(min-width:800px){footer .cols{grid-template-columns:1.4fr 1fr 1fr 1fr}}
+footer svg.l{height:34px;width:auto;display:block;margin-bottom:12px}
+footer h4{color:var(--text-on-dark);font-size:15px;margin-bottom:10px;letter-spacing:.06em}
+footer ul{list-style:none;margin:0;padding:0}
+footer li a{color:var(--text-muted-on-dark);text-decoration:none;display:inline-block;padding:8px 0;min-height:44px}
+footer li a:hover{color:var(--accent)}
+footer .legal{border-top:1px solid var(--color-mud-800);margin-top:28px;padding-top:20px;font:500 12px/1.5 var(--font-mono)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+<defs>
+<pattern id="tread" width="48" height="36" patternUnits="userSpaceOnUse"><path d="M10 4H30L24 18H4Z" fill="#2E281F"/><path d="M34 22H54L48 36H28Z" fill="#2E281F" transform="translate(-24 0)"/></pattern>
+<pattern id="tread2" width="48" height="36" patternUnits="userSpaceOnUse"><path d="M10 4H30L24 18H4Z" fill="#C5E13A"/><path d="M34 22H54L48 36H28Z" fill="#C5E13A" transform="translate(-24 0)"/></pattern>
+<symbol id="bike" viewBox="0 0 240 140"><g fill="none" stroke="currentColor" stroke-width="6" stroke-linejoin="miter"><circle cx="50" cy="100" r="30"/><circle cx="190" cy="100" r="30"/><circle cx="50" cy="100" r="37" stroke-width="5" stroke-dasharray="7 6"/><circle cx="190" cy="100" r="37" stroke-width="5" stroke-dasharray="7 6"/><path d="M50 100L104 90M190 100L168 38M156 30L184 38"/></g><path fill="currentColor" d="M96 54H150L158 94H106Z"/><path fill="currentColor" d="M52 48H112L108 58H56Z"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L5 13h6l-1 9 8-12h-6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter"/></symbol>
+<symbol id="i-tread" viewBox="0 0 24 24"><path d="M3 5h8l-2 6H1zM15 13h8l-2 6h-8z" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+<symbol id="i-route" viewBox="0 0 24 24"><path d="M5 20V9a3 3 0 013-3h8a3 3 0 013 3v0a3 3 0 01-3 3H8" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="18" width="4" height="4" fill="currentColor"/><path d="M19 3v6M16 3h6" stroke="currentColor" stroke-width="2"/></symbol>
+<symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14 3a5 5 0 00-3.5 6.5L3 17l4 4 7.5-7.5A5 5 0 0021 10l-3 1-3-3 1-3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 22s7-6.5 7-12a7 7 0 00-14 0c0 5.500 7 12 7 12z" fill="none" stroke="currentColor" stroke-width="2"/><rect x="10" y="8" width="4" height="4" fill="currentColor"/></symbol>
+<symbol id="i-truck" viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 9h5l3 3v4h-8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter"/><circle cx="7" cy="18" r="2" fill="currentColor"/><circle cx="18" cy="18" r="2" fill="currentColor"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 22V3M5 4h14l-3 4 3 4H5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter"/></symbol>
+<symbol id="i-compare" viewBox="0 0 24 24"><path d="M4 20V10h5v10M15 20V4h5v16M2 20h20" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+<symbol id="i-sliders" viewBox="0 0 24 24"><path d="M3 7h18M3 17h18" stroke="currentColor" stroke-width="2"/><rect x="14" y="4" width="4" height="6" fill="currentColor"/><rect x="6" y="14" width="4" height="6" fill="currentColor"/></symbol>
+<symbol id="i-snow" viewBox="0 0 24 24"><path d="M12 2v20M3.300 7l17.400 10M3.300 17L20.700 7" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12l6 6L20 6" fill="none" stroke="currentColor" stroke-width="3"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M3 12h16M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.500"/></symbol>
+</defs></svg>
+
+<a class="skip" href="#main">К содержанию</a>
+<header class="top">
+<div class="wrap">
+<a class="lg" href="#top" aria-label="ТЯГА – на главную"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 434 120" role="img" aria-label="ТЯГА – горизонтальный логотип на темном"><title>ТЯГА – горизонтальный логотип на темном</title><rect width="120" height="120" rx="22" fill="#D4F04A"/><g transform="translate(0 0)"><path fill="#14110C" d="M18 20H46L38 50H10Z"/><path fill="#14110C" d="M50 20H78L70 50H42Z"/><path fill="#14110C" d="M82 20H110L102 50H74Z"/><path fill="#14110C" d="M47 56H73V104H57L47 94Z"/></g><g transform="translate(154 29.0) scale(0.62)" fill="#F6F2E9"><path transform="translate(0 0)" fill-rule="evenodd" d="M0 0H76V24H50V100H26V24H0Z"/><path transform="translate(88 0)" fill-rule="evenodd" d="M0 0H26L40 34L54 0H80L52 52V100H28V52Z"/><path transform="translate(180 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/><path transform="translate(276 0)" fill-rule="evenodd" d="M0 0H76V24H24V76H52V60H38V40H76V100H0Z"/><path transform="translate(364 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/></g></svg></a>
+<nav aria-label="Основное меню"><a href="#quiz">Подбор</a><a href="#line">Линейка</a><a href="#config">Конфигуратор</a><a href="#compare">Сравнение</a><a href="#showroom">Шоурум</a></nav>
+<a class="btn p cta" href="#testdrive">Тест-драйв</a>
+<details class="menu"><summary aria-label="Меню">Меню</summary><div class="panel"><a href="#quiz">Подбор</a><a href="#line">Линейка</a><a href="#config">Конфигуратор</a><a href="#compare">Сравнение</a><a href="#showroom">Шоурум</a><a class="btn p" href="#testdrive">Записаться на тест-драйв</a></div></details>
+</div>
+</header>
+<main id="main">
+<div class="hero" id="top">
+<div class="wrap">
+<div>
+<span class="eyebrow" style="color:var(--text-muted-on-dark)">Электробайки · квадроциклы · UTV · снег</span>
+<h1>Тяга <em>есть.</em></h1>
+<p class="lead">Подберем байк за минуту, дадим проехать до покупки, соберем, привезем и обслужим. Цифры в карточках с условиями замера.</p>
+<div class="acts"><a class="btn p" href="#quiz">Подобрать байк <svg aria-hidden="true"><use href="#i-arrow"/></svg></a><a class="btn o" href="#testdrive">Записаться на заезд</a></div>
+</div>
+<div class="stage">
+<svg class="bk" viewBox="0 0 400 348" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="348" fill="#26211A"/><path d="M0 250L110 150L190 215L290 120L400 205V348H0Z" fill="#1a1611"/><circle cx="318" cy="70" r="30" fill="#D4F04A"/><path d="M0 300C120 270 260 330 400 285V348H0Z" fill="#4A4136"/><path d="M-10 322C90 300 160 330 410 296" stroke="#D4F04A" stroke-width="3" fill="none" stroke-dasharray="12 9"/></svg>
+<svg style="position:absolute;left:4%;right:4%;bottom:8%;width:92%;height:auto;color:#F6F2E9" viewBox="0 0 240 140" role="img" aria-label="Иллюстрация электро-эндуро байка"><use href="#bike"/></svg>
+<div class="callout" style="left:4%;top:8%"><b>3 кВт</b>пример</div>
+<div class="callout" style="right:6%;bottom:46%"><b>95 Н·м</b>пример</div>
+</div>
+</div>
+<div class="band" aria-hidden="true"><svg preserveAspectRatio="none"><rect width="100%" height="100%" fill="url(#tread)"/></svg></div>
+<div class="wrap"><div class="facts" role="list"><div role="listitem"><b>Lite · Pro · Ultra</b>понятная разница</div><div role="listitem"><b>Под ключ</b>сборка, доставка, сервис</div><div role="listitem"><b>Ростов</b>шоурум и тест-драйв</div></div></div>
+</div>
+
+<section id="quiz">
+<div class="wrap">
+<span class="eyebrow">Подбор за минуту</span>
+<h2>Три вопроса, одна модель</h2>
+<div class="quiz">
+<form id="qz" aria-describedby="qznote">
+<fieldset><legend><span>01</span>Где катаешься</legend><div class="opts">
+<label class="opt"><input type="radio" name="t" value="forest" checked><span>Лес и тропы</span></label>
+<label class="opt"><input type="radio" name="t" value="sand"><span>Песок и бездорожье</span></label>
+<label class="opt"><input type="radio" name="t" value="city"><span>Город и дворы</span></label>
+<label class="opt"><input type="radio" name="t" value="snow"><span>Снег</span></label></div></fieldset>
+<fieldset><legend><span>02</span>Опыт</legend><div class="opts">
+<label class="opt"><input type="radio" name="e" value="new" checked><span>Только начинаю</span></label>
+<label class="opt"><input type="radio" name="e" value="mid"><span>Езжу давно</span></label>
+<label class="opt"><input type="radio" name="e" value="pro"><span>Жду максимум</span></label></div></fieldset>
+<fieldset><legend><span>03</span>Что важнее</legend><div class="opts">
+<label class="opt"><input type="radio" name="p" value="range" checked><span>Запас хода</span></label>
+<label class="opt"><input type="radio" name="p" value="power"><span>Тяга</span></label>
+<label class="opt"><input type="radio" name="p" value="light"><span>Малый вес</span></label></div></fieldset>
+<p class="note" id="qznote">Подбор примерный: итог зависит от роста, веса и маршрута. Подскажем на тест-драйве.</p>
+</form>
+<aside class="result" aria-live="polite" aria-labelledby="rt">
+<span class="eyebrow">Тебе подойдет · пример</span>
+<span class="badge b-pro" id="rb">Pro</span>
+<h3 id="rt">Т-2 Pro</h3>
+<p id="rd" style="color:var(--text-muted-on-dark);font-size:15px">Баланс запаса хода и тяги для лесных троп.</p>
+<svg class="pic" viewBox="0 0 240 140" role="img" aria-label="Иллюстрация модели" width="260"><use href="#bike"/></svg>
+<div class="st"><div><b id="s1">до 70</b><small>км, 80 кг, 25 °C</small></div><div><b id="s2">3 кВт</b><small>пиковая</small></div><div><b id="s3">38 кг</b><small>без батареи</small></div></div>
+<a class="btn p" href="#testdrive">Проехать на ней <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+</aside>
+</div>
+</div>
+</section>
+
+<section id="line" class="alt">
+<div class="wrap">
+<span class="eyebrow">Линейка</span>
+<h2>Lite, Pro, Ultra: разница в цифрах</h2>
+<p>Одна логика для всей техники. Названия моделей и все значения на странице примерные.</p>
+<div class="tiers">
+<article class="tier"><div class="pic"><span class="badge b-lite">Lite</span><svg viewBox="0 0 240 140" role="img" aria-label="Иллюстрация модели Lite"><use href="#bike"/></svg></div><div class="bd"><h3>Т-1 Lite</h3><div class="for">Для первого байка и города</div><div class="st"><div><b>до 45</b><small>км, 80 кг</small></div><div><b>1,5 кВт</b><small>пиковая</small></div><div><b>26 кг</b><small>без батареи</small></div></div><ul><li>Легко собрать и обслужить</li><li>Тест-драйв и сборка включены</li></ul><div class="ft"><span class="pr">от 000 ₽ <span class="note">пример</span></span><a class="btn d" href="#compare">Сравнить</a></div></div></article>
+<article class="tier hl"><div class="pic"><span class="badge b-pro">Pro</span><svg viewBox="0 0 240 140" role="img" aria-label="Иллюстрация модели Pro"><use href="#bike"/></svg></div><div class="bd"><h3>Т-2 Pro</h3><div class="for">Для троп, леса и поездок с друзьями</div><div class="st"><div><b>до 70</b><small>км, 80 кг</small></div><div><b>3 кВт</b><small>пиковая</small></div><div><b>38 кг</b><small>без батареи</small></div></div><ul><li>Подвеска под грунт</li><li>Запас хода и тяга в балансе</li></ul><div class="ft"><span class="pr">от 000 ₽ <span class="note">пример</span></span><a class="btn p" href="#compare">Сравнить</a></div></div></article>
+<article class="tier"><div class="pic"><span class="badge b-ultra">Ultra</span><svg viewBox="0 0 240 140" role="img" aria-label="Иллюстрация модели Ultra"><use href="#bike"/></svg></div><div class="bd"><h3>Т-3 Ultra</h3><div class="for">Для тех, кто ждет максимум</div><div class="st"><div><b>до 95</b><small>км, 80 кг</small></div><div><b>5 кВт</b><small>пиковая</small></div><div><b>46 кг</b><small>без батареи</small></div></div><ul><li>Усиленная рама и тормоза</li><li>Сервис под ключ в приоритете</li></ul><div class="ft"><span class="pr">от 000 ₽ <span class="note">пример</span></span><a class="btn d" href="#compare">Сравнить</a></div></div></article>
+</div>
+<div class="cats">
+<a class="cat dark" href="#line"><svg aria-hidden="true"><use href="#i-bolt"/></svg><span>Электробайки<small>lite / pro / ultra</small></span></a>
+<a class="cat dark" href="#line"><svg aria-hidden="true"><use href="#i-tread"/></svg><span>Квадроциклы<small>ATV</small></span></a>
+<a class="cat dark" href="#line"><svg aria-hidden="true"><use href="#i-route"/></svg><span>UTV<small>для двоих и груза</small></span></a>
+<a class="cat dark" href="#line"><svg aria-hidden="true"><use href="#i-snow"/></svg><span>Снежная техника<small>снегоходы</small></span></a>
+</div>
+</div>
+</section>
+
+<section id="config" class="dark">
+<div class="wrap">
+<span class="eyebrow">Конфигуратор · тизер</span>
+<h2>Собери под себя, цифры меняются сразу</h2>
+<div class="conf">
+<div class="view"><span class="tag">Т-2 Pro · пример</span><svg id="cv" viewBox="0 0 240 140" role="img" aria-label="Иллюстрация выбранной конфигурации" style="color:#F6F2E9"><use href="#bike"/><rect id="cacc" x="104" y="34" width="46" height="8" fill="#D4F04A"/></svg></div>
+<form class="cfg" id="cf">
+<fieldset><legend>Цвет акцента</legend><div class="opts">
+<label class="opt"><input type="radio" name="c" value="#D4F04A" checked><span><i class="sw" style="background:#D4F04A"></i>Сигнал</span></label>
+<label class="opt"><input type="radio" name="c" value="#F0825C"><span><i class="sw" style="background:#F0825C"></i>Ржа</span></label>
+<label class="opt"><input type="radio" name="c" value="#6FC0C4"><span><i class="sw" style="background:#6FC0C4"></i>Брод</span></label></div></fieldset>
+<fieldset><legend>Батарея</legend><div class="opts">
+<label class="opt"><input type="radio" name="b" value="0" checked><span>Базовая</span></label>
+<label class="opt"><input type="radio" name="b" value="1"><span>Увеличенная</span></label></div></fieldset>
+<fieldset><legend>Пакет</legend><div class="opts">
+<label class="opt"><input type="radio" name="k" value="0" checked><span>Стандарт</span></label>
+<label class="opt"><input type="radio" name="k" value="1"><span>Трасса: защита и шины</span></label></div></fieldset>
+<div class="readout" aria-live="polite"><div><b id="r1">до 70</b><small>км, 80 кг, 25 °C</small></div><div><b id="r2">38 кг</b><small>без батареи</small></div><div><b id="r3">000 ₽</b><small>пример</small></div></div>
+<a class="btn p" href="#testdrive">Записаться с этой сборкой <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+<p class="note" style="margin-top:12px">Тизер: в полной версии добавятся рост райдера, аксессуары и точная цена.</p>
+</form>
+</div>
+</div>
+</section>
+
+<section id="compare">
+<div class="wrap">
+<span class="eyebrow">Сравнение моделей</span>
+<h2>Рядом, в одной таблице</h2>
+<p>Все значения примерные. В боевой версии каждая цифра сопровождается условиями замера.</p>
+<div class="cmp" role="region" aria-label="Таблица сравнения" tabindex="0">
+<table>
+<caption class="sr">Сравнение моделей Lite, Pro и Ultra (значения примерные)</caption>
+<thead><tr><th scope="col">Параметр</th><th scope="col">Т-1 Lite</th><th scope="col">Т-2 Pro</th><th scope="col">Т-3 Ultra</th></tr></thead>
+<tbody>
+<tr><th scope="row">Мотор, пиковая</th><td><b>1,5 кВт</b></td><td><b>3 кВт</b></td><td class="best"><b>5 кВт</b></td></tr>
+<tr><th scope="row">Момент</th><td><b>45 Н·м</b></td><td><b>95 Н·м</b></td><td class="best"><b>140 Н·м</b></td></tr>
+<tr><th scope="row">Запас хода</th><td><b>до 45 км</b><small>80 кг, 25 °C, грунт</small></td><td><b>до 70 км</b><small>80 кг, 25 °C, грунт</small></td><td class="best"><b>до 95 км</b><small>80 кг, 25 °C, грунт</small></td></tr>
+<tr><th scope="row">Вес без батареи</th><td class="best"><b>26 кг</b></td><td><b>38 кг</b></td><td><b>46 кг</b></td></tr>
+<tr><th scope="row">Подвеска</th><td>Передняя вилка</td><td>Вилка и моно-амортизатор</td><td class="best">Регулируемая, длинный ход</td></tr>
+<tr><th scope="row">Подходит для</th><td>Город, первые тропы</td><td>Лес, песок, компании</td><td>Трасса, сложный рельеф</td></tr>
+<tr><th scope="row">Сервис</th><td>Под ключ</td><td>Под ключ</td><td>Под ключ, приоритет</td></tr>
+</tbody></table></div>
+<p class="note" style="margin-top:12px">Подсвечено лучшее значение в строке. Модели и числа условные.</p>
+</div>
+</section>
+
+<section id="custom" class="alt">
+<div class="wrap custom">
+<div class="pic"><svg class="b" viewBox="0 0 240 140" role="img" aria-label="Иллюстрация кастомного байка"><use href="#bike"/></svg></div>
+<div><span class="eyebrow">Кастомные байки</span><h2>Свой цвет, свои узлы, твоя тяга</h2><p>Расскажи, как ездишь: подберем раму, подвеску, батарею и цвет. Соберем в Ростове и покажем на заезде до выдачи.</p><a class="btn d" href="#testdrive">Обсудить сборку</a></div>
+</div>
+</section>
+
+<section id="showroom" class="dark">
+<div class="wrap">
+<span class="eyebrow">Шоурум и география</span>
+<h2>Ростов-на-Дону: приходи и проезжай</h2>
+<div class="show">
+<div>
+<p style="color:var(--text-muted-on-dark)">Живая техника, тест-драйв и сервис в одном месте. Доставим и соберем в Москве, Ростове и Краснодарском крае.</p>
+<div class="addr">
+<div><svg aria-hidden="true"><use href="#i-pin"/></svg><span>Ростов-на-Дону, адрес уточняется (макет)</span></div>
+<div><svg aria-hidden="true"><use href="#i-flag"/></svg><span>Тест-драйв по записи, в будни и по субботам (пример)</span></div>
+<div><svg aria-hidden="true"><use href="#i-wrench"/></svg><span>Сервис и запчасти на месте</span></div>
+</div>
+<a class="btn p" href="#testdrive">Записаться в шоурум <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+</div>
+<div class="map"><svg viewBox="0 0 420 300" role="img" aria-label="Схема: Москва, Ростов-на-Дону и Краснодарский край, маршруты доставки"><rect width="420" height="300" fill="#26211A"/><g stroke="#4A4136" stroke-width="1" opacity=".9"><path d="M0 60H420M0 120H420M0 180H420M0 240H420M70 0V300M140 0V300M210 0V300M280 0V300M350 0V300"/></g><path d="M120 50C130 120 160 170 170 215C190 250 230 255 290 235" fill="none" stroke="#D4F04A" stroke-width="3" stroke-dasharray="10 8"/><path d="M170 215C150 245 110 260 80 270" fill="none" stroke="#D4F04A" stroke-width="3" stroke-dasharray="10 8"/><g><rect x="110" y="40" width="20" height="20" fill="#F6F2E9"/><text x="140" y="56" fill="#F6F2E9" font-family="Onest,Arial,sans-serif" font-size="15" font-weight="700">Москва</text><rect x="160" y="205" width="22" height="22" fill="#D4F04A" stroke="#14110C" stroke-width="3"/><text x="192" y="204" fill="#D4F04A" font-family="Onest,Arial,sans-serif" font-size="15" font-weight="700">Ростов-на-Дону</text><text x="192" y="222" fill="#B3A68F" font-family="Onest,Arial,sans-serif" font-size="12">шоурум</text><rect x="70" y="262" width="20" height="20" fill="#F6F2E9"/><text x="98" y="278" fill="#F6F2E9" font-family="Onest,Arial,sans-serif" font-size="15" font-weight="700">Краснодарский край</text></g></svg><p class="note" style="margin:8px 0 0">Схема, не карта: маршруты условные.</p></div>
+</div>
+<div class="regions">
+<div class="region"><h4>Москва</h4><p>Доставка и сборка, сервис через партнера.</p></div>
+<div class="region"><h4>Ростов-на-Дону</h4><p>Шоурум, тест-драйв, сервис, хранение запчастей.</p></div>
+<div class="region"><h4>Краснодарский край</h4><p>Доставка, выездной тест-драйв по запросу.</p></div>
+</div>
+</div>
+</section>
+
+<section id="svc">
+<div class="wrap">
+<span class="eyebrow">Под ключ</span>
+<h2>Сборка, доставка, сервис</h2>
+<div class="svc">
+<div><svg aria-hidden="true"><use href="#i-sliders"/></svg><div><h4>Сборка</h4><p>Привозим собранным и проверенным. Рядом с ценой указываем, что входит.</p></div></div>
+<div><svg aria-hidden="true"><use href="#i-truck"/></svg><div><h4>Доставка</h4><p>Москва, Ростов, Краснодарский край. Срок в карточке, а не "в течение недели".</p></div></div>
+<div><svg aria-hidden="true"><use href="#i-wrench"/></svg><div><h4>Сервис</h4><p>Запись онлайн, запчасти в наличии, ответ в рабочее время.</p></div></div>
+</div>
+</div>
+</section>
+
+<section id="testdrive" class="td">
+<div class="wrap">
+<div><span class="eyebrow" style="color:var(--color-mud-800)">Тест-драйв</span><h2>Сначала проедь. Потом решай.</h2><p>Оставь телефон, перезвоним и подберем время. Для родителей: приходите вместе, расскажем и покажем все условия.</p></div>
+<form id="tdf" novalidate>
+<div class="field"><label for="n">Имя</label><input id="n" name="n" autocomplete="given-name" required></div>
+<div class="field"><label for="ph">Телефон</label><input id="ph" name="ph" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 000 000-00-00" required></div>
+<div class="field"><label for="m">Модель</label><select id="m" name="m"><option>Т-2 Pro (пример)</option><option>Т-1 Lite (пример)</option><option>Т-3 Ultra (пример)</option><option>Пока не знаю, помогите выбрать</option></select></div>
+<button class="btn p" type="submit">Записаться на тест-драйв</button>
+<div class="msg" id="msg" role="status"></div>
+<p class="note" style="margin:8px 0 0">Макет: форма никуда не отправляется.</p>
+</form>
+</div>
+<div class="tr" aria-hidden="true"><svg preserveAspectRatio="none"><rect width="100%" height="100%" fill="url(#tread2)"/></svg></div>
+</section>
+</main>
+<footer>
+<div class="wrap">
+<div class="cols">
+<div><svg class="l" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 434 120" role="img" aria-label="ТЯГА – горизонтальный логотип на темном"><title>ТЯГА – горизонтальный логотип на темном</title><rect width="120" height="120" rx="22" fill="#D4F04A"/><g transform="translate(0 0)"><path fill="#14110C" d="M18 20H46L38 50H10Z"/><path fill="#14110C" d="M50 20H78L70 50H42Z"/><path fill="#14110C" d="M82 20H110L102 50H74Z"/><path fill="#14110C" d="M47 56H73V104H57L47 94Z"/></g><g transform="translate(154 29.0) scale(0.62)" fill="#F6F2E9"><path transform="translate(0 0)" fill-rule="evenodd" d="M0 0H76V24H50V100H26V24H0Z"/><path transform="translate(88 0)" fill-rule="evenodd" d="M0 0H26L40 34L54 0H80L52 52V100H28V52Z"/><path transform="translate(180 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/><path transform="translate(276 0)" fill-rule="evenodd" d="M0 0H76V24H24V76H52V60H38V40H76V100H0Z"/><path transform="translate(364 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/></g></svg><p>Электробайки, квадроциклы, UTV и снежная техника. Розница и опт.</p></div>
+<div><h4>Каталог</h4><ul><li><a href="#line">Электробайки</a></li><li><a href="#line">Квадроциклы</a></li><li><a href="#line">UTV</a></li><li><a href="#line">Снежная техника</a></li></ul></div>
+<div><h4>Покупателю</h4><ul><li><a href="#quiz">Подбор</a></li><li><a href="#compare">Сравнение</a></li><li><a href="#config">Конфигуратор</a></li><li><a href="#svc">Сервис</a></li></ul></div>
+<div><h4>Контакты</h4><ul><li><a href="#showroom">Шоурум в Ростове</a></li><li><a href="#testdrive">Тест-драйв</a></li><li><a href="#showroom">Опт и дилерам</a></li></ul></div>
+</div>
+<div class="legal">Макет главной страницы, рабочее название «ТЯГА», подпись GT. Названия моделей, цифры, цены и адреса условные.</div>
+</div>
+</footer>
+<script>
+(function(){
+var M={
+ forest:{pro:["Pro","Т-2 Pro","Баланс запаса хода и тяги для лесных троп.","до 70","3 кВт","38 кг"]},
+};
+function pick(t,e,p){
+ var tier=(e==='pro'||p==='power'&&e!=='new')?'ultra':(e==='new'&&p!=='power'||p==='light'&&t==='city')?'lite':'pro';
+ if(t==='snow'){tier=e==='new'?'pro':'ultra'}
+ var D={lite:["Lite","Т-1 Lite","Легкий и понятный старт для города и первых троп.","до 45","1,5 кВт","26 кг","b-lite"],
+  pro:["Pro","Т-2 Pro","Баланс запаса хода и тяги для лесных троп и песка.","до 70","3 кВт","38 кг","b-pro"],
+  ultra:["Ultra","Т-3 Ultra","Максимум тяги и запаса хода для сложного рельефа.","до 95","5 кВт","46 кг","b-ultra"]};
+ if(t==='snow'){D[tier][2]='Для снега подберем снежную технику, а байк подскажем под сезон.'}
+ return D[tier];
+}
+function q(n){var r=document.querySelector('#qz input[name='+n+']:checked');return r?r.value:''}
+function upd(){var d=pick(q('t'),q('e'),q('p'));
+ var b=document.getElementById('rb');b.textContent=d[0];b.className='badge '+d[6];
+ document.getElementById('rt').textContent=d[1];document.getElementById('rd').textContent=d[2];
+ document.getElementById('s1').textContent=d[3];document.getElementById('s2').textContent=d[4];document.getElementById('s3').textContent=d[5];}
+var qz=document.getElementById('qz');if(qz){qz.addEventListener('change',upd);upd();}
+var cf=document.getElementById('cf');
+function cv(n){var r=cf.querySelector('input[name='+n+']:checked');return r?r.value:''}
+function updc(){var acc=document.getElementById('cacc');acc.setAttribute('fill',cv('c'));
+ var big=cv('b')==='1',pack=cv('k')==='1';
+ document.getElementById('r1').textContent=big?'до 90':'до 70';
+ document.getElementById('r2').textContent=(pack?'41':'38')+' кг';
+ document.getElementById('r3').textContent=(big||pack)?'000+ ₽':'000 ₽';}
+if(cf){cf.addEventListener('change',updc);updc();}
+var f=document.getElementById('tdf');
+if(f){f.addEventListener('submit',function(e){e.preventDefault();var m=document.getElementById('msg');
+ if(!f.n.value.trim()||f.ph.value.replace(/\D/g,'').length<10){m.textContent='Укажите имя и телефон полностью.';return}
+ m.textContent='Спасибо, это макет: заявка не отправлена.';});}
+})();
+</script>
+</body>
+</html>

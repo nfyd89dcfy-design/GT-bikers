@@ -1,0 +1,68 @@
+/* ТЯГА – дизайн-токены (рабочее название бренда, версия 0.1) */
+:root{
+  --color-mud-950: #14110C;
+  --color-mud-800: #26211A;
+  --color-mud-600: #4A4136;
+  --color-clay-600: #6A5D4A;
+  --color-sand-400: #B3A68F;
+  --color-dust-200: #E3DACB;
+  --color-bone-50: #F6F2E9;
+  --color-signal-400: #D4F04A;
+  --color-rust-600: #B93A18;
+  --color-rust-300: #F0825C;
+  --color-ford-600: #2F6F73;
+  --color-ford-300: #6FC0C4;
+  /* roles */
+  --bg: var(--color-bone-50);
+  --bg-alt: var(--color-dust-200);
+  --bg-dark: var(--color-mud-950);
+  --surface-dark: var(--color-mud-800);
+  --text: var(--color-mud-950);
+  --text-muted: var(--color-clay-600);
+  --text-on-dark: var(--color-bone-50);
+  --text-muted-on-dark: var(--color-sand-400);
+  --accent: var(--color-signal-400);
+  --accent-text: var(--color-mud-950);
+  --danger: var(--color-rust-600);
+  --info: var(--color-ford-600);
+  --line: var(--color-mud-600);
+  --focus: var(--color-ford-600);
+  --focus-on-dark: var(--color-signal-400);
+  --font-display: 'Oswald','Arial Narrow','DejaVu Sans Condensed',Impact,sans-serif;
+  --font-body: 'Onest','Segoe UI','Helvetica Neue',Arial,sans-serif;
+  --font-mono: 'JetBrains Mono','DejaVu Sans Mono',Consolas,monospace;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 17px;
+  --text-lg: 20px;
+  --text-h3: 26px;
+  --text-h2: clamp(30px,4vw,44px);
+  --text-h1: clamp(38px,6vw,72px);
+  --text-display: clamp(48px,9vw,120px);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+  --cut: 14px;
+  --lh-tight: 1.05;
+  --lh-body: 1.55;
+  --tracking-caps: 0.08em;
+  --ease: cubic-bezier(.2,.7,.2,1);
+  --dur-fast: 120ms;
+  --dur: 220ms;
+  --container: 1200px;
+  --tap: 44px;
+}
+@media (prefers-reduced-motion: reduce){:root{--dur-fast:0ms;--dur:0ms}}

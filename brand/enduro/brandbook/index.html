@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ТЯГА – брендбук (направление Enduro)</title>
+<meta name="description" content="Брендбук ТЯГА: позиционирование, голос, логотип, цвет, типографика, интерфейс, применение. Рабочее название, версия 0.1.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%20width%3D%2232%22%20height%3D%2232%22%20role%3D%22img%22%20aria-label%3D%22%D0%A2%D0%AF%D0%93%D0%90%20%E2%80%93%20%D1%84%D0%B0%D0%B2%D0%B8%D0%BA%D0%BE%D0%BD%22%3E%3Ctitle%3E%D0%A2%D0%AF%D0%93%D0%90%20%E2%80%93%20%D1%84%D0%B0%D0%B2%D0%B8%D0%BA%D0%BE%D0%BD%3C%2Ftitle%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%2314110C%22%2F%3E%3Cg%20transform%3D%22translate%28-0.5%200%29%20scale%280.27%29%22%3E%3Cpath%20fill%3D%22%23D4F04A%22%20d%3D%22M18%2020H46L38%2050H10Z%22%2F%3E%3Cpath%20fill%3D%22%23D4F04A%22%20d%3D%22M50%2020H78L70%2050H42Z%22%2F%3E%3Cpath%20fill%3D%22%23D4F04A%22%20d%3D%22M82%2020H110L102%2050H74Z%22%2F%3E%3Cpath%20fill%3D%22%23F6F2E9%22%20d%3D%22M47%2056H73V104H57L47%2094Z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Onest:wght@400;500;700&family=Oswald:wght@500;600;700&display=swap&subset=cyrillic" rel="stylesheet">
+<style>
+/* ТЯГА – дизайн-токены (рабочее название бренда, версия 0.1) */
+:root{
+  --color-mud-950: #14110C;
+  --color-mud-800: #26211A;
+  --color-mud-600: #4A4136;
+  --color-clay-600: #6A5D4A;
+  --color-sand-400: #B3A68F;
+  --color-dust-200: #E3DACB;
+  --color-bone-50: #F6F2E9;
+  --color-signal-400: #D4F04A;
+  --color-rust-600: #B93A18;
+  --color-rust-300: #F0825C;
+  --color-ford-600: #2F6F73;
+  --color-ford-300: #6FC0C4;
+  /* roles */
+  --bg: var(--color-bone-50);
+  --bg-alt: var(--color-dust-200);
+  --bg-dark: var(--color-mud-950);
+  --surface-dark: var(--color-mud-800);
+  --text: var(--color-mud-950);
+  --text-muted: var(--color-clay-600);
+  --text-on-dark: var(--color-bone-50);
+  --text-muted-on-dark: var(--color-sand-400);
+  --accent: var(--color-signal-400);
+  --accent-text: var(--color-mud-950);
+  --danger: var(--color-rust-600);
+  --info: var(--color-ford-600);
+  --line: var(--color-mud-600);
+  --focus: var(--color-ford-600);
+  --focus-on-dark: var(--color-signal-400);
+  --font-display: 'Oswald','Arial Narrow','DejaVu Sans Condensed',Impact,sans-serif;
+  --font-body: 'Onest','Segoe UI','Helvetica Neue',Arial,sans-serif;
+  --font-mono: 'JetBrains Mono','DejaVu Sans Mono',Consolas,monospace;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 17px;
+  --text-lg: 20px;
+  --text-h3: 26px;
+  --text-h2: clamp(30px,4vw,44px);
+  --text-h1: clamp(38px,6vw,72px);
+  --text-display: clamp(48px,9vw,120px);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+  --cut: 14px;
+  --lh-tight: 1.05;
+  --lh-body: 1.55;
+  --tracking-caps: 0.08em;
+  --ease: cubic-bezier(.2,.7,.2,1);
+  --dur-fast: 120ms;
+  --dur: 220ms;
+  --container: 1200px;
+  --tap: 44px;
+}
+@media (prefers-reduced-motion: reduce){:root{--dur-fast:0ms;--dur:0ms}}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:400 var(--text-base)/var(--lh-body) var(--font-body);overflow-x:hidden}
+img,svg{max-width:100%}
+a{color:var(--color-ford-600)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.dark :focus-visible,.hero :focus-visible,header :focus-visible{outline-color:var(--focus-on-dark)}
+.wrap{max-width:var(--container);margin:0 auto;padding:0 16px}
+@media(min-width:720px){.wrap{padding:0 32px}}
+h1,h2,h3,h4{font-family:var(--font-display);text-transform:uppercase;line-height:var(--lh-tight);margin:0 0 .5em;letter-spacing:.01em;font-weight:700}
+h1{font-size:var(--text-h1)} h2{font-size:var(--text-h2)} h3{font-size:var(--text-h3)} h4{font-size:var(--text-lg)}
+p{margin:0 0 1em;max-width:68ch}
+.mono{font-family:var(--font-mono)}
+.eyebrow{font:700 12px/1 var(--font-mono);letter-spacing:var(--tracking-caps);text-transform:uppercase;color:var(--text-muted);margin-bottom:14px;display:block}
+.dark .eyebrow{color:var(--text-muted-on-dark)}
+section{padding:64px 0;position:relative}
+@media(min-width:720px){section{padding:96px 0}}
+.dark{background:var(--bg-dark);color:var(--text-on-dark)}
+.alt{background:var(--bg-alt)}
+.dark a{color:var(--color-ford-300)}
+/* top nav */
+header.top{position:sticky;top:0;z-index:20;background:var(--bg-dark);color:var(--text-on-dark);border-bottom:1px solid var(--color-mud-600)}
+header.top .wrap{display:flex;align-items:center;gap:20px;height:56px}
+header.top .lg{height:28px;flex:none;display:block} header.top .lg svg{height:28px;width:auto;display:block}
+nav.links{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
+nav.links::-webkit-scrollbar{display:none}
+nav.links a{color:var(--text-muted-on-dark);text-decoration:none;font:500 13px/1 var(--font-mono);padding:12px 10px;white-space:nowrap;min-height:44px;display:flex;align-items:center}
+nav.links a:hover{color:var(--accent)}
+/* hero */
+.hero{background:var(--bg-dark);color:var(--text-on-dark);padding:56px 0 0;overflow:hidden}
+.hero h1{font-size:var(--text-display);margin:0 0 16px;max-width:10ch}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .lead{font-size:var(--text-lg);color:var(--text-muted-on-dark);max-width:52ch}
+.hero .band{margin-top:48px;color:var(--color-mud-800);height:90px}
+.hero .band svg{width:100%;height:100%;display:block}
+.meta{display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:24px;font:500 13px/1.4 var(--font-mono);color:var(--text-muted-on-dark)}
+/* grid helpers */
+.g2,.g3,.g4{display:grid;gap:16px}
+@media(min-width:720px){.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1000px){.g4{grid-template-columns:repeat(4,1fr)}}
+.card{background:#fff;border:1px solid var(--color-dust-200);padding:20px;min-width:0}
+.alt .card{border-color:#cfc4b0}
+.dark .card{background:var(--surface-dark);border-color:var(--color-mud-600)}
+.card h3,.card h4{margin-bottom:.4em}
+.cut{clip-path:polygon(0 0,calc(100% - var(--cut)) 0,100% var(--cut),100% 100%,var(--cut) 100%,0 calc(100% - var(--cut)))}
+.num{font:700 clamp(36px,6vw,56px)/1 var(--font-mono);letter-spacing:-.03em}
+.quote{font:700 clamp(26px,4vw,40px)/1.1 var(--font-display);text-transform:uppercase;border-left:8px solid var(--accent);padding-left:20px;margin:0 0 24px;max-width:22ch}
+/* voice */
+.pair{display:grid;gap:12px}
+@media(min-width:720px){.pair{grid-template-columns:1fr 1fr}}
+.say{padding:20px;min-width:0}
+.say .tag{font:700 12px/1 var(--font-mono);letter-spacing:var(--tracking-caps);text-transform:uppercase;display:block;margin-bottom:10px}
+.say.ty{background:var(--accent);color:var(--accent-text)}
+.say.vy{background:var(--color-mud-800);color:var(--text-on-dark)}
+.say.no{color:var(--text);background:#fff;border:1px dashed var(--color-mud-600)}
+.say.no s{color:var(--danger)}
+/* logo */
+.logo-stage{display:flex;align-items:center;justify-content:center;padding:48px 16px;min-height:200px}
+.logo-stage svg{height:clamp(56px,12vw,110px);width:auto;display:block}
+.logo-stage.d{background:var(--bg-dark)} .logo-stage.l{background:var(--bg);border:1px solid var(--color-dust-200)}
+.logo-stage.lime{background:var(--accent)}
+.logo-stage.small svg{height:64px}
+.clear{position:relative;padding:48px;background:var(--bg);border:1px solid #cfc4b0;display:inline-block;max-width:100%}
+.clear .box{outline:1px dashed var(--color-ford-600);outline-offset:0;position:relative;display:inline-block}
+.clear .box svg{height:80px;width:auto;display:block}
+.clear .x{position:absolute;background:rgba(47,111,115,.18);color:var(--color-ford-600);font:700 12px/1 var(--font-mono);display:flex;align-items:center;justify-content:center}
+.sizes{display:flex;flex-wrap:wrap;gap:32px;align-items:flex-end}
+.sizes figure{margin:0}
+.sizes figcaption{font:500 12px/1.3 var(--font-mono);color:var(--text-muted);margin-top:8px}
+.dont{position:relative;padding:20px;background:#fff;border:1px solid #cfc4b0;display:flex;align-items:center;justify-content:center;height:130px;overflow:hidden}
+.dont svg{height:42px;width:auto;display:block}
+.dont::after{content:"";position:absolute;inset:0;background:linear-gradient(to top right,transparent calc(50% - 1.500px),var(--danger) calc(50% - 1.500px),var(--danger) calc(50% + 1.500px),transparent calc(50% + 1.500px));pointer-events:none}
+.dont-cap{font-size:14px;margin:8px 0 16px}
+/* colors */
+.sw{display:grid;grid-template-columns:96px 1fr;min-width:0;border:1px solid #cfc4b0;background:#fff}
+.sw .chip{min-height:96px}
+.sw .tx{padding:10px 14px;font-size:14px;min-width:0}
+.sw b{font-family:var(--font-display);text-transform:uppercase;font-size:18px;display:block}
+.sw code{font:500 13px/1.5 var(--font-mono);display:block;word-break:break-word}
+.tbl-wrap{overflow-x:auto;border:1px solid #cfc4b0;background:#fff}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:14px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--color-dust-200);vertical-align:middle}
+th{font:700 12px/1.2 var(--font-mono);text-transform:uppercase;letter-spacing:.06em;background:var(--color-dust-200)}
+.pass{font:700 12px/1 var(--font-mono);padding:4px 6px;display:inline-block}
+.aaa{background:var(--accent);color:var(--accent-text)} .aa{background:var(--color-mud-950);color:var(--color-bone-50)} .fail{background:var(--danger);color:#fff}
+.ratio{display:flex;height:64px;margin:16px 0;overflow:hidden;border:1px solid #cfc4b0}
+.ratio div{flex:1;display:flex;align-items:flex-end;padding:6px;font:700 11px/1 var(--font-mono)}
+/* type */
+.spec{display:grid;gap:8px;padding:16px 0;border-bottom:1px solid var(--color-mud-600)}
+@media(min-width:720px){.spec{grid-template-columns:200px 1fr;align-items:baseline}}
+.spec .k{font:500 12px/1.4 var(--font-mono);color:var(--text-muted-on-dark)}
+.sample-d{font:700 clamp(40px,8vw,96px)/1 var(--font-display);text-transform:uppercase}
+.glyphs{font:500 clamp(22px,3vw,32px)/1.3 var(--font-display);overflow-wrap:anywhere}
+/* patterns */
+.pat{height:160px;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:12px;font:500 12px/1.3 var(--font-mono)}
+.pat svg.bg{position:absolute;inset:0;width:100%;height:100%}
+.pat span{position:relative;background:var(--bg-dark);color:var(--text-on-dark);padding:4px 8px}
+/* photo scenes */
+.scene{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--bg-dark);color:var(--text-on-dark)}
+.scene svg.s{position:absolute;inset:0;width:100%;height:100%;display:block}
+.scene figcaption{position:absolute;left:0;bottom:0;right:0;padding:10px 12px;background:linear-gradient(transparent,rgba(20,17,12,.92));font:500 12px/1.35 var(--font-mono)}
+.scene.w{aspect-ratio:16/10}
+ul.ck{list-style:none;margin:0;padding:0}
+ul.ck li{padding:6px 0 6px 26px;position:relative}
+ul.ck li::before{content:"";position:absolute;left:0;top:13px;width:14px;height:6px;background:var(--accent);transform:skewX(-20deg)}
+.dark ul.ck li::before{background:var(--accent)}
+.alt ul.ck li::before,.light ul.ck li::before{background:var(--color-mud-950)}
+ul.no li::before{background:var(--danger)!important}
+/* icons */
+.icon{display:flex;flex-direction:column;gap:10px;align-items:flex-start;padding:16px;background:#fff;border:1px solid #cfc4b0;font:500 13px/1.3 var(--font-mono)}
+.icon svg{width:36px;height:36px;color:var(--text)}
+/* UI */
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:var(--tap);padding:0 22px;font:700 15px/1 var(--font-display);text-transform:uppercase;letter-spacing:.06em;text-decoration:none;border:2px solid transparent;cursor:pointer;transition:transform var(--dur-fast) var(--ease),background var(--dur-fast);clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
+.btn svg{width:18px;height:18px}
+.btn.p{background:var(--accent);color:var(--accent-text)} .btn.p:hover{background:#e3f77a}
+.btn.d{background:var(--color-mud-950);color:var(--color-bone-50)} .btn.d:hover{background:var(--color-mud-800)}
+.btn.o{background:transparent;color:inherit;border-color:currentColor}
+.btn:active{transform:translateY(1px)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.badge{display:inline-block;font:700 12px/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;padding:6px 8px}
+.b-lite{background:var(--color-dust-200);color:var(--color-mud-950);border:1px solid var(--color-clay-600)}
+.b-pro{background:var(--accent);color:var(--accent-text)}
+.b-ultra{background:var(--color-rust-600);color:var(--color-bone-50)}
+.b-new{background:var(--color-mud-950);color:var(--accent)}
+.pc{background:#fff;border:1px solid #cfc4b0;display:flex;flex-direction:column;min-width:0}
+.pc .pic{background:var(--color-dust-200);color:var(--color-mud-950);padding:20px 12px 8px;position:relative}
+.pc .pic .badge{position:absolute;left:12px;top:12px}
+.pc .pic svg{width:100%;max-width:300px;height:auto;display:block;margin:0 auto}
+.pc .bd{padding:16px}
+.pc h4{margin:0 0 4px;font-size:22px}
+.pc .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0;padding:12px 0;border-top:1px solid var(--color-dust-200);border-bottom:1px solid var(--color-dust-200)}
+.pc .stats b{font:700 20px/1 var(--font-mono);display:block}
+.pc .stats small{font:500 11px/1.3 var(--font-mono);color:var(--text-muted)}
+.pc .ft{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pc .pr{font:700 22px/1 var(--font-mono)}
+.note{font:500 12px/1.4 var(--font-mono);color:var(--text-muted)}
+.dark .note{color:var(--text-muted-on-dark)}
+.field label{display:block;font:700 12px/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.field input,.field select{width:100%;min-height:var(--tap);padding:0 12px;border:2px solid var(--color-mud-600);background:#fff;font:400 16px var(--font-body);color:var(--text)}
+.field input:focus-visible,.field select:focus-visible{border-color:var(--color-ford-600)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip-o{min-height:var(--tap);padding:0 16px;border:2px solid var(--color-mud-600);background:#fff;font:500 15px var(--font-body);display:inline-flex;align-items:center;cursor:pointer}
+.chip-o[aria-pressed="true"]{background:var(--color-mud-950);color:var(--accent);border-color:var(--color-mud-950)}
+/* applications */
+.app{min-width:0}
+.app h4{margin:12px 0 4px}
+.biz{aspect-ratio:1.75/1;background:var(--bg-dark);color:var(--text-on-dark);padding:5% 6%;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;box-shadow:0 10px 24px -10px rgba(20,17,12,.5)}
+.biz svg.lg{height:clamp(22px,5vw,34px);width:auto;display:block}
+.biz .n{font:700 clamp(15px,3.5vw,20px)/1.1 var(--font-display);text-transform:uppercase}
+.biz .c{font:500 clamp(10px,2.4vw,12px)/1.5 var(--font-mono);color:var(--text-muted-on-dark)}
+.biz .tr{position:absolute;right:-6%;bottom:-18%;width:55%;color:var(--color-mud-800);opacity:.9}
+.biz.back{background:var(--accent);color:var(--accent-text)}
+.biz.back .c{color:var(--color-mud-800)}
+.box3d{aspect-ratio:1.3/1;background:var(--bg-alt);display:flex;align-items:center;justify-content:center;padding:6%}
+.pack{width:100%;background:var(--bg-dark);color:var(--text-on-dark);padding:8% 8% 6%;aspect-ratio:1.5/1;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;box-shadow:12px 12px 0 var(--color-mud-600)}
+.pack .tag{align-self:flex-start}
+.pack svg.lg{height:clamp(24px,6vw,40px);width:auto;display:block}
+.pack .t{font:700 clamp(18px,4.5vw,30px)/1 var(--font-display);text-transform:uppercase}
+.pack .t em{font-style:normal;color:var(--accent)}
+.pack .tr{position:absolute;right:0;top:0;width:44%;height:100%;color:var(--color-mud-800)}
+.sign{background:#2b2620;padding:16px}
+.sign .face{background:var(--bg-dark);color:var(--text-on-dark);display:flex;align-items:center;gap:clamp(10px,3vw,24px);padding:clamp(12px,3vw,24px);border-bottom:6px solid var(--accent);position:relative;overflow:hidden}
+.sign svg.lg{height:clamp(30px,7vw,64px);width:auto;flex:none;display:block}
+.sign .city{font:500 clamp(10px,2.4vw,14px)/1.3 var(--font-mono);color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-left:auto;text-align:right}
+.sign .wall{height:56px;background:repeating-linear-gradient(90deg,#3a342c 0 62px,#332e26 62px 64px)}
+.van{background:var(--bg-alt);padding:16px}
+.van svg{width:100%;height:auto;display:block}
+.social{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.post{aspect-ratio:1/1;background:var(--bg-dark);color:var(--text-on-dark);padding:8%;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;min-width:0}
+.post .big{font:700 clamp(40px,10vw,64px)/.95 var(--font-mono);color:var(--accent);letter-spacing:-.04em}
+.post .t{font:700 clamp(14px,3.4vw,20px)/1.1 var(--font-display);text-transform:uppercase}
+.post svg.lg{height:20px;width:auto;display:block}
+.post.l{background:var(--accent);color:var(--accent-text)} .post.l .big{color:var(--color-mud-950)}
+.story{aspect-ratio:9/16;background:var(--bg-dark);color:var(--text-on-dark);padding:8%;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;min-width:0;grid-column:span 2;max-width:260px;margin:0 auto;width:100%}
+.story .t{font:700 clamp(18px,5vw,26px)/1.05 var(--font-display);text-transform:uppercase;position:relative}
+.story .t em{font-style:normal;color:var(--accent)}
+.story svg.lg{height:22px;width:auto;display:block;position:relative}
+.story .tr{position:absolute;left:0;right:0;bottom:0;height:40%;color:var(--color-mud-800)}
+.story .sw-up{position:relative;font:700 12px/1 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.biz>:not(.tr),.pack>:not(.tr),.story>:not(.tr),.post>:not(.tr){position:relative;z-index:1}
+.tr{z-index:0}
+footer{background:var(--bg-dark);color:var(--text-muted-on-dark);padding:40px 0;font:500 13px/1.6 var(--font-mono)}
+footer svg{height:28px;width:auto;display:block;margin-bottom:12px}
+@media(prefers-reduced-motion:no-preference){.btn,.chip-o{transition:all var(--dur-fast) var(--ease)}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+<defs>
+<pattern id="tread" width="48" height="36" patternUnits="userSpaceOnUse"><path d="M10 4H30L24 18H4Z" fill="#2E281F"/><path d="M34 22H54L48 36H28Z" fill="#2E281F" transform="translate(-24 0)"/></pattern>
+<pattern id="tread2" width="48" height="36" patternUnits="userSpaceOnUse"><path d="M10 4H30L24 18H4Z" fill="#C5E13A"/><path d="M34 22H54L48 36H28Z" fill="#C5E13A" transform="translate(-24 0)"/></pattern>
+<symbol id="bike" viewBox="0 0 240 140"><g fill="none" stroke="currentColor" stroke-width="6" stroke-linejoin="miter"><circle cx="50" cy="100" r="30"/><circle cx="190" cy="100" r="30"/><circle cx="50" cy="100" r="37" stroke-width="5" stroke-dasharray="7 6"/><circle cx="190" cy="100" r="37" stroke-width="5" stroke-dasharray="7 6"/><path d="M50 100L104 90M190 100L168 38M156 30L184 38"/></g><path fill="currentColor" d="M96 54H150L158 94H106Z"/><path fill="currentColor" d="M52 48H112L108 58H56Z"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L5 13h6l-1 9 8-12h-6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter"/></symbol>
+<symbol id="i-tread" viewBox="0 0 24 24"><path d="M3 5h8l-2 6H1zM15 13h8l-2 6h-8z" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+<symbol id="i-route" viewBox="0 0 24 24"><path d="M5 20V9a3 3 0 013-3h8a3 3 0 013 3v0a3 3 0 01-3 3H8" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="18" width="4" height="4" fill="currentColor"/><path d="M19 3v6M16 3h6" stroke="currentColor" stroke-width="2"/></symbol>
+<symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14 3a5 5 0 00-3.5 6.5L3 17l4 4 7.5-7.5A5 5 0 0021 10l-3 1-3-3 1-3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 22s7-6.5 7-12a7 7 0 00-14 0c0 5.500 7 12 7 12z" fill="none" stroke="currentColor" stroke-width="2"/><rect x="10" y="8" width="4" height="4" fill="currentColor"/></symbol>
+<symbol id="i-truck" viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 9h5l3 3v4h-8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter"/><circle cx="7" cy="18" r="2" fill="currentColor"/><circle cx="18" cy="18" r="2" fill="currentColor"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 22V3M5 4h14l-3 4 3 4H5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter"/></symbol>
+<symbol id="i-compare" viewBox="0 0 24 24"><path d="M4 20V10h5v10M15 20V4h5v16M2 20h20" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+<symbol id="i-sliders" viewBox="0 0 24 24"><path d="M3 7h18M3 17h18" stroke="currentColor" stroke-width="2"/><rect x="14" y="4" width="4" height="6" fill="currentColor"/><rect x="6" y="14" width="4" height="6" fill="currentColor"/></symbol>
+<symbol id="i-snow" viewBox="0 0 24 24"><path d="M12 2v20M3.300 7l17.400 10M3.300 17L20.700 7" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12l6 6L20 6" fill="none" stroke="currentColor" stroke-width="3"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M3 12h16M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.500"/></symbol>
+</defs></svg>
+
+<a href="#main" style="position:absolute;left:-999px" onfocus="this.style.left='8px';this.style.top='8px';this.style.zIndex=99;this.style.background='#D4F04A';this.style.padding='8px'">К содержанию</a>
+<header class="top">
+<div class="wrap">
+<a class="lg" href="#top" aria-label="ТЯГА – к началу"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 434 120" role="img" aria-label="ТЯГА – горизонтальный логотип на темном"><title>ТЯГА – горизонтальный логотип на темном</title><rect width="120" height="120" rx="22" fill="#D4F04A"/><g transform="translate(0 0)"><path fill="#14110C" d="M18 20H46L38 50H10Z"/><path fill="#14110C" d="M50 20H78L70 50H42Z"/><path fill="#14110C" d="M82 20H110L102 50H74Z"/><path fill="#14110C" d="M47 56H73V104H57L47 94Z"/></g><g transform="translate(154 29.0) scale(0.62)" fill="#F6F2E9"><path transform="translate(0 0)" fill-rule="evenodd" d="M0 0H76V24H50V100H26V24H0Z"/><path transform="translate(88 0)" fill-rule="evenodd" d="M0 0H26L40 34L54 0H80L52 52V100H28V52Z"/><path transform="translate(180 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/><path transform="translate(276 0)" fill-rule="evenodd" d="M0 0H76V24H24V76H52V60H38V40H76V100H0Z"/><path transform="translate(364 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/></g></svg></a>
+<nav class="links" aria-label="Разделы брендбука">
+<a href="#position">Позиция</a><a href="#voice">Голос</a><a href="#logo">Логотип</a><a href="#color">Цвет</a><a href="#type">Шрифты</a><a href="#graphic">Графика</a><a href="#photo">Фото</a><a href="#icons">Иконки</a><a href="#ui">Интерфейс</a><a href="#apply">Применение</a>
+</nav>
+</div>
+</header>
+
+<main id="main">
+<div class="hero" id="top">
+<div class="wrap">
+<span class="eyebrow" style="color:var(--text-muted-on-dark)">Брендбук 0.1 · рабочее название · направление Enduro</span>
+<h1>Тяга <em>есть.</em></h1>
+<p class="lead">Электровелосипеды, квадроциклы, UTV и снежная техника. Розница и опт. Москва, Ростов-на-Дону, Краснодарский край. Мы говорим цифрами, показываем трассу и ставим на колеса под ключ: сборка, доставка, сервис.</p>
+<div class="meta"><span>Шоурум: Ростов-на-Дону</span><span>Линейка: lite / pro / ultra</span><span>Подпись: ТЯГА GT</span></div>
+</div>
+<div class="band" aria-hidden="true"><svg preserveAspectRatio="none" viewBox="0 0 1200 90"><rect width="1200" height="90" fill="currentColor" style="color:transparent"/><g style="color:var(--color-mud-800)"><rect width="1200" height="90" fill="url(#tread)"/></g></svg></div>
+</div>
+
+<section id="position" class="light">
+<div class="wrap">
+<span class="eyebrow">01 Позиционирование</span>
+<h2>Честный эксперт по технике, которая едет там, где не асфальт</h2>
+<div class="g2" style="margin-top:32px">
+<div>
+<p><strong>Для кого.</strong> Молодые райдеры, которые хотят скорость и компанию, и родители, которые платят и хотят понятный сервис. Покупатели старше, у которых детская мечта о своем байке наконец доросла до бюджета. Оптовые партнеры: дилеры, прокат, сети.</p>
+<p><strong>Что обещаем.</strong> Конкретные цифры вместо эпитетов, подбор модели за минуту, тест-драйв перед покупкой, сборку и доставку, сервис под ключ. Каждую цифру сопровождаем условием замера.</p>
+<p><strong>Чем отличаемся.</strong> Рынок говорит каталогом и скидками. Мы говорим подбором, сравнением и живыми кадрами с трассы. Менее десятка моделей на странице, понятная разница между lite, pro и ultra.</p>
+</div>
+<div class="card cut" style="background:var(--bg-dark);color:var(--text-on-dark);border:0">
+<span class="eyebrow" style="color:var(--text-muted-on-dark)">Формула</span>
+<p class="quote" style="color:var(--text-on-dark)">Для тех, кто едет, ТЯГА – техника с цифрами и сервисом, потому что слова не заводят мотор.</p>
+<p class="note">Формат: для кого, ТЯГА – что, потому что.</p>
+</div>
+</div>
+
+<div class="g2" style="margin-top:48px">
+<div class="card">
+<span class="eyebrow">Архетип</span>
+<h3>Следопыт + Мастер</h3>
+<p>Основной архетип – Следопыт: идет по маршруту, проверяет условия, делится картой. Второй – Мастер: знает технику до винта и не врет про нее. В визуале это грязь, трасса, точные данные; в речи – спокойное знание без хвастовства.</p>
+<p class="note">Чего избегаем: Шут и Бунтарь в чистом виде (шум без сервиса).</p>
+</div>
+<div class="card">
+<span class="eyebrow">Ценности</span>
+<ul class="ck">
+<li><strong>Цифра вместо эпитета.</strong> Не "мощный", а число и как замерили.</li>
+<li><strong>Под ключ.</strong> Сборка, доставка, сервис входят в разговор о цене.</li>
+<li><strong>Грязь не стыдно.</strong> Техника рассчитана на трассу, и мы это показываем.</li>
+<li><strong>Тест до покупки.</strong> Сначала проехал, потом решил.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+
+<section id="voice" class="dark">
+<div class="wrap">
+<span class="eyebrow">02 Тон голоса</span>
+<h2>Коротко, конкретно, по делу</h2>
+<div class="g3" style="margin-top:24px">
+<div class="card"><h4>Точный</h4><p>Число, единица, условие. "до 70 км при 80 кг и 25 °C" (пример).</p></div>
+<div class="card"><h4>Свой</h4><p>Без канцелярита и без панибратства. Говорим как опытный механик у верстака.</p></div>
+<div class="card"><h4>Спокойный</h4><p>Не давим, не кричим. Восклицательный знак – редкость, капс только в заголовках.</p></div>
+</div>
+<h3 style="margin-top:48px">Два регистра: ты и вы</h3>
+<p>Молодежи говорим "ты": коротко, с легкой иронией. Родителям и покупателям постарше говорим "вы": спокойно, с условиями и сроками. Одна и та же суть, разные слова.</p>
+<div class="pair" style="margin-top:16px"><div class="say ty"><span class="tag">Ты · соцсети, подбор</span><p style="margin:0">Выбери по рельефу: лес, песок или город. Подберем байк за минуту, остальное проверишь на тест-драйве.</p></div><div class="say vy"><span class="tag">Вы · сайт, письма</span><p style="margin:0">Подберем модель под рост, вес и маршрут. Сборка и доставка включены в заказ, сервис в Ростове – по записи.</p></div></div>
+<div class="pair" style="margin-top:12px"><div class="say ty"><span class="tag">Ты · кнопка и бейдж</span><p style="margin:0">Записаться на заезд. Pro: тяга для лесных троп.</p></div><div class="say vy"><span class="tag">Вы · кнопка и бейдж</span><p style="margin:0">Записаться на тест-драйв. Pro: запас хода и сервис под ключ.</p></div></div>
+<div class="pair" style="margin-top:12px"><div class="say ty"><span class="tag">Ты · пост</span><p style="margin:0">Грязь по оси, батарея на месте. 40 км по лесу (пример), и все еще едет.</p></div><div class="say vy"><span class="tag">Вы · карточка товара</span><p style="margin:0">Запас хода до 70 км по ровной грунтовке при весе 80 кг (пример). Условия замера указаны в карточке.</p></div></div>
+<h3 style="margin-top:48px">Вместо и говорим</h3>
+<div class="pair">
+<div class="say no"><span class="tag">Вместо</span><p style="margin:0"><s>Супермощный байк по лучшей цене!</s></p></div><div class="say ty"><span class="tag">Говорим</span><p style="margin:0">Мотор [N] кВт, момент [N] Н·м, замер на стенде. (подставляется из карточки)</p></div>
+<div class="say no"><span class="tag">Вместо</span><p style="margin:0"><s>Надежный сервис навсегда.</s></p></div><div class="say ty"><span class="tag">Говорим</span><p style="margin:0">Гарантия [срок], ремонт в Ростове за [срок]. (условия из договора)</p></div>
+</div>
+<p class="note" style="margin-top:16px">Правила письма: диапазоны через дефис (40-60 км), тире только " – " с пробелами, без длинного тире, везде одна буква е. Числа с пробелом перед единицей: 70 км, 3 кВт.</p>
+</div>
+</section>
+
+<section id="logo" class="light">
+<div class="wrap">
+<span class="eyebrow">03 Логотип</span>
+<h2>Знак-протектор и вордмарк TYAGA</h2>
+<p>Знак: буква T из трех наклонных блоков протектора и ножки-ступицы. Вордмарк нарисован вручную: квадратные буквы с фасками. Кириллическое написание ТЯГА в текстах набирается шрифтом Oswald Bold.</p>
+<div class="g2" style="margin-top:24px">
+<div class="logo-stage l"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 434 120" role="img" aria-label="ТЯГА – горизонтальный логотип"><title>ТЯГА – горизонтальный логотип</title><rect width="120" height="120" rx="22" fill="#14110C"/><g transform="translate(0 0)"><path fill="#D4F04A" d="M18 20H46L38 50H10Z"/><path fill="#D4F04A" d="M50 20H78L70 50H42Z"/><path fill="#D4F04A" d="M82 20H110L102 50H74Z"/><path fill="#F6F2E9" d="M47 56H73V104H57L47 94Z"/></g><g transform="translate(154 29.0) scale(0.62)" fill="#14110C"><path transform="translate(0 0)" fill-rule="evenodd" d="M0 0H76V24H50V100H26V24H0Z"/><path transform="translate(88 0)" fill-rule="evenodd" d="M0 0H26L40 34L54 0H80L52 52V100H28V52Z"/><path transform="translate(180 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/><path transform="translate(276 0)" fill-rule="evenodd" d="M0 0H76V24H24V76H52V60H38V40H76V100H0Z"/><path transform="translate(364 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/></g></svg></div>
+<div class="logo-stage d"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 434 120" role="img" aria-label="ТЯГА – горизонтальный логотип на темном"><title>ТЯГА – горизонтальный логотип на темном</title><rect width="120" height="120" rx="22" fill="#D4F04A"/><g transform="translate(0 0)"><path fill="#14110C" d="M18 20H46L38 50H10Z"/><path fill="#14110C" d="M50 20H78L70 50H42Z"/><path fill="#14110C" d="M82 20H110L102 50H74Z"/><path fill="#14110C" d="M47 56H73V104H57L47 94Z"/></g><g transform="translate(154 29.0) scale(0.62)" fill="#F6F2E9"><path transform="translate(0 0)" fill-rule="evenodd" d="M0 0H76V24H50V100H26V24H0Z"/><path transform="translate(88 0)" fill-rule="evenodd" d="M0 0H26L40 34L54 0H80L52 52V100H28V52Z"/><path transform="translate(180 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/><path transform="translate(276 0)" fill-rule="evenodd" d="M0 0H76V24H24V76H52V60H38V40H76V100H0Z"/><path transform="translate(364 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/></g></svg></div>
+<div class="logo-stage l small"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 434 120" role="img" aria-label="ТЯГА – монохром темный (для светлого фона)"><title>ТЯГА – монохром темный (для светлого фона)</title><g><path fill="#14110C" d="M18 20H46L38 50H10Z"/><path fill="#14110C" d="M50 20H78L70 50H42Z"/><path fill="#14110C" d="M82 20H110L102 50H74Z"/><path fill="#14110C" d="M47 56H73V104H57L47 94Z"/></g><g transform="translate(154 29) scale(0.62)" fill="#14110C"><path transform="translate(0 0)" fill-rule="evenodd" d="M0 0H76V24H50V100H26V24H0Z"/><path transform="translate(88 0)" fill-rule="evenodd" d="M0 0H26L40 34L54 0H80L52 52V100H28V52Z"/><path transform="translate(180 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/><path transform="translate(276 0)" fill-rule="evenodd" d="M0 0H76V24H24V76H52V60H38V40H76V100H0Z"/><path transform="translate(364 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/></g></svg></div>
+<div class="logo-stage d small"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 434 120" role="img" aria-label="ТЯГА – монохром светлый (для темного фона)"><title>ТЯГА – монохром светлый (для темного фона)</title><g><path fill="#F6F2E9" d="M18 20H46L38 50H10Z"/><path fill="#F6F2E9" d="M50 20H78L70 50H42Z"/><path fill="#F6F2E9" d="M82 20H110L102 50H74Z"/><path fill="#F6F2E9" d="M47 56H73V104H57L47 94Z"/></g><g transform="translate(154 29) scale(0.62)" fill="#F6F2E9"><path transform="translate(0 0)" fill-rule="evenodd" d="M0 0H76V24H50V100H26V24H0Z"/><path transform="translate(88 0)" fill-rule="evenodd" d="M0 0H26L40 34L54 0H80L52 52V100H28V52Z"/><path transform="translate(180 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/><path transform="translate(276 0)" fill-rule="evenodd" d="M0 0H76V24H24V76H52V60H38V40H76V100H0Z"/><path transform="translate(364 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/></g></svg></div>
+</div>
+<div class="g3" style="margin-top:16px">
+<div class="logo-stage lime small"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="ТЯГА – знак"><title>ТЯГА – знак</title><rect width="120" height="120" rx="22" fill="#14110C"/><g transform="translate(0 0)"><path fill="#D4F04A" d="M18 20H46L38 50H10Z"/><path fill="#D4F04A" d="M50 20H78L70 50H42Z"/><path fill="#D4F04A" d="M82 20H110L102 50H74Z"/><path fill="#F6F2E9" d="M47 56H73V104H57L47 94Z"/></g></svg></div>
+<div class="logo-stage l small"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 100" role="img" aria-label="ТЯГА – вордмарк"><title>ТЯГА – вордмарк</title><g fill="#14110C"><path transform="translate(0 0)" fill-rule="evenodd" d="M0 0H76V24H50V100H26V24H0Z"/><path transform="translate(88 0)" fill-rule="evenodd" d="M0 0H26L40 34L54 0H80L52 52V100H28V52Z"/><path transform="translate(180 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/><path transform="translate(276 0)" fill-rule="evenodd" d="M0 0H76V24H24V76H52V60H38V40H76V100H0Z"/><path transform="translate(364 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/></g></svg></div>
+<div class="logo-stage l small" style="gap:24px"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="ТЯГА – фавикон"><title>ТЯГА – фавикон</title><rect width="32" height="32" rx="7" fill="#14110C"/><g transform="translate(-0.5 0) scale(0.27)"><path fill="#D4F04A" d="M18 20H46L38 50H10Z"/><path fill="#D4F04A" d="M50 20H78L70 50H42Z"/><path fill="#D4F04A" d="M82 20H110L102 50H74Z"/><path fill="#F6F2E9" d="M47 56H73V104H57L47 94Z"/></g></svg><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="ТЯГА – фавикон"><title>ТЯГА – фавикон</title><rect width="32" height="32" rx="7" fill="#14110C"/><g transform="translate(-0.5 0) scale(0.27)"><path fill="#D4F04A" d="M18 20H46L38 50H10Z"/><path fill="#D4F04A" d="M50 20H78L70 50H42Z"/><path fill="#D4F04A" d="M82 20H110L102 50H74Z"/><path fill="#F6F2E9" d="M47 56H73V104H57L47 94Z"/></g></svg></div>
+</div>
+<p class="note" style="margin-top:8px">Слева направо: знак-плашка, вордмарк, фавикон (32 и 16 px). Иконка приложения: тот же знак на темном квадрате, поле 20%.</p>
+
+<h3 style="margin-top:56px">Охранное поле</h3>
+<p>Отступ со всех сторон не меньше ширины одного блока протектора (на схеме x, равен 0,25 высоты знака). Внутри поля нет текста, краев макета и других знаков.</p>
+<div class="clear"><div class="box"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 434 120" role="img" aria-label="ТЯГА – горизонтальный логотип"><title>ТЯГА – горизонтальный логотип</title><rect width="120" height="120" rx="22" fill="#14110C"/><g transform="translate(0 0)"><path fill="#D4F04A" d="M18 20H46L38 50H10Z"/><path fill="#D4F04A" d="M50 20H78L70 50H42Z"/><path fill="#D4F04A" d="M82 20H110L102 50H74Z"/><path fill="#F6F2E9" d="M47 56H73V104H57L47 94Z"/></g><g transform="translate(154 29.0) scale(0.62)" fill="#14110C"><path transform="translate(0 0)" fill-rule="evenodd" d="M0 0H76V24H50V100H26V24H0Z"/><path transform="translate(88 0)" fill-rule="evenodd" d="M0 0H26L40 34L54 0H80L52 52V100H28V52Z"/><path transform="translate(180 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/><path transform="translate(276 0)" fill-rule="evenodd" d="M0 0H76V24H24V76H52V60H38V40H76V100H0Z"/><path transform="translate(364 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/></g></svg><span class="x" style="left:-24px;top:0;bottom:0;width:24px">x</span><span class="x" style="right:-24px;top:0;bottom:0;width:24px">x</span><span class="x" style="top:-24px;left:0;right:0;height:24px">x</span><span class="x" style="bottom:-24px;left:0;right:0;height:24px">x</span></div></div>
+
+<h3 style="margin-top:56px">Минимальные размеры</h3>
+<div class="sizes">
+<figure><svg style="width:96px;height:auto;display:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 434 120" role="img" aria-label="ТЯГА – горизонтальный логотип"><title>ТЯГА – горизонтальный логотип</title><rect width="120" height="120" rx="22" fill="#14110C"/><g transform="translate(0 0)"><path fill="#D4F04A" d="M18 20H46L38 50H10Z"/><path fill="#D4F04A" d="M50 20H78L70 50H42Z"/><path fill="#D4F04A" d="M82 20H110L102 50H74Z"/><path fill="#F6F2E9" d="M47 56H73V104H57L47 94Z"/></g><g transform="translate(154 29.0) scale(0.62)" fill="#14110C"><path transform="translate(0 0)" fill-rule="evenodd" d="M0 0H76V24H50V100H26V24H0Z"/><path transform="translate(88 0)" fill-rule="evenodd" d="M0 0H26L40 34L54 0H80L52 52V100H28V52Z"/><path transform="translate(180 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/><path transform="translate(276 0)" fill-rule="evenodd" d="M0 0H76V24H24V76H52V60H38V40H76V100H0Z"/><path transform="translate(364 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/></g></svg><figcaption>Горизонтальный: от 96 px по ширине (25 мм в печати)</figcaption></figure>
+<figure><svg style="width:24px;height:24px;display:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="ТЯГА – знак"><title>ТЯГА – знак</title><rect width="120" height="120" rx="22" fill="#14110C"/><g transform="translate(0 0)"><path fill="#D4F04A" d="M18 20H46L38 50H10Z"/><path fill="#D4F04A" d="M50 20H78L70 50H42Z"/><path fill="#D4F04A" d="M82 20H110L102 50H74Z"/><path fill="#F6F2E9" d="M47 56H73V104H57L47 94Z"/></g></svg><figcaption>Знак: от 24 px (6 мм)</figcaption></figure>
+<figure><svg style="width:16px;height:16px;display:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="ТЯГА – фавикон"><title>ТЯГА – фавикон</title><rect width="32" height="32" rx="7" fill="#14110C"/><g transform="translate(-0.5 0) scale(0.27)"><path fill="#D4F04A" d="M18 20H46L38 50H10Z"/><path fill="#D4F04A" d="M50 20H78L70 50H42Z"/><path fill="#D4F04A" d="M82 20H110L102 50H74Z"/><path fill="#F6F2E9" d="M47 56H73V104H57L47 94Z"/></g></svg><figcaption>Фавикон: 16 px</figcaption></figure>
+</div>
+
+<h3 style="margin-top:56px">Запреты</h3>
+<div class="g4">
+<div><div class="dont"><div style="transform:scaleX(1.6)"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 434 120" role="img" aria-label="ТЯГА – горизонтальный логотип"><title>ТЯГА – горизонтальный логотип</title><rect width="120" height="120" rx="22" fill="#14110C"/><g transform="translate(0 0)"><path fill="#D4F04A" d="M18 20H46L38 50H10Z"/><path fill="#D4F04A" d="M50 20H78L70 50H42Z"/><path fill="#D4F04A" d="M82 20H110L102 50H74Z"/><path fill="#F6F2E9" d="M47 56H73V104H57L47 94Z"/></g><g transform="translate(154 29.0) scale(0.62)" fill="#14110C"><path transform="translate(0 0)" fill-rule="evenodd" d="M0 0H76V24H50V100H26V24H0Z"/><path transform="translate(88 0)" fill-rule="evenodd" d="M0 0H26L40 34L54 0H80L52 52V100H28V52Z"/><path transform="translate(180 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/><path transform="translate(276 0)" fill-rule="evenodd" d="M0 0H76V24H24V76H52V60H38V40H76V100H0Z"/><path transform="translate(364 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/></g></svg></div></div><p class="dont-cap">Не растягивать и не сжимать</p></div>
+<div><div class="dont"><div style="filter:hue-rotate(160deg) saturate(3)"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 434 120" role="img" aria-label="ТЯГА – горизонтальный логотип"><title>ТЯГА – горизонтальный логотип</title><rect width="120" height="120" rx="22" fill="#14110C"/><g transform="translate(0 0)"><path fill="#D4F04A" d="M18 20H46L38 50H10Z"/><path fill="#D4F04A" d="M50 20H78L70 50H42Z"/><path fill="#D4F04A" d="M82 20H110L102 50H74Z"/><path fill="#F6F2E9" d="M47 56H73V104H57L47 94Z"/></g><g transform="translate(154 29.0) scale(0.62)" fill="#14110C"><path transform="translate(0 0)" fill-rule="evenodd" d="M0 0H76V24H50V100H26V24H0Z"/><path transform="translate(88 0)" fill-rule="evenodd" d="M0 0H26L40 34L54 0H80L52 52V100H28V52Z"/><path transform="translate(180 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/><path transform="translate(276 0)" fill-rule="evenodd" d="M0 0H76V24H24V76H52V60H38V40H76V100H0Z"/><path transform="translate(364 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/></g></svg></div></div><p class="dont-cap">Не менять цвета знака и слова</p></div>
+<div><div class="dont"><div style="filter:drop-shadow(4px 4px 0 #B93A18)"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 434 120" role="img" aria-label="ТЯГА – горизонтальный логотип"><title>ТЯГА – горизонтальный логотип</title><rect width="120" height="120" rx="22" fill="#14110C"/><g transform="translate(0 0)"><path fill="#D4F04A" d="M18 20H46L38 50H10Z"/><path fill="#D4F04A" d="M50 20H78L70 50H42Z"/><path fill="#D4F04A" d="M82 20H110L102 50H74Z"/><path fill="#F6F2E9" d="M47 56H73V104H57L47 94Z"/></g><g transform="translate(154 29.0) scale(0.62)" fill="#14110C"><path transform="translate(0 0)" fill-rule="evenodd" d="M0 0H76V24H50V100H26V24H0Z"/><path transform="translate(88 0)" fill-rule="evenodd" d="M0 0H26L40 34L54 0H80L52 52V100H28V52Z"/><path transform="translate(180 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/><path transform="translate(276 0)" fill-rule="evenodd" d="M0 0H76V24H24V76H52V60H38V40H76V100H0Z"/><path transform="translate(364 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/></g></svg></div></div><p class="dont-cap">Не добавлять тени и обводки</p></div>
+<div><div class="dont"><div style="transform:rotate(-14deg)"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 434 120" role="img" aria-label="ТЯГА – горизонтальный логотип"><title>ТЯГА – горизонтальный логотип</title><rect width="120" height="120" rx="22" fill="#14110C"/><g transform="translate(0 0)"><path fill="#D4F04A" d="M18 20H46L38 50H10Z"/><path fill="#D4F04A" d="M50 20H78L70 50H42Z"/><path fill="#D4F04A" d="M82 20H110L102 50H74Z"/><path fill="#F6F2E9" d="M47 56H73V104H57L47 94Z"/></g><g transform="translate(154 29.0) scale(0.62)" fill="#14110C"><path transform="translate(0 0)" fill-rule="evenodd" d="M0 0H76V24H50V100H26V24H0Z"/><path transform="translate(88 0)" fill-rule="evenodd" d="M0 0H26L40 34L54 0H80L52 52V100H28V52Z"/><path transform="translate(180 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/><path transform="translate(276 0)" fill-rule="evenodd" d="M0 0H76V24H24V76H52V60H38V40H76V100H0Z"/><path transform="translate(364 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/></g></svg></div></div><p class="dont-cap">Не наклонять и не вращать</p></div>
+<div><div class="dont" style="background:repeating-linear-gradient(45deg,#B93A18 0 10px,#2F6F73 10px 20px)"><div><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 434 120" role="img" aria-label="ТЯГА – монохром темный (для светлого фона)"><title>ТЯГА – монохром темный (для светлого фона)</title><g><path fill="#14110C" d="M18 20H46L38 50H10Z"/><path fill="#14110C" d="M50 20H78L70 50H42Z"/><path fill="#14110C" d="M82 20H110L102 50H74Z"/><path fill="#14110C" d="M47 56H73V104H57L47 94Z"/></g><g transform="translate(154 29) scale(0.62)" fill="#14110C"><path transform="translate(0 0)" fill-rule="evenodd" d="M0 0H76V24H50V100H26V24H0Z"/><path transform="translate(88 0)" fill-rule="evenodd" d="M0 0H26L40 34L54 0H80L52 52V100H28V52Z"/><path transform="translate(180 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/><path transform="translate(276 0)" fill-rule="evenodd" d="M0 0H76V24H24V76H52V60H38V40H76V100H0Z"/><path transform="translate(364 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/></g></svg></div></div><p class="dont-cap">Не ставить на пестрый фон</p></div>
+<div><div class="dont"><div style="letter-spacing:0;display:flex;gap:12px;align-items:center"><svg style="width:24px;height:24px;display:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="ТЯГА – знак"><title>ТЯГА – знак</title><rect width="120" height="120" rx="22" fill="#14110C"/><g transform="translate(0 0)"><path fill="#D4F04A" d="M18 20H46L38 50H10Z"/><path fill="#D4F04A" d="M50 20H78L70 50H42Z"/><path fill="#D4F04A" d="M82 20H110L102 50H74Z"/><path fill="#F6F2E9" d="M47 56H73V104H57L47 94Z"/></g></svg><span style="font:italic 400 28px Georgia,serif">Tyaga</span></div></div><p class="dont-cap">Не заменять вордмарк другим шрифтом</p></div>
+<div><div class="dont" style="background:var(--accent)"><div style="opacity:.35"><svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 434 120" role="img" aria-label="ТЯГА – монохром темный (для светлого фона)"><title>ТЯГА – монохром темный (для светлого фона)</title><g><path fill="#14110C" d="M18 20H46L38 50H10Z"/><path fill="#14110C" d="M50 20H78L70 50H42Z"/><path fill="#14110C" d="M82 20H110L102 50H74Z"/><path fill="#14110C" d="M47 56H73V104H57L47 94Z"/></g><g transform="translate(154 29) scale(0.62)" fill="#14110C"><path transform="translate(0 0)" fill-rule="evenodd" d="M0 0H76V24H50V100H26V24H0Z"/><path transform="translate(88 0)" fill-rule="evenodd" d="M0 0H26L40 34L54 0H80L52 52V100H28V52Z"/><path transform="translate(180 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/><path transform="translate(276 0)" fill-rule="evenodd" d="M0 0H76V24H24V76H52V60H38V40H76V100H0Z"/><path transform="translate(364 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/></g></svg></div></div><p class="dont-cap">Не снижать контраст и прозрачность</p></div>
+<div><div class="dont"><div style="display:flex;flex-direction:column;align-items:center;gap:4px"><svg style="width:24px;height:24px;display:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="ТЯГА – знак"><title>ТЯГА – знак</title><rect width="120" height="120" rx="22" fill="#14110C"/><g transform="translate(0 0)"><path fill="#D4F04A" d="M18 20H46L38 50H10Z"/><path fill="#D4F04A" d="M50 20H78L70 50H42Z"/><path fill="#D4F04A" d="M82 20H110L102 50H74Z"/><path fill="#F6F2E9" d="M47 56H73V104H57L47 94Z"/></g></svg><svg style="height:20px;width:auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 100" role="img" aria-label="ТЯГА – вордмарк"><title>ТЯГА – вордмарк</title><g fill="#14110C"><path transform="translate(0 0)" fill-rule="evenodd" d="M0 0H76V24H50V100H26V24H0Z"/><path transform="translate(88 0)" fill-rule="evenodd" d="M0 0H26L40 34L54 0H80L52 52V100H28V52Z"/><path transform="translate(180 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/><path transform="translate(276 0)" fill-rule="evenodd" d="M0 0H76V24H24V76H52V60H38V40H76V100H0Z"/><path transform="translate(364 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/></g></svg></div></div><p class="dont-cap">Не пересобирать локап</p></div>
+</div>
+</div>
+</section>
+
+<section id="color" class="alt">
+<div class="wrap">
+<span class="eyebrow">04 Цвет</span>
+<h2>Грязь, кость и один громкий сигнал</h2>
+<p>Нейтрали теплые, как земля и пыль. Акцент один: сигнал-лайм. Он яркий на темном и не используется как цвет текста на светлом. Ржавый и цвет брода – служебные.</p>
+<div class="g3" style="margin-top:24px">
+<div class="sw"><div class="chip" style="background:#14110C;color:#F6F2E9"></div><div class="tx"><b>Грязь</b><code>#14110C</code><code>RGB 20, 17, 12</code><code>--color-mud-950</code><span>Основной темный фон, текст на светлом</span></div></div>
+<div class="sw"><div class="chip" style="background:#26211A;color:#F6F2E9"></div><div class="tx"><b>Грязь 800</b><code>#26211A</code><code>RGB 38, 33, 26</code><code>--color-mud-800</code><span>Поверхности на темном</span></div></div>
+<div class="sw"><div class="chip" style="background:#4A4136;color:#F6F2E9"></div><div class="tx"><b>Грязь 600</b><code>#4A4136</code><code>RGB 74, 65, 54</code><code>--color-mud-600</code><span>Линии, вторичный текст</span></div></div>
+<div class="sw"><div class="chip" style="background:#6A5D4A;color:#F6F2E9"></div><div class="tx"><b>Глина</b><code>#6A5D4A</code><code>RGB 106, 93, 74</code><code>--color-clay-600</code><span>Подписи на светлом</span></div></div>
+<div class="sw"><div class="chip" style="background:#B3A68F;color:#14110C"></div><div class="tx"><b>Песок</b><code>#B3A68F</code><code>RGB 179, 166, 143</code><code>--color-sand-400</code><span>Подписи на темном</span></div></div>
+<div class="sw"><div class="chip" style="background:#E3DACB;color:#14110C"></div><div class="tx"><b>Пыль</b><code>#E3DACB</code><code>RGB 227, 218, 203</code><code>--color-dust-200</code><span>Светлые поверхности</span></div></div>
+<div class="sw"><div class="chip" style="background:#F6F2E9;color:#14110C"></div><div class="tx"><b>Кость</b><code>#F6F2E9</code><code>RGB 246, 242, 233</code><code>--color-bone-50</code><span>Основной светлый фон, текст на темном</span></div></div>
+<div class="sw"><div class="chip" style="background:#D4F04A;color:#14110C"></div><div class="tx"><b>Сигнал</b><code>#D4F04A</code><code>RGB 212, 240, 74</code><code>--color-signal-400</code><span>Акцент: кнопки, цифры, pro</span></div></div>
+<div class="sw"><div class="chip" style="background:#B93A18;color:#F6F2E9"></div><div class="tx"><b>Ржа</b><code>#B93A18</code><code>RGB 185, 58, 24</code><code>--color-rust-600</code><span>Ultra, предупреждения на светлом</span></div></div>
+<div class="sw"><div class="chip" style="background:#F0825C;color:#14110C"></div><div class="tx"><b>Ржа светлая</b><code>#F0825C</code><code>RGB 240, 130, 92</code><code>--color-rust-300</code><span>Ржа на темном</span></div></div>
+<div class="sw"><div class="chip" style="background:#2F6F73;color:#F6F2E9"></div><div class="tx"><b>Брод</b><code>#2F6F73</code><code>RGB 47, 111, 115</code><code>--color-ford-600</code><span>Информация, ссылки на светлом</span></div></div>
+<div class="sw"><div class="chip" style="background:#6FC0C4;color:#14110C"></div><div class="tx"><b>Брод светлый</b><code>#6FC0C4</code><code>RGB 111, 192, 196</code><code>--color-ford-300</code><span>Брод на темном</span></div></div>
+
+</div>
+<div class="ratio" aria-hidden="true"><div style="flex:6;background:#14110C;color:#F6F2E9">грязь 60%</div><div style="flex:2.5;background:#F6F2E9;color:#14110C">кость 25%</div><div style="flex:1;background:#D4F04A;color:#14110C">сигнал 10%</div><div style="flex:.5;background:#B93A18;color:#F6F2E9">5</div></div>
+<p class="note">Пропорции на странице: темное и светлое ведут, сигнал остается точкой внимания (кнопка, цифра, бейдж pro).</p>
+
+<h3 style="margin-top:40px">Контраст по WCAG 2.1</h3>
+<p>Коэффициент посчитан по формуле относительной яркости. Порог для обычного текста: 4,5:1 (AA), 7:1 (AAA); для крупного текста и элементов интерфейса: 3:1.</p>
+<div class="tbl-wrap"><table><thead><tr><th>Пара (текст на фоне)</th><th>HEX</th><th>Коэффициент</th><th>Итог</th></tr></thead><tbody>
+<tr><td>Грязь на кости</td><td class="mono">#14110C / #F6F2E9</td><td class="mono"><b>16,85:1</b></td><td><span class="pass aaa">AAA</span></td></tr>
+<tr><td>Грязь 800 на пыли</td><td class="mono">#26211A / #E3DACB</td><td class="mono"><b>11,53:1</b></td><td><span class="pass aaa">AAA</span></td></tr>
+<tr><td>Кость на грязи</td><td class="mono">#F6F2E9 / #14110C</td><td class="mono"><b>16,85:1</b></td><td><span class="pass aaa">AAA</span></td></tr>
+<tr><td>Сигнал на грязи</td><td class="mono">#D4F04A / #14110C</td><td class="mono"><b>14,67:1</b></td><td><span class="pass aaa">AAA</span></td></tr>
+<tr><td>Сигнал на грязи 800</td><td class="mono">#D4F04A / #26211A</td><td class="mono"><b>12,44:1</b></td><td><span class="pass aaa">AAA</span></td></tr>
+<tr><td>Грязь на сигнале (кнопка)</td><td class="mono">#14110C / #D4F04A</td><td class="mono"><b>14,67:1</b></td><td><span class="pass aaa">AAA</span></td></tr>
+<tr><td>Глина на кости (подписи)</td><td class="mono">#6A5D4A / #F6F2E9</td><td class="mono"><b>5,73:1</b></td><td><span class="pass aa">AA</span></td></tr>
+<tr><td>Глина на пыли</td><td class="mono">#6A5D4A / #E3DACB</td><td class="mono"><b>4,62:1</b></td><td><span class="pass aa">AA</span></td></tr>
+<tr><td>Песок на грязи</td><td class="mono">#B3A68F / #14110C</td><td class="mono"><b>7,86:1</b></td><td><span class="pass aaa">AAA</span></td></tr>
+<tr><td>Песок на грязи 800</td><td class="mono">#B3A68F / #26211A</td><td class="mono"><b>6,67:1</b></td><td><span class="pass aa">AA</span></td></tr>
+<tr><td>Ржа на кости</td><td class="mono">#B93A18 / #F6F2E9</td><td class="mono"><b>5,11:1</b></td><td><span class="pass aa">AA</span></td></tr>
+<tr><td>Кость на ржавом (ultra)</td><td class="mono">#F6F2E9 / #B93A18</td><td class="mono"><b>5,11:1</b></td><td><span class="pass aa">AA</span></td></tr>
+<tr><td>Ржа светлая на грязи</td><td class="mono">#F0825C / #14110C</td><td class="mono"><b>7,22:1</b></td><td><span class="pass aaa">AAA</span></td></tr>
+<tr><td>Брод на кости</td><td class="mono">#2F6F73 / #F6F2E9</td><td class="mono"><b>5,16:1</b></td><td><span class="pass aa">AA</span></td></tr>
+<tr><td>Брод светлый на грязи</td><td class="mono">#6FC0C4 / #14110C</td><td class="mono"><b>8,98:1</b></td><td><span class="pass aaa">AAA</span></td></tr>
+<tr><td>Сигнал на кости (запрещено)</td><td class="mono">#D4F04A / #F6F2E9</td><td class="mono"><b>1,15:1</b></td><td><span class="pass fail">Не проходит</span></td></tr>
+
+</tbody></table></div>
+<p class="note" style="margin-top:12px">Не использовать: сигнал на кости (1,15:1), кость на сигнале (1,15:1), пыль на кости. Серый текст из глины допустим только на кости и пыли.</p>
+</div>
+</section>
+
+<section id="type" class="dark">
+<div class="wrap">
+<span class="eyebrow">05 Типографика</span>
+<h2>Три шрифта, все с кириллицей</h2>
+<p>Подключаются через Google Fonts. Запасные гарнитуры заданы в токенах, поэтому макет читается и без загрузки.</p>
+<div class="spec"><div class="k">Заголовки · Oswald 600-700, капс</div><div class="sample-d">Тяга есть 3 кВт</div></div>
+<div class="spec"><div class="k">Текст · Onest 400-700</div><div class="glyphs" style="font-family:var(--font-body);font-weight:400">Подберем модель под рост, вес и маршрут. Сборка и доставка включены.</div></div>
+<div class="spec"><div class="k">Цифры и технические строки · JetBrains Mono 500-700</div><div class="glyphs" style="font-family:var(--font-mono);font-weight:700;color:var(--accent)">70 км · 3 кВт · 95 Н·м · 38 кг</div></div>
+<div class="spec"><div class="k">Алфавит Oswald</div><div class="glyphs">АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ 0123456789</div></div>
+
+<h3 style="margin-top:40px">Иерархия и размеры</h3>
+<div class="tbl-wrap" style="background:var(--surface-dark);border-color:var(--color-mud-600)"><table style="color:var(--text-on-dark)"><thead><tr><th style="background:var(--color-mud-950);color:var(--text-muted-on-dark)">Уровень</th><th style="background:var(--color-mud-950);color:var(--text-muted-on-dark)">Шрифт</th><th style="background:var(--color-mud-950);color:var(--text-muted-on-dark)">Размер / интерлиньяж</th><th style="background:var(--color-mud-950);color:var(--text-muted-on-dark)">Правила</th></tr></thead><tbody>
+<tr><td>Display</td><td>Oswald 700</td><td>48-120 / 1,0</td><td>Один на экран, капс, до 10 знаков в строке</td></tr>
+<tr><td>H1</td><td>Oswald 700</td><td>38-72 / 1,05</td><td>Капс, максимум две строки</td></tr>
+<tr><td>H2</td><td>Oswald 700</td><td>30-44 / 1,05</td><td>Капс</td></tr>
+<tr><td>H3</td><td>Oswald 700</td><td>26 / 1,05</td><td>Капс</td></tr>
+<tr><td>Лид</td><td>Onest 400</td><td>20 / 1,5</td><td>До 52 знаков в строке</td></tr>
+<tr><td>Текст</td><td>Onest 400</td><td>17 / 1,55</td><td>До 68 знаков, не меньше 16 px на телефоне</td></tr>
+<tr><td>Подпись</td><td>JetBrains Mono 500</td><td>12-14 / 1,4</td><td>Не светлее AA-пары</td></tr>
+<tr><td>Цифра-герой</td><td>JetBrains Mono 700</td><td>36-56 / 1,0</td><td>Единица измерения мельче, условие замера под цифрой</td></tr>
+</tbody></table></div>
+</div>
+</section>
+
+<section id="graphic" class="light">
+<div class="wrap">
+<span class="eyebrow">06 Графические элементы</span>
+<h2>Протектор, срез и линия маршрута</h2>
+<div class="g4" style="margin-top:24px">
+<div class="pat" style="background:var(--bg-dark);color:var(--color-mud-800)"><svg class="bg" aria-hidden="true"><rect width="100%" height="100%" fill="url(#tread)"/></svg><span>Протектор: фон лент и обложек</span></div>
+<div class="pat" style="background:var(--accent);color:var(--accent-text)"><svg class="bg" aria-hidden="true" viewBox="0 0 200 160" preserveAspectRatio="none"><path d="M0 160L120 0H200V160Z" fill="#14110C"/></svg><span>Диагональный срез под 45-50°</span></div>
+<div class="pat" style="background:var(--bg-alt);color:var(--text)"><svg class="bg" aria-hidden="true" viewBox="0 0 200 160" preserveAspectRatio="none"><path d="M-10 140C40 140 40 60 100 60S150 120 210 40" fill="none" stroke="#14110C" stroke-width="3" stroke-dasharray="10 8"/><rect x="90" y="50" width="20" height="20" fill="#D4F04A" stroke="#14110C" stroke-width="3"/></svg><span>Линия маршрута и точки</span></div>
+<div class="pat" style="background:var(--bg-dark);color:var(--text-on-dark)"><div style="position:absolute;left:12px;top:12px;font:700 56px/1 var(--font-mono);color:var(--accent);letter-spacing:-.04em">70<small style="font-size:18px;color:var(--text-muted-on-dark)"> км</small></div><span>Цифра-герой с условием замера</span></div>
+</div>
+<div class="g2" style="margin-top:24px">
+<div class="card"><h4>Как пользоваться</h4><ul class="ck"><li>Протектор – только тонким тоном на темном (разница с фоном не больше 2 ступеней).</li><li>Срез: одна фаска на карточку, на кнопку, на плашку. Скругления углов для крупных блоков не используем.</li><li>Линия маршрута и точки: для карт доставки и шоурума, шагов подбора.</li></ul></div>
+<div class="card"><h4>Чего не делать</h4><ul class="ck no"><li>Протектор поверх текста и фото.</li><li>Градиенты и свечение на акценте.</li><li>Больше одного акцентного цвета в одном экране.</li></ul></div>
+</div>
+</div>
+</section>
+
+<section id="photo" class="dark">
+<div class="wrap">
+<span class="eyebrow">07 Фото-направление</span>
+<h2>Трасса, условия, движение</h2>
+<p>Показываем технику в среде: лес, песок, гребень, сумерки, городской двор. Живые кадры из шоурума и от владельцев важнее глянцевых. Ниже схемы кадров, нарисованные вместо фото.</p>
+<div class="g3" style="margin-top:24px">
+<figure class="scene" style="margin:0"><svg class="s" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="500" fill="#26211A"/><rect y="0" width="400" height="260" fill="#3a3025"/><path d="M0 260L90 170L170 235L250 150L400 250V500H0Z" fill="#1a1611"/><circle cx="300" cy="90" r="34" fill="#D4F04A"/><path d="M0 400C120 370 260 430 400 380V500H0Z" fill="#4A4136"/><g style="color:#D4F04A" transform="translate(70 270) scale(1.2)"><use href="#bike" width="240" height="140" color="#F6F2E9"/></g></svg><figcaption>Гребень на закате. Низкая камера, силуэт, один источник света.</figcaption></figure>
+<figure class="scene" style="margin:0"><svg class="s" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="500" fill="#E3DACB"/><path d="M0 300L400 220V500H0Z" fill="#B3A68F"/><path d="M0 330C100 320 150 350 400 300" stroke="#4A4136" stroke-width="3" fill="none" stroke-dasharray="14 10"/><g transform="translate(60 250) scale(1.2)"><use href="#bike" width="240" height="140" color="#14110C"/></g><g fill="#6A5D4A" opacity=".75"><circle cx="90" cy="400" r="22"/><circle cx="60" cy="420" r="30"/><circle cx="130" cy="410" r="16"/></g></svg><figcaption>Песок и пыль. Выдержка короткая, шлейф за колесом виден.</figcaption></figure>
+<figure class="scene" style="margin:0"><svg class="s" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="500" fill="#14110C"/><rect x="20" y="40" width="360" height="6" fill="#D4F04A"/><rect x="200" y="300" width="2" height="200" fill="#26211A"/><circle cx="100" cy="120" r="50" fill="#F6F2E9" opacity=".08"/><g transform="translate(70 290) scale(1.2)"><use href="#bike" width="240" height="140" color="#4A4136"/></g><path d="M360 300L120 380" stroke="#F6F2E9" stroke-width="2" opacity=".35"/></svg><figcaption>Ночь и двор. Матовый корпус, один контровой свет, акцент – лента фары.</figcaption></figure>
+</div>
+<div class="g2" style="margin-top:24px">
+<div class="card"><h4>Делаем</h4><ul class="ck"><li>Натуральный свет: рассвет, закат, сумерки.</li><li>Люди в экипировке, лица допустимы только в шлеме или в профиль для рекламных кадров.</li><li>Один цветной штрих в кадре (сигнал, ржавый) и матовая техника.</li><li>Подпись с условиями: место, пробег, вес райдера.</li></ul></div>
+<div class="card"><h4>Не делаем</h4><ul class="ck no"><li>Стоковые улыбки и белые студийные коллажи в рекламных кадрах.</li><li>Скидочные плашки поверх фото.</li><li>Дрон-кадры, где техника как точка.</li><li>Кадры с нарушением безопасности: без шлема, на полном газу рядом с людьми.</li></ul></div>
+</div>
+</div>
+</section>
+
+<section id="icons" class="light">
+<div class="wrap">
+<span class="eyebrow">08 Иконки</span>
+<h2>Квадратные концы, обводка 2 px</h2>
+<p>Сетка 24 px, обводка 2 px, острые углы, один акцентный квадрат внутри. Цвет иконки наследует цвет текста.</p>
+<div class="g4" style="margin-top:24px">
+<div class="icon"><svg aria-hidden="true"><use href="#i-bolt"/></svg>Мотор и батарея</div>
+<div class="icon"><svg aria-hidden="true"><use href="#i-tread"/></svg>Протектор, сцепление</div>
+<div class="icon"><svg aria-hidden="true"><use href="#i-route"/></svg>Маршрут, подбор</div>
+<div class="icon"><svg aria-hidden="true"><use href="#i-wrench"/></svg>Сервис</div>
+<div class="icon"><svg aria-hidden="true"><use href="#i-pin"/></svg>Шоурум</div>
+<div class="icon"><svg aria-hidden="true"><use href="#i-truck"/></svg>Доставка</div>
+<div class="icon"><svg aria-hidden="true"><use href="#i-flag"/></svg>Тест-драйв</div>
+<div class="icon"><svg aria-hidden="true"><use href="#i-compare"/></svg>Сравнение</div>
+<div class="icon"><svg aria-hidden="true"><use href="#i-sliders"/></svg>Конфигуратор</div>
+<div class="icon"><svg aria-hidden="true"><use href="#i-snow"/></svg>Снежная техника</div>
+<div class="icon"><svg aria-hidden="true"><use href="#i-check"/></svg>Готово</div>
+<div class="icon"><svg aria-hidden="true"><use href="#i-arrow"/></svg>Дальше</div>
+</div>
+</div>
+</section>
+
+<section id="ui" class="alt">
+<div class="wrap">
+<span class="eyebrow">09 Компоненты интерфейса</span>
+<h2>Кнопки, бейджи линейки, карточка товара</h2>
+<div class="g2" style="margin-top:24px">
+<div class="card">
+<h4>Кнопки</h4>
+<div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px">
+<a class="btn p" href="#ui">Записаться на заезд <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+<a class="btn d" href="#ui">Сравнить модели</a>
+<a class="btn o" href="#ui" style="color:var(--text)">Подобрать байк</a>
+<button class="btn p" disabled>Недоступно</button>
+</div>
+<p class="note">Высота от 44 px. Основная – сигнал с темным текстом (14,7:1). На темном фоне вторичная – контур цвета текста. Фокус: контур 3 px цвета брода на светлом, цвета сигнала на темном.</p>
+<h4 style="margin-top:20px">Бейджи линейки</h4>
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px"><span class="badge b-lite">Lite</span><span class="badge b-pro">Pro</span><span class="badge b-ultra">Ultra</span><span class="badge b-new">Новинка</span></div>
+<p class="note">Lite – песок с контуром, Pro – сигнал, Ultra – ржавый. Различие не только в цвете: у каждого есть слово.</p>
+<h4 style="margin-top:20px">Поля и выбор</h4>
+<div class="field" style="margin-bottom:12px"><label for="f1">Ваш рост, см</label><input id="f1" type="text" inputmode="numeric" value="178"></div>
+<div class="chips" role="group" aria-label="Рельеф"><button class="chip-o" aria-pressed="true">Лес</button><button class="chip-o" aria-pressed="false">Песок</button><button class="chip-o" aria-pressed="false">Город</button><button class="chip-o" aria-pressed="false">Снег</button></div>
+</div>
+<div>
+<div class="pc cut">
+<div class="pic"><span class="badge b-pro">Pro</span><svg viewBox="0 0 240 140" role="img" aria-label="Иллюстрация электробайка"><use href="#bike"/></svg></div>
+<div class="bd">
+<h4>Т-2 Pro <span class="note">(название примерное)</span></h4>
+<p class="note" style="margin:0">Электро-эндуро для лесных троп</p>
+<div class="stats"><div><b>до 70</b><small>км, 80 кг, 25 °C</small></div><div><b>3 кВт</b><small>пиковая мощность</small></div><div><b>38 кг</b><small>без батареи</small></div></div>
+<div class="ft"><span class="pr">от 000 000 ₽ <span class="note">пример</span></span><a class="btn d" href="#ui">Сравнить</a></div>
+</div>
+</div>
+<p class="note" style="margin-top:12px">Карточка: бейдж, иллюстрация на тоне пыли, имя капсом, три цифры с условием, цена и одно действие. Срез – верхний правый и нижний левый угол.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section id="apply" class="light">
+<div class="wrap">
+<span class="eyebrow">10 Применение</span>
+<h2>Как это выглядит в мире</h2>
+<div class="g2" style="margin-top:24px">
+<div class="app">
+<div class="g2" style="gap:12px">
+<div class="biz"><svg class="tr" aria-hidden="true" viewBox="0 0 200 140"><rect width="200" height="140" fill="url(#tread)"/></svg><svg class="lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 434 120" role="img" aria-label="ТЯГА – горизонтальный логотип на темном"><title>ТЯГА – горизонтальный логотип на темном</title><rect width="120" height="120" rx="22" fill="#D4F04A"/><g transform="translate(0 0)"><path fill="#14110C" d="M18 20H46L38 50H10Z"/><path fill="#14110C" d="M50 20H78L70 50H42Z"/><path fill="#14110C" d="M82 20H110L102 50H74Z"/><path fill="#14110C" d="M47 56H73V104H57L47 94Z"/></g><g transform="translate(154 29.0) scale(0.62)" fill="#F6F2E9"><path transform="translate(0 0)" fill-rule="evenodd" d="M0 0H76V24H50V100H26V24H0Z"/><path transform="translate(88 0)" fill-rule="evenodd" d="M0 0H26L40 34L54 0H80L52 52V100H28V52Z"/><path transform="translate(180 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/><path transform="translate(276 0)" fill-rule="evenodd" d="M0 0H76V24H24V76H52V60H38V40H76V100H0Z"/><path transform="translate(364 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/></g></svg><div><div class="n">Имя Фамилия</div><div class="c">Менеджер по оптовым поставкам<br>+7 000 000-00-00 · tyaga.example</div></div></div>
+<div class="biz back"><svg class="lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="ТЯГА – знак"><title>ТЯГА – знак</title><rect width="120" height="120" rx="22" fill="#14110C"/><g transform="translate(0 0)"><path fill="#D4F04A" d="M18 20H46L38 50H10Z"/><path fill="#D4F04A" d="M50 20H78L70 50H42Z"/><path fill="#D4F04A" d="M82 20H110L102 50H74Z"/><path fill="#F6F2E9" d="M47 56H73V104H57L47 94Z"/></g></svg><div><div class="n">Тяга есть.</div><div class="c">Ростов-на-Дону · Москва<br>Краснодарский край</div></div></div>
+</div>
+<h4>Визитка</h4><p class="note">90 x 50 мм, матовая бумага 400 г, тиснение сигнальным лаком на знаке (пример).</p>
+</div>
+<div class="app">
+<div class="box3d"><div class="pack"><svg class="tr" aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none"><rect width="100" height="100" fill="url(#tread)"/></svg><svg class="lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 434 120" role="img" aria-label="ТЯГА – монохром светлый (для темного фона)"><title>ТЯГА – монохром светлый (для темного фона)</title><g><path fill="#F6F2E9" d="M18 20H46L38 50H10Z"/><path fill="#F6F2E9" d="M50 20H78L70 50H42Z"/><path fill="#F6F2E9" d="M82 20H110L102 50H74Z"/><path fill="#F6F2E9" d="M47 56H73V104H57L47 94Z"/></g><g transform="translate(154 29) scale(0.62)" fill="#F6F2E9"><path transform="translate(0 0)" fill-rule="evenodd" d="M0 0H76V24H50V100H26V24H0Z"/><path transform="translate(88 0)" fill-rule="evenodd" d="M0 0H26L40 34L54 0H80L52 52V100H28V52Z"/><path transform="translate(180 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/><path transform="translate(276 0)" fill-rule="evenodd" d="M0 0H76V24H24V76H52V60H38V40H76V100H0Z"/><path transform="translate(364 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/></g></svg><div class="t">Т-2 <em>Pro</em><br><span style="font:500 clamp(10px,2.4vw,13px)/1.4 var(--font-mono);text-transform:none;color:var(--text-muted-on-dark)">Собрано и проверено в Ростове. Модель примерная.</span></div></div></div>
+<h4>Упаковка</h4><p class="note">Матовый картон, черный на печать, сигнал одним цветом: код линейки и логотип.</p>
+</div>
+</div>
+<div class="g2" style="margin-top:24px">
+<div class="app">
+<div class="sign"><div class="face"><svg class="lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 434 120" role="img" aria-label="ТЯГА – горизонтальный логотип на темном"><title>ТЯГА – горизонтальный логотип на темном</title><rect width="120" height="120" rx="22" fill="#D4F04A"/><g transform="translate(0 0)"><path fill="#14110C" d="M18 20H46L38 50H10Z"/><path fill="#14110C" d="M50 20H78L70 50H42Z"/><path fill="#14110C" d="M82 20H110L102 50H74Z"/><path fill="#14110C" d="M47 56H73V104H57L47 94Z"/></g><g transform="translate(154 29.0) scale(0.62)" fill="#F6F2E9"><path transform="translate(0 0)" fill-rule="evenodd" d="M0 0H76V24H50V100H26V24H0Z"/><path transform="translate(88 0)" fill-rule="evenodd" d="M0 0H26L40 34L54 0H80L52 52V100H28V52Z"/><path transform="translate(180 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/><path transform="translate(276 0)" fill-rule="evenodd" d="M0 0H76V24H24V76H52V60H38V40H76V100H0Z"/><path transform="translate(364 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/></g></svg><span class="city">Шоурум<br>Ростов-на-Дону</span></div><div class="wall"></div></div>
+<h4>Вывеска шоурума</h4><p class="note">Световые объемные буквы, знак из сигнальной подсветки. Основа вывески темная, нижняя полоса сигнальная.</p>
+</div>
+<div class="app">
+<div class="van"><svg viewBox="0 0 520 220" role="img" aria-label="Схема ливреи фургона"><rect x="10" y="40" width="360" height="130" fill="#14110C"/><path d="M370 70H450L500 110V170H370Z" fill="#26211A"/><path d="M385 80H445L482 110H385Z" fill="#E3DACB"/><rect x="10" y="150" width="490" height="8" fill="#D4F04A"/><g fill="#D4F04A"><path d="M40 62H80L72 94H32Z"/><path d="M84 62H124L116 94H76Z"/><path d="M128 62H168L160 94H120Z"/></g><text x="30" y="132" font-family="Oswald,Arial Narrow,sans-serif" font-weight="700" font-size="34" fill="#F6F2E9" letter-spacing="2">ТЯГА GT</text><circle cx="90" cy="172" r="26" fill="#14110C" stroke="#6A5D4A" stroke-width="6"/><circle cx="90" cy="172" r="8" fill="#6A5D4A"/><circle cx="430" cy="172" r="26" fill="#14110C" stroke="#6A5D4A" stroke-width="6"/><circle cx="430" cy="172" r="8" fill="#6A5D4A"/></svg></div>
+<h4>Ливрея транспорта</h4><p class="note">Темный кузов, сигнальная полоса по линии порога, знак из трех блоков на борту. Высота букв не меньше 15 см.</p>
+</div>
+</div>
+<div class="g2" style="margin-top:24px;align-items:start">
+<div class="app">
+<div class="social">
+<div class="post"><svg class="tr" aria-hidden="true" style="position:absolute;right:0;bottom:0;width:60%;height:40%;color:#26211A"><rect width="100%" height="100%" fill="url(#tread)"/></svg><div class="big" style="position:relative">70 км</div><div class="t" style="position:relative">По лесу на одной зарядке<br><span style="font:500 11px/1.4 var(--font-mono);text-transform:none;color:var(--text-muted-on-dark)">пример, замер: 80 кг, 25 °C</span></div></div>
+<div class="post l"><div class="big">Pro</div><div class="t">Выбери рельеф. Подберем байк за минуту.</div></div>
+</div>
+<h4>Соцсети: посты</h4><p class="note">Квадрат 1:1, цифра-герой моноширинным, подпись с условием.</p>
+</div>
+<div class="app">
+<div class="story"><svg class="tr" aria-hidden="true"><rect width="100%" height="100%" fill="url(#tread)"/></svg><svg class="lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 434 120" role="img" aria-label="ТЯГА – горизонтальный логотип на темном"><title>ТЯГА – горизонтальный логотип на темном</title><rect width="120" height="120" rx="22" fill="#D4F04A"/><g transform="translate(0 0)"><path fill="#14110C" d="M18 20H46L38 50H10Z"/><path fill="#14110C" d="M50 20H78L70 50H42Z"/><path fill="#14110C" d="M82 20H110L102 50H74Z"/><path fill="#14110C" d="M47 56H73V104H57L47 94Z"/></g><g transform="translate(154 29.0) scale(0.62)" fill="#F6F2E9"><path transform="translate(0 0)" fill-rule="evenodd" d="M0 0H76V24H50V100H26V24H0Z"/><path transform="translate(88 0)" fill-rule="evenodd" d="M0 0H26L40 34L54 0H80L52 52V100H28V52Z"/><path transform="translate(180 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/><path transform="translate(276 0)" fill-rule="evenodd" d="M0 0H76V24H24V76H52V60H38V40H76V100H0Z"/><path transform="translate(364 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/></g></svg><div class="t">Тест-драйв <em>в субботу</em> в Ростове</div><div class="sw-up">Записаться ↑</div></div>
+<h4>Соцсети: сторис</h4><p class="note">9:16, безопасные поля 14% сверху и 20% снизу, одно действие.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer><div class="wrap"><svg class="lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 434 120" role="img" aria-label="ТЯГА – горизонтальный логотип на темном"><title>ТЯГА – горизонтальный логотип на темном</title><rect width="120" height="120" rx="22" fill="#D4F04A"/><g transform="translate(0 0)"><path fill="#14110C" d="M18 20H46L38 50H10Z"/><path fill="#14110C" d="M50 20H78L70 50H42Z"/><path fill="#14110C" d="M82 20H110L102 50H74Z"/><path fill="#14110C" d="M47 56H73V104H57L47 94Z"/></g><g transform="translate(154 29.0) scale(0.62)" fill="#F6F2E9"><path transform="translate(0 0)" fill-rule="evenodd" d="M0 0H76V24H50V100H26V24H0Z"/><path transform="translate(88 0)" fill-rule="evenodd" d="M0 0H26L40 34L54 0H80L52 52V100H28V52Z"/><path transform="translate(180 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/><path transform="translate(276 0)" fill-rule="evenodd" d="M0 0H76V24H24V76H52V60H38V40H76V100H0Z"/><path transform="translate(364 0)" fill-rule="evenodd" d="M0 100L30 0H54L84 100H59L54 80H30L25 100ZM36 60H48L42 34Z"/></g></svg><div>Брендбук 0.1 · рабочее название «ТЯГА», подпись GT · все модели, цены и цифры в примерах условные</div></div></footer>
+<script>
+document.querySelectorAll('.chips').forEach(function(g){g.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;g.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')})})});
+</script>
+</body>
+</html>
