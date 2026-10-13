@@ -1,0 +1,18 @@
+:root{
+  --g-silt:#E7E8E4;
+  --g-fog:#F4F5F2;
+  --g-tar:#15171A;
+  --g-shale:#2A2D33;
+  --g-violet:#8433F0;
+  --g-lift:#BE93FF;
+  --g-spark:#FF5B1F;
+  --g-sand:#B9B2A1;
+  --g-moss:#3F4A3C;
+  --g-font-display:"Tektur Variable","Tektur",system-ui,sans-serif;
+  --g-font-text:"Geologica Variable","Geologica",system-ui,sans-serif;
+  --g-font-mono:"JetBrains Mono Variable","JetBrains Mono",ui-monospace,monospace;
+  --g-cut:14px;--g-r-s:4px;--g-r-m:10px;
+  --g-s1:4px;--g-s2:8px;--g-s3:12px;--g-s4:16px;--g-s5:24px;--g-s6:32px;--g-s7:48px;--g-s8:64px;--g-s9:96px;--g-s10:144px;
+  --g-ease:cubic-bezier(.6,0,.2,1);--g-fast:180ms;--g-base:420ms;--g-slow:900ms;
+  --g-focus:0 0 0 3px var(--g-fog),0 0 0 6px var(--g-violet);
+}

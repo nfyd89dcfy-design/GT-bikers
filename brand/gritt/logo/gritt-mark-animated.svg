@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-8 -8 136 136" role="img" aria-label="Gritt, анимированный знак"><title>Gritt animated mark</title>
+<style>
+.r,.b,.s{fill:none;stroke-width:16;stroke-dasharray:100;stroke-dashoffset:100;animation:draw 5s cubic-bezier(.6,0,.2,1) infinite}
+.r{stroke:#15171A}.b{stroke:#8433F0;animation-name:draw2}.s{stroke:#8433F0;animation-name:draw3}
+.d{fill:#FF5B1F;opacity:0;transform-box:fill-box;transform-origin:center;animation:pop 5s ease-out infinite}
+.d2{animation-delay:.12s}.d3{animation-delay:.24s}
+@keyframes draw{0%{stroke-dashoffset:100}35%,88%{stroke-dashoffset:0}100%{stroke-dashoffset:-100}}
+@keyframes draw2{0%,25%{stroke-dashoffset:100}45%,88%{stroke-dashoffset:0}100%{stroke-dashoffset:-100}}
+@keyframes draw3{0%,38%{stroke-dashoffset:100}55%,88%{stroke-dashoffset:0}100%{stroke-dashoffset:-100}}
+@keyframes pop{0%,52%{opacity:0;transform:translate(-14px,10px) scale(.2)}62%{opacity:1;transform:translate(0,0) scale(1.25)}70%,88%{opacity:1;transform:scale(1)}100%{opacity:0;transform:translate(10px,-8px) scale(.6)}}
+@media (prefers-reduced-motion:reduce){.r,.b,.s{animation:none;stroke-dashoffset:0}.d{animation:none;opacity:1}}
+</style>
+<path class="r" pathLength="100" d="M104 60A44 44 0 1 1 87.1 25.3"/>
+<path class="b" pathLength="100" d="M50 60H104"/><path class="s" pathLength="100" d="M77 60V99"/>
+<rect class="d" x="97" y="19" width="6" height="6"/><rect class="d d2" x="106" y="33" width="5" height="5"/><rect class="d d3" x="111" y="46" width="3.5" height="3.5"/></svg>

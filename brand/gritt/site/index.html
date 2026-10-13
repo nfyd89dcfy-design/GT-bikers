@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gritt – электробайки, ATV, UTV и снег</title>
+<meta name="description" content="Gritt: электровелосипеды, квадроциклы, багги и снежная техника. Шоурум в Ростове-на-Дону, доставка по югу и в Москву. Живой макет сайта.">
+<link rel="icon" href="assets/logo/gritt-app-icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body class="cur-on">
+<a class="sr" href="#line">Перейти к линейке</a>
+<div class="cur" aria-hidden="true"></div>
+
+<!-- ВХОД -->
+<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-h">
+  <div class="gate-top"><span class="logo"><img src="assets/logo/gritt-logo-horizontal-on-dark.svg" alt="Gritt"></span><span class="mono" style="color:#c3c6c0">Прототип сайта · все цифры примерные</span></div>
+  <h1 id="gate-h" data-t="Что будем катать?" data-v="Что вам подобрать?">Что будем катать?</h1>
+  <div class="gate-tiles" role="group" aria-label="Направление">
+    <button class="tile" data-kind="enduro"><div class="ph moss" data-cap="лес, подросток в обычной худи толкает байк по корням, естественный свет"></div><span class="cap">photo placeholder</span><span class="t-in"><span class="num">01 / E-BIKE</span><span class="t-name">Эндуро</span><span class="t-sub" data-t="Лес, песок, корни. Roost без жалости." data-v="Мощный байк для леса и трасс. Запас хода и тормоза.">Лес, песок, корни.</span></span></button>
+    <button class="tile" data-kind="city"><div class="ph yard" data-cap="двор, стена, вечерний свет, байк прислонен к бетону"></div><span class="cap">photo placeholder</span><span class="t-in"><span class="num">02 / E-BIKE</span><span class="t-name">Город</span><span class="t-sub" data-t="Дворы, набережные, школа и обратно." data-v="Спокойный байк на каждый день: работа, дача, магазин.">Дворы и набережные.</span></span></button>
+    <button class="tile" data-kind="buggy"><div class="ph sand" data-cap="песчаный карьер, багги в пыли, солнце низко"></div><span class="cap">photo placeholder</span><span class="t-in"><span class="num">03 / UTV</span><span class="t-name">Багги</span><span class="t-sub" data-t="Двое, песок, ветер. Лучший weekend." data-v="Для семьи и работы на участке. Каркас, ремни, места для двоих.">Двое и песок.</span></span></button>
+    <button class="tile" data-kind="quad"><div class="ph warm" data-cap="грунтовка у поля, квадроцикл, закатный свет"></div><span class="cap">photo placeholder</span><span class="t-in"><span class="num">04 / ATV</span><span class="t-name">Квадрик</span><span class="t-sub" data-t="Грязь, брод, гора. Включай и поехали." data-v="Рабочая лошадка: хозяйство, охота, рыбалка, снег зимой.">Грязь и брод.</span></span></button>
+  </div>
+  <div class="gate-bot">
+    <span class="mono">Энергия:</span>
+    <div class="seg" role="group" aria-label="Тип энергии">
+      <button class="chip" data-energy="electro" aria-pressed="true">Электро</button>
+      <button class="chip" data-energy="petrol" aria-pressed="false">Бенз</button>
+    </div>
+    <span class="grow"></span>
+    <button class="btn line" id="gate-skip">Показать все</button>
+  </div>
+</div>
+
+<!-- ШАПКА -->
+<header class="hdr" id="top">
+  <a class="logo" href="#hero" aria-label="Gritt, на главную"><img src="assets/logo/gritt-logo-horizontal.svg" alt="Gritt"></a>
+  <nav class="nav" aria-label="Разделы">
+    <a href="#line">Линейка</a><a href="#viewer">3D / AR</a><a href="#config">Кастом</a><a href="#quiz">Подбор</a><a href="#tour">Шоурум</a><a href="#media">Медиа</a><a href="#service">Сервис</a><a href="#drive">Тест-драйв</a>
+  </nav>
+  <div class="voice" role="group" aria-label="Обращение"><button data-voice="t" aria-pressed="true">ты</button><button data-voice="v" aria-pressed="false">вы</button></div>
+  <button class="cartbtn" id="cart-open" aria-label="Корзина"><span>Корзина</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 4h3l2.5 11h10L21 7H7"/><circle cx="10" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg><b id="cart-n">0</b></button>
+</header>
+
+<main>
+<!-- HERO -->
+<section class="hero" id="hero" aria-label="Gritt">
+  <div class="hero-pin">
+    <div class="bgfall"></div>
+    <canvas class="bg" id="hero-bg" aria-hidden="true"></canvas>
+    <div class="hero-big" aria-hidden="true">GRITT</div>
+    <canvas class="veh" id="hero-veh" role="img" aria-label="3D-модель байка: при прокрутке собирается из деталей"></canvas>
+    <svg class="sticker" viewBox="0 0 200 200" aria-hidden="true"><defs><path id="cp" d="M100 100m-72 0a72 72 0 1 1 144 0a72 72 0 1 1 -144 0"/></defs><circle cx="100" cy="100" r="98" fill="#FF5B1F"/><text font-family="JetBrains Mono Variable,monospace" font-weight="700" font-size="17" letter-spacing="2.6" fill="#15171A"><textPath href="#cp">CUSTOM · ROOST · ROSTOV · DROP 01 · </textPath></text><g transform="translate(72 70) scale(.5)"><path d="M104 60A44 44 0 1 1 87.1 25.3" fill="none" stroke="#15171A" stroke-width="16"/><path d="M50 60H104M77 60V99" fill="none" stroke="#15171A" stroke-width="16"/></g></svg>
+    <div class="build-bar mono" aria-hidden="true"><span>сборка</span><i><b id="build-p"></b></i><span id="build-n">0%</span></div>
+    <div class="hero-copy">
+      <p class="mono" id="hero-dir" style="background:var(--fog);padding:5px 8px;width:fit-content;margin-bottom:14px">Эндуро · электро</p>
+      <h1 id="hero-h" data-t="Собери свой байк. Сделай его громче." data-v="Надежная техника для всей семьи.">Собери свой байк. Сделай его громче.</h1>
+      <p id="hero-p" data-t="Матовый черный, фиолетовый руль, твои детали. Начни со сборки – доедешь до кастома." data-v="Простая техника без сюрпризов: понятная гарантия, сервис рядом, обучение на тест-драйве.">Матовый черный, фиолетовый руль.</p>
+      <div class="hero-cta"><a class="btn vio" href="#config">Собрать свой</a><a class="btn line" href="#drive" style="background:rgba(244,245,242,.9)">Тест-драйв</a></div>
+    </div>
+    <div class="hero-meta"><span class="mono">Ростов-на-Дону · шоурум</span><span class="mono">Москва · Краснодарский край</span><span class="mono">розница + опт</span></div>
+  </div>
+</section>
+
+<div class="marq" aria-hidden="true"><div><span>Grit in the details</span><span>★</span><span>Custom first</span><span>★</span><span>Ride it dirty</span><span>★</span><span>Drop 01</span><span>★</span><span>Grit in the details</span><span>★</span><span>Custom first</span><span>★</span><span>Ride it dirty</span><span>★</span><span>Drop 01</span><span>★</span></div></div>
+
+<!-- ЛИНЕЙКА -->
+<section class="sec" id="line"><div class="wrap">
+  <div class="line-head"><div><div class="kick">Линейка</div><h2 id="line-h">Roost: lite / pro / ultra</h2><p class="lead" id="line-p"></p></div>
+  <div class="seg" id="kind-seg" role="group" aria-label="Направление"></div></div>
+  <div class="cards" id="cards"></div>
+  <p class="mono" style="margin-top:20px">* Цифры и цены примерные, для макета. Финальные характеристики появятся после финальных замеров первой партии.</p>
+  <div class="acc-h"><div><div class="kick">Аксессуары</div><h3>Докрути под себя</h3></div><span class="mono">листай →</span></div>
+  <div class="acc" id="acc" tabindex="0" aria-label="Карусель аксессуаров"></div>
+</div></section>
+
+<!-- 3D / AR -->
+<section class="sec dark" id="viewer"><div class="wrap">
+  <div class="kick">3D / AR</div><h2>Покрути у себя на экране</h2><p class="lead" data-t="Тащи мышкой или пальцем. Это процедурная модель, в продакшене тут будут лидар-сканы." data-v="Рассмотрите технику со всех сторон. Это процедурная модель-прототип, в продакшене будут лидар-сканы.">Тащи мышкой.</p>
+  <div class="view-grid" style="margin-top:40px">
+    <div class="stage" id="v-stage"><canvas id="v-canvas" role="img" aria-label="Интерактивная 3D-модель, вращайте перетаскиванием"></canvas><span class="proto">Прототип</span><span class="mono hint">drag – вращать · колесо – масштаб</span></div>
+    <div class="side">
+      <div><div class="mono" style="margin-bottom:10px">Модель</div><div class="seg" id="v-tier" role="group" aria-label="Версия"></div></div>
+      <div><div class="mono" style="margin-bottom:10px">Вид</div><div class="seg" id="v-view" role="group" aria-label="Ракурс"><button class="chip" data-view="side" aria-pressed="true">Сбоку</button><button class="chip" data-view="front" aria-pressed="false">Спереди</button><button class="chip" data-view="top" aria-pressed="false">Сверху</button><button class="chip" id="v-spin" aria-pressed="true">Автоповорот</button></div></div>
+      <p id="v-desc"></p>
+      <button class="btn vio" id="ar-btn">Посмотреть у себя дома (AR)</button>
+      <p class="mono" style="color:#c3c6c0">AR здесь заглушка: честный прототип без камеры.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- СРАВНЕНИЕ -->
+<section class="sec" id="compare"><div class="wrap">
+  <div class="kick">Сравнение</div><h2>Три версии, без тумана</h2>
+  <div class="cmp-tools" style="margin-top:28px"><button class="chip" id="cmp-diff" aria-pressed="false">Показать отличия</button><span class="mono">направление:</span><div class="seg" id="cmp-kind" role="group" aria-label="Направление сравнения"></div></div>
+  <div class="scroll-x"><table class="cmp" id="cmp"></table></div>
+</div></section>
+
+<!-- КОНФИГУРАТОР -->
+<section class="sec dark" id="config"><div class="wrap">
+  <div class="kick">Кастом</div><h2 data-t="Собери свой Gritt" data-v="Подберите комплектацию">Собери свой Gritt</h2><p class="lead">Цвет деталей, контроллер, батарея. Цена и запас хода пересчитываются сразу. Цифры примерные.</p>
+  <div class="cfg" style="margin-top:40px">
+    <div><div class="stage" id="c-stage" style="aspect-ratio:4/3"><canvas id="c-canvas" role="img" aria-label="Модель с выбранной комплектацией"></canvas><span class="proto">Прототип</span><span class="mono hint">drag – вращать</span></div>
+    <div class="mono" style="margin-top:14px;display:flex;gap:24px;flex-wrap:wrap"><span>Запас хода: <b id="c-range">-</b></span><span>Батарея: <b id="c-bat">-</b></span><span>Вес: <b id="c-w">-</b></span></div></div>
+    <div id="c-opts"></div>
+  </div>
+</div></section>
+
+<!-- КВИЗ -->
+<section class="sec" id="quiz"><div class="wrap">
+  <div class="kick">Подбор</div><h2 data-t="Какой тебе нужен?" data-v="Какой вам подойдет?">Какой тебе нужен?</h2>
+  <div class="quiz" id="quiz-box" style="margin-top:36px" aria-live="polite"></div>
+</div></section>
+
+<!-- ТУР -->
+<section class="sec dark" id="tour"><div class="wrap">
+  <div class="kick">Шоурум · Ростов-на-Дону</div><h2>3D-тур по магазину</h2><p class="lead">Мини-тур на Three.js: тащи, чтобы осмотреться, жми на точки, чтобы подойти. Планировка условная, это прототип.</p>
+  <div class="tour" style="margin-top:36px">
+    <div class="tour-stage" id="t-stage"><canvas id="t-canvas" role="img" aria-label="Макет шоурума в 3D с точками"></canvas><span class="proto" style="position:absolute;top:14px;left:14px;z-index:3">Прототип</span></div>
+    <aside class="tour-info"><svg class="plan" id="t-plan" viewBox="0 0 280 200" aria-label="Схема шоурума"></svg><div><div class="mono" id="t-n"></div><h3 id="t-h" style="margin:8px 0"></h3><p id="t-p"></p></div><div class="row" style="display:flex;gap:8px"><button class="btn sm line" id="t-prev">← Назад</button><button class="btn sm" id="t-next">Дальше →</button></div></aside>
+  </div>
+</div></section>
+
+<!-- МЕДИА -->
+<section class="sec dark" id="media" style="padding-top:0"><div class="wrap">
+  <div class="kick">Медиа</div><h2 data-t="Снято своими" data-v="Как это выглядит в жизни">Снято своими</h2>
+  <div class="tabs" role="tablist" style="margin-top:32px"><button class="chip" role="tab" id="tab-soc" aria-selected="true" aria-pressed="true" aria-controls="p-soc">Соцсети</button><button class="chip" role="tab" id="tab-vid" aria-selected="false" aria-pressed="false" aria-controls="p-vid">Видео</button></div>
+  <div id="p-soc" role="tabpanel" aria-labelledby="tab-soc"><div class="soc">
+    <a href="#" data-stub><span><b>Telegram</b><span>@gritt_ru · заглушка · дропы и закулисье</span></span><span aria-hidden="true">↗</span></a>
+    <a href="#" data-stub><span><b>YouTube</b><span>Gritt Rides · заглушка · трюки и обзоры</span></span><span aria-hidden="true">↗</span></a>
+    <a href="#" data-stub><span><b>Instagram</b><span>@gritt.rides · заглушка · кастом и UGC</span></span><span aria-hidden="true">↗</span></a>
+    <a href="#" data-stub><span><b>VK</b><span>vk.com/gritt · заглушка · комьюнити и тест-драйвы</span></span><span aria-hidden="true">↗</span></a>
+  </div></div>
+  <div id="p-vid" role="tabpanel" aria-labelledby="tab-vid" hidden><div class="vids" id="vids"></div></div>
+</div></section>
+
+<!-- СЕРВИС -->
+<section class="sec" id="service"><div class="wrap">
+  <div class="kick">Сервис</div><h2>После покупки все только начинается</h2>
+  <div class="svc" style="margin-top:40px" id="svc"></div>
+</div></section>
+
+<!-- ДОВЕРИЕ + КАРТА -->
+<section class="sec dark" id="trust"><div class="wrap trust">
+  <div><div class="kick">Доверие</div><h2 id="trust-h" data-t="Мы сами катаем. Не зайдет – скажем честно." data-v="Проверенная сборка, понятная гарантия, сервис рядом.">Мы сами катаем.</h2><p class="lead" id="trust-p" data-t="Каждый байк проезжает у нас тест-круг до того, как попадет к тебе. Ломается – чиним быстро, без драм." data-v="Каждая единица проходит предпродажную проверку. Вы получаете инструкцию, обучение и контакт сервисного мастера.">Каждый байк проезжает у нас тест-круг.</p>
+  <div class="facts" style="margin-top:28px"><div><span>Гарантия (пример)</span><b>2 года</b></div><div><span>Доставка по югу (пример)</span><b>2-4 дня</b></div><div><span>Тест-драйв</span><b>по записи, бесплатно</b></div></div></div>
+  <svg class="map" id="map" viewBox="0 0 520 470" role="img" aria-label="Схема точек: Москва, Ростов-на-Дону, Краснодарский край"></svg>
+</div></section>
+
+<!-- ТЕСТ-ДРАЙВ -->
+<section class="sec" id="drive"><div class="wrap drive">
+  <div><div class="kick">Тест-драйв</div><h2 data-t="Приезжай и прокатись" data-v="Запишитесь на тест-драйв">Приезжай и прокатись</h2><p class="lead">Выберите город, модель и дату. Мы подтвердим запись и подготовим технику.</p>
+  <div class="ph yard" data-cap="двор шоурума в Ростове, байк на подножке, мягкое утро" style="aspect-ratio:4/3;margin-top:32px"></div></div>
+  <div><form class="form" id="drive-form" novalidate>
+    <fieldset class="f cities" role="radiogroup" aria-label="Город"><legend>Город</legend>
+      <button type="button" class="city" role="radio" aria-checked="true" data-city="Ростов-на-Дону"><b>Ростов</b><small>шоурум, каждый день</small></button>
+      <button type="button" class="city" role="radio" aria-checked="false" data-city="Москва"><b>Москва</b><small>выезд, по записи</small></button>
+      <button type="button" class="city" role="radio" aria-checked="false" data-city="Краснодарский край"><b>Кубань</b><small>выезд, по записи</small></button>
+    </fieldset>
+    <div class="f"><label for="d-model">Модель</label><select id="d-model"></select></div>
+    <div class="f"><label for="d-date">Дата</label><input id="d-date" type="date" required><div class="err" id="e-date"></div></div>
+    <div class="f"><label for="d-time">Время</label><select id="d-time"><option>10:00</option><option>12:00</option><option>14:00</option><option>16:00</option><option>18:00</option></select></div>
+    <div class="f"><label for="d-name">Имя</label><input id="d-name" autocomplete="given-name" required><div class="err" id="e-name"></div></div>
+    <div class="f"><label for="d-tel">Телефон</label><input id="d-tel" type="tel" autocomplete="tel" placeholder="+7 ___ ___-__-__" required><div class="err" id="e-tel"></div></div>
+    <button class="btn vio" type="submit">Записаться</button>
+  </form><div class="ok" id="drive-ok" hidden role="status"></div></div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <div class="cols"><div><img src="assets/logo/gritt-logo-horizontal-on-dark.svg" alt="Gritt" style="height:44px"><p style="margin-top:20px;max-width:30em;color:#c3c6c0">Электробайки, ATV, UTV и снежная техника. Розница и опт. Москва, Ростов-на-Дону, Краснодарский край.</p></div>
+  <div><div class="mono" style="margin-bottom:10px">Магазин</div><a href="#line">Линейка</a><a href="#config">Кастом</a><a href="#compare">Сравнение</a></div>
+  <div><div class="mono" style="margin-bottom:10px">Сервис</div><a href="#service">Доставка</a><a href="#service">Гарантия</a><a href="#drive">Тест-драйв</a></div>
+  <div><div class="mono" style="margin-bottom:10px">Шоурум</div><span style="color:#c3c6c0">Ростов-на-Дону<br>адрес уточняется<br>опт: заглушка</span></div></div>
+  <div class="big" aria-hidden="true">Gritt</div>
+  <p class="mono" style="margin-top:18px;color:#9ea2a8">Живой макет · процедурные 3D-модели · фото – плейсхолдеры · цены и характеристики примерные</p>
+</div></footer>
+
+<!-- КОРЗИНА -->
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" hidden role="dialog" aria-modal="true" aria-labelledby="dr-t">
+  <div class="dr-h"><h3 id="dr-t">Корзина</h3><button class="btn sm line" id="cart-close">Закрыть</button></div>
+  <div class="dr-b" id="dr-b"></div>
+  <div class="dr-f" id="dr-f"></div>
+</aside>
+<dialog id="ar-dlg"><div class="dlg ar-dlg"><span class="proto">Прототип</span><h3>AR: посмотреть у себя дома</h3><p>В этом макете кнопка только показывает идею: камера не включается и ничего не отправляется.</p><p><b>Как будет в продакшене:</b> лидар-сканы каждой модели в реальном размере, WebXR на Android и Quick Look (USDZ) на iPhone. Нажал, навел на пол, обошел байк кругом, сравнил с дверным проемом и гаражом.</p><p><b>Что понадобится:</b> сканирование 12 моделей, оптимизация до 5-8 МБ на файл и тест на реальных устройствах.</p><form method="dialog" style="margin-top:20px"><button class="btn vio">Понятно</button></form></div></dialog>
+<div class="coll" id="coll" hidden role="dialog" aria-modal="true" aria-label="Видео"><button class="btn close" id="coll-x">Закрыть</button><div class="coll-grid" id="coll-g"></div><div class="cap2"><b class="mono" id="coll-t"></b><span class="mono">video placeholder · в продакшене тут плеер</span></div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/vendor/ScrollTrigger.min.js"></script>
+<script src="assets/vendor/SplitText.min.js"></script>
+<script src="assets/vendor/three.min.js"></script>
+<script src="assets/data.js"></script>
+<script src="assets/vehicle.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
