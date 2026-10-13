@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gran Trakt – макет главной страницы</title>
+<meta name="description" content="Макет главной страницы Gran Trakt (рабочее название GT): электровелосипеды, квадроциклы, UTV и снегоходы. Модели и цифры в макете примерные.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22 role=%22img%22 aria-label=%22Gran Trakt favicon%22%3E%3Ctitle%3EGran Trakt favicon%3C/title%3E%3Crect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%2325382F%22/%3E%3Cg transform=%22translate%280 0%29 scale%281%29%22 fill=%22none%22 stroke-width=%225.4%22 stroke-linecap=%22butt%22 stroke-linejoin=%22miter%22%3E%3Cpath d=%22M46.55 19.79A19 19 0 1 0 50.81 29.3%22 stroke=%22%23F5F1EA%22/%3E%3Cpath d=%22M32 32H51M41.5 32V48.45%22 stroke=%22%23C9A878%22/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Golos+Text:wght@400;500;600&display=swap&subset=cyrillic" rel="stylesheet">
+<style>
+:root{
+  --graphite:#1E1D1B;--basalt:#2B2A27;--patina:#25382F;--patina-soft:#3A5247;--bone:#F5F1EA;--limestone:#E8E2D6;--sand:#CFC6B6;--stone:#6B6458;--bronze:#80582D;--bronze-light:#C9A878;--alert:#9C3A2A;--ok:#3C6A4B;
+  --display:'Cormorant Garamond','Times New Roman',serif;--text:'Golos Text','Helvetica Neue',Arial,sans-serif;
+  --ease:cubic-bezier(.2,.6,.2,1);--gutter:clamp(16px,4vw,48px);--max:1280px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bone);color:var(--graphite);font:400 17px/1.65 var(--text);overflow-x:hidden}
+img,svg{max-width:100%}
+a{color:inherit}
+h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.08;margin:0;letter-spacing:-.005em}
+p{margin:0}
+:focus-visible{outline:2px solid var(--patina);outline-offset:3px;border-radius:2px}
+.dark :focus-visible,.on-dark :focus-visible{outline-color:var(--bronze-light)}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:-999px;top:8px;background:var(--patina);color:var(--bone);padding:12px 18px;z-index:100}
+.skip:focus{left:8px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+.label{font:500 12px/1.3 var(--text);letter-spacing:.16em;text-transform:uppercase;color:var(--stone)}
+.dark .label{color:var(--bronze-light)}
+.sec{padding:clamp(72px,10vw,144px) 0;border-top:1px solid var(--sand)}
+.sec-head{display:grid;gap:16px;max-width:760px;margin-bottom:clamp(36px,5vw,64px)}
+.sec-head h2{font-size:clamp(2rem,4vw,3.25rem)}
+.sec-head p{color:var(--stone);font-size:1.125rem;max-width:56ch}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 28px;border:1px solid var(--patina);background:var(--patina);color:var(--bone);font:500 15px/1 var(--text);letter-spacing:.02em;text-decoration:none;border-radius:2px;cursor:pointer;transition:background .24s var(--ease),color .24s var(--ease),border-color .24s var(--ease)}
+.btn:hover{background:var(--patina-soft);border-color:var(--patina-soft)}
+.btn.ghost{background:transparent;color:var(--graphite);border-color:var(--graphite)}
+.btn.ghost:hover{background:var(--graphite);color:var(--bone)}
+.dark .btn{background:var(--bone);color:var(--graphite);border-color:var(--bone)}
+.dark .btn:hover{background:var(--bronze-light);border-color:var(--bronze-light)}
+.dark .btn.ghost{background:transparent;color:var(--bone);border-color:var(--bone)}
+.dark .btn.ghost:hover{background:var(--bone);color:var(--graphite)}
+.link{color:var(--bronze);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px;font-weight:500}
+.dark .link{color:var(--bronze-light)}
+.dark{background:var(--patina);color:var(--bone)}
+.sample-note{background:var(--limestone);border-bottom:1px solid var(--sand);font-size:13px;color:var(--graphite);text-align:center;padding:8px var(--gutter)}
+
+/* header */
+header.top{position:sticky;top:0;z-index:20;background:rgba(245,241,234,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--sand)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:76px}
+.logo{display:block;height:36px;width:auto;flex:none}
+.logo svg{height:36px;width:auto;display:block}
+nav.main ul{display:flex;gap:28px;list-style:none;margin:0;padding:0}
+nav.main a{text-decoration:none;font-size:15px;font-weight:500;padding:12px 2px;border-bottom:1px solid transparent}
+nav.main a:hover{border-bottom-color:var(--bronze)}
+.top .btn{min-height:44px;padding:0 20px;font-size:14px}
+.menu{display:none}
+.menu summary{list-style:none;cursor:pointer;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;border:1px solid var(--graphite);border-radius:2px;font-size:14px;font-weight:500;padding:0 16px}
+.menu summary::-webkit-details-marker{display:none}
+.menu ul{position:absolute;left:0;right:0;top:100%;background:var(--bone);border-bottom:1px solid var(--sand);list-style:none;margin:0;padding:8px var(--gutter) 20px}
+.menu li a{display:block;padding:14px 0;border-bottom:1px solid var(--sand);text-decoration:none;font-weight:500}
+@media (max-width:1000px){nav.main{display:none}.menu{display:block}.top .wrap{position:relative}.top .cta-top{display:none}}
+
+/* hero */
+.hero{padding:clamp(48px,8vw,112px) 0 clamp(56px,7vw,96px)}
+.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(32px,6vw,96px);align-items:center}
+.hero h1{font-size:clamp(2.9rem,6.4vw,5.6rem);line-height:1;margin:20px 0 28px}
+.hero h1 em{font-style:italic;color:var(--bronze)}
+.hero p.lead{font-size:1.25rem;color:var(--graphite);max-width:46ch}
+.hero .actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px}
+.scene{position:relative;background:var(--limestone);aspect-ratio:5/6;border:1px solid var(--sand);overflow:hidden;color:var(--graphite);--ink:var(--graphite);--acc:var(--bronze)}
+.scene .sun{position:absolute;width:30%;aspect-ratio:1;border-radius:50%;border:1px solid var(--bronze);right:14%;top:12%}
+.scene .horizon{position:absolute;left:0;right:0;bottom:30%;border-top:1px solid var(--graphite)}
+.scene .ground{position:absolute;left:0;right:0;bottom:0;height:30%;background:repeating-linear-gradient(to bottom,transparent 0 15px,rgba(30,29,27,.12) 15px 16px)}
+.scene svg.veh{position:absolute;left:8%;width:84%;bottom:22%}
+.scene figcaption{position:absolute;left:16px;bottom:12px;font-size:12px;color:var(--stone);letter-spacing:.04em}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);margin-top:clamp(48px,6vw,88px);border-top:1px solid var(--sand)}
+.facts div{padding:24px 24px 0 0}
+.facts b{display:block;font:500 clamp(2.25rem,4vw,3.25rem)/1 var(--display);color:var(--graphite)}
+.facts span{display:block;margin-top:8px;font-size:14px;color:var(--stone)}
+@media (max-width:860px){.hero .wrap{grid-template-columns:1fr}.scene{aspect-ratio:4/3}.facts{grid-template-columns:1fr 1fr}.facts div{padding-bottom:20px}}
+
+/* quiz */
+.quiz{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(24px,5vw,72px);align-items:start}
+.q-card{background:var(--limestone);border:1px solid var(--sand);padding:clamp(20px,3vw,40px)}
+fieldset{border:0;margin:0 0 28px;padding:0;min-width:0}
+legend{font:500 1.5rem/1.2 var(--display);margin-bottom:14px;padding:0}
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.opts input{position:absolute;opacity:0;pointer-events:none}
+.opts label{display:flex;align-items:center;min-height:56px;padding:10px 16px;border:1px solid var(--sand);background:var(--bone);cursor:pointer;font-size:15px;line-height:1.35;transition:border-color .24s var(--ease),background .24s var(--ease)}
+.opts label:hover{border-color:var(--graphite)}
+.opts input:checked+label{border-color:var(--patina);background:var(--patina);color:var(--bone)}
+.opts input:focus-visible+label{outline:2px solid var(--patina);outline-offset:3px}
+.result{background:var(--graphite);color:var(--bone);padding:clamp(20px,3vw,36px);position:sticky;top:100px;--ink:var(--bone);--acc:var(--bronze-light)}
+.result .label{color:var(--bronze-light)}
+.result h3{font-size:2rem;margin:10px 0 6px}
+.result p{color:#D9D2C4;font-size:15px}
+.result svg.veh{width:100%;height:auto;margin:16px 0 8px}
+.result dl{margin:16px 0 24px;display:grid;grid-template-columns:auto 1fr;gap:8px 20px;font-size:15px;border-top:1px solid var(--basalt);padding-top:16px}
+.result dt{color:#BDB5A6}.result dd{margin:0;text-align:right;font-weight:500}
+.result .btn{background:var(--bone);color:var(--graphite);border-color:var(--bone);width:100%}
+.result .btn:hover{background:var(--bronze-light);border-color:var(--bronze-light)}
+@media (max-width:900px){.quiz{grid-template-columns:1fr}.opts{grid-template-columns:1fr}.result{position:static}}
+
+/* lineup */
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,28px)}
+.tier{border:1px solid var(--sand);display:flex;flex-direction:column;background:var(--bone)}
+.tier .art{aspect-ratio:16/10;display:grid;place-items:center;border-bottom:1px solid var(--sand);padding:18px}
+.tier .art svg{width:86%;height:auto}
+.tier.lite .art{background:var(--limestone);--ink:var(--graphite);--acc:var(--bronze)}
+.tier.pro .art{background:var(--patina);--ink:var(--bone);--acc:var(--bronze-light)}
+.tier.ultra .art{background:var(--graphite);--ink:var(--bone);--acc:var(--bronze-light)}
+.tier .body{padding:24px;display:flex;flex-direction:column;gap:14px;flex:1}
+.badge{display:inline-flex;align-items:center;height:26px;padding:0 12px;border-radius:999px;font:500 11px/1 var(--text);letter-spacing:.16em;text-transform:uppercase;width:max-content}
+.badge.lite{background:var(--limestone);color:var(--graphite);border:1px solid var(--sand)}
+.badge.pro{background:var(--patina);color:var(--bone)}
+.badge.ultra{background:var(--graphite);color:var(--bronze-light);border:1px solid var(--bronze)}
+.tier h3{font-size:1.75rem}
+.tier p.for{color:var(--stone);font-size:15px}
+.specs{list-style:none;margin:0;padding:0;border-top:1px solid var(--sand)}
+.specs li{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--sand);font-size:15px}
+.specs b{font-weight:500;font-variant-numeric:tabular-nums}
+.tier .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:8px}
+.price{font:500 1.5rem/1 var(--display)}
+.price small{font:400 12px var(--text);color:var(--stone);display:block;margin-top:4px}
+@media (max-width:980px){.tiers{grid-template-columns:1fr}}
+
+/* configurator */
+.conf{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(24px,5vw,72px);align-items:center}
+.conf-view{background:var(--limestone);border:1px solid var(--sand);aspect-ratio:4/3;display:grid;place-items:center;padding:6%;--ink:var(--graphite);--acc:var(--frame,var(--bronze))}
+.conf-view svg{width:100%;height:auto}
+.conf-panel{display:grid;gap:26px}
+.sw{display:flex;gap:12px;flex-wrap:wrap}
+.sw input{position:absolute;opacity:0;pointer-events:none}
+.sw label{width:44px;height:44px;border-radius:50%;border:1px solid var(--graphite);cursor:pointer;display:block;position:relative;background:var(--c)}
+.sw input:checked+label{outline:2px solid var(--graphite);outline-offset:3px}
+.sw input:focus-visible+label{outline:2px solid var(--patina);outline-offset:3px}
+.seg{display:flex;flex-wrap:wrap;gap:10px}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label{min-height:44px;padding:0 18px;display:inline-flex;align-items:center;border:1px solid var(--sand);cursor:pointer;font-size:15px;background:var(--bone)}
+.seg input:checked+label{background:var(--patina);color:var(--bone);border-color:var(--patina)}
+.seg input:focus-visible+label{outline:2px solid var(--patina);outline-offset:3px}
+.sum{border-top:1px solid var(--graphite);padding-top:18px;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+@media (max-width:900px){.conf{grid-template-columns:1fr}}
+
+/* compare */
+.table-wrap{overflow-x:auto;border:1px solid var(--sand);background:var(--bone);-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:15px}
+caption{text-align:left;padding:14px 18px;font-size:13px;color:var(--stone);caption-side:bottom;border-top:1px solid var(--sand)}
+th,td{padding:16px 18px;text-align:left;border-bottom:1px solid var(--sand);vertical-align:top}
+thead th{font:500 1.35rem/1.2 var(--display);background:var(--limestone)}
+thead th small{display:block;font:500 11px/1.4 var(--text);letter-spacing:.16em;text-transform:uppercase;color:var(--bronze);margin-bottom:4px}
+thead th:first-child,tbody th{position:sticky;left:0;z-index:1}
+tbody th{font-weight:500;color:var(--stone);width:26%;background:var(--bone)}
+tbody td{font-variant-numeric:tabular-nums}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
+.yes{color:var(--ok);font-weight:500}
+
+/* showroom */
+.show{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,72px);align-items:stretch}
+.map{background:var(--limestone);border:1px solid var(--sand);min-height:340px;position:relative;color:var(--graphite)}
+.map svg{width:100%;height:100%;display:block}
+.sw label .sr{display:block}
+.cities{list-style:none;margin:0;padding:0;border-top:1px solid var(--graphite)}
+.cities li{display:grid;grid-template-columns:140px 1fr;gap:16px;padding:18px 0;border-bottom:1px solid var(--sand)}
+.cities b{font:500 1.35rem/1.2 var(--display)}
+.cities span{color:var(--stone);font-size:15px}
+.svc{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:clamp(40px,5vw,72px);border:1px solid var(--sand)}
+.svc article{padding:28px;border-right:1px solid var(--sand)}
+.svc article:last-child{border-right:0}
+.svc h3{font-size:1.5rem;margin:10px 0}
+.svc p{color:var(--stone);font-size:15px}
+@media (max-width:900px){.show{grid-template-columns:1fr}.svc{grid-template-columns:1fr}.svc article{border-right:0;border-bottom:1px solid var(--sand)}.svc article:last-child{border-bottom:0}.cities li{grid-template-columns:1fr;gap:4px}}
+
+/* test drive */
+.td{padding:clamp(72px,10vw,128px) 0}
+.td .wrap{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,96px);align-items:start}
+.td h2{font-size:clamp(2.25rem,4.5vw,3.75rem);margin:16px 0 20px}
+.td p.lead{color:#D9D2C4;max-width:44ch}
+form.td-form{display:grid;gap:18px}
+.f{display:grid;gap:8px}
+.f label{font-size:14px;color:#D9D2C4}
+.f input,.f select{min-height:52px;padding:0 16px;background:transparent;color:var(--bone);border:1px solid var(--bronze-light);border-radius:2px;font:400 16px var(--text)}
+.f select option{color:var(--graphite)}
+.f input::placeholder{color:#BDB5A6}
+.td-form .btn{width:100%}
+.td .note{font-size:13px;color:#BDB5A6}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:860px){.td .wrap{grid-template-columns:1fr}.row2{grid-template-columns:1fr}}
+
+/* footer */
+footer{background:var(--graphite);color:var(--bone);padding:clamp(56px,7vw,96px) 0 32px}
+footer .grid{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:32px}
+footer svg.flogo{height:40px;width:auto}
+footer h3{font:500 12px/1.3 var(--text);letter-spacing:.16em;text-transform:uppercase;color:var(--bronze-light);margin-bottom:16px}
+footer ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+footer a{text-decoration:none;color:#E5DFD2;display:inline-block;padding:8px 0}
+footer a:hover{color:var(--bronze-light)}
+footer p{color:#BDB5A6;font-size:15px;margin-top:16px;max-width:34ch}
+footer .base{margin-top:48px;padding-top:20px;border-top:1px solid var(--basalt);font-size:13px;color:#BDB5A6;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+@media (max-width:860px){footer .grid{grid-template-columns:1fr 1fr}footer .grid>div:first-child{grid-column:1/-1}}
+@media (max-width:480px){footer .grid{grid-template-columns:1fr}}
+h1,h2,h3,legend,.price,.facts b,.result h3,thead th{font-variant-numeric:lining-nums;font-feature-settings:'lnum' 1}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="v-ebike" viewBox="0 0 240 140">
+<circle cx="52" cy="96" r="34" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="52" cy="96" r="29" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2"/><circle cx="52" cy="96" r="2.5" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="188" cy="96" r="34" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="188" cy="96" r="29" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2"/><circle cx="188" cy="96" r="2.5" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M52 96 L102 96 L88 52 L164 56 L188 96" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M102 96 L164 58" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"/>
+<path d="M104 94 L162 60" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+<path d="M164 56 L160 38 M150 36 L176 34 M88 52 L92 44 M80 44 L104 44" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M88 52 L102 96" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="102" cy="96" r="8" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol><symbol id="v-atv" viewBox="0 0 240 140">
+<circle cx="56" cy="98" r="32" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"/><circle cx="56" cy="98" r="23" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/><circle cx="56" cy="98" r="4" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="188" cy="98" r="32" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"/><circle cx="188" cy="98" r="23" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/><circle cx="188" cy="98" r="4" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M70 80 C72 58 92 52 110 56 L150 58 C172 58 184 66 192 80" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M96 56 L100 44 L146 44 L150 58" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M100 44 C110 38 134 38 146 44" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M160 58 L158 38 M146 34 L176 32" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M44 74 L84 74 M30 82 L44 74" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M196 80 L214 76" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol><symbol id="v-utv" viewBox="0 0 240 140">
+<circle cx="54" cy="100" r="30" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"/><circle cx="54" cy="100" r="21" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/><circle cx="54" cy="100" r="4" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="190" cy="100" r="30" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"/><circle cx="190" cy="100" r="21" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/><circle cx="190" cy="100" r="4" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M30 84 L30 70 L84 70 L88 56 L168 56 L190 70 L214 74 L214 86" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M84 70 L96 22 L158 22 L170 56" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M96 22 L96 56 M158 22 L158 56 M122 22 L122 56" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+<path d="M36 70 L36 52 L84 52 L84 70" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M104 56 L104 42 L116 42 L116 56 M136 56 L136 42 L148 42 L148 56" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+</symbol><symbol id="v-snow" viewBox="0 0 240 140">
+<path d="M156 122 L206 122 C218 122 224 112 226 102" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="30" y="92" width="130" height="26" rx="13" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="48" cy="105" r="6" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="142" cy="105" r="6" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="95" cy="105" r="4" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
+<path d="M44 92 C46 70 70 62 92 64 L132 66 C158 68 176 80 190 100" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M92 64 L100 48 C112 44 126 46 132 66" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M132 66 L140 40 L152 32" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M60 70 L116 62" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+<path d="M186 99 L184 122" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol></defs></svg>
+<a class="skip" href="#main">Перейти к содержанию</a>
+<div class="sample-note">Макет. Названия моделей, цены и технические цифры примерные.</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Gran Trakt, на главную"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 314 64" role="img" aria-label="Gran Trakt"><title>Gran Trakt</title><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#1E1D1B"/><path d="M32 32H56M44 32V52.78" stroke="#80582D"/></g><path d="M103.86 26.66A8.3 8.3 0 1 0 105.71 30.8M97.5 32H105.8M116.7 41.5V23.7H122.15A3.93 3.93 0 0 1 122.15 31.56H116.7M120.45 31.56L127.28 41.5M135.78 41.5L143.57 24.78L151.36 41.5M138.9 35.04H148.24M161.06 41.5V22.5M161.06 22.5L171.96 41.5M171.96 41.5V22.5M203.66 23.7H217.34M210.5 23.7V41.5M227.04 41.5V23.7H232.49A3.93 3.93 0 0 1 232.49 31.56H227.04M230.79 31.56L237.62 41.5M246.12 41.5L253.91 24.78L261.7 41.5M249.24 35.04H258.58M271.4 41.5V22.5M283.5 22.5L271.4 34.66M273.66 31.62L283.5 41.5M292 23.7H305.68M298.84 23.7V41.5" fill="none" stroke="#1E1D1B" stroke-width="2.4" stroke-linecap="butt" stroke-linejoin="miter"/></svg></a>
+    <nav class="main" aria-label="Основная навигация">
+      <ul>
+        <li><a href="#quiz">Подбор</a></li>
+        <li><a href="#lineup">Линейка</a></li>
+        <li><a href="#configurator">Конфигуратор</a></li>
+        <li><a href="#compare">Сравнение</a></li>
+        <li><a href="#showroom">Шоурум</a></li>
+      </ul>
+    </nav>
+    <a class="btn cta-top" href="#testdrive">Тест-драйв</a>
+    <details class="menu">
+      <summary aria-label="Меню">Меню</summary>
+      <ul>
+        <li><a href="#quiz">Подбор</a></li>
+        <li><a href="#lineup">Линейка</a></li>
+        <li><a href="#configurator">Конфигуратор</a></li>
+        <li><a href="#compare">Сравнение</a></li>
+        <li><a href="#showroom">Шоурум</a></li>
+        <li><a href="#testdrive">Записаться на тест-драйв</a></li>
+      </ul>
+    </details>
+  </div>
+</header>
+
+<main id="main">
+<section class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <p class="label">Электровелосипеды, квадроциклы, UTV, снегоходы</p>
+      <h1>Техника для <em>долгой</em> дороги</h1>
+      <p class="lead">Подберем модель под ваши маршруты, дадим прокатиться в шоуруме в Ростове-на-Дону и возьмем на себя доставку и сервис. Цифры в карточках, а не обещания.</p>
+      <div class="actions">
+        <a class="btn" href="#quiz">Подобрать за 2 минуты</a>
+        <a class="btn ghost" href="#testdrive">Записаться на тест-драйв</a>
+      </div>
+    </div>
+    <figure class="scene" style="margin:0">
+      <span class="sun" aria-hidden="true"></span><span class="horizon" aria-hidden="true"></span><span class="ground" aria-hidden="true"></span>
+      <svg class="veh" viewBox="0 0 240 140" role="img" aria-label="Иллюстрация: электровелосипед с бронзовым аккумулятором на раме"><use href="#v-ebike"/></svg>
+      <figcaption>Иллюстрация. Фото техники будут в рабочей версии.</figcaption>
+    </figure>
+  </div>
+  <div class="wrap">
+    <div class="facts" style="grid-column:1/-1;width:100%">
+      <div><b>4</b><span>типа техники в одном месте</span></div>
+      <div><b>3</b><span>lite, pro, ultra в каждой линейке</span></div>
+      <div><b>3</b><span>региона: Москва, Ростов, Краснодарский край</span></div>
+      <div><b>1</b><span>шоурум с тест-драйвом в Ростове-на-Дону</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="quiz" aria-labelledby="quiz-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="label">01 / Подбор</p>
+      <h2 id="quiz-h">Четыре вопроса вместо часа в каталоге</h2>
+      <p>Ответьте, где и как вы ездите. Покажем одну модель и объясним, почему она, а не соседняя.</p>
+    </div>
+    <div class="quiz">
+      <form class="q-card" id="quizForm" aria-label="Квиз подбора техники">
+        <fieldset>
+          <legend>1. Где вы чаще ездите?</legend>
+          <div class="opts">
+            <input type="radio" name="q1" id="q1a" value="city" checked><label for="q1a">Город и набережные</label>
+            <input type="radio" name="q1" id="q1b" value="off"><label for="q1b">Грунт, поля, лес</label>
+            <input type="radio" name="q1" id="q1c" value="snow"><label for="q1c">Снег и зима</label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>2. Для чего техника?</legend>
+          <div class="opts">
+            <input type="radio" name="q2" id="q2a" value="daily" checked><label for="q2a">Ежедневные поездки</label>
+            <input type="radio" name="q2" id="q2b" value="route"><label for="q2b">Выходные и маршруты</label>
+            <input type="radio" name="q2" id="q2c" value="work"><label for="q2c">Работа на участке</label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>3. Ориентир по бюджету</legend>
+          <div class="opts">
+            <input type="radio" name="q3" id="q3a" value="lite"><label for="q3a">До 150 тыс. ₽</label>
+            <input type="radio" name="q3" id="q3b" value="pro" checked><label for="q3b">150-400 тыс. ₽</label>
+            <input type="radio" name="q3" id="q3c" value="ultra"><label for="q3c">От 400 тыс. ₽</label>
+          </div>
+        </fieldset>
+        <fieldset style="margin-bottom:0">
+          <legend>4. Сколько вы едете за раз?</legend>
+          <div class="opts">
+            <input type="radio" name="q4" id="q4a" value="s" checked><label for="q4a">До 30 км</label>
+            <input type="radio" name="q4" id="q4b" value="m"><label for="q4b">30-70 км</label>
+            <input type="radio" name="q4" id="q4c" value="l"><label for="q4c">Больше 70 км</label>
+          </div>
+        </fieldset>
+      </form>
+      <aside class="result" aria-live="polite" aria-label="Результат подбора">
+        <p class="label">Ваш вариант</p>
+        <h3 id="rName">Trakt City pro</h3>
+        <p id="rWhy">Городской электровелосипед: ровный ход на асфальте и набережных, запас хода покрывает рабочую неделю без подзарядки.</p>
+        <svg class="veh" viewBox="0 0 240 140" role="img" aria-label="Иллюстрация подобранной модели"><use id="rUse" href="#v-ebike"/></svg>
+        <dl>
+          <dt>Тип</dt><dd id="rType">Электровелосипед</dd>
+          <dt>Линейка</dt><dd id="rTier">pro</dd>
+          <dt>Запас хода</dt><dd id="rRange">до 90 км (пример)</dd>
+          <dt>Ориентир цены</dt><dd id="rPrice">от 210 тыс. ₽ (пример)</dd>
+        </dl>
+        <a class="btn" href="#testdrive">Проехать на ней в шоуруме</a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="lineup" aria-labelledby="lineup-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="label">02 / Линейка</p>
+      <h2 id="lineup-h">Три уровня в каждом типе техники</h2>
+      <p>lite для знакомства, pro для регулярных маршрутов, ultra, когда нужен максимум. Одна логика выбора для всех четырех типов.</p>
+    </div>
+    <div class="tiers">
+      <article class="tier lite">
+        <div class="art"><svg viewBox="0 0 240 140" role="img" aria-label="Иллюстрация: электровелосипед lite"><use href="#v-ebike"/></svg></div>
+        <div class="body">
+          <span class="badge lite">lite</span>
+          <h3>Trakt City lite</h3>
+          <p class="for">Первая электротехника: короткие поездки, легкая сборка, понятное обслуживание.</p>
+          <ul class="specs">
+            <li><span>Запас хода</span><b>до 45 км</b></li>
+            <li><span>Батарея</span><b>10 А·ч, 36 В</b></li>
+            <li><span>Масса</span><b>21 кг</b></li>
+          </ul>
+          <div class="foot"><div class="price">от 89 тыс. ₽<small>пример</small></div><a class="link" href="#compare">Сравнить</a></div>
+        </div>
+      </article>
+      <article class="tier pro">
+        <div class="art"><svg viewBox="0 0 240 140" role="img" aria-label="Иллюстрация: квадроцикл pro"><use href="#v-atv"/></svg></div>
+        <div class="body">
+          <span class="badge pro">pro</span>
+          <h3>Trakt Field pro</h3>
+          <p class="for">Для регулярных выездов: грунт, поле, прицеп. Запас прочности на сезон.</p>
+          <ul class="specs">
+            <li><span>Тип</span><b>Квадроцикл</b></li>
+            <li><span>Запас хода</span><b>до 90 км</b></li>
+            <li><span>Масса</span><b>310 кг</b></li>
+          </ul>
+          <div class="foot"><div class="price">от 410 тыс. ₽<small>пример</small></div><a class="link" href="#compare">Сравнить</a></div>
+        </div>
+      </article>
+      <article class="tier ultra">
+        <div class="art"><svg viewBox="0 0 240 140" role="img" aria-label="Иллюстрация: снегоход ultra"><use href="#v-snow"/></svg></div>
+        <div class="body">
+          <span class="badge ultra">ultra</span>
+          <h3>Trakt Snow ultra</h3>
+          <p class="for">Когда техника нужна без компромиссов: глубокий снег, долгий день, полная комплектация.</p>
+          <ul class="specs">
+            <li><span>Тип</span><b>Снегоход</b></li>
+            <li><span>Топливный бак</span><b>40 л</b></li>
+            <li><span>Масса</span><b>260 кг</b></li>
+          </ul>
+          <div class="foot"><div class="price">от 880 тыс. ₽<small>пример</small></div><a class="link" href="#compare">Сравнить</a></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="configurator" aria-labelledby="conf-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="label">03 / Конфигуратор и кастом</p>
+      <h2 id="conf-h">Соберите свой байк и увидите цену сразу</h2>
+      <p>Цвет рамы, батарея, аксессуары. Нужен кастом: расскажите задачу, соберем в мастерской шоурума.</p>
+    </div>
+    <div class="conf">
+      <div class="conf-view" id="confView" style="--frame:#80582D"><svg viewBox="0 0 240 140" role="img" aria-label="Иллюстрация: электровелосипед, цвет рамы меняется переключателем"><use href="#v-ebike"/></svg></div>
+      <form class="conf-panel" id="confForm" aria-label="Тизер конфигуратора">
+        <fieldset>
+          <legend>Цвет акцента на раме</legend>
+          <div class="sw">
+            <input type="radio" name="c" id="c1" value="#80582D" checked><label for="c1" style="--c:#80582D"><span class="sr">Бронза</span></label>
+            <input type="radio" name="c" id="c2" value="#25382F"><label for="c2" style="--c:#25382F"><span class="sr">Патина</span></label>
+            <input type="radio" name="c" id="c3" value="#6B6458"><label for="c3" style="--c:#6B6458"><span class="sr">Камень</span></label>
+            <input type="radio" name="c" id="c4" value="#9C3A2A"><label for="c4" style="--c:#9C3A2A"><span class="sr">Терракота</span></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Батарея</legend>
+          <div class="seg">
+            <input type="radio" name="b" id="b1" value="0" checked><label for="b1">14 А·ч</label>
+            <input type="radio" name="b" id="b2" value="28000"><label for="b2">20 А·ч, +28 тыс. ₽</label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Аксессуары</legend>
+          <div class="seg">
+            <input type="checkbox" name="a" id="a1" value="9000" style="position:absolute;opacity:0"><label for="a1">Багажник +9 тыс. ₽</label>
+            <input type="checkbox" name="a" id="a2" value="6000" style="position:absolute;opacity:0"><label for="a2">Крылья +6 тыс. ₽</label>
+          </div>
+        </fieldset>
+        <div class="sum">
+          <div><span class="label">Ориентир цены</span><div class="price" id="confPrice" style="font-size:2rem;margin-top:6px">от 210 000 ₽</div></div>
+          <a class="btn" href="#testdrive">Открыть конфигуратор</a>
+        </div>
+        <a class="link" href="#testdrive">Хочу кастомный байк: оставить заявку</a>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="compare" aria-labelledby="cmp-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="label">04 / Сравнение</p>
+      <h2 id="cmp-h">Модели рядом, одни и те же строки</h2>
+      <p>Выберите до трех моделей и смотрите разницу в цифрах. На телефоне таблицу можно листать.</p>
+    </div>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="Таблица сравнения моделей, прокручивается по горизонтали">
+      <table>
+        <caption>Все модели и значения примерные, для макета.</caption>
+        <thead><tr><th scope="col"><span class="label">Параметр</span></th>
+          <th scope="col"><small>lite</small>Trakt City lite</th>
+          <th scope="col"><small>pro</small>Trakt City pro</th>
+          <th scope="col"><small>ultra</small>Trakt City ultra</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Запас хода</th><td>до 45 км</td><td>до 90 км</td><td>до 140 км</td></tr>
+          <tr><th scope="row">Батарея</th><td>10 А·ч, 36 В</td><td>14 А·ч, 48 В</td><td>20 А·ч, 48 В</td></tr>
+          <tr><th scope="row">Масса</th><td>21 кг</td><td>24 кг</td><td>27 кг</td></tr>
+          <tr><th scope="row">Тормоза</th><td>Механические дисковые</td><td>Гидравлические</td><td>Гидравлические, 4 поршня</td></tr>
+          <tr><th scope="row">Тест-драйв в шоуруме</th><td class="yes">Да</td><td class="yes">Да</td><td class="yes">Да</td></tr>
+          <tr><th scope="row">Ориентир цены</th><td>от 89 тыс. ₽</td><td>от 210 тыс. ₽</td><td>от 390 тыс. ₽</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="showroom" aria-labelledby="show-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="label">05 / Шоурум и география</p>
+      <h2 id="show-h">Шоурум в Ростове-на-Дону, доставка в три региона</h2>
+      <p>Приезжайте посмотреть и прокатиться. Если вы далеко, привезем и настроим на месте.</p>
+    </div>
+    <div class="show">
+      <div class="map">
+        <svg viewBox="0 0 400 360" role="img" aria-label="Схема: Москва на севере, Ростов-на-Дону с шоурумом в центре, Краснодарский край на юге">
+          <rect width="400" height="360" fill="#E8E2D6"/>
+          <g fill="none" stroke="#CFC6B6" stroke-width="1"><path d="M0 90H400M0 180H400M0 270H400M100 0V360M200 0V360M300 0V360"/></g>
+          <path d="M60 60 C50 130 150 150 200 205" fill="none" stroke="#1E1D1B" stroke-width="1.6" stroke-dasharray="3 6"/>
+          <path d="M200 205 C250 235 290 260 330 292" fill="none" stroke="#1E1D1B" stroke-width="1.6" stroke-dasharray="3 6"/>
+          <g font-family="Golos Text, sans-serif" font-size="16" fill="#1E1D1B">
+            <circle cx="60" cy="60" r="7" fill="#1E1D1B"/><text x="78" y="58">Москва</text><text x="78" y="78" fill="#6B6458" font-size="13">доставка, сервис-партнер</text>
+            <circle cx="200" cy="205" r="11" fill="#80582D"/><circle cx="200" cy="205" r="18" fill="none" stroke="#80582D"/><text x="228" y="176" font-weight="600">Ростов-на-Дону</text><text x="228" y="194" fill="#6B6458" font-size="13">шоурум, мастерская</text>
+            <circle cx="330" cy="292" r="7" fill="#1E1D1B"/><text x="314" y="318" text-anchor="end">Краснодарский край</text><text x="314" y="336" text-anchor="end" fill="#6B6458" font-size="13">доставка, выездной сервис</text>
+          </g>
+          <text x="386" y="24" text-anchor="end" font-family="Golos Text, sans-serif" font-size="12" fill="#6B6458">Схема, не в масштабе</text>
+        </svg>
+      </div>
+      <div>
+        <ul class="cities">
+          <li><b>Ростов-на-Дону</b><span>Шоурум, тест-драйв, мастерская. Адрес и часы работы появятся здесь (в макете не указаны).</span></li>
+          <li><b>Москва</b><span>Доставка и сборка на месте. Тест-драйв по записи.</span></li>
+          <li><b>Краснодарский край</b><span>Доставка по региону, выездная настройка перед первой поездкой.</span></li>
+        </ul>
+        <p style="margin-top:24px"><a class="btn ghost" href="#testdrive">Записаться в шоурум</a></p>
+      </div>
+    </div>
+    <div class="svc">
+      <article><p class="label">Доставка</p><h3>Привозим собранной</h3><p>Техника приезжает проверенной и настроенной. Вы получаете краткую инструкцию и контакт мастера.</p></article>
+      <article><p class="label">Сервис под ключ</p><h3>Один номер на все случаи</h3><p>Плановое обслуживание, запчасти, диагностика. Записаться можно из личного кабинета или по звонку.</p></article>
+      <article><p class="label">Кастомные байки</p><h3>Под вашу задачу</h3><p>Цвет, батарея, подвеска, багаж. Согласуем состав и срок до оплаты.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="td dark" id="testdrive" aria-labelledby="td-h">
+  <div class="wrap">
+    <div>
+      <p class="label">06 / Тест-драйв</p>
+      <h2 id="td-h">Сначала проедьте, потом решайте</h2>
+      <p class="lead">Запишитесь на удобное время. Модель будет готова, мастер расскажет про цифры из карточки и ответит на вопросы про обслуживание.</p>
+    </div>
+    <form class="td-form" aria-label="Запись на тест-драйв" onsubmit="event.preventDefault();this.querySelector('.note').textContent='Макет: форма никуда не отправляется.'">
+      <div class="row2">
+        <div class="f"><label for="n">Имя</label><input id="n" name="n" autocomplete="given-name" placeholder="Как к вам обращаться"></div>
+        <div class="f"><label for="p">Телефон</label><input id="p" name="p" type="tel" autocomplete="tel" placeholder="+7"></div>
+      </div>
+      <div class="row2">
+        <div class="f"><label for="m">Модель</label><select id="m" name="m"><option>Trakt City pro</option><option>Trakt City lite</option><option>Trakt Field pro</option><option>Trakt Snow ultra</option><option>Пока не знаю, нужен подбор</option></select></div>
+        <div class="f"><label for="c">Город</label><select id="c" name="c"><option>Ростов-на-Дону (шоурум)</option><option>Москва</option><option>Краснодарский край</option></select></div>
+      </div>
+      <button class="btn" type="submit">Записаться на тест-драйв</button>
+      <p class="note" aria-live="polite">Перезвоним в течение рабочего дня (пример текста).</p>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <span class="flogo-w" aria-label="Gran Trakt"><svg class="flogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 314 64" role="img" aria-label="Gran Trakt, reverse"><title>Gran Trakt, reverse</title><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#F5F1EA"/><path d="M32 32H56M44 32V52.78" stroke="#C9A878"/></g><path d="M103.86 26.66A8.3 8.3 0 1 0 105.71 30.8M97.5 32H105.8M116.7 41.5V23.7H122.15A3.93 3.93 0 0 1 122.15 31.56H116.7M120.45 31.56L127.28 41.5M135.78 41.5L143.57 24.78L151.36 41.5M138.9 35.04H148.24M161.06 41.5V22.5M161.06 22.5L171.96 41.5M171.96 41.5V22.5M203.66 23.7H217.34M210.5 23.7V41.5M227.04 41.5V23.7H232.49A3.93 3.93 0 0 1 232.49 31.56H227.04M230.79 31.56L237.62 41.5M246.12 41.5L253.91 24.78L261.7 41.5M249.24 35.04H258.58M271.4 41.5V22.5M283.5 22.5L271.4 34.66M273.66 31.62L283.5 41.5M292 23.7H305.68M298.84 23.7V41.5" fill="none" stroke="#F5F1EA" stroke-width="2.4" stroke-linecap="butt" stroke-linejoin="miter"/></svg></span>
+        <p>Электровелосипеды, квадроциклы, UTV и снегоходы. Розница и опт.</p>
+      </div>
+      <div><h3>Каталог</h3><ul><li><a href="#lineup">Электровелосипеды</a></li><li><a href="#lineup">Квадроциклы</a></li><li><a href="#lineup">UTV</a></li><li><a href="#lineup">Снегоходы</a></li></ul></div>
+      <div><h3>Сервисы</h3><ul><li><a href="#quiz">Подбор техники</a></li><li><a href="#compare">Сравнение моделей</a></li><li><a href="#configurator">Конфигуратор</a></li><li><a href="#testdrive">Тест-драйв</a></li></ul></div>
+      <div><h3>Где мы</h3><ul><li><a href="#showroom">Шоурум, Ростов-на-Дону</a></li><li><a href="#showroom">Москва</a></li><li><a href="#showroom">Краснодарский край</a></li><li><a href="#testdrive">Для партнеров и опта</a></li></ul></div>
+    </div>
+    <div class="base"><span>Gran Trakt, рабочее название GT. Макет главной страницы.</span><span>Модели, цены и характеристики примерные.</span></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var $=function(s){return document.querySelector(s)};
+  var cat={
+    city:{use:'v-ebike',type:'Электровелосипед',name:'Trakt City',why:'Городской электровелосипед: ровный ход на асфальте и набережных, запас хода покрывает рабочую неделю без подзарядки.',range:{s:'до 45 км',m:'до 90 км',l:'до 140 км'},price:{lite:'от 89 тыс. ₽',pro:'от 210 тыс. ₽',ultra:'от 390 тыс. ₽'}},
+    off:{use:'v-atv',type:'Квадроцикл',name:'Trakt Field',why:'Квадроцикл для грунта и поля: широкая колея, запас по тяге, можно брать прицеп. Подходит для выходных маршрутов.',range:{s:'до 60 км',m:'до 90 км',l:'до 130 км'},price:{lite:'от 280 тыс. ₽',pro:'от 410 тыс. ₽',ultra:'от 640 тыс. ₽'}},
+    work:{use:'v-utv',type:'UTV',name:'Trakt Ranch',why:'UTV для работы на участке: грузовой кузов, защитный каркас, два места. Выдерживает рабочий день, а не только прогулку.',range:{s:'до 70 км',m:'до 110 км',l:'до 160 км'},price:{lite:'от 520 тыс. ₽',pro:'от 740 тыс. ₽',ultra:'от 1,1 млн ₽'}},
+    snow:{use:'v-snow',type:'Снегоход',name:'Trakt Snow',why:'Снегоход для глубокого снега и долгого дня: широкая гусеница, мягкая подвеска, бак на весь маршрут.',range:{s:'до 120 км',m:'до 200 км',l:'до 300 км'},price:{lite:'от 450 тыс. ₽',pro:'от 650 тыс. ₽',ultra:'от 880 тыс. ₽'}}
+  };
+  function val(n){var e=document.querySelector('input[name='+n+']:checked');return e&&e.value}
+  function upd(){
+    var q1=val('q1'),q2=val('q2'),q3=val('q3'),q4=val('q4'),k=q1==='snow'?'snow':(q2==='work'?'work':(q1==='off'?'off':'city')),c=cat[k];
+    $('#rName').textContent=c.name+' '+q3;$('#rWhy').textContent=c.why;$('#rType').textContent=c.type;$('#rTier').textContent=q3;
+    $('#rRange').textContent=c.range[q4]+' (пример)';$('#rPrice').textContent=c.price[q3]+' (пример)';
+    $('#rUse').setAttribute('href','#'+c.use);
+  }
+  var qf=$('#quizForm');if(qf){qf.addEventListener('change',upd);upd();}
+  function conf(){
+    var f=$('#confForm');if(!f)return;
+    var col=f.querySelector('input[name=c]:checked').value;$('#confView').style.setProperty('--frame',col);
+    var s=210000+Number(f.querySelector('input[name=b]:checked').value);
+    f.querySelectorAll('input[name=a]:checked').forEach(function(e){s+=Number(e.value)});
+    $('#confPrice').textContent='от '+s.toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ')+' ₽';
+  }
+  var cf=$('#confForm');if(cf){cf.addEventListener('change',conf);conf();}
+})();
+</script>
+</body>
+</html>

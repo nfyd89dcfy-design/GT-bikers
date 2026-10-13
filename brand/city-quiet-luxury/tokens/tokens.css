@@ -1,0 +1,65 @@
+/* Gran Trakt design tokens. Собрано из tokens.json */
+:root{
+  --gt-color-graphite: #1E1D1B;
+  --gt-color-basalt: #2B2A27;
+  --gt-color-patina: #25382F;
+  --gt-color-patina-soft: #3A5247;
+  --gt-color-bone: #F5F1EA;
+  --gt-color-limestone: #E8E2D6;
+  --gt-color-sand: #CFC6B6;
+  --gt-color-stone: #6B6458;
+  --gt-color-bronze: #80582D;
+  --gt-color-bronze-light: #C9A878;
+  --gt-color-alert: #9C3A2A;
+  --gt-color-ok: #3C6A4B;
+  /* роли */
+  --gt-bg: var(--gt-color-bone);
+  --gt-surface: var(--gt-color-limestone);
+  --gt-text: var(--gt-color-graphite);
+  --gt-text-muted: var(--gt-color-stone);
+  --gt-brand: var(--gt-color-patina);
+  --gt-brand-hover: var(--gt-color-patina-soft);
+  --gt-accent: var(--gt-color-bronze);
+  --gt-line: var(--gt-color-sand);
+  --gt-font-display: 'Cormorant Garamond', 'Times New Roman', serif;
+  --gt-font-text: 'Golos Text', 'Helvetica Neue', Arial, sans-serif;
+  --gt-size-display: clamp(2.75rem, 6vw, 5rem);  --gt-lh-display: 1.02;
+  --gt-size-h1: clamp(2.25rem, 4.5vw, 3.5rem);  --gt-lh-h1: 1.08;
+  --gt-size-h2: clamp(1.75rem, 3vw, 2.5rem);  --gt-lh-h2: 1.12;
+  --gt-size-h3: 1.5rem;  --gt-lh-h3: 1.2;
+  --gt-size-lead: 1.25rem;  --gt-lh-lead: 1.55;
+  --gt-size-body: 1.0625rem;  --gt-lh-body: 1.65;
+  --gt-size-small: 0.875rem;  --gt-lh-small: 1.5;
+  --gt-size-label: 0.75rem;  --gt-lh-label: 1.3;
+  --gt-space-1: 4px;
+  --gt-space-2: 8px;
+  --gt-space-3: 12px;
+  --gt-space-4: 16px;
+  --gt-space-5: 24px;
+  --gt-space-6: 32px;
+  --gt-space-7: 48px;
+  --gt-space-8: 64px;
+  --gt-space-9: 96px;
+  --gt-space-10: 144px;
+  --gt-radius-none: 0;
+  --gt-radius-sm: 2px;
+  --gt-radius-md: 6px;
+  --gt-radius-lg: 12px;
+  --gt-radius-pill: 999px;
+  --gt-shadow-soft: 0 1px 2px rgba(30,29,27,.06), 0 8px 24px rgba(30,29,27,.06);
+  --gt-shadow-lift: 0 2px 4px rgba(30,29,27,.08), 0 18px 40px rgba(30,29,27,.12);
+  --gt-motion-fast: 140ms;
+  --gt-motion-base: 240ms;
+  --gt-motion-slow: 480ms;
+  --gt-motion-ease: cubic-bezier(.2,.6,.2,1);
+  --gt-tier-lite-bg: #E8E2D6;
+  --gt-tier-lite-fg: #1E1D1B;
+  --gt-tier-lite-line: #CFC6B6;
+  --gt-tier-pro-bg: #25382F;
+  --gt-tier-pro-fg: #F5F1EA;
+  --gt-tier-pro-line: #3A5247;
+  --gt-tier-ultra-bg: #1E1D1B;
+  --gt-tier-ultra-fg: #C9A878;
+  --gt-tier-ultra-line: #80582D;
+}
+@media (prefers-reduced-motion: reduce){:root{--gt-motion-fast:0ms;--gt-motion-base:0ms;--gt-motion-slow:0ms}}

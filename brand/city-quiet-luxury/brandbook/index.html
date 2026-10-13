@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gran Trakt – бренд-бук</title>
+<meta name="description" content="Бренд-бук Gran Trakt (рабочее название GT): городская тихая роскошь. Позиционирование, логотип, цвет, типографика, интерфейс, применение.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22 role=%22img%22 aria-label=%22Gran Trakt favicon%22%3E%3Ctitle%3EGran Trakt favicon%3C/title%3E%3Crect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%2325382F%22/%3E%3Cg transform=%22translate%280 0%29 scale%281%29%22 fill=%22none%22 stroke-width=%225.4%22 stroke-linecap=%22butt%22 stroke-linejoin=%22miter%22%3E%3Cpath d=%22M46.55 19.79A19 19 0 1 0 50.81 29.3%22 stroke=%22%23F5F1EA%22/%3E%3Cpath d=%22M32 32H51M41.5 32V48.45%22 stroke=%22%23C9A878%22/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Golos+Text:wght@400;500;600&display=swap&subset=cyrillic" rel="stylesheet">
+<style>
+:root{--graphite:#1E1D1B;--basalt:#2B2A27;--patina:#25382F;--patina-soft:#3A5247;--bone:#F5F1EA;--limestone:#E8E2D6;--sand:#CFC6B6;--stone:#6B6458;--bronze:#80582D;--bronze-light:#C9A878;--alert:#9C3A2A;--ok:#3C6A4B;
+--display:'Cormorant Garamond','Times New Roman',serif;--text:'Golos Text','Helvetica Neue',Arial,sans-serif;--gutter:clamp(16px,4vw,48px);--max:1200px;--ease:cubic-bezier(.2,.6,.2,1)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bone);color:var(--graphite);font:400 17px/1.65 var(--text);overflow-x:hidden}
+img,svg{max-width:100%}
+a{color:inherit}
+p{margin:0}
+h1,h2,h3,h4{font-family:var(--display);font-weight:500;margin:0;line-height:1.1}
+:focus-visible{outline:2px solid var(--patina);outline-offset:3px;border-radius:2px}
+.on-dark :focus-visible{outline-color:var(--bronze-light)}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:-999px;top:8px;background:var(--patina);color:var(--bone);padding:12px 18px;z-index:100}.skip:focus{left:8px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+.label{font:500 12px/1.3 var(--text);letter-spacing:.16em;text-transform:uppercase;color:var(--stone)}
+.on-dark .label{color:var(--bronze-light)}
+.num{font-variant-numeric:tabular-nums}
+h1,h2,h3,h4,.big{font-variant-numeric:lining-nums;font-feature-settings:'lnum' 1}
+
+header.top{position:sticky;top:0;z-index:30;background:rgba(245,241,234,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--sand)}
+header.top .wrap{display:flex;align-items:center;gap:20px;min-height:60px}
+header.top .lg svg{height:26px;width:auto;display:block}
+header.top nav{overflow-x:auto;scrollbar-width:none;flex:1}
+header.top nav::-webkit-scrollbar{display:none}
+header.top nav ul{display:flex;gap:4px;list-style:none;margin:0;padding:0;white-space:nowrap;justify-content:flex-end}
+header.top nav a{display:block;padding:14px 10px;font-size:14px;font-weight:500;text-decoration:none;color:var(--stone)}
+header.top nav a:hover{color:var(--graphite)}
+@media(max-width:700px){header.top nav ul{justify-content:flex-start}}
+
+.cover{padding:clamp(64px,10vw,144px) 0 clamp(56px,8vw,112px)}
+.cover .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(32px,6vw,96px);align-items:center}
+.cover h1{font-size:clamp(3rem,7vw,6rem);line-height:.98;margin:20px 0 24px}
+.cover h1 em{font-style:italic;color:var(--bronze)}
+.cover p.lead{font-size:1.25rem;max-width:44ch}
+.cover .meta{margin-top:32px;display:flex;gap:24px;flex-wrap:wrap;font-size:14px;color:var(--stone)}
+.cover .mk{background:var(--patina);aspect-ratio:1;display:grid;place-items:center}
+.cover .mk svg{width:56%;height:auto}
+@media(max-width:860px){.cover .wrap{grid-template-columns:1fr}.cover .mk{aspect-ratio:4/3}.cover .mk svg{width:34%}}
+
+section.s{padding:clamp(64px,9vw,128px) 0;border-top:1px solid var(--sand)}
+.s-head{display:grid;grid-template-columns:200px 1fr;gap:24px 48px;margin-bottom:clamp(32px,5vw,64px)}
+.s-head h2{font-size:clamp(2rem,4vw,3.25rem)}
+.s-head p.intro{color:var(--stone);margin-top:16px;max-width:60ch;font-size:1.125rem}
+@media(max-width:800px){.s-head{grid-template-columns:1fr;gap:12px}}
+h3.sub{font-size:1.75rem;margin:56px 0 16px}
+h3.sub:first-child{margin-top:0}
+.grid{display:grid;gap:clamp(16px,2vw,28px)}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:980px){.g4{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.card{border:1px solid var(--sand);padding:clamp(20px,2.5vw,32px);background:var(--bone)}
+.card.alt{background:var(--limestone)}
+.card h4{font-size:1.5rem;margin-bottom:10px}
+.card p{color:var(--stone);font-size:16px}
+.card .label{display:block;margin-bottom:12px}
+.card.dk{background:var(--graphite);color:var(--bone);border-color:var(--graphite)}
+.card.dk p{color:#D9D2C4}.card.dk .label{color:var(--bronze-light)}
+.statement{font:500 clamp(1.75rem,3.4vw,2.75rem)/1.2 var(--display);max-width:26ch;font-variant-numeric:lining-nums}
+.statement em{color:var(--bronze);font-style:italic}
+ul.plain{list-style:none;margin:0;padding:0}
+ul.plain li{padding:12px 0;border-bottom:1px solid var(--sand);font-size:16px}
+ul.plain li:first-child{border-top:1px solid var(--sand)}
+.dd{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.do,.dont{padding:20px;border:1px solid var(--sand);font-size:15px}
+.do b,.dont b{display:block;font:500 12px/1 var(--text);letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px}
+.do b{color:var(--ok)}.dont b{color:var(--alert)}
+@media(max-width:640px){.dd{grid-template-columns:1fr}}
+
+/* meters */
+.meter{display:grid;grid-template-columns:140px 1fr 140px;gap:12px;align-items:center;font-size:14px;padding:10px 0;border-bottom:1px solid var(--sand)}
+.meter .bar{height:2px;background:var(--sand);position:relative}
+.meter .bar i{position:absolute;top:-5px;width:12px;height:12px;border-radius:50%;background:var(--bronze);transform:translateX(-50%)}
+.meter span:last-child{text-align:right;color:var(--stone)}.meter span:first-child{color:var(--stone)}
+@media(max-width:560px){.meter{grid-template-columns:90px 1fr 90px;font-size:13px}}
+
+/* tables */
+.tw{overflow-x:auto;border:1px solid var(--sand);-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:15px}
+th,td{padding:14px 16px;border-bottom:1px solid var(--sand);text-align:left;vertical-align:top}
+thead th{background:var(--limestone);font-weight:500;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone)}
+tbody tr:last-child td,tbody tr:last-child th{border-bottom:0}
+td.ok{color:var(--ok);font-weight:500}td.warn{color:var(--bronze);font-weight:500}td.bad{color:var(--alert);font-weight:500}
+.pair{display:inline-grid;place-items:center;width:52px;height:36px;border:1px solid var(--sand);font:500 1.25rem/1 var(--display)}
+
+/* logo */
+.lg-stage{display:grid;place-items:center;min-height:220px;padding:32px;border:1px solid var(--sand)}
+.lg-stage svg{height:56px;width:auto;max-width:100%}
+.lg-stage.big svg{height:96px}
+.lg-stage.dk{background:var(--graphite);border-color:var(--graphite)}
+.lg-stage.pa{background:var(--patina);border-color:var(--patina)}
+.lg-stage.li{background:var(--limestone)}
+.cap{font-size:13px;color:var(--stone);margin-top:10px}
+.clear{position:relative;display:inline-block;padding:32px;outline:1px dashed var(--bronze);background:repeating-linear-gradient(45deg,rgba(128,88,45,.06) 0 6px,transparent 6px 12px)}
+.clear .in{background:var(--bone);padding:0;outline:1px solid var(--sand)}
+.clear svg{height:64px;width:auto;display:block}
+.clear em{position:absolute;font:500 11px var(--text);color:var(--bronze);font-style:normal}
+.mins{display:flex;gap:32px;align-items:flex-end;flex-wrap:wrap}
+.mins figure{margin:0;display:grid;gap:10px;justify-items:start}
+.mins span svg{height:100%;width:100%}.mins span.h svg{width:auto}
+.mins figcaption{font-size:13px;color:var(--stone)}
+.misuse{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.misuse>div{border:1px solid var(--sand)}
+.misuse .t{height:120px;display:grid;place-items:center;overflow:hidden;position:relative}
+.misuse .t svg{height:36px;width:auto}
+.misuse p{padding:12px 14px;font-size:14px;color:var(--stone);border-top:1px solid var(--sand)}
+.misuse .x{position:absolute;right:8px;top:6px;color:var(--alert);font:600 18px var(--text)}
+@media(max-width:800px){.misuse{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.misuse{grid-template-columns:1fr}}
+
+/* colour */
+.sw-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:980px){.sw-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.sw-grid{grid-template-columns:1fr}}
+.sw-card{border:1px solid var(--sand)}
+.sw-chip{height:120px;padding:14px;display:flex;align-items:flex-end;font:500 1.35rem/1 var(--display)}
+.sw-card dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:14px 14px 8px;font-size:13px}
+.sw-card dt{color:var(--stone)}.sw-card dd{margin:0;font-variant-numeric:tabular-nums;word-break:break-all}
+.sw-card p{padding:0 14px 14px;font-size:13px;color:var(--stone);line-height:1.5}
+.prop{display:flex;height:64px;border:1px solid var(--sand);margin:8px 0 10px}
+.prop i{display:block;font:500 12px/64px var(--text);padding-left:10px;font-style:normal}
+
+/* type */
+.spec{border-top:1px solid var(--graphite)}
+.spec .r{display:grid;grid-template-columns:160px 1fr 190px;gap:24px;align-items:baseline;padding:20px 0;border-bottom:1px solid var(--sand)}
+.spec .r>span{font-size:13px;color:var(--stone)}
+.spec .r>em{font-style:normal;font-size:13px;color:var(--stone);text-align:right}
+@media(max-width:800px){.spec .r{grid-template-columns:1fr;gap:6px}.spec .r>em{text-align:left}}
+.glyph{font:500 clamp(4rem,10vw,8rem)/1 var(--display);font-variant-numeric:lining-nums}
+.glyphs{font-feature-settings:'lnum' 1;font-size:1.25rem;letter-spacing:.04em;word-break:break-word}
+
+/* patterns */
+.pat{aspect-ratio:4/3;border:1px solid var(--sand);position:relative}
+.pat.p1{background:var(--limestone);background-image:repeating-linear-gradient(to bottom,transparent 0 17px,rgba(30,29,27,.14) 17px 18px)}
+.pat.p2{background:var(--patina);background-image:radial-gradient(circle at 80% 100%,transparent 0 40px,rgba(201,168,120,.5) 40px 41px,transparent 41px 80px,rgba(201,168,120,.4) 80px 81px,transparent 81px 120px,rgba(201,168,120,.3) 120px 121px,transparent 121px 160px,rgba(201,168,120,.2) 160px 161px,transparent 161px)}
+.pat.p3{background:var(--bone)}
+.pat.p3 svg{position:absolute;inset:0;width:100%;height:100%}
+.pat.p4{background:var(--graphite);background-image:linear-gradient(rgba(201,168,120,.18) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,120,.18) 1px,transparent 1px);background-size:32px 32px}
+.pat span{position:absolute;left:12px;bottom:10px;font-size:12px;letter-spacing:.06em}
+.pat.p1 span,.pat.p3 span{color:var(--graphite)}.pat.p2 span,.pat.p4 span{color:var(--bone)}
+
+/* photo */
+.frame{aspect-ratio:3/4;position:relative;overflow:hidden;border:1px solid var(--sand)}
+.frame svg{width:100%;height:100%;display:block}
+.frame.lt figcaption{color:var(--graphite);text-shadow:none}
+.frame figcaption{position:absolute;left:10px;bottom:8px;font-size:12px;color:var(--bone);text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.frames{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:980px){.frames{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.frames{grid-template-columns:1fr}}
+
+/* icons */
+.icons{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--sand)}
+@media(max-width:700px){.icons{grid-template-columns:1fr 1fr}}
+.icon{padding:24px 16px;border-right:1px solid var(--sand);border-bottom:1px solid var(--sand);display:grid;justify-items:center;gap:12px;font-size:13px;color:var(--stone);text-align:center}
+.icon svg{width:40px;height:40px;fill:none;stroke:var(--graphite);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.icon svg .a{stroke:var(--bronze)}
+
+/* ui */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 28px;border:1px solid var(--patina);background:var(--patina);color:var(--bone);font:500 15px/1 var(--text);letter-spacing:.02em;text-decoration:none;border-radius:2px;cursor:pointer}
+.btn:hover,.btn.hov{background:var(--patina-soft);border-color:var(--patina-soft)}
+.btn.ghost{background:transparent;color:var(--graphite);border-color:var(--graphite)}
+.btn.ghost:hover,.btn.ghost.hov{background:var(--graphite);color:var(--bone)}
+.btn.text{background:transparent;border-color:transparent;color:var(--bronze);text-decoration:underline;text-underline-offset:4px;padding:0 4px;min-height:44px}
+.btn[disabled]{background:var(--limestone);border-color:var(--sand);color:var(--stone);cursor:not-allowed}
+.btn.foc{outline:2px solid var(--patina);outline-offset:3px}
+.row{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.field{display:grid;gap:8px;max-width:320px}
+.field label{font-size:14px;color:var(--stone)}
+.field input{min-height:52px;padding:0 16px;border:1px solid var(--sand);background:var(--bone);font:400 16px var(--text);color:var(--graphite);border-radius:2px}
+.field input:focus{border-color:var(--patina);outline:2px solid var(--patina);outline-offset:2px}
+.field.err input{border-color:var(--alert)}
+.field .hint{font-size:13px;color:var(--alert)}
+.badge{display:inline-flex;align-items:center;height:26px;padding:0 12px;border-radius:999px;font:500 11px/1 var(--text);letter-spacing:.16em;text-transform:uppercase}
+.badge.lite{background:var(--limestone);color:var(--graphite);border:1px solid var(--sand)}
+.badge.pro{background:var(--patina);color:var(--bone)}
+.badge.ultra{background:var(--graphite);color:var(--bronze-light);border:1px solid var(--bronze)}
+.badge.ok{background:transparent;color:var(--ok);border:1px solid var(--ok)}
+.pc{border:1px solid var(--sand);max-width:340px;background:var(--bone);display:flex;flex-direction:column}
+.pc .a{aspect-ratio:16/10;background:var(--limestone);display:grid;place-items:center;border-bottom:1px solid var(--sand);--ink:var(--graphite);--acc:var(--bronze)}
+.pc .a svg{width:80%;height:auto}
+.pc .b{padding:20px;display:grid;gap:12px}.pc .b .badge{justify-self:start}
+.pc h4{font-size:1.5rem}
+.pc ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--sand)}
+.pc li{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--sand);font-size:15px}
+.pc li b{font-weight:500;font-variant-numeric:tabular-nums}
+.pc .f{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pc .pr{font:500 1.5rem/1 var(--display);font-variant-numeric:lining-nums}
+.pc .pr small{display:block;font:400 12px var(--text);color:var(--stone);margin-top:4px}
+
+/* applications */
+.app{border:1px solid var(--sand);background:var(--limestone);padding:clamp(20px,3vw,40px);display:grid;place-items:center}
+.app svg{width:100%;height:auto;display:block}
+.bc{display:grid;grid-template-columns:1fr 1fr;gap:20px;width:100%}
+.bc .c{aspect-ratio:9/5;box-shadow:0 2px 4px rgba(30,29,27,.1),0 18px 36px rgba(30,29,27,.12);display:grid;place-items:center;position:relative;overflow:hidden}
+.bc .f{background:var(--patina)}.bc .f svg{width:30%;height:auto}
+.bc .bk{background:var(--bone);place-items:start;padding:7% 8%;font-size:clamp(9px,1.35vw,13px);line-height:1.5;align-content:space-between}
+.bc .bk b{font:500 clamp(14px,2vw,22px)/1.1 var(--display);display:block}
+.bc .bk .rl{color:var(--stone)}
+.bc .bk .ct{color:var(--graphite)}
+.bc .bk .ln{width:28px;border-top:1px solid var(--bronze);margin:8px 0}
+@media(max-width:560px){.bc{grid-template-columns:1fr}}
+
+footer{background:var(--graphite);color:var(--bone);padding:56px 0 40px}
+footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center}
+footer svg{height:32px;width:auto}
+footer p{font-size:14px;color:#BDB5A6}
+code{font:500 .9em ui-monospace,Menlo,Consolas,monospace;background:var(--limestone);padding:2px 6px;border-radius:2px}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="v-ebike" viewBox="0 0 240 140">
+<circle cx="52" cy="96" r="34" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="52" cy="96" r="29" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2"/><circle cx="52" cy="96" r="2.5" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="188" cy="96" r="34" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="188" cy="96" r="29" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2"/><circle cx="188" cy="96" r="2.5" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M52 96 L102 96 L88 52 L164 56 L188 96" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M102 96 L164 58" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"/>
+<path d="M104 94 L162 60" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+<path d="M164 56 L160 38 M150 36 L176 34 M88 52 L92 44 M80 44 L104 44" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M88 52 L102 96" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="102" cy="96" r="8" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol><symbol id="v-atv" viewBox="0 0 240 140">
+<circle cx="56" cy="98" r="32" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"/><circle cx="56" cy="98" r="23" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/><circle cx="56" cy="98" r="4" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="188" cy="98" r="32" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"/><circle cx="188" cy="98" r="23" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/><circle cx="188" cy="98" r="4" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M70 80 C72 58 92 52 110 56 L150 58 C172 58 184 66 192 80" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M96 56 L100 44 L146 44 L150 58" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M100 44 C110 38 134 38 146 44" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M160 58 L158 38 M146 34 L176 32" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M44 74 L84 74 M30 82 L44 74" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M196 80 L214 76" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol><symbol id="v-utv" viewBox="0 0 240 140">
+<circle cx="54" cy="100" r="30" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"/><circle cx="54" cy="100" r="21" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/><circle cx="54" cy="100" r="4" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="190" cy="100" r="30" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"/><circle cx="190" cy="100" r="21" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/><circle cx="190" cy="100" r="4" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M30 84 L30 70 L84 70 L88 56 L168 56 L190 70 L214 74 L214 86" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M84 70 L96 22 L158 22 L170 56" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M96 22 L96 56 M158 22 L158 56 M122 22 L122 56" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+<path d="M36 70 L36 52 L84 52 L84 70" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M104 56 L104 42 L116 42 L116 56 M136 56 L136 42 L148 42 L148 56" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+</symbol><symbol id="v-snow" viewBox="0 0 240 140">
+<path d="M156 122 L206 122 C218 122 224 112 226 102" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="30" y="92" width="130" height="26" rx="13" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="48" cy="105" r="6" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="142" cy="105" r="6" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="95" cy="105" r="4" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
+<path d="M44 92 C46 70 70 62 92 64 L132 66 C158 68 176 80 190 100" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M92 64 L100 48 C112 44 126 46 132 66" fill="none" stroke="var(--acc,#80582D)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M132 66 L140 40 L152 32" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M60 70 L116 62" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+<path d="M186 99 L184 122" fill="none" stroke="var(--ink,#1E1D1B)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol></defs></svg>
+<a class="skip" href="#main">Перейти к содержанию</a>
+<header class="top"><div class="wrap">
+  <a class="lg" href="#top" aria-label="Gran Trakt, к началу"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 314 64" role="img" aria-label="Gran Trakt"><title>Gran Trakt</title><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#1E1D1B"/><path d="M32 32H56M44 32V52.78" stroke="#80582D"/></g><path d="M103.86 26.66A8.3 8.3 0 1 0 105.71 30.8M97.5 32H105.8M116.7 41.5V23.7H122.15A3.93 3.93 0 0 1 122.15 31.56H116.7M120.45 31.56L127.28 41.5M135.78 41.5L143.57 24.78L151.36 41.5M138.9 35.04H148.24M161.06 41.5V22.5M161.06 22.5L171.96 41.5M171.96 41.5V22.5M203.66 23.7H217.34M210.5 23.7V41.5M227.04 41.5V23.7H232.49A3.93 3.93 0 0 1 232.49 31.56H227.04M230.79 31.56L237.62 41.5M246.12 41.5L253.91 24.78L261.7 41.5M249.24 35.04H258.58M271.4 41.5V22.5M283.5 22.5L271.4 34.66M273.66 31.62L283.5 41.5M292 23.7H305.68M298.84 23.7V41.5" fill="none" stroke="#1E1D1B" stroke-width="2.4" stroke-linecap="butt" stroke-linejoin="miter"/></svg></a>
+  <nav aria-label="Разделы бренд-бука"><ul>
+    <li><a href="#pos">Позиция</a></li><li><a href="#voice">Голос</a></li><li><a href="#logo">Логотип</a></li><li><a href="#color">Цвет</a></li><li><a href="#type">Шрифт</a></li><li><a href="#graphic">Графика</a></li><li><a href="#photo">Фото</a></li><li><a href="#icons">Иконки</a></li><li><a href="#ui">Интерфейс</a></li><li><a href="#apps">Применение</a></li>
+  </ul></nav>
+</div></header>
+
+<main id="main">
+<section class="cover" id="top"><div class="wrap">
+  <div>
+    <p class="label">Бренд-бук, версия 1 / городская тихая роскошь</p>
+    <h1>Gran Trakt: техника для <em>долгой</em> дороги</h1>
+    <p class="lead">Электровелосипеды, квадроциклы, UTV и снегоходы для тех, кто выбирает спокойно и ценит цифры. Рабочее название проекта: GT.</p>
+    <div class="meta"><span>Москва</span><span>Ростов-на-Дону</span><span>Краснодарский край</span><span>Розница и опт</span></div>
+  </div>
+  <div class="mk"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="GT mark: Gran Trakt, reverse"><title>GT mark: Gran Trakt, reverse</title><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#F5F1EA"/><path d="M32 32H56M44 32V52.78" stroke="#C9A878"/></g></svg></div>
+</div></section>
+
+<section class="s" id="pos"><div class="wrap">
+  <div class="s-head"><p class="label">01 / Позиция</p><div><h2>Позиционирование, архетип, ценности</h2><p class="intro">Рынок электротранспорта шумит скидками и скоростью. Мы говорим тише и точнее.</p></div></div>
+  <h3 class="sub">Позиционирование</h3>
+  <p class="statement">Для тех, кто выбирает технику спокойно, <em>Gran Trakt</em> – честный эксперт с шоурумом, где можно проехать до покупки.</p>
+  <div class="grid g3" style="margin-top:40px">
+    <div class="card"><span class="label">Для кого</span><h4>Три группы</h4><p>Платежеспособные райдеры 19-35, мужчины 40-45 и родители, которые выбирают технику вместе с подростком. Всем важны гарантия, сервис и честные цифры.</p></div>
+    <div class="card"><span class="label">Чем отличаемся</span><h4>Спокойствие вместо крика</h4><p>Теплая палитра нейтралей вместо красных баннеров, цифры в карточках вместо эпитетов, тест-драйв на первом экране.</p></div>
+    <div class="card"><span class="label">Чему верить</span><h4>Что можно проверить</h4><p>Шоурум в Ростове-на-Дону, три уровня линейки lite / pro / ultra, доставка и сервис под ключ, кастомные сборки в мастерской.</p></div>
+  </div>
+  <h3 class="sub">Архетип</h3>
+  <div class="grid g2">
+    <div class="card alt"><span class="label">Основной, около 70%</span><h4>Мудрец</h4><p>Объясняет, сравнивает, показывает цифры. Не давит и не уговаривает: дает человеку достаточно информации, чтобы он решил сам.</p></div>
+    <div class="card alt"><span class="label">Дополнительный, около 30%</span><h4>Путешественник</h4><p>Дорога, горизонт, расстояние. Образ дальнего пути задает название и визуальный язык: линия горизонта, обод колеса, тонкий маршрут.</p></div>
+  </div>
+  <h3 class="sub">Ценности</h3>
+  <div class="grid g4">
+    <div class="card"><span class="label">01</span><h4>Цифры вместо эпитетов</h4><p>Запас хода, масса, батарея в одинаковых строках. Если цифры нет, мы так и пишем.</p></div>
+    <div class="card"><span class="label">02</span><h4>Спокойствие</h4><p>Много воздуха, один акцент, никаких мигающих баннеров. Решение принимает покупатель.</p></div>
+    <div class="card"><span class="label">03</span><h4>Материал и качество</h4><p>Матовые поверхности, металл, кожа, камень. В кадре и в макете это видно.</p></div>
+    <div class="card"><span class="label">04</span><h4>Забота после покупки</h4><p>Доставка, настройка, сервис под ключ. Покупка начинается с тест-драйва и не заканчивается выдачей.</p></div>
+  </div>
+</div></section>
+
+<section class="s" id="voice"><div class="wrap">
+  <div class="s-head"><p class="label">02 / Голос</p><div><h2>Тон голоса</h2><p class="intro">Говорим как инженер, который не торопит. В этой стилистике преобладает "вы", "ты" допустим в блоках для молодежи.</p></div></div>
+  <div class="grid g2" style="align-items:start">
+    <div>
+      <div class="meter"><span>Формальный</span><div class="bar"><i style="left:60%"></i></div><span>Неформальный</span></div>
+      <div class="meter"><span>Сдержанный</span><div class="bar"><i style="left:22%"></i></div><span>Эмоциональный</span></div>
+      <div class="meter"><span>Лаконичный</span><div class="bar"><i style="left:25%"></i></div><span>Подробный</span></div>
+      <div class="meter"><span>Серьезный</span><div class="bar"><i style="left:38%"></i></div><span>Игривый</span></div>
+    </div>
+    <ul class="plain">
+      <li><b>Точный.</b> Цифра и единица измерения вместо "мощный" и "огромный".</li>
+      <li><b>Спокойный.</b> Без восклицательных знаков, капса и "только сегодня".</li>
+      <li><b>Уважительный.</b> Не поучаем, объясняем, почему рекомендуем именно это.</li>
+      <li><b>Честный.</b> Если у модели есть ограничение, пишем о нем рядом с плюсами.</li>
+    </ul>
+  </div>
+  <h3 class="sub">Примеры фраз</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Ситуация</th><th>Вы (основной тон)</th><th>Ты (для молодежи)</th></tr></thead>
+    <tbody>
+      <tr><td>Заголовок главной</td><td>Техника для долгой дороги</td><td>Твой маршрут длиннее, чем кажется</td></tr>
+      <tr><td>Квиз подбора</td><td>Четыре вопроса, и мы покажем одну модель с объяснением</td><td>Четыре вопроса – и вот твой байк</td></tr>
+      <tr><td>Тест-драйв</td><td>Сначала проедьте, потом решайте</td><td>Сначала прокатись, потом решай</td></tr>
+      <tr><td>Карточка модели</td><td>Запас хода до 90 км, батарея 14 А·ч, масса 24 кг</td><td>До 90 км на одной зарядке, 24 кг</td></tr>
+      <tr><td>Про сервис</td><td>Один номер на все случаи: обслуживание, запчасти, диагностика</td><td>Сломалось – звонишь по одному номеру</td></tr>
+      <tr><td>Ошибка формы</td><td>Не получилось отправить. Проверьте номер телефона</td><td>Не отправилось. Проверь номер</td></tr>
+    </tbody></table></div>
+  <h3 class="sub">Правила письма</h3>
+  <div class="dd">
+    <div class="do"><b>Да</b>Диапазоны через дефис: 30-70 км. Короткое тире только с пробелами: " – ". Букву "е" везде. Числа с единицами. Короткие предложения.</div>
+    <div class="dont"><b>Нет</b>Длинное тире, "самый", "лучший", "уникальный", капс, восклицательные знаки, обещания без цифр.</div>
+  </div>
+</div></section>
+
+<section class="s" id="logo"><div class="wrap">
+  <div class="s-head"><p class="label">03 / Логотип</p><div><h2>Знак и логотип</h2><p class="intro">Знак читается как буква G из тонкого обода колеса. Перекладина G служит верхней полкой буквы T, ножка T упирается в обод: получается лигатура GT.</p></div></div>
+  <div class="grid g2">
+    <div><div class="lg-stage big"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="GT mark: Gran Trakt"><title>GT mark: Gran Trakt</title><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#1E1D1B"/><path d="M32 32H56M44 32V52.78" stroke="#80582D"/></g></svg></div><p class="cap">Знак. Обод и G – графит, T – бронза.</p></div>
+    <div><div class="lg-stage big"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 314 64" role="img" aria-label="Gran Trakt"><title>Gran Trakt</title><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#1E1D1B"/><path d="M32 32H56M44 32V52.78" stroke="#80582D"/></g><path d="M103.86 26.66A8.3 8.3 0 1 0 105.71 30.8M97.5 32H105.8M116.7 41.5V23.7H122.15A3.93 3.93 0 0 1 122.15 31.56H116.7M120.45 31.56L127.28 41.5M135.78 41.5L143.57 24.78L151.36 41.5M138.9 35.04H148.24M161.06 41.5V22.5M161.06 22.5L171.96 41.5M171.96 41.5V22.5M203.66 23.7H217.34M210.5 23.7V41.5M227.04 41.5V23.7H232.49A3.93 3.93 0 0 1 232.49 31.56H227.04M230.79 31.56L237.62 41.5M246.12 41.5L253.91 24.78L261.7 41.5M249.24 35.04H258.58M271.4 41.5V22.5M283.5 22.5L271.4 34.66M273.66 31.62L283.5 41.5M292 23.7H305.68M298.84 23.7V41.5" fill="none" stroke="#1E1D1B" stroke-width="2.4" stroke-linecap="butt" stroke-linejoin="miter"/></svg></div><p class="cap">Горизонтальный логотип (латиница). Надпись нарисована под толщину линии знака.</p></div>
+    <div><div class="lg-stage dk"><svg class="flogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 314 64" role="img" aria-label="Gran Trakt, reverse"><title>Gran Trakt, reverse</title><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#F5F1EA"/><path d="M32 32H56M44 32V52.78" stroke="#C9A878"/></g><path d="M103.86 26.66A8.3 8.3 0 1 0 105.71 30.8M97.5 32H105.8M116.7 41.5V23.7H122.15A3.93 3.93 0 0 1 122.15 31.56H116.7M120.45 31.56L127.28 41.5M135.78 41.5L143.57 24.78L151.36 41.5M138.9 35.04H148.24M161.06 41.5V22.5M161.06 22.5L171.96 41.5M171.96 41.5V22.5M203.66 23.7H217.34M210.5 23.7V41.5M227.04 41.5V23.7H232.49A3.93 3.93 0 0 1 232.49 31.56H227.04M230.79 31.56L237.62 41.5M246.12 41.5L253.91 24.78L261.7 41.5M249.24 35.04H258.58M271.4 41.5V22.5M283.5 22.5L271.4 34.66M273.66 31.62L283.5 41.5M292 23.7H305.68M298.84 23.7V41.5" fill="none" stroke="#F5F1EA" stroke-width="2.4" stroke-linecap="butt" stroke-linejoin="miter"/></svg></div><p class="cap">На графите: кость и светлая бронза.</p></div>
+    <div><div class="lg-stage li"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 305 64" role="img" aria-label="Гран Тракт"><title>Гран Тракт</title><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#1E1D1B"/><path d="M32 32H56M44 32V52.78" stroke="#80582D"/></g><path d="M98.45 23.7H89.2V41.5M108.15 41.5V23.7H113.6A3.93 3.93 0 0 1 113.6 31.56H108.15M127.23 41.5L135.02 24.78L142.81 41.5M130.35 35.04H139.69M152.51 41.5V22.5M163.41 41.5V22.5M152.51 32H163.41M195.11 23.7H208.79M201.95 23.7V41.5M218.49 41.5V23.7H223.94A3.93 3.93 0 0 1 223.94 31.56H218.49M237.57 41.5L245.36 24.78L253.15 41.5M240.69 35.04H250.03M262.85 41.5V22.5M274.95 22.5L262.85 34.66M265.11 31.62L274.95 41.5M283.45 23.7H297.13M290.29 23.7V41.5" fill="none" stroke="#1E1D1B" stroke-width="2.4" stroke-linecap="butt" stroke-linejoin="miter"/></svg></div><p class="cap">Кириллический вариант "Гран Тракт".</p></div>
+    <div><div class="lg-stage li"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 314 64" role="img" aria-label="Gran Trakt, mono dark"><title>Gran Trakt, mono dark</title><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#1E1D1B"/><path d="M32 32H56M44 32V52.78" stroke="#1E1D1B"/></g><path d="M103.86 26.66A8.3 8.3 0 1 0 105.71 30.8M97.5 32H105.8M116.7 41.5V23.7H122.15A3.93 3.93 0 0 1 122.15 31.56H116.7M120.45 31.56L127.28 41.5M135.78 41.5L143.57 24.78L151.36 41.5M138.9 35.04H148.24M161.06 41.5V22.5M161.06 22.5L171.96 41.5M171.96 41.5V22.5M203.66 23.7H217.34M210.5 23.7V41.5M227.04 41.5V23.7H232.49A3.93 3.93 0 0 1 232.49 31.56H227.04M230.79 31.56L237.62 41.5M246.12 41.5L253.91 24.78L261.7 41.5M249.24 35.04H258.58M271.4 41.5V22.5M283.5 22.5L271.4 34.66M273.66 31.62L283.5 41.5M292 23.7H305.68M298.84 23.7V41.5" fill="none" stroke="#1E1D1B" stroke-width="2.4" stroke-linecap="butt" stroke-linejoin="miter"/></svg></div><p class="cap">Монохром, темный. Для печати в один цвет, штампа, тиснения.</p></div>
+    <div><div class="lg-stage pa"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 314 64" role="img" aria-label="Gran Trakt, mono light"><title>Gran Trakt, mono light</title><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#F5F1EA"/><path d="M32 32H56M44 32V52.78" stroke="#F5F1EA"/></g><path d="M103.86 26.66A8.3 8.3 0 1 0 105.71 30.8M97.5 32H105.8M116.7 41.5V23.7H122.15A3.93 3.93 0 0 1 122.15 31.56H116.7M120.45 31.56L127.28 41.5M135.78 41.5L143.57 24.78L151.36 41.5M138.9 35.04H148.24M161.06 41.5V22.5M161.06 22.5L171.96 41.5M171.96 41.5V22.5M203.66 23.7H217.34M210.5 23.7V41.5M227.04 41.5V23.7H232.49A3.93 3.93 0 0 1 232.49 31.56H227.04M230.79 31.56L237.62 41.5M246.12 41.5L253.91 24.78L261.7 41.5M249.24 35.04H258.58M271.4 41.5V22.5M283.5 22.5L271.4 34.66M273.66 31.62L283.5 41.5M292 23.7H305.68M298.84 23.7V41.5" fill="none" stroke="#F5F1EA" stroke-width="2.4" stroke-linecap="butt" stroke-linejoin="miter"/></svg></div><p class="cap">Монохром, светлый, на патине и фото.</p></div>
+  </div>
+  <h3 class="sub">Охранное поле</h3>
+  <div class="grid g2" style="align-items:center">
+    <div class="app" style="background:var(--bone)"><div class="clear"><div class="in"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 314 64" role="img" aria-label="Gran Trakt"><title>Gran Trakt</title><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#1E1D1B"/><path d="M32 32H56M44 32V52.78" stroke="#80582D"/></g><path d="M103.86 26.66A8.3 8.3 0 1 0 105.71 30.8M97.5 32H105.8M116.7 41.5V23.7H122.15A3.93 3.93 0 0 1 122.15 31.56H116.7M120.45 31.56L127.28 41.5M135.78 41.5L143.57 24.78L151.36 41.5M138.9 35.04H148.24M161.06 41.5V22.5M161.06 22.5L171.96 41.5M171.96 41.5V22.5M203.66 23.7H217.34M210.5 23.7V41.5M227.04 41.5V23.7H232.49A3.93 3.93 0 0 1 232.49 31.56H227.04M230.79 31.56L237.62 41.5M246.12 41.5L253.91 24.78L261.7 41.5M249.24 35.04H258.58M271.4 41.5V22.5M283.5 22.5L271.4 34.66M273.66 31.62L283.5 41.5M292 23.7H305.68M298.84 23.7V41.5" fill="none" stroke="#1E1D1B" stroke-width="2.4" stroke-linecap="butt" stroke-linejoin="miter"/></svg></div></div></div>
+    <ul class="plain"><li>Свободное поле со всех сторон равно половине высоты знака, то есть 32 px при высоте 64 px (на схеме пунктир).</li><li>Внутрь поля не заходят текст, края макета, фото-детали.</li><li>На фото логотип ставится на спокойный участок с контрастом не ниже 4.5:1.</li></ul>
+  </div>
+  <h3 class="sub">Минимальные размеры</h3>
+  <div class="mins">
+    <figure><span style="display:block;width:16px;height:16px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Gran Trakt favicon"><title>Gran Trakt favicon</title><rect width="64" height="64" rx="14" fill="#25382F"/><g transform="translate(0 0) scale(1)" fill="none" stroke-width="5.4" stroke-linecap="butt" stroke-linejoin="miter"><path d="M46.55 19.79A19 19 0 1 0 50.81 29.3" stroke="#F5F1EA"/><path d="M32 32H51M41.5 32V48.45" stroke="#C9A878"/></g></svg></span><figcaption>Фавикон: 16 px</figcaption></figure>
+    <figure><span style="display:block;width:24px;height:24px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="GT mark: Gran Trakt"><title>GT mark: Gran Trakt</title><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#1E1D1B"/><path d="M32 32H56M44 32V52.78" stroke="#80582D"/></g></svg></span><figcaption>Знак в тексте: 24 px</figcaption></figure>
+    <figure><span style="display:block;width:48px;height:48px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="GT mark: Gran Trakt"><title>GT mark: Gran Trakt</title><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#1E1D1B"/><path d="M32 32H56M44 32V52.78" stroke="#80582D"/></g></svg></span><figcaption>Знак, печать: 8 мм</figcaption></figure>
+    <figure><span class="h" style="display:block;height:28px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 314 64" role="img" aria-label="Gran Trakt"><title>Gran Trakt</title><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#1E1D1B"/><path d="M32 32H56M44 32V52.78" stroke="#80582D"/></g><path d="M103.86 26.66A8.3 8.3 0 1 0 105.71 30.8M97.5 32H105.8M116.7 41.5V23.7H122.15A3.93 3.93 0 0 1 122.15 31.56H116.7M120.45 31.56L127.28 41.5M135.78 41.5L143.57 24.78L151.36 41.5M138.9 35.04H148.24M161.06 41.5V22.5M161.06 22.5L171.96 41.5M171.96 41.5V22.5M203.66 23.7H217.34M210.5 23.7V41.5M227.04 41.5V23.7H232.49A3.93 3.93 0 0 1 232.49 31.56H227.04M230.79 31.56L237.62 41.5M246.12 41.5L253.91 24.78L261.7 41.5M249.24 35.04H258.58M271.4 41.5V22.5M283.5 22.5L271.4 34.66M273.66 31.62L283.5 41.5M292 23.7H305.68M298.84 23.7V41.5" fill="none" stroke="#1E1D1B" stroke-width="2.4" stroke-linecap="butt" stroke-linejoin="miter"/></svg></span><figcaption>Горизонтальный: от 28 px по высоте (около 140 px по ширине), в печати от 10 мм по высоте</figcaption></figure>
+  </div>
+  <p class="cap" style="margin-top:12px">Ниже этих размеров используем знак без надписи. В фавикон и иконку приложения идет упрощенный знак с утолщенной линией (файлы favicon.svg и app-icon.svg).</p>
+  <h3 class="sub">Запреты</h3>
+  <div class="misuse">
+    <div><div class="t" style="background:var(--bone)"><span class="x" aria-hidden="true">×</span><span style="display:block;transform:scaleX(1.6)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 314 64" role="img" aria-label="Gran Trakt"><title>Gran Trakt</title><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#1E1D1B"/><path d="M32 32H56M44 32V52.78" stroke="#80582D"/></g><path d="M103.86 26.66A8.3 8.3 0 1 0 105.71 30.8M97.5 32H105.8M116.7 41.5V23.7H122.15A3.93 3.93 0 0 1 122.15 31.56H116.7M120.45 31.56L127.28 41.5M135.78 41.5L143.57 24.78L151.36 41.5M138.9 35.04H148.24M161.06 41.5V22.5M161.06 22.5L171.96 41.5M171.96 41.5V22.5M203.66 23.7H217.34M210.5 23.7V41.5M227.04 41.5V23.7H232.49A3.93 3.93 0 0 1 232.49 31.56H227.04M230.79 31.56L237.62 41.5M246.12 41.5L253.91 24.78L261.7 41.5M249.24 35.04H258.58M271.4 41.5V22.5M283.5 22.5L271.4 34.66M273.66 31.62L283.5 41.5M292 23.7H305.68M298.84 23.7V41.5" fill="none" stroke="#1E1D1B" stroke-width="2.4" stroke-linecap="butt" stroke-linejoin="miter"/></svg></span></div><p>Не растягивать и не сжимать</p></div>
+    <div><div class="t" style="background:var(--bone)"><span class="x" aria-hidden="true">×</span><span style="display:block;filter:hue-rotate(160deg) saturate(3)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 314 64" role="img" aria-label="Gran Trakt"><title>Gran Trakt</title><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#1E1D1B"/><path d="M32 32H56M44 32V52.78" stroke="#80582D"/></g><path d="M103.86 26.66A8.3 8.3 0 1 0 105.71 30.8M97.5 32H105.8M116.7 41.5V23.7H122.15A3.93 3.93 0 0 1 122.15 31.56H116.7M120.45 31.56L127.28 41.5M135.78 41.5L143.57 24.78L151.36 41.5M138.9 35.04H148.24M161.06 41.5V22.5M161.06 22.5L171.96 41.5M171.96 41.5V22.5M203.66 23.7H217.34M210.5 23.7V41.5M227.04 41.5V23.7H232.49A3.93 3.93 0 0 1 232.49 31.56H227.04M230.79 31.56L237.62 41.5M246.12 41.5L253.91 24.78L261.7 41.5M249.24 35.04H258.58M271.4 41.5V22.5M283.5 22.5L271.4 34.66M273.66 31.62L283.5 41.5M292 23.7H305.68M298.84 23.7V41.5" fill="none" stroke="#1E1D1B" stroke-width="2.4" stroke-linecap="butt" stroke-linejoin="miter"/></svg></span></div><p>Не менять цвета, не добавлять неон</p></div>
+    <div><div class="t" style="background:var(--bone)"><span class="x" aria-hidden="true">×</span><span style="display:block;filter:drop-shadow(4px 5px 3px rgba(0,0,0,.5))"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 314 64" role="img" aria-label="Gran Trakt"><title>Gran Trakt</title><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#1E1D1B"/><path d="M32 32H56M44 32V52.78" stroke="#80582D"/></g><path d="M103.86 26.66A8.3 8.3 0 1 0 105.71 30.8M97.5 32H105.8M116.7 41.5V23.7H122.15A3.93 3.93 0 0 1 122.15 31.56H116.7M120.45 31.56L127.28 41.5M135.78 41.5L143.57 24.78L151.36 41.5M138.9 35.04H148.24M161.06 41.5V22.5M161.06 22.5L171.96 41.5M171.96 41.5V22.5M203.66 23.7H217.34M210.5 23.7V41.5M227.04 41.5V23.7H232.49A3.93 3.93 0 0 1 232.49 31.56H227.04M230.79 31.56L237.62 41.5M246.12 41.5L253.91 24.78L261.7 41.5M249.24 35.04H258.58M271.4 41.5V22.5M283.5 22.5L271.4 34.66M273.66 31.62L283.5 41.5M292 23.7H305.68M298.84 23.7V41.5" fill="none" stroke="#1E1D1B" stroke-width="2.4" stroke-linecap="butt" stroke-linejoin="miter"/></svg></span></div><p>Без теней, свечения и объема</p></div>
+    <div><div class="t" style="background:var(--bone)"><span class="x" aria-hidden="true">×</span><span style="display:block;transform:rotate(-12deg)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 314 64" role="img" aria-label="Gran Trakt"><title>Gran Trakt</title><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#1E1D1B"/><path d="M32 32H56M44 32V52.78" stroke="#80582D"/></g><path d="M103.86 26.66A8.3 8.3 0 1 0 105.71 30.8M97.5 32H105.8M116.7 41.5V23.7H122.15A3.93 3.93 0 0 1 122.15 31.56H116.7M120.45 31.56L127.28 41.5M135.78 41.5L143.57 24.78L151.36 41.5M138.9 35.04H148.24M161.06 41.5V22.5M161.06 22.5L171.96 41.5M171.96 41.5V22.5M203.66 23.7H217.34M210.5 23.7V41.5M227.04 41.5V23.7H232.49A3.93 3.93 0 0 1 232.49 31.56H227.04M230.79 31.56L237.62 41.5M246.12 41.5L253.91 24.78L261.7 41.5M249.24 35.04H258.58M271.4 41.5V22.5M283.5 22.5L271.4 34.66M273.66 31.62L283.5 41.5M292 23.7H305.68M298.84 23.7V41.5" fill="none" stroke="#1E1D1B" stroke-width="2.4" stroke-linecap="butt" stroke-linejoin="miter"/></svg></span></div><p>Не наклонять и не вращать</p></div>
+    <div><div class="t" style="background:repeating-linear-gradient(45deg,#C9A878 0 10px,#9C3A2A 10px 20px)"><span class="x" aria-hidden="true" style="color:#fff">×</span><span style="display:block"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 314 64" role="img" aria-label="Gran Trakt"><title>Gran Trakt</title><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#1E1D1B"/><path d="M32 32H56M44 32V52.78" stroke="#80582D"/></g><path d="M103.86 26.66A8.3 8.3 0 1 0 105.71 30.8M97.5 32H105.8M116.7 41.5V23.7H122.15A3.93 3.93 0 0 1 122.15 31.56H116.7M120.45 31.56L127.28 41.5M135.78 41.5L143.57 24.78L151.36 41.5M138.9 35.04H148.24M161.06 41.5V22.5M161.06 22.5L171.96 41.5M171.96 41.5V22.5M203.66 23.7H217.34M210.5 23.7V41.5M227.04 41.5V23.7H232.49A3.93 3.93 0 0 1 232.49 31.56H227.04M230.79 31.56L237.62 41.5M246.12 41.5L253.91 24.78L261.7 41.5M249.24 35.04H258.58M271.4 41.5V22.5M283.5 22.5L271.4 34.66M273.66 31.62L283.5 41.5M292 23.7H305.68M298.84 23.7V41.5" fill="none" stroke="#1E1D1B" stroke-width="2.4" stroke-linecap="butt" stroke-linejoin="miter"/></svg></span></div><p>Не ставить на пестрый фон</p></div>
+    <div><div class="t" style="background:var(--bone)"><span class="x" aria-hidden="true">×</span><span style="display:block;opacity:.25"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 314 64" role="img" aria-label="Gran Trakt"><title>Gran Trakt</title><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#1E1D1B"/><path d="M32 32H56M44 32V52.78" stroke="#80582D"/></g><path d="M103.86 26.66A8.3 8.3 0 1 0 105.71 30.8M97.5 32H105.8M116.7 41.5V23.7H122.15A3.93 3.93 0 0 1 122.15 31.56H116.7M120.45 31.56L127.28 41.5M135.78 41.5L143.57 24.78L151.36 41.5M138.9 35.04H148.24M161.06 41.5V22.5M161.06 22.5L171.96 41.5M171.96 41.5V22.5M203.66 23.7H217.34M210.5 23.7V41.5M227.04 41.5V23.7H232.49A3.93 3.93 0 0 1 232.49 31.56H227.04M230.79 31.56L237.62 41.5M246.12 41.5L253.91 24.78L261.7 41.5M249.24 35.04H258.58M271.4 41.5V22.5M283.5 22.5L271.4 34.66M273.66 31.62L283.5 41.5M292 23.7H305.68M298.84 23.7V41.5" fill="none" stroke="#1E1D1B" stroke-width="2.4" stroke-linecap="butt" stroke-linejoin="miter"/></svg></span></div><p>Не делать бледным: контраст ниже 4.5:1</p></div>
+  </div>
+  <div class="dd" style="margin-top:24px"><div class="do"><b>Важно</b>Сокращение "GT" отдельно от знака не использовать как торговую марку: оно совпадает с существующей маркой велосипедов. Монограмма GT живет внутри знака Gran Trakt.</div><div class="do"><b>Статус</b>Название и знак предварительные: поиск по реестрам товарных знаков пока не проводился.</div></div>
+</div></section>
+
+<section class="s" id="color"><div class="wrap">
+  <div class="s-head"><p class="label">04 / Цвет</p><div><h2>Палитра</h2><p class="intro">Теплые нейтрали, один глубокий зеленый и один акцент бронзы. Ни неона, ни красного, ни синего: эти цвета заняты категорией.</p></div></div>
+  <div class="sw-grid"><div class="sw-card"><div class="sw-chip" style="background:#1E1D1B;color:#F5F1EA"><span>Графит</span></div><dl><dt>HEX</dt><dd>#1E1D1B</dd><dt>RGB</dt><dd>30, 29, 27</dd><dt>Токен</dt><dd>--gt-color-graphite</dd></dl><p>Текст на светлом, темные плоскости, шапка таблиц</p></div><div class="sw-card"><div class="sw-chip" style="background:#25382F;color:#F5F1EA"><span>Патина</span></div><dl><dt>HEX</dt><dd>#25382F</dd><dt>RGB</dt><dd>37, 56, 47</dd><dt>Токен</dt><dd>--gt-color-patina</dd></dl><p>Основной цвет бренда: кнопки, герой, шоурум</p></div><div class="sw-card"><div class="sw-chip" style="background:#F5F1EA;color:#1E1D1B"><span>Кость</span></div><dl><dt>HEX</dt><dd>#F5F1EA</dd><dt>RGB</dt><dd>245, 241, 234</dd><dt>Токен</dt><dd>--gt-color-bone</dd></dl><p>Основной фон страниц и упаковки</p></div><div class="sw-card"><div class="sw-chip" style="background:#E8E2D6;color:#1E1D1B"><span>Известняк</span></div><dl><dt>HEX</dt><dd>#E8E2D6</dd><dt>RGB</dt><dd>232, 226, 214</dd><dt>Токен</dt><dd>--gt-color-limestone</dd></dl><p>Карточки, подложки, вторичные блоки</p></div><div class="sw-card"><div class="sw-chip" style="background:#80582D;color:#F5F1EA"><span>Бронза</span></div><dl><dt>HEX</dt><dd>#80582D</dd><dt>RGB</dt><dd>128, 88, 45</dd><dt>Токен</dt><dd>--gt-color-bronze</dd></dl><p>Единственный акцент на светлом: ссылки, цифры, детали</p></div><div class="sw-card"><div class="sw-chip" style="background:#C9A878;color:#1E1D1B"><span>Бронза светлая</span></div><dl><dt>HEX</dt><dd>#C9A878</dd><dt>RGB</dt><dd>201, 168, 120</dd><dt>Токен</dt><dd>--gt-color-bronze-light</dd></dl><p>Акцент на темном фоне</p></div><div class="sw-card"><div class="sw-chip" style="background:#6B6458;color:#F5F1EA"><span>Камень</span></div><dl><dt>HEX</dt><dd>#6B6458</dd><dt>RGB</dt><dd>107, 100, 88</dd><dt>Токен</dt><dd>--gt-color-stone</dd></dl><p>Вторичный текст и подписи</p></div><div class="sw-card"><div class="sw-chip" style="background:#CFC6B6;color:#1E1D1B"><span>Песок</span></div><dl><dt>HEX</dt><dd>#CFC6B6</dd><dt>RGB</dt><dd>207, 198, 182</dd><dt>Токен</dt><dd>--gt-color-sand</dd></dl><p>Линии, рамки, разделители</p></div><div class="sw-card"><div class="sw-chip" style="background:#2B2A27;color:#F5F1EA"><span>Базальт</span></div><dl><dt>HEX</dt><dd>#2B2A27</dd><dt>RGB</dt><dd>43, 42, 39</dd><dt>Токен</dt><dd>--gt-color-basalt</dd></dl><p>Поверхность на графите, футер</p></div><div class="sw-card"><div class="sw-chip" style="background:#3A5247;color:#F5F1EA"><span>Патина мягкая</span></div><dl><dt>HEX</dt><dd>#3A5247</dd><dt>RGB</dt><dd>58, 82, 71</dd><dt>Токен</dt><dd>--gt-color-patina-soft</dd></dl><p>Наведение, вторичные плоскости</p></div><div class="sw-card"><div class="sw-chip" style="background:#9C3A2A;color:#F5F1EA"><span>Терракота</span></div><dl><dt>HEX</dt><dd>#9C3A2A</dd><dt>RGB</dt><dd>156, 58, 42</dd><dt>Токен</dt><dd>--gt-color-alert</dd></dl><p>Только ошибки и предупреждения</p></div><div class="sw-card"><div class="sw-chip" style="background:#3C6A4B;color:#F5F1EA"><span>Мох</span></div><dl><dt>HEX</dt><dd>#3C6A4B</dd><dt>RGB</dt><dd>60, 106, 75</dd><dt>Токен</dt><dd>--gt-color-ok</dd></dl><p>Только успех и "в наличии"</p></div></div>
+  <h3 class="sub">Пропорции</h3>
+  <div class="prop"><i style="width:55%;background:var(--bone);color:var(--graphite)">Кость 55%</i><i style="width:20%;background:var(--limestone);color:var(--graphite)">Известняк 20%</i><i style="width:15%;background:var(--patina);color:var(--bone)">Патина 15%</i><i style="width:7%;background:var(--graphite);color:var(--bone)"></i><i style="width:3%;background:var(--bronze)"></i></div>
+  <p class="cap">Кость 55%, известняк 20%, патина 15%, графит 7%, бронза 3%. Бронза занимает не больше нескольких процентов площади: одна деталь на экран.</p>
+  <h3 class="sub">Контраст по WCAG 2.2</h3>
+  <p class="cap" style="margin:-8px 0 16px">Коэффициент считается по формуле относительной яркости WCAG: (L1 + 0.05) / (L2 + 0.05). Порог для обычного текста 4.5:1 (AA), 7:1 (AAA), для крупного текста и графики 3:1.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Пара</th><th>Цвета</th><th>Где используем</th><th>Коэффициент</th><th>Уровень</th></tr></thead>
+    <tbody><tr><td><span class="pair" style="background:#F5F1EA;color:#1E1D1B">Aa</span></td><td>графит на кость</td><td>Основной текст на фоне</td><td class="num">14.96:1</td><td class="ok">AAA</td></tr><tr><td><span class="pair" style="background:#E8E2D6;color:#1E1D1B">Aa</span></td><td>графит на известняк</td><td>Текст на карточке</td><td class="num">13.06:1</td><td class="ok">AAA</td></tr><tr><td><span class="pair" style="background:#F5F1EA;color:#6B6458">Aa</span></td><td>камень на кость</td><td>Вторичный текст</td><td class="num">5.20:1</td><td class="ok">AA</td></tr><tr><td><span class="pair" style="background:#E8E2D6;color:#6B6458">Aa</span></td><td>камень на известняк</td><td>Вторичный текст на карточке</td><td class="num">4.54:1</td><td class="ok">AA</td></tr><tr><td><span class="pair" style="background:#F5F1EA;color:#80582D">Aa</span></td><td>бронза на кость</td><td>Ссылки, акцентные цифры</td><td class="num">5.57:1</td><td class="ok">AA</td></tr><tr><td><span class="pair" style="background:#E8E2D6;color:#80582D">Aa</span></td><td>бронза на известняк</td><td>Акцент на карточке</td><td class="num">4.86:1</td><td class="ok">AA</td></tr><tr><td><span class="pair" style="background:#25382F;color:#F5F1EA">Aa</span></td><td>кость на патина</td><td>Текст на основном цвете, кнопка</td><td class="num">11.07:1</td><td class="ok">AAA</td></tr><tr><td><span class="pair" style="background:#3A5247;color:#F5F1EA">Aa</span></td><td>кость на патина мягкая</td><td>Текст при наведении</td><td class="num">7.53:1</td><td class="ok">AAA</td></tr><tr><td><span class="pair" style="background:#1E1D1B;color:#F5F1EA">Aa</span></td><td>кость на графит</td><td>Текст на графите</td><td class="num">14.96:1</td><td class="ok">AAA</td></tr><tr><td><span class="pair" style="background:#1E1D1B;color:#C9A878">Aa</span></td><td>бронза светлая на графит</td><td>Акцент на графите</td><td class="num">7.50:1</td><td class="ok">AAA</td></tr><tr><td><span class="pair" style="background:#25382F;color:#C9A878">Aa</span></td><td>бронза светлая на патина</td><td>Акцент на патине</td><td class="num">5.55:1</td><td class="ok">AA</td></tr><tr><td><span class="pair" style="background:#F5F1EA;color:#9C3A2A">Aa</span></td><td>терракота на кость</td><td>Сообщение об ошибке</td><td class="num">6.11:1</td><td class="ok">AA</td></tr><tr><td><span class="pair" style="background:#F5F1EA;color:#3C6A4B">Aa</span></td><td>мох на кость</td><td>Сообщение об успехе</td><td class="num">5.56:1</td><td class="ok">AA</td></tr><tr><td><span class="pair" style="background:#1E1D1B;color:#CFC6B6">Aa</span></td><td>песок на графит</td><td>Линии на графите</td><td class="num">9.95:1</td><td class="ok">AAA</td></tr><tr><td><span class="pair" style="background:#CFC6B6;color:#80582D">Aa</span></td><td>бронза на песок</td><td>Бронза на песке</td><td class="num">3.70:1</td><td class="warn">только крупный текст и графика</td></tr></tbody></table></div>
+  <h3 class="sub">Линейка lite / pro / ultra</h3>
+  <div class="row"><span class="badge lite">lite</span><span class="badge pro">pro</span><span class="badge ultra">ultra</span></div>
+  <p class="cap" style="margin-top:10px">lite – известняк, pro – патина, ultra – графит с бронзой. Градация идет от светлого к темному, как в материалах: камень, металл, черненая бронза.</p>
+</div></section>
+
+<section class="s" id="type"><div class="wrap">
+  <div class="s-head"><p class="label">05 / Шрифт</p><div><h2>Типографика</h2><p class="intro">Две гарнитуры с кириллицей, обе бесплатные (OFL). Антиква для голоса бренда, гротеск для информации.</p></div></div>
+  <div class="grid g2">
+    <div class="card"><span class="label">Заголовки</span><div class="glyph">Аа Gg</div><h4 style="margin-top:12px">Cormorant Garamond</h4><p>Контрастная антиква, начертания 400, 500, 600 и курсив. Использовать от 28 px. Цифры в заголовках только лигатурные (lining).</p></div>
+    <div class="card"><span class="label">Текст и интерфейс</span><div class="glyph" style="font-family:var(--text);font-weight:500;font-size:clamp(3.4rem,8.4vw,6.4rem)">Аа Gg</div><h4 style="margin-top:12px;font-family:var(--text);font-size:1.4rem">Golos Text</h4><p>Гротеск, созданный под кириллицу. Начертания 400, 500, 600. Табличные цифры для характеристик и цен.</p></div>
+  </div>
+  <p class="glyphs" style="margin-top:24px;font-family:var(--display);font-size:1.6rem">АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ абвгдежзийклмнопрстуфхцчшщъыьэюя 0123456789 ₽ А·ч</p>
+  <h3 class="sub">Иерархия</h3>
+  <div class="spec">
+    <div class="r"><span>Display</span><div style="font:500 clamp(2.75rem,6vw,5rem)/1.02 var(--display)">Долгая дорога</div><em>Cormorant 500, 44-80 px, межстрочный 1.02</em></div>
+    <div class="r"><span>H1</span><div style="font:500 clamp(2.25rem,4.5vw,3.5rem)/1.08 var(--display)">Три уровня техники</div><em>Cormorant 500, 36-56 px, 1.08</em></div>
+    <div class="r"><span>H2</span><div style="font:500 clamp(1.75rem,3vw,2.5rem)/1.12 var(--display)">Сравнение моделей</div><em>Cormorant 500, 28-40 px, 1.12</em></div>
+    <div class="r"><span>H3</span><div style="font:500 1.5rem/1.2 var(--display)">Шоурум в Ростове-на-Дону</div><em>Cormorant 500, 24 px, 1.2</em></div>
+    <div class="r"><span>Lead</span><div style="font:400 1.25rem/1.55 var(--text)">Подберем модель под ваши маршруты и дадим проехать в шоуруме.</div><em>Golos 400, 20 px, 1.55</em></div>
+    <div class="r"><span>Body</span><div style="font:400 1.0625rem/1.65 var(--text)">Запас хода до 90 км, батарея 14 А·ч, масса 24 кг. Значения для примера.</div><em>Golos 400, 17 px, 1.65, до 68 знаков в строке</em></div>
+    <div class="r"><span>Small</span><div style="font:400 .875rem/1.5 var(--text);color:var(--stone)">Подпись, примечание, подсказка к полю</div><em>Golos 400, 14 px, 1.5</em></div>
+    <div class="r"><span>Label</span><div class="label">Электровелосипеды, квадроциклы</div><em>Golos 500, 12 px, капс, разрядка 0.16em</em></div>
+    <div class="r"><span>Цифры</span><div class="num" style="font:500 1.25rem/1 var(--text)">1 480 000 ₽ · 30-70 км · 14 А·ч</div><em>Golos 500, tabular-nums</em></div>
+  </div>
+</div></section>
+
+<section class="s" id="graphic"><div class="wrap">
+  <div class="s-head"><p class="label">06 / Графика</p><div><h2>Графические элементы</h2><p class="intro">Четыре приема, все построены на тонкой линии толщиной 1 px и круге из знака.</p></div></div>
+  <div class="grid g4">
+    <div><div class="pat p1"><span>Горизонт</span></div><p class="cap">Строки как линии местности. Фоны карточек и разделов.</p></div>
+    <div><div class="pat p2"><span>Обод</span></div><p class="cap">Концентрические дуги из знака. Фон героя, упаковка.</p></div>
+    <div><div class="pat p3"><svg viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true"><path d="M-10 250 C120 250 140 80 260 100 S 360 200 420 60" fill="none" stroke="#80582D" stroke-width="1.5" stroke-dasharray="3 7"/><circle cx="260" cy="100" r="6" fill="#80582D"/></svg><span>Тракт</span></div><p class="cap">Пунктир маршрута с точкой. Карта шоурума, пути доставки.</p></div>
+    <div><div class="pat p4"><span>Сетка карты</span></div><p class="cap">Тонкая сетка 32 px. Фон схем и фирменных страниц.</p></div>
+  </div>
+  <div class="dd" style="margin-top:24px"><div class="do"><b>Да</b>Линии 1 px, углы 2 px (кнопки, поля) или 0 (карточки), метки в разрядке, большие поля.</div><div class="dont"><b>Нет</b>Градиенты, молнии, скорость, диагональные срезы, неон, блестящие эффекты, скругления больше 12 px.</div></div>
+</div></section>
+
+<section class="s" id="photo"><div class="wrap">
+  <div class="s-head"><p class="label">07 / Фото</p><div><h2>Фото-направление</h2><p class="intro">Естественный свет, один источник, мало объектов. Человек маленький, пространство большое. Ниже схемы кадров, не фотографии.</p></div></div>
+  <div class="frames">
+    <figure class="frame" style="margin:0"><svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Схема кадра: маленький райдер на электровелосипеде на фоне широкого горизонта"><defs><linearGradient id="gA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C9A878"/><stop offset=".6" stop-color="#E8E2D6"/></linearGradient></defs><rect width="300" height="400" fill="url(#gA)"/><rect y="270" width="300" height="130" fill="#25382F"/><path d="M0 270 L80 240 L150 262 L230 232 L300 262 V270Z" fill="#3A5247"/><g transform="translate(130 238) scale(.34)" style="--ink:#F5F1EA;--acc:#C9A878"><use href="#v-ebike" width="240" height="140"/></g></svg><figcaption>Масштаб: райдер до 15% кадра</figcaption></figure>
+    <figure class="frame" style="margin:0"><svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Схема кадра: крупная деталь, обод колеса и рама на темном фоне"><rect width="300" height="400" fill="#1E1D1B"/><circle cx="210" cy="260" r="150" fill="none" stroke="#2B2A27" stroke-width="22"/><circle cx="210" cy="260" r="150" fill="none" stroke="#C9A878" stroke-width="1.5"/><path d="M0 120 L210 260" stroke="#F5F1EA" stroke-width="3" opacity=".85"/><circle cx="210" cy="260" r="9" fill="#C9A878"/></svg><figcaption>Деталь: материал, один блик</figcaption></figure>
+    <figure class="frame lt" style="margin:0"><svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Схема кадра: интерьер шоурума, светлая стена из известняка и одна модель"><rect width="300" height="400" fill="#E8E2D6"/><rect y="300" width="300" height="100" fill="#CFC6B6"/><rect x="40" y="60" width="2" height="240" fill="#80582D" opacity=".7"/><g transform="translate(70 214) scale(.75)" style="--ink:#1E1D1B;--acc:#80582D"><use href="#v-ebike" width="240" height="140"/></g></svg><figcaption>Шоурум: камень, одна модель, мягкий верхний свет</figcaption></figure>
+    <figure class="frame" style="margin:0"><svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Схема кадра: ночной город, единственный теплый источник света от фары"><defs><radialGradient id="gB" cx=".62" cy=".62" r=".5"><stop offset="0" stop-color="#C9A878" stop-opacity=".9"/><stop offset="1" stop-color="#1E1D1B" stop-opacity="0"/></radialGradient></defs><rect width="300" height="400" fill="#141311"/><rect width="300" height="400" fill="url(#gB)"/><circle cx="188" cy="250" r="6" fill="#F5F1EA"/></svg><figcaption>Ночь: один теплый источник</figcaption></figure>
+  </div>
+  <div class="grid g3" style="margin-top:32px">
+    <div class="card"><span class="label">Свет</span><h4>Естественный, теплый</h4><p>Золотой час, облачное небо, одна фара ночью. Без вспышки и студийных лайтбоксов.</p></div>
+    <div class="card"><span class="label">Цвет</span><h4>Приглушенный</h4><p>Тона кадра тянем к палитре бренда: теплые тени, зеленый и бронза в средних тонах. Насыщенность снижена на 10-15%.</p></div>
+    <div class="card"><span class="label">Композиция</span><h4>Воздух и масштаб</h4><p>Не меньше 40% кадра свободно. Один объект, горизонт на трети. Лицо необязательно: достаточно силуэта и позы.</p></div>
+  </div>
+  <div class="dd" style="margin-top:24px"><div class="do"><b>Да</b>Реальные райдеры в обычной одежде, шоурум и мастерская, детали материалов, пейзаж юга и зимы.</div><div class="dont"><b>Нет</b>Белый студийный фон без тени, коллажи, пересвеченный HDR, трюки и прыжки, надписи поверх техники.</div></div>
+</div></section>
+
+<section class="s" id="icons"><div class="wrap">
+  <div class="s-head"><p class="label">08 / Иконки</p><div><h2>Иконки</h2><p class="intro">Сетка 24 px, линия 1.5 px, скругленные окончания. Одна бронзовая деталь на иконку.</p></div></div>
+  <div class="icons">
+    <div class="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Подбор"><path d="M4 6h2M4 12h2M4 18h2"/><path class="a" d="M10 6h10M10 12h10M10 18h10"/></svg>Подбор</div>
+    <div class="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Сравнение"><rect x="4" y="5" width="7" height="14" rx="1"/><rect class="a" x="13" y="5" width="7" height="14" rx="1"/></svg>Сравнение</div>
+    <div class="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Конфигуратор"><path d="M4 7h16M4 12h16M4 17h16"/><circle class="a" cx="9" cy="7" r="2"/><circle cx="15" cy="12" r="2"/><circle cx="8" cy="17" r="2"/></svg>Конфигуратор</div>
+    <div class="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Тест-драйв"><circle cx="6" cy="18" r="2"/><circle class="a" cx="18" cy="6" r="2"/><path d="M8 18h6a3 3 0 0 0 0-6h-4a3 3 0 0 1 0-6h6"/></svg>Тест-драйв</div>
+    <div class="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Шоурум"><path d="M4 20V9l8-5 8 5v11M4 20h16"/><path class="a" d="M9 20v-6h6v6"/></svg>Шоурум</div>
+    <div class="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Доставка"><path d="M3 8l9-4 9 4v8l-9 4-9-4zM3 8l9 4 9-4"/><path class="a" d="M12 12v8"/></svg>Доставка</div>
+    <div class="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Сервис"><path d="M14 6a4 4 0 0 0 5 5l-9 9a2.1 2.1 0 0 1-3-3l9-9"/><path class="a" d="M14 6a4 4 0 0 1 2-2"/></svg>Сервис</div>
+    <div class="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Кастом"><path d="M4 20l1-4L16 5l3 3L8 19z"/><path class="a" d="M14 7l3 3"/></svg>Кастом</div>
+  </div>
+</div></section>
+
+<section class="s" id="ui"><div class="wrap">
+  <div class="s-head"><p class="label">09 / Интерфейс</p><div><h2>UI-компоненты</h2><p class="intro">Токены лежат в tokens/tokens.css и tokens.json. Минимальная область нажатия 44 px, фокус всегда виден.</p></div></div>
+  <h3 class="sub">Кнопки</h3>
+  <div class="row"><button class="btn">Основная</button><button class="btn hov">Наведение</button><button class="btn foc">Фокус</button><button class="btn ghost">Вторичная</button><button class="btn text">Текстовая</button><button class="btn" disabled>Недоступна</button></div>
+  <h3 class="sub">Поля формы</h3>
+  <div class="row" style="align-items:flex-start">
+    <div class="field"><label for="f1">Телефон</label><input id="f1" value="+7" aria-describedby="h1"></div>
+    <div class="field err"><label for="f2">Телефон с ошибкой</label><input id="f2" value="+7 90" aria-invalid="true" aria-describedby="h2"><span class="hint" id="h2">Не хватает цифр. Проверьте номер.</span></div>
+  </div>
+  <h3 class="sub">Бейджи линейки</h3>
+  <div class="row"><span class="badge lite">lite</span><span class="badge pro">pro</span><span class="badge ultra">ultra</span><span class="badge ok">В наличии</span></div>
+  <h3 class="sub">Карточка товара</h3>
+  <div class="pc"><div class="a"><svg viewBox="0 0 240 140" role="img" aria-label="Иллюстрация электровелосипеда"><use href="#v-ebike"/></svg></div><div class="b"><span class="badge pro">pro</span><h4>Trakt City pro</h4><ul><li><span>Запас хода</span><b>до 90 км</b></li><li><span>Батарея</span><b>14 А·ч, 48 В</b></li><li><span>Масса</span><b>24 кг</b></li></ul><div class="f"><div class="pr">от 210 тыс. ₽<small>пример</small></div><a class="btn ghost" style="min-height:44px;padding:0 18px" href="#ui">Сравнить</a></div></div></div>
+  <p class="cap">Название модели и цифры примерные.</p>
+</div></section>
+
+<section class="s" id="apps"><div class="wrap">
+  <div class="s-head"><p class="label">10 / Применение</p><div><h2>Применение</h2><p class="intro">Схемы носителей: визитка, упаковка, вывеска шоурума, ливрея сервисной машины, соцсети.</p></div></div>
+  <h3 class="sub">Визитка 90 × 50 мм</h3>
+  <div class="app"><div class="bc"><div class="c f"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="GT mark: Gran Trakt, reverse"><title>GT mark: Gran Trakt, reverse</title><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#F5F1EA"/><path d="M32 32H56M44 32V52.78" stroke="#C9A878"/></g></svg></div><div class="c bk"><div><b>Имя Фамилия</b><span class="rl">Менеджер шоурума</span><div class="ln"></div></div><div class="ct">+7 000 000-00-00<br>name@grantrakt.example<br>Ростов-на-Дону, адрес шоурума</div></div></div></div>
+  <p class="cap">Контакты вымышленные, для схемы.</p>
+  <h3 class="sub">Упаковка</h3>
+  <div class="app"><svg viewBox="0 0 640 300" role="img" aria-label="Схема упаковки: коробка из графитового картона с бронзовым тиснением знака и боковая лента">
+    <rect x="40" y="40" width="360" height="220" fill="#1E1D1B"/><rect x="40" y="40" width="360" height="40" fill="#2B2A27"/>
+    <g transform="translate(184 100) scale(1.1)"><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#F5F1EA"/><path d="M32 32H56M44 32V52.78" stroke="#C9A878"/></g></g>
+    <path d="M60 235H380" stroke="#C9A878" stroke-width="1"/><text x="60" y="226" font-family="Golos Text,sans-serif" font-size="11" letter-spacing="2.4" fill="#C9A878">ЭЛЕКТРОВЕЛОСИПЕД · PRO</text>
+    <rect x="420" y="70" width="180" height="190" fill="#E8E2D6"/><rect x="420" y="70" width="180" height="190" fill="none" stroke="#CFC6B6"/>
+    <text x="436" y="102" font-family="Golos Text,sans-serif" font-size="10" letter-spacing="2" fill="#6B6458">ПАСПОРТ ИЗДЕЛИЯ</text>
+    <g font-family="Golos Text,sans-serif" font-size="12" fill="#1E1D1B"><text x="436" y="136">Модель</text><text x="584" y="136" text-anchor="end">Trakt City pro</text><text x="436" y="162">Запас хода</text><text x="584" y="162" text-anchor="end">до 90 км</text><text x="436" y="188">Масса</text><text x="584" y="188" text-anchor="end">24 кг</text></g>
+    <path d="M436 200H584M436 146H584M436 172H584" stroke="#CFC6B6"/>
+    <text x="436" y="244" font-family="Golos Text,sans-serif" font-size="10" fill="#6B6458">Значения для примера</text></svg></div>
+  <h3 class="sub">Вывеска шоурума в Ростове-на-Дону</h3>
+  <div class="app"><svg viewBox="0 0 800 330" role="img" aria-label="Схема фасада: графитовая вывеска со светлым логотипом, витрина из стекла с двумя электровелосипедами и дверь">
+    <rect width="800" height="330" fill="#CFC6B6"/><rect y="270" width="800" height="60" fill="#B9B0A1"/>
+    <rect x="60" y="40" width="680" height="230" fill="#E8E2D6"/>
+    <rect x="60" y="40" width="680" height="62" fill="#1E1D1B"/>
+    <g transform="translate(250 53) scale(.64)"><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#F5F1EA"/><path d="M32 32H56M44 32V52.78" stroke="#C9A878"/></g><path d="M103.86 26.66A8.3 8.3 0 1 0 105.71 30.8M97.5 32H105.8M116.7 41.5V23.7H122.15A3.93 3.93 0 0 1 122.15 31.56H116.7M120.45 31.56L127.28 41.5M135.78 41.5L143.57 24.78L151.36 41.5M138.9 35.04H148.24M161.06 41.5V22.5M161.06 22.5L171.96 41.5M171.96 41.5V22.5M203.66 23.7H217.34M210.5 23.7V41.5M227.04 41.5V23.7H232.49A3.93 3.93 0 0 1 232.49 31.56H227.04M230.79 31.56L237.62 41.5M246.12 41.5L253.91 24.78L261.7 41.5M249.24 35.04H258.58M271.4 41.5V22.5M283.5 22.5L271.4 34.66M273.66 31.62L283.5 41.5M292 23.7H305.68M298.84 23.7V41.5" fill="none" stroke="#F5F1EA" stroke-width="2.4" stroke-linecap="butt" stroke-linejoin="miter"/></g>
+    <rect x="60" y="102" width="680" height="3" fill="#80582D"/>
+    <rect x="90" y="130" width="400" height="140" fill="#F5F1EA" opacity=".7" stroke="#1E1D1B" stroke-width="1.5"/>
+    <path d="M290 130V270" stroke="#1E1D1B" stroke-width="1.5"/>
+    <g style="--ink:#1E1D1B;--acc:#80582D"><use href="#v-ebike" x="108" y="170" width="160" height="94"/><use href="#v-atv" x="308" y="170" width="160" height="94"/></g>
+    <rect x="530" y="130" width="150" height="140" fill="#F5F1EA" opacity=".7" stroke="#1E1D1B" stroke-width="1.5"/>
+    <path d="M605 130V270" stroke="#1E1D1B" stroke-width="1.5"/><circle cx="598" cy="204" r="3" fill="#80582D"/><circle cx="612" cy="204" r="3" fill="#80582D"/>
+    <text x="400" y="300" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="12" letter-spacing="3" fill="#1E1D1B">ШОУРУМ · ТЕСТ-ДРАЙВ · СЕРВИС</text></svg></div>
+  <p class="cap">Подсветка вывески: теплый белый 2700-3000 K, без RGB и бегущих строк.</p>
+  <h3 class="sub">Ливрея сервисной машины</h3>
+  <div class="app"><svg viewBox="0 0 800 300" role="img" aria-label="Схема ливреи: светлый фургон с патиновой нижней полосой и графитовым логотипом на борту">
+    <rect y="250" width="800" height="50" fill="#CFC6B6"/>
+    <path d="M60 230 V90 Q60 70 82 70 H520 Q560 70 590 120 L680 150 Q720 156 720 190 V230 Z" fill="#F5F1EA" stroke="#1E1D1B" stroke-width="2"/>
+    <path d="M60 188 H720 V230 H60 Z" fill="#25382F"/><path d="M60 188 H720" stroke="#C9A878" stroke-width="2"/>
+    <path d="M545 88 L588 122 L650 146 H545 Z" fill="#E8E2D6" stroke="#1E1D1B" stroke-width="2"/>
+    <g transform="translate(110 92) scale(.9)"><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#1E1D1B"/><path d="M32 32H56M44 32V52.78" stroke="#80582D"/></g><path d="M103.86 26.66A8.3 8.3 0 1 0 105.71 30.8M97.5 32H105.8M116.7 41.5V23.7H122.15A3.93 3.93 0 0 1 122.15 31.56H116.7M120.45 31.56L127.28 41.5M135.78 41.5L143.57 24.78L151.36 41.5M138.9 35.04H148.24M161.06 41.5V22.5M161.06 22.5L171.96 41.5M171.96 41.5V22.5M203.66 23.7H217.34M210.5 23.7V41.5M227.04 41.5V23.7H232.49A3.93 3.93 0 0 1 232.49 31.56H227.04M230.79 31.56L237.62 41.5M246.12 41.5L253.91 24.78L261.7 41.5M249.24 35.04H258.58M271.4 41.5V22.5M283.5 22.5L271.4 34.66M273.66 31.62L283.5 41.5M292 23.7H305.68M298.84 23.7V41.5" fill="none" stroke="#1E1D1B" stroke-width="2.4" stroke-linecap="butt" stroke-linejoin="miter"/></g>
+    <text x="112" y="174" font-family="Golos Text,sans-serif" font-size="12" letter-spacing="2" fill="#1E1D1B">СЕРВИС ПОД КЛЮЧ</text>
+    <g><circle cx="170" cy="236" r="32" fill="#1E1D1B"/><circle cx="170" cy="236" r="14" fill="#CFC6B6"/><circle cx="610" cy="236" r="32" fill="#1E1D1B"/><circle cx="610" cy="236" r="14" fill="#CFC6B6"/></g></svg></div>
+  <h3 class="sub">Соцсети</h3>
+  <div class="grid g3">
+    <div class="app" style="padding:24px"><div style="width:96px;aspect-ratio:1;border-radius:50%;overflow:hidden;background:#25382F"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Gran Trakt app icon"><title>Gran Trakt app icon</title><rect width="512" height="512" fill="#25382F"/><g transform="translate(96 96) scale(5)" fill="none" stroke-width="3.2" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.4" stroke="#F5F1EA"/><path d="M32 32H56M44 32V52.78" stroke="#C9A878"/></g></svg></div><p class="cap" style="margin-top:12px">Аватар: знак на патине</p></div>
+    <div class="app" style="padding:24px"><svg viewBox="0 0 300 300" role="img" aria-label="Схема поста: цифра запаса хода крупным шрифтом на патине"><rect width="300" height="300" fill="#25382F"/><circle cx="290" cy="310" r="120" fill="none" stroke="#C9A878" opacity=".45"/><circle cx="290" cy="310" r="170" fill="none" stroke="#C9A878" opacity=".3"/><text x="28" y="60" font-family="Golos Text,sans-serif" font-size="11" letter-spacing="2.5" fill="#C9A878">ЗАПАС ХОДА, ПРИМЕР</text><text x="28" y="170" font-family="Cormorant Garamond,serif" font-size="64" fill="#F5F1EA">до 90 км</text><text x="28" y="212" font-family="Golos Text,sans-serif" font-size="15" fill="#E8E2D6">Trakt City pro, батарея 14 А·ч</text><g transform="translate(28 252) scale(.6)"><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#F5F1EA"/><path d="M32 32H56M44 32V52.78" stroke="#C9A878"/></g><path d="M103.86 26.66A8.3 8.3 0 1 0 105.71 30.8M97.5 32H105.8M116.7 41.5V23.7H122.15A3.93 3.93 0 0 1 122.15 31.56H116.7M120.45 31.56L127.28 41.5M135.78 41.5L143.57 24.78L151.36 41.5M138.9 35.04H148.24M161.06 41.5V22.5M161.06 22.5L171.96 41.5M171.96 41.5V22.5M203.66 23.7H217.34M210.5 23.7V41.5M227.04 41.5V23.7H232.49A3.93 3.93 0 0 1 232.49 31.56H227.04M230.79 31.56L237.62 41.5M246.12 41.5L253.91 24.78L261.7 41.5M249.24 35.04H258.58M271.4 41.5V22.5M283.5 22.5L271.4 34.66M273.66 31.62L283.5 41.5M292 23.7H305.68M298.84 23.7V41.5" fill="none" stroke="#F5F1EA" stroke-width="2.4" stroke-linecap="butt" stroke-linejoin="miter"/></g></svg></div>
+    <div class="app" style="padding:24px"><svg viewBox="0 0 180 320" style="max-width:170px" role="img" aria-label="Схема сторис: пригласить на тест-драйв"><rect width="180" height="320" fill="#E8E2D6"/><rect y="170" width="180" height="150" fill="#1E1D1B"/><line x1="0" y1="170" x2="180" y2="170" stroke="#C9A878"/><text x="16" y="56" font-family="Cormorant Garamond,serif" font-size="32" fill="#1E1D1B">Сначала</text><text x="16" y="90" font-family="Cormorant Garamond,serif" font-size="32" fill="#80582D" font-style="italic">проедьте</text><g style="--ink:#F5F1EA;--acc:#C9A878"><use href="#v-ebike" x="20" y="176" width="140" height="82"/></g><rect x="16" y="268" width="148" height="36" fill="#F5F1EA"/><text x="90" y="291" text-anchor="middle" font-family="Golos Text,sans-serif" font-size="12" font-weight="500" fill="#1E1D1B">Записаться</text></svg><p class="cap" style="margin-top:12px">Сторис 9:16</p></div>
+  </div>
+</div></section>
+</main>
+<footer class="on-dark"><div class="wrap"><svg class="flogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 314 64" role="img" aria-label="Gran Trakt, reverse"><title>Gran Trakt, reverse</title><g transform="translate(0 0) scale(1)" fill="none" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"><path d="M50.39 16.57A24 24 0 1 0 55.95 30.5" stroke="#F5F1EA"/><path d="M32 32H56M44 32V52.78" stroke="#C9A878"/></g><path d="M103.86 26.66A8.3 8.3 0 1 0 105.71 30.8M97.5 32H105.8M116.7 41.5V23.7H122.15A3.93 3.93 0 0 1 122.15 31.56H116.7M120.45 31.56L127.28 41.5M135.78 41.5L143.57 24.78L151.36 41.5M138.9 35.04H148.24M161.06 41.5V22.5M161.06 22.5L171.96 41.5M171.96 41.5V22.5M203.66 23.7H217.34M210.5 23.7V41.5M227.04 41.5V23.7H232.49A3.93 3.93 0 0 1 232.49 31.56H227.04M230.79 31.56L237.62 41.5M246.12 41.5L253.91 24.78L261.7 41.5M249.24 35.04H258.58M271.4 41.5V22.5M283.5 22.5L271.4 34.66M273.66 31.62L283.5 41.5M292 23.7H305.68M298.84 23.7V41.5" fill="none" stroke="#F5F1EA" stroke-width="2.4" stroke-linecap="butt" stroke-linejoin="miter"/></svg><p>Бренд-бук v1, городская тихая роскошь. Название и знак предварительные. Модели и цифры примерные.</p></div></footer>
+</body>
+</html>
