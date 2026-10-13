@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="240" height="240" role="img" aria-label="Hush, анимация: волна затихает в линию"><title>Hush, анимированный знак</title>
+<style>@media (prefers-reduced-motion:reduce){animate,animateTransform{display:none}}</style>
+<g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="12">
+<path d="M32 96V96" stroke="#0F1A16"><animate attributeName="d" dur="6s" repeatCount="indefinite" values="M32 96V96;M32 96V24;M32 96V24;M32 96V24;M32 96V96" keyTimes="0;.15;.8;.95;1"/></path>
+<path d="M88 96V96" stroke="#0F1A16"><animate attributeName="d" dur="6s" repeatCount="indefinite" values="M88 96V96;M88 96V96;M88 96V24;M88 96V24;M88 96V96" keyTimes="0;.08;.23;.95;1"/></path>
+<path d="M32 60C37 28 47 28 53 60C57 80 63 80 66 60C68 54 71 56 73 60L88 60" stroke="#FF4B1F" stroke-width="9">
+<animate attributeName="d" dur="6s" repeatCount="indefinite" keyTimes="0;.3;.5;.75;1" calcMode="spline" keySplines=".4 0 .2 1;.4 0 .2 1;.4 0 .2 1;.4 0 .2 1"
+values="M32 60C38 60 47 60 53 60C57 60 63 60 66 60C68 60 71 60 73 60L88 60;M32 60C36 14 47 14 53 60C58 90 64 90 67 60C69 50 71 52 73 60L88 60;M32 60C37 28 47 28 53 60C57 80 63 80 66 60C68 54 71 56 73 60L88 60;M32 60C38 52 47 52 53 60C57 66 63 66 66 60C68 58 71 58 73 60L88 60;M32 60C38 60 47 60 53 60C57 60 63 60 66 60C68 60 71 60 73 60L88 60"/></path></g></svg>

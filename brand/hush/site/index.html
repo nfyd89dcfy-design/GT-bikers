@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="ru" data-voice="ty">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hush – тихий ход, громкий характер</title>
+<meta name="description" content="Hush: электровелосипеды, квадрики, багги и эндуро. Шоурум в Ростове-на-Дону, доставка в Москву и по Краснодарскому краю. Живой макет сайта.">
+<meta name="theme-color" content="#E8EDEA">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/hush.css">
+</head>
+<body>
+<a class="skip" href="#main">К содержимому</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <symbol id="lg" viewBox="0 0 400 120"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"><path d="M32 24V96M88 24V96" stroke="var(--lg-ink,#0F1A16)"/><path d="M32 60C37 28 47 28 53 60C57 80 63 80 66 60C68 54 71 56 73 60L88 60" stroke="#FF4B1F" stroke-width="9"/><g transform="translate(138 12) scale(.96)" stroke="var(--lg-ink,#0F1A16)" stroke-width="10.5"><path d="M6 4V96M6 62C6 48 16 40 30 40C44 40 52 48 52 62V96"/><path d="M74 42V72C74 88 84 96 96 96C106 96 114 90 114 80M114 42V96"/><path d="M166 54C162 44 154 42 148 42C138 42 132 47 132 55C132 63 140 65 149 67C159 69 166 72 166 80C166 90 158 96 148 96C138 96 131 91 129 82"/><path d="M186 4V96M186 62C186 48 196 40 210 40C224 40 232 48 232 62V96"/></g></g></symbol>
+ <filter id="warp"><feTurbulence type="fractalNoise" baseFrequency=".012 .03" numOctaves="2" seed="3" result="t"><animate attributeName="baseFrequency" dur="4s" values=".012 .03;.02 .05;.012 .03" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" in2="t" scale="22"/></filter>
+</svg>
+
+<!-- GATE -->
+<div id="gate" role="dialog" aria-modal="true" aria-labelledby="gh">
+ <canvas class="sh" aria-hidden="true"></canvas>
+ <div class="gate-top"><svg width="132" height="40" viewBox="0 0 400 120" role="img" aria-label="Hush"><use href="#lg"/></svg><span class="mono">Москва / Ростов-на-Дону / Краснодарский край</span></div>
+ <div>
+  <p class="mono idx">[00] вход</p>
+  <h1 id="gh" class="d gate-h"><span data-ty="Куда едешь?" data-vy="Что вам нужно?">Куда едешь?</span></h1>
+  <div class="gate-grid" id="gateGrid"></div>
+ </div>
+ <div class="gate-bot">
+  <div class="fuel" role="group" aria-label="Тип силовой установки"><span class="mono">Привод</span><button class="chip" data-fuel="electro" aria-pressed="true">Электро</button><button class="chip" data-fuel="petrol" aria-pressed="false" id="petrolBtn">Бенз</button></div>
+  <button class="btn ghost sm" id="gateSkip">Просто покажи сайт</button>
+ </div>
+</div>
+
+<header class="top" id="top">
+ <a class="logo" href="#main" aria-label="Hush, наверх"><svg width="108" height="32" viewBox="0 0 400 120"><use href="#lg"/></svg></a>
+ <nav aria-label="Разделы"><a href="#line">Линейка</a><a href="#viewer">3D</a><a href="#config">Кастом</a><a href="#fit">Подбор</a><a href="#tour">Шоурум</a><a href="#media">Медиа</a><a href="#service">Сервис</a></nav>
+ <div class="voice" role="group" aria-label="Обращение"><button data-voice="ty" aria-pressed="true">ты</button><button data-voice="vy" aria-pressed="false">вы</button></div>
+ <button class="btn sm ghost" id="dirBtn">Направление</button>
+ <button class="cartbtn" id="cartBtn" aria-label="Корзина">Корзина<b id="cartN">0</b></button>
+</header>
+
+<main id="main">
+<!-- HERO -->
+<section class="hero hero-pin" id="hero" aria-label="Hush">
+ <canvas class="sh" id="heroSh" aria-hidden="true"></canvas>
+ <div class="hero-stage"><canvas id="heroGL" role="img" aria-label="3D-модель байка собирается из деталей при прокрутке"></canvas></div>
+ <div class="hero-copy">
+  <p class="mono idx" id="heroKick">[01] City / электро</p>
+  <h1 class="d" id="heroH"></h1>
+  <p id="heroP"></p>
+ </div>
+ <div class="tag" id="t1" style="left:67%;top:62%">батарея в раме</div>
+ <div class="tag" id="t2" style="left:50%;top:76%">мотор в ступице</div>
+ <div class="tag" id="t3" style="left:78%;top:15%">руль: кастом-детали</div>
+ <div class="hero-cta"><a class="btn em" href="#line">Смотреть линейку</a><a class="btn ghost" href="#drive">Записаться на тест-драйв</a></div>
+ <div class="hero-meta"><span class="mono" id="heroProg">сборка 0%</span><div class="prog"><i id="progBar"></i></div><span class="mono">скролль, чтобы собрать</span></div>
+</section>
+
+<div class="marq" aria-hidden="true"><div id="marq"></div></div>
+
+<!-- LINE -->
+<section class="sec" id="line"><div class="wrap">
+ <div class="sec-h"><div><span class="mono idx">[02] линейка</span><h2 class="d">lite / pro / ultra</h2></div><p>Три ступени на каждое направление. <span data-ty="Бери ту, что по ощущениям." data-vy="Выбирайте ту, что подходит семье.">Бери ту, что по ощущениям.</span></p></div>
+ <div class="ctl"><div class="tabs" id="dirTabs" role="tablist" aria-label="Направление"></div><div class="fuel" role="group" aria-label="Привод"><button class="chip" data-fuel="electro" aria-pressed="true">Электро</button><button class="chip" data-fuel="petrol" aria-pressed="false">Бенз</button></div></div>
+ <div class="tiers" id="tiers"></div>
+ <p class="approx mono">Все цифры примерные, для макета. Финальные характеристики появятся после тестов серии.</p>
+ <div class="acc"><div class="sec-h" style="margin-bottom:18px"><div><span class="mono idx">[02.1] аксессуары и апгрейды</span><h3 class="d" style="font-size:clamp(26px,3.6vw,52px)">Докрути под себя</h3></div><p>Свет, грипсы, сумки, Snow kit для зимы. Все ставим в шоуруме за один визит.</p></div><div class="rail" id="rail" tabindex="0" aria-label="Карусель аксессуаров"></div></div>
+</div></section>
+
+<!-- 3D / AR -->
+<section class="sec" id="viewer" style="padding-top:0"><div class="wrap">
+ <div class="sec-h"><div><span class="mono idx">[03] 3d / ar</span><h2 class="d">Покрути у себя</h2></div><p><span class="proto mono">прототип</span></p></div>
+ <div class="v3">
+  <div class="stage"><canvas id="v3c" tabindex="0" role="img" aria-label="Интерактивная 3D-модель, перетащи, чтобы повернуть"></canvas><div class="tl"><span class="sticker">drag</span><span class="sticker e">360</span></div><span class="hint mono">тяни мышью или пальцем / стрелки на клавиатуре</span></div>
+  <div class="side">
+   <h3 id="v3t">Hush City</h3>
+   <p>Процедурная модель на Three.js: каркас, батарея, мотор, руль. Крутится в любую сторону, цвета меняются в конфигураторе ниже.</p>
+   <div class="row" id="v3tabs"></div>
+   <div class="ar"><button class="btn em" id="arBtn">Посмотреть у себя дома (AR)</button></div>
+   <p class="mono" style="color:var(--moss)">Прототип: это геометрия, а не лидар-скан. В продакшене тут будут фотореалистичные модели с лидар-съемки и WebXR (Android) / Quick Look (iOS): ставишь байк на пол и обходишь вокруг.</p>
+  </div>
+ </div>
+</div></section>
+<dialog id="arDlg"><div class="in"><span class="sticker">прототип</span><h3>AR: байк у тебя в комнате</h3><p>Здесь появится кнопка запуска камеры. Как это будет в продакшене:</p><ul style="padding-left:18px;display:grid;gap:6px"><li>лидар-скан реального байка, сжатый в glb и usdz</li><li>WebXR на Android, Quick Look на iPhone</li><li>масштаб 1:1, чтобы понять, влезет ли в прихожую</li></ul><form method="dialog"><button class="btn" autofocus>Понятно</button></form></div></dialog>
+
+<!-- CONFIG -->
+<section class="sec" id="config" style="padding-top:0"><div class="wrap">
+ <div class="sec-h"><div><span class="mono idx">[04] кастом</span><h2 class="d">Собери свой</h2></div><p>Цвет, контроллер, батарея. Цена и запас хода пересчитываются сразу. Цифры примерные.</p></div>
+ <div class="cfg">
+  <div class="stage" style="aspect-ratio:auto;min-height:420px"><canvas id="cfc" tabindex="0" role="img" aria-label="3D-модель в конфигураторе"></canvas><div class="tl"><span class="sticker" id="cfName">City pro</span></div></div>
+  <div class="side" id="cfSide">
+   <div class="opt"><span class="mono">Модель</span><div class="row" id="cfModel"></div></div>
+   <div class="opt"><span class="mono">Рама</span><div class="row" id="cfFrame"></div></div>
+   <div class="opt"><span class="mono">Акцент руля</span><div class="row" id="cfAcc"></div></div>
+   <div class="opt"><span class="mono">Контроллер</span><div class="row" id="cfCtl"></div></div>
+   <div class="opt"><span class="mono">Батарея</span><div class="row" id="cfBat"></div></div>
+   <div class="opt"><span class="mono">Запас хода, примерно <b id="cfRangeV"></b></span><div class="rangebar"><i id="cfRange"></i></div></div>
+   <div class="tot"><div><span class="mono" style="color:var(--moss)">итого</span><br><b id="cfPrice"></b></div><button class="btn em" id="cfAdd">В корзину</button></div>
+  </div>
+ </div>
+</div></section>
+
+<!-- FIT -->
+<section class="sec" id="fit" style="padding-top:0"><div class="wrap">
+ <div class="sec-h"><div><span class="mono idx">[05] подбор и сравнение</span><h2 class="d">Какой твой</h2></div><p>Четыре вопроса или сравнение трех моделей рядом.</p></div>
+ <div class="two">
+  <div class="card q" id="quiz"></div>
+  <div class="card" id="cmpBox"><span class="mono idx">сравнение</span><div style="overflow-x:auto"><table class="cmp" id="cmp"></table></div></div>
+ </div>
+</div></section>
+
+<!-- TOUR -->
+<section class="sec" id="tour" style="padding-top:0"><div class="wrap">
+ <div class="sec-h"><div><span class="mono idx">[06] шоурум в ростове</span><h2 class="d">Зайди без билета</h2></div><p><span class="proto mono">прототип</span> Мини-тур на Three.js: схема зала условная, не обмер.</p></div>
+ <div class="tour">
+  <div class="tourstage"><canvas id="tourC" tabindex="0" role="img" aria-label="Мини-тур по шоуруму, тяни, чтобы осмотреться"></canvas><div class="hots" id="hots"></div></div>
+  <div class="side">
+   <h3 id="tourT">Вход</h3><p id="tourD"></p>
+   <div class="stops" id="stops"></div>
+   <div class="mapbox card" style="padding:12px" id="mapbox"></div>
+  </div>
+ </div>
+</div></section>
+
+<!-- MEDIA -->
+<section class="sec" id="media" style="padding-top:0"><div class="wrap">
+ <div class="sec-h"><div><span class="mono idx">[07] медиа</span><h2 class="d">Снято своими</h2></div><p>Заезды, обкатки, кастом-сборки. Ссылки на соцсети пока заглушки.</p></div>
+ <div class="tabs mtabs" role="tablist" aria-label="Медиа"><button class="chip" role="tab" aria-selected="true" data-mt="vid">Видео</button><button class="chip" role="tab" aria-selected="false" data-mt="soc">Наши каналы</button></div>
+ <div id="mtVid" class="vids"></div>
+ <div id="mtSoc" class="soc" hidden></div>
+</div></section>
+<div id="collage" role="dialog" aria-modal="true" aria-label="Видео"><button class="cx" id="cgx" aria-label="Закрыть">&times;</button><div class="cg" id="cg"></div></div>
+
+<!-- SERVICE -->
+<section class="sec" id="service" style="padding-top:0"><div class="wrap">
+ <div class="sec-h"><div><span class="mono idx">[08] сервис</span><h2 class="d">Байк под ключ</h2></div><p>От выбора до первой поездки мы делаем все сами.</p></div>
+ <div class="svc">
+  <div class="sv"><span class="mono">01 / под ключ</span><h3>Собрали, настроили, обкатали</h3><p>Байк приезжает готовым: затянуты болты, прошита прошивка, заряжена батарея, проверен свет.</p><ul><li>предпродажная подготовка</li><li>обкатка и проверка на треке во дворе шоурума</li><li>выдача с инструктажем</li></ul></div>
+  <div class="sv"><span class="mono">02 / доставка</span><h3>Москва, Ростов, край</h3><p>Курьером до двери или самовывоз из шоурума в Ростове.</p><ul><li>Москва – 3-5 дней, примерно</li><li>Ростов-на-Дону – 1-2 дня</li><li>Краснодарский край – 2-4 дня</li></ul></div>
+  <div class="sv"><span class="mono">03 / гарантия</span><h3>24 месяца, примерно</h3><p>Рама, мотор, контроллер и батарея. Сервис в Ростове, запчасти в наличии.</p><ul><li>бесплатное первое ТО</li><li>подменный байк на время ремонта</li></ul></div>
+  <div class="sv dk"><span class="mono">04 / кастом-дизайн</span><h3>Цвет, наклейки, ливрея</h3><p>Присылаешь референс или собираешь в конфигураторе. Печатаем стикеры, красим детали, ставим акценты на руль.</p><ul><li>фирменные акценты руля</li><li>именные наклейки и номерные плашки</li><li>клубные ливреи для команд</li></ul></div>
+  <div class="sv"><span class="mono">05 / опт</span><h3>Для дилеров</h3><p>Партии от 5 штук, паллеты, прайс под сезон, демо-образцы.</p><ul><li>прайс по запросу</li><li>маркетинг-кит для точки</li></ul></div>
+  <div class="sv"><span class="mono">06 / snow</span><h3>Зимний комплект</h3><p>Шипованные покрышки, лыжа на переднее колесо, греющие грипсы. Едем и зимой.</p><ul><li>Snow kit для эндуро и квадриков</li><li>хранение сезона в шоуруме</li></ul></div>
+ </div>
+ <div class="trust" style="margin-top:14px"><span class="sticker e">trust</span>
+  <div><span class="mono idx" style="color:var(--lichen)">[09] доверие</span><h2 class="d" style="font-size:clamp(30px,4.6vw,68px)" id="trustH"></h2><p style="margin-top:18px;max-width:44ch;opacity:.85" id="trustP"></p></div>
+  <ul id="trustL"></ul>
+ </div>
+</div></section>
+
+<!-- DRIVE -->
+<section class="sec" id="drive" style="padding-top:0"><div class="wrap">
+ <div class="sec-h"><div><span class="mono idx">[10] тест-драйв</span><h2 class="d">Сядь и поезжай</h2></div><p>Выбери город, день и модель. Мы подтвердим по телефону.</p></div>
+ <div class="two">
+  <div class="card"><form class="form" id="driveF" novalidate>
+   <div class="fl"><span>Город</span><div class="pills" role="radiogroup" aria-label="Город"><input type="radio" name="city" id="c1" value="Москва"><label for="c1">Москва</label><input type="radio" name="city" id="c2" value="Ростов-на-Дону" checked><label for="c2">Ростов-на-Дону</label><input type="radio" name="city" id="c3" value="Краснодарский край"><label for="c3">Краснодарский край</label></div></div>
+   <div class="fl"><label for="dd"><span>Дата</span></label><input type="date" id="dd" required></div>
+   <div class="fl"><span>Время</span><div class="pills" id="slots"></div></div>
+   <div class="fl"><label for="dm"><span>Модель</span></label><select id="dm"></select></div>
+   <div class="fl"><label for="dn"><span>Имя</span></label><input type="text" id="dn" autocomplete="name" required></div>
+   <div class="fl"><label for="dp"><span>Телефон</span></label><input type="tel" id="dp" autocomplete="tel" placeholder="+7" required></div>
+   <label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="dt" style="width:20px;height:20px"> <span>Приеду вместе с родителем / ребенком</span></label>
+   <p id="dErr" role="alert" style="color:var(--ember-ink);font-weight:600"></p>
+   <button class="btn em" type="submit">Записаться</button>
+  </form>
+  <div class="ok" id="driveOk"><span class="mono">заявка принята</span><div class="code" id="dCode"></div><p id="dTxt"></p><button class="btn ghost" id="dAgain">Записать еще</button></div></div>
+  <div class="ph s2 warp" style="min-height:420px" data-cursor="drive"><figcaption>photo placeholder: подросток и родитель у шоурума в Ростове, вечерний свет, матовый байк с фиолетовыми грипсами, кадр сбоку, без постановки</figcaption></div>
+ </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+ <div class="cols"><div><svg width="150" height="45" viewBox="0 0 400 120" style="--lg-ink:#E8EDEA"><use href="#lg"/></svg><p style="margin-top:14px;max-width:34ch;opacity:.8">Тихий ход, громкий характер. Электровелосипеды, квадрики, багги, эндуро. Розница и опт.</p></div>
+ <div><span class="mono">Разделы</span><a href="#line">Линейка</a><a href="#config">Кастом</a><a href="#service">Сервис</a><a href="#drive">Тест-драйв</a></div>
+ <div><span class="mono">Города</span><a href="#tour">Ростов-на-Дону (шоурум)</a><a href="#drive">Москва</a><a href="#drive">Краснодарский край</a></div>
+ <div><span class="mono">Связь</span><a href="#media">Telegram</a><a href="#media">YouTube</a><a href="#media">VK</a><a href="#media">Instagram</a></div></div>
+ <div class="big" aria-hidden="true">hush</div>
+ <p class="mono" style="opacity:.6;margin-top:18px">Живой макет бренда. Цены, сроки и характеристики примерные.</p>
+</div></footer>
+
+<!-- CART -->
+<div id="scrim"></div>
+<aside id="cart" aria-label="Корзина" aria-hidden="true">
+ <div class="cart-h"><h2 class="d" style="font-size:26px">Корзина</h2><button class="btn ghost sm" id="cartX">Закрыть</button></div>
+ <div class="cart-b" id="cartB"></div>
+ <div class="cart-f" id="cartF"></div>
+</aside>
+<div id="toast" role="status" aria-live="polite"></div>
+<div class="cur" id="cur" aria-hidden="true"></div>
+<script src="assets/hush3d.js"></script>
+<script src="assets/app.js"></script>
+</body></html>

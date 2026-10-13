@@ -1,0 +1,26 @@
+/* Hush design tokens */
+:root{
+  /* color */
+  --hush-fog:#E8EDEA;      /* основной фон */
+  --hush-paper:#F5F8F6;    /* поверхности, карточки */
+  --hush-pine:#0F1A16;     /* текст и темные блоки */
+  --hush-moss:#4A5E54;     /* вторичный текст */
+  --hush-lichen:#BFD0C2;   /* мягкий акцент, подложки */
+  --hush-ember:#FF4B1F;    /* энергия: кнопки, заливки (не для текста на светлом) */
+  --hush-ember-ink:#B53210;/* ember для текста на светлом */
+  --hush-violet:#7C4DFF;   /* кастом-акцент: детали руля, стикеры, фокус */
+  /* type */
+  --hush-font-display:"Unbounded","Onest",system-ui,sans-serif;
+  --hush-font-body:"Onest",system-ui,sans-serif;
+  --hush-font-mono:"JetBrains Mono",ui-monospace,monospace;
+  --hush-fs-display:clamp(40px,7vw,120px);
+  --hush-fs-h2:clamp(34px,6.2vw,92px);
+  --hush-fs-h3:clamp(22px,2.4vw,34px);
+  --hush-fs-body:17px;
+  --hush-fs-label:12px;
+  /* space, radius, motion */
+  --hush-space-1:4px;--hush-space-2:8px;--hush-space-3:16px;--hush-space-4:24px;--hush-space-5:40px;--hush-space-6:72px;
+  --hush-radius:18px;--hush-radius-pill:99px;--hush-cut:44px;
+  --hush-ease:cubic-bezier(.2,.8,.2,1);--hush-dur-fast:.25s;--hush-dur:.6s;--hush-dur-slow:1.2s;
+  --hush-line:rgba(15,26,22,.16);
+}
