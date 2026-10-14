@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Play, X, Send, Clapperboard, Camera, Users, Wrench, Truck, ShieldCheck, KeyRound, Minus, Plus, Trash2, Check } from "lucide-react";
-import { gsap } from "@/lib/gsap";
-import { useApp, reduceMotion, scrollToId } from "@/lib/state";
+import { useApp, scrollToId } from "@/lib/state";
 import { CATALOG, COMPARE_IDS, DIRS, modelName, photo, rub } from "@/lib/data";
 import { Boids, ChromeText } from "./shaders";
 import { Eyebrow, H2, Reveal } from "./ui-bits";
 import { InteractiveHoverButton } from "./ui/interactive-hover-button";
 import { GlowCard } from "./ui/spotlight-card";
+import { MorphTile } from "./morph";
 import { cn } from "@/lib/utils";
 
 /* ---------------------------------------------------------------- Media */
@@ -18,80 +18,75 @@ const SOCS = [
 ];
 const VIDS = [
   { t: "Dune roost: KR3 в песках", d: "0:48", p: "nicot-cqr-125re-p25", c: "Тест на песке, 3 камеры" },
-  { t: "FALCON GT: первый drop", d: "1:12", p: "79bike-falcon-gt-3", c: "Обзор и замеры" },
+  { t: "GT T19 Pro: первый drop", d: "1:12", p: "79bike-falcon-gt-3", c: "Обзор и замеры" },
   { t: "Ночной город, G7 Pro", d: "0:36", p: "julong-g7-pro-8", c: "Город после заката" },
   { t: "Прыжок на KR9", d: "0:29", p: "nicot-ht5-450nc-p35", c: "Slow-mo send it" },
   { t: "Юг, багги на пляже", d: "1:05", p: "juhool-utv-titan", c: "Поездка к морю" },
   { t: "Custom build за 10 минут", d: "0:58", p: "esuvehicle-es01", c: "Сборка в шоуруме" },
 ];
 
+const PHOTOS = [
+  { t: "Рассвет, песок и roost", p: "nicot-cqy-125re-p27", c: "Дюны под Ростовом" },
+  { t: "Красные овраги", p: "nicot-kr2-250cbf-p21", c: "Тест в оврагах" },
+  { t: "Лесной трейл", p: "nicot-kr4-125re-p29", c: "Утро в лесу" },
+  { t: "Горы и drop", p: "nicot-kr9-250ncs-p40", c: "Выезд в горы" },
+  { t: "Город на закате", p: "nicot-bt-250fe-p45", c: "Трасса на закате" },
+  { t: "Багги на пляже", p: "juhool-utv-titan", c: "Поездка к морю" },
+];
+
 export function Media() {
   const { t, say } = useApp();
-  const [tab, setTab] = useState<"soc" | "vid">("soc");
-  const [open, setOpen] = useState<number | null>(null);
-  const close = useRef<HTMLButtonElement>(null);
-  const from = useRef<HTMLElement | null>(null);
-  const modal = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (open === null) return;
-    document.body.style.overflow = "hidden";
-    close.current?.focus();
-    if (!reduceMotion() && modal.current) gsap.fromTo(modal.current, { scale: 0.86, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: "power3.out" });
-    const k = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(null); };
-    window.addEventListener("keydown", k);
-    return () => { document.body.style.overflow = ""; window.removeEventListener("keydown", k); from.current?.focus(); };
-  }, [open]);
+  const [tab, setTab] = useState<"soc" | "vid" | "ph">("soc");
+  const items = tab === "vid" ? VIDS.map((v) => ({ ...v, vid: true })) : PHOTOS.map((v) => ({ ...v, d: "", vid: false }));
   return (
-    <section id="media" className="dark-zone relative isolate overflow-hidden py-20 sm:py-28" aria-labelledby="media-h">
-      <Boids className="absolute inset-0 -z-10 h-full w-full opacity-60" count={170} />
+    <section id="media" className="dark-zone relative isolate overflow-hidden py-28 sm:py-40" aria-labelledby="media-h">
+      <Boids className="absolute inset-0 -z-10 h-full w-full opacity-50" count={170} a="#8d97a2" b="#ff4a2b" />
       <div className="container-x">
         <Reveal>
-          <Eyebrow n="09" dark>медиа</Eyebrow>
-          <H2><span id="media-h">{t("Наше", "Наши")}</span> <span className="text-aqua">{t("комьюнити", "каналы и видео")}</span></H2>
-          <p className="muted mt-4 max-w-2xl text-lg">{t("Подпишись, смотри обзоры и присылай свои билды. Фон реагирует на курсор: попробуй.", "Подписывайтесь на каналы и смотрите обзоры. Фон реагирует на курсор.")}</p>
+          <Eyebrow n="11" dark>медиа</Eyebrow>
+          <H2><span id="media-h">{t("Наше", "Наши")}</span> <span className="chrome-text">{t("комьюнити", "каналы и видео")}</span></H2>
+          <p className="muted mt-4 max-w-2xl text-lg">{t("Подпишись, смотри обзоры и присылай свои билды. Нажми на плитку: она раскроется на весь экран.", "Подписывайтесь на каналы и смотрите обзоры. Нажмите на плитку: она раскроется на весь экран.")}</p>
         </Reveal>
-        <div className="mt-8 flex gap-2" role="tablist" aria-label="Медиа">
-          {([["soc", "Соцсети и каналы"], ["vid", "Видео"]] as const).map(([k, l]) => (
+        <div className="mt-8 flex flex-wrap gap-2" role="tablist" aria-label="Медиа">
+          {([["soc", "Соцсети и каналы"], ["vid", "Видео"], ["ph", "Фото"]] as const).map(([k, l]) => (
             <button key={k} role="tab" id={`tab-${k}`} aria-selected={tab === k} aria-controls={`panel-${k}`} className="chip !text-frost aria-selected:!text-ink" onClick={() => setTab(k)}>{l}</button>
           ))}
         </div>
         {tab === "soc" ? (
           <div id="panel-soc" role="tabpanel" aria-labelledby="tab-soc" className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {SOCS.map((s) => (
-              <a key={s.n} href="#media" onClick={(e) => { e.preventDefault(); say("Ссылка-заглушка: подставим настоящий канал"); }} data-cursor="скоро" className="block">
-                <GlowCard customSize glowColor="orange" className="touch-pan-y! h-full min-h-[200px]">
-                  <div><s.icon size={30} className="text-aqua" aria-hidden="true" /><div className="font-display mt-4 text-2xl font-extrabold uppercase">{s.n}</div><div className="mono mt-1 text-aqua">{s.h}</div></div>
+              <a key={s.n} href="#media" onClick={(e) => { e.preventDefault(); say("Ссылка-заглушка: подставим настоящий канал"); }} className="block">
+                <GlowCard customSize glowColor="flare" className="touch-pan-y! h-full min-h-[200px]">
+                  <div><s.icon size={30} className="text-gold" aria-hidden="true" /><div className="font-display mt-4 text-2xl font-extrabold uppercase">{s.n}</div><div className="mono mt-1 text-gold">{s.h}</div></div>
                   <p className="muted text-sm">{t(s.d[0], s.d[1])} <span className="mono">(заглушка)</span></p>
                 </GlowCard>
               </a>
             ))}
           </div>
         ) : (
-          <div id="panel-vid" role="tabpanel" aria-labelledby="tab-vid" className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {VIDS.map((v, i) => (
-              <button key={v.t} data-cursor="play" className="group relative aspect-video cursor-pointer overflow-hidden rounded-2xl border border-frost/20 text-left" onClick={(e) => { from.current = e.currentTarget; setOpen(i); }} aria-label={`Открыть видео: ${v.t}`}>
-                <img src={photo(v.p)} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                <span className="absolute inset-0 bg-gradient-to-t from-deep/90 via-deep/10 to-transparent" />
-                <span className="absolute left-1/2 top-1/2 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-flare text-ink transition-transform group-hover:scale-110"><Play fill="currentColor" size={24} /></span>
-                <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-4 text-frost">
-                  <span className="font-display text-base font-bold leading-tight sm:text-lg">{v.t}</span><span className="mono rounded-full bg-deep/70 px-2 py-1">{v.d}</span>
-                </span>
-              </button>
+          <div id={`panel-${tab}`} role="tabpanel" aria-labelledby={`tab-${tab}`} className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {items.map((v) => (
+              <MorphTile key={tab + v.t} label={`${v.vid ? "Видео" : "Фото"}: ${v.t}`} className="aspect-video"
+                media={<img src={photo(v.p)} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />}
+                detail={
+                  <div className="relative flex h-full min-h-[320px] flex-col justify-end bg-gradient-to-t from-deep/95 via-deep/30 to-transparent p-6 text-frost sm:p-10">
+                    {v.vid && <div className="absolute left-1/2 top-1/2 grid h-24 w-24 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-flare text-ink"><Play fill="currentColor" size={36} /></div>}
+                    <p className="mono text-gold">{v.vid ? "плеер-заглушка" : "фото из каталога"} / {v.c}</p>
+                    <h3 className="font-display mt-2 text-3xl font-extrabold uppercase sm:text-5xl">{v.t}</h3>
+                    <p className="muted mt-2 max-w-xl">{v.vid ? "В рабочей версии здесь будет настоящий плеер. Сейчас это постер из каталога." : "Кадр из каталога. Свои фото можно будет отправить в канал."}</p>
+                  </div>
+                }
+              >
+                <div className="group relative h-full w-full cursor-pointer overflow-hidden rounded-2xl border border-frost/20">
+                  <span className="absolute inset-0 bg-gradient-to-t from-deep/90 via-deep/10 to-transparent" />
+                  {v.vid && <span className="absolute left-1/2 top-1/2 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-flare text-ink transition-transform group-hover:scale-110"><Play fill="currentColor" size={24} /></span>}
+                  <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-4 text-frost"><span className="font-display text-base font-bold leading-tight sm:text-lg">{v.t}</span>{v.d && <span className="mono rounded-full bg-deep/70 px-2 py-1">{v.d}</span>}</span>
+                </div>
+              </MorphTile>
             ))}
           </div>
         )}
       </div>
-      {open !== null && (
-        <div role="dialog" aria-modal="true" aria-label={`Видео: ${VIDS[open].t}`} className="fixed inset-0 z-[150] grid place-items-center bg-deep/90 p-4 backdrop-blur" onClick={() => setOpen(null)}>
-          <div ref={modal} className="relative w-full max-w-4xl" onClick={(e) => e.stopPropagation()}>
-            <div className="relative aspect-video overflow-hidden rounded-2xl bg-black">
-              <img src={photo(VIDS[open].p)} alt="" className="h-full w-full object-cover opacity-70" />
-              <div className="absolute inset-0 grid place-items-center text-center text-frost"><div><div className="mx-auto grid h-20 w-20 place-items-center rounded-full bg-flare text-ink"><Play fill="currentColor" size={30} /></div><p className="font-display mt-4 text-xl font-extrabold uppercase">{VIDS[open].t}</p><p className="mono mt-2 text-aqua">плеер-заглушка / {VIDS[open].c}</p></div></div>
-            </div>
-            <button ref={close} className="absolute -top-12 right-0 grid h-11 w-11 cursor-pointer place-items-center rounded-full bg-frost text-ink" aria-label="Закрыть видео" onClick={() => setOpen(null)}><X /></button>
-          </div>
-        </div>
-      )}
     </section>
   );
 }
@@ -99,17 +94,17 @@ export function Media() {
 /* ---------------------------------------------------------------- Service */
 const SVC = [
   { icon: Wrench, h: "Сервис", ty: "Диагностика, замена расходников, обслуживание батарей и подвески.", vy: "Диагностика, замена расходников, обслуживание батарей и подвески.", l: ["свой склад запчастей", "ремонт в день обращения (по возможности)"] },
-  { icon: Truck, h: "Доставка", ty: "Привезем в Москву, по Ростову и Краснодарскому краю. Опт отдельным рейсом.", vy: "Доставка в Москву, по Ростову-на-Дону и Краснодарскому краю. Оптовые партии отдельным рейсом.", l: ["сборка и проверка перед выдачей", "самовывоз из шоурума"] },
+  { icon: Truck, h: "Доставка по России", ty: "Привезем в Москву, по Ростову и Краснодарскому краю. Опт отдельным рейсом.", vy: "Доставка в Москву, по Ростову-на-Дону и Краснодарскому краю. Оптовые партии отдельным рейсом.", l: ["сборка и проверка перед выдачей", "самовывоз из шоурума"] },
   { icon: ShieldCheck, h: "Гарантия", ty: "Гарантия на технику и батареи. Условия уточним при покупке.", vy: "Гарантия на технику и батареи. Условия мы согласуем при покупке.", l: ["срок зависит от модели", "заглушка: условия появятся позже"] },
   { icon: KeyRound, h: "Байк под ключ", ty: "Скажи, что хочешь, а мы подберем, соберем, настроим и выдадим готовый build.", vy: "Опишите задачу, а мы подберем, соберем, настроим и выдадим готовую технику.", l: ["подбор и тест-драйв", "кастом: цвет, наклейки, батарея"] },
 ];
 export function Service() {
   const { t } = useApp();
   return (
-    <section id="service" className="relative py-20 sm:py-28" aria-labelledby="svc-h">
+    <section id="service" className="relative py-28 sm:py-40" aria-labelledby="svc-h">
       <div className="container-x">
         <Reveal>
-          <Eyebrow n="10">сервис и доставка</Eyebrow>
+          <Eyebrow n="12">сервис</Eyebrow>
           <H2><span id="svc-h">{t("После покупки", "После покупки")}</span> <span className="text-flare">{t("мы рядом", "мы на связи")}</span></H2>
         </Reveal>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -158,10 +153,10 @@ export function Drive() {
     <section id="drive" className="relative bg-ink py-20 text-frost dark-zone sm:py-28" aria-labelledby="drive-h">
       <div className="container-x grid gap-10 lg:grid-cols-[1fr_1fr]">
         <Reveal>
-          <Eyebrow n="11" dark>тест-драйв</Eyebrow>
-          <H2><span id="drive-h">{t("Кати", "Запишитесь")}</span> <span className="text-aqua">{t("до покупки", "на тест-драйв")}</span></H2>
+          <Eyebrow n="13" dark>тест-драйв</Eyebrow>
+          <H2><span id="drive-h">{t("Кати", "Запишитесь")}</span> <span className="text-gold">{t("до покупки", "на тест-драйв")}</span></H2>
           <p className="muted mt-4 max-w-md text-lg">{t("Выбери город, дату и модель. Мы подтвердим время и подготовим байк.", "Выберите город, дату и модель. Мы подтвердим время и подготовим технику.")}</p>
-          <img src={photo(driveFor)} alt={modelName(driveFor)} className={cn("mt-8 w-full max-w-md rounded-3xl bg-kelp", CATALOG[driveFor].cut ? "object-contain p-4" : "object-cover")} style={{ aspectRatio: "16/10" }} />
+          <img src={photo(driveFor)} alt={modelName(driveFor)} className={cn("mt-8 w-full max-w-md rounded-3xl bg-kelp", (CATALOG[driveFor]?.cut ?? true) ? "object-contain p-4" : "object-cover")} style={{ aspectRatio: "16/10" }} />
         </Reveal>
         <div className="rounded-3xl bg-frost p-6 text-ink sm:p-8" aria-live="polite">
           {done ? (
@@ -213,19 +208,19 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-4">
           <div className="md:col-span-2">
             <p className="font-display text-3xl font-extrabold uppercase leading-none">{t("Rizz – это когда", "E-Rizz")}</p>
-            <p className="font-display text-3xl font-extrabold uppercase leading-none text-aqua">{t("на тебя смотрят.", "Электро и не только.")}</p>
+            <p className="font-display text-3xl font-extrabold uppercase leading-none text-gold">{t("на тебя смотрят.", "Электро и не только.")}</p>
             <div className="mt-6 flex flex-wrap gap-3">
               <InteractiveHoverButton text="Опт и дилерам" className="h-12 w-52 border-frost/40 bg-transparent text-frost" onClick={() => say("Заглушка: форма запроса оптового прайса")} />
               <button className="btn-ghost" onClick={() => scrollToId("drive")}>Тест-драйв</button>
             </div>
           </div>
           <div>
-            <div className="mono mb-3 text-aqua">контакты (заглушки)</div>
+            <div className="mono mb-3 text-gold">контакты (заглушки)</div>
             <ul className="space-y-2 text-sm"><li>+7 (000) 000-00-00</li><li>hello@erizz.example</li><li>Ростов-на-Дону, ул. Примерная, 0</li><li>Москва, Краснодарский край</li></ul>
           </div>
           <div>
-            <div className="mono mb-3 text-aqua">соцсети (заглушки)</div>
-            <ul className="space-y-1 text-sm">{["Telegram", "YouTube", "Instagram", "VK"].map((s) => <li key={s}><a href="#" onClick={stub} className="inline-flex min-h-9 items-center underline underline-offset-4 hover:text-aqua">{s}</a></li>)}</ul>
+            <div className="mono mb-3 text-gold">соцсети (заглушки)</div>
+            <ul className="space-y-1 text-sm">{["Telegram", "YouTube", "Instagram", "VK"].map((s) => <li key={s}><a href="#" onClick={stub} className="inline-flex min-h-9 items-center underline underline-offset-4 hover:text-gold">{s}</a></li>)}</ul>
           </div>
         </div>
         <div className="relative mt-10 h-[22vw] min-h-[90px] w-full">

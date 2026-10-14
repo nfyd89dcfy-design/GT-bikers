@@ -18,20 +18,20 @@ function MapSvg() {
   }
   return (
     <svg viewBox="0 0 520 470" role="img" aria-label="Схема: Москва, Ростов-на-Дону с шоурумом и Краснодарский край" className="h-full w-full">
-      <rect width="520" height="470" fill="#e3ebe8" />
-      {dots.map((d, i) => <circle key={i} cx={d.x} cy={d.y} r={d.r} fill="#0b2a2e" opacity=".16" />)}
+      <rect width="520" height="470" fill="#d9dee3" />
+      {dots.map((d, i) => <circle key={i} cx={d.x} cy={d.y} r={d.r} fill="#0e1013" opacity=".16" />)}
       <path d={`M${mo} Q${mo[0] + 60},${(mo[1] + ro[1]) / 2} ${ro}`} fill="none" stroke="#ff4a2b" strokeWidth="3" strokeDasharray="6 6" />
       <path d={`M${ro} L${kr}`} stroke="#ff4a2b" strokeWidth="3" fill="none" />
-      <ellipse cx={kr[0]} cy={kr[1] + 6} rx="86" ry="42" fill="rgba(111,224,208,.28)" stroke="#0b2a2e" strokeDasharray="4 5" strokeWidth="2" />
-      <g><circle cx={mo[0]} cy={mo[1]} r="11" fill="#0b2a2e" /><text x={mo[0] + 20} y={mo[1] + 5} fill="#0b2a2e" fontFamily="Onest" fontWeight="600" fontSize="15">Москва · доставка</text></g>
+      <ellipse cx={kr[0]} cy={kr[1] + 6} rx="86" ry="42" fill="rgba(185,194,204,.28)" stroke="#0e1013" strokeDasharray="4 5" strokeWidth="2" />
+      <g><circle cx={mo[0]} cy={mo[1]} r="11" fill="#0e1013" /><text x={mo[0] + 20} y={mo[1] + 5} fill="#0e1013" fontFamily="Onest" fontWeight="600" fontSize="15">Москва · доставка</text></g>
       <g>
         <circle cx={ro[0]} cy={ro[1]} r="22" fill="none" stroke="#ff4a2b" strokeWidth="3"><animate attributeName="r" values="14;30;14" dur="2.4s" repeatCount="indefinite" /><animate attributeName="opacity" values="1;0;1" dur="2.4s" repeatCount="indefinite" /></circle>
-        <circle cx={ro[0]} cy={ro[1]} r="12" fill="#ff4a2b" stroke="#0b2a2e" strokeWidth="3" />
-        <text x={ro[0] + 24} y={ro[1] - 8} fill="#0b2a2e" fontFamily="Onest" fontWeight="800" fontSize="16">Ростов-на-Дону</text>
-        <text x={ro[0] + 24} y={ro[1] + 10} fill="#0b2a2e" fontFamily="Onest" fontSize="13">шоурум · сервис · склад</text>
+        <circle cx={ro[0]} cy={ro[1]} r="12" fill="#ff4a2b" stroke="#0e1013" strokeWidth="3" />
+        <text x={ro[0] + 24} y={ro[1] - 8} fill="#0e1013" fontFamily="Onest" fontWeight="800" fontSize="16">Ростов-на-Дону</text>
+        <text x={ro[0] + 24} y={ro[1] + 10} fill="#0e1013" fontFamily="Onest" fontSize="13">шоурум · сервис · склад</text>
       </g>
-      <g><circle cx={kr[0]} cy={kr[1]} r="9" fill="#0b2a2e" /><text x={kr[0] - 60} y={kr[1] + 52} fill="#0b2a2e" fontFamily="Onest" fontWeight="600" fontSize="15">Краснодарский край · выезд</text></g>
-      <text x="16" y="458" fill="#4d6b69" fontFamily="Onest" fontSize="12">схема условная, не карта</text>
+      <g><circle cx={kr[0]} cy={kr[1]} r="9" fill="#0e1013" /><text x={kr[0] - 60} y={kr[1] + 52} fill="#0e1013" fontFamily="Onest" fontWeight="600" fontSize="15">Краснодарский край · выезд</text></g>
+      <text x="16" y="458" fill="#5a626c" fontFamily="Onest" fontSize="12">схема условная, не карта</text>
     </svg>
   );
 }
@@ -75,9 +75,9 @@ function Tour() {
       renderer.domElement.setAttribute("role", "img");
       renderer.domElement.setAttribute("aria-label", "3D-тур по шоуруму: перетаскивайте, чтобы осмотреться");
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x0e2e32); scene.fog = new THREE.Fog(0x0e2e32, 9, 24);
+      scene.background = new THREE.Color(0x121418); scene.fog = new THREE.Fog(0x121418, 9, 24);
       const cam = new THREE.PerspectiveCamera(62, 1, 0.1, 60);
-      scene.add(new THREE.HemisphereLight(0xe6fffa, 0x0b2a2e, 1.5));
+      scene.add(new THREE.HemisphereLight(0xe6fffa, 0x0e1013, 1.5));
       const sun = new THREE.DirectionalLight(0xffffff, 1.2); sun.position.set(2, 6, 3); scene.add(sun);
       const mk = (w: number, h: number, d: number, c: number, x: number, y: number, z: number, em = 0) => {
         const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), new THREE.MeshStandardMaterial({ color: c, roughness: 0.8, emissive: em, emissiveIntensity: em ? 1 : 0 }));
@@ -88,21 +88,21 @@ function Tour() {
       const gt = new THREE.CanvasTexture(gc); gt.wrapS = gt.wrapT = THREE.RepeatWrapping; gt.repeat.set(7, 6);
       const fl = new THREE.Mesh(new THREE.PlaneGeometry(14, 12), new THREE.MeshStandardMaterial({ map: gt, roughness: 0.9 }));
       fl.rotation.x = -Math.PI / 2; scene.add(fl);
-      const wall = 0x1b4a4f;
-      mk(14, 4, 0.2, wall, 0, 2, -6); mk(0.2, 4, 12, wall, -7, 2, 0); mk(0.2, 4, 12, wall, 7, 2, 0); mk(14, 4, 0.2, wall, 0, 2, 6); mk(14, 0.2, 12, 0x0a2326, 0, 4, 0);
-      for (let i = 0; i < 5; i++) mk(2.4, 0.06, 0.12, 0xf4f8f6, -5.2 + i * 2.6, 3.9, -1.5 + (i % 2 ? 2 : 0), 0xf4f8f6);
+      const wall = 0x23272e;
+      mk(14, 4, 0.2, wall, 0, 2, -6); mk(0.2, 4, 12, wall, -7, 2, 0); mk(0.2, 4, 12, wall, 7, 2, 0); mk(14, 4, 0.2, wall, 0, 2, 6); mk(14, 0.2, 12, 0x0b0d10, 0, 4, 0);
+      for (let i = 0; i < 5; i++) mk(2.4, 0.06, 0.12, 0xeef1f4, -5.2 + i * 2.6, 3.9, -1.5 + (i % 2 ? 2 : 0), 0xeef1f4);
       mk(14, 0.04, 0.1, 0xff4a2b, 0, 0.05, -5.9, 0xff4a2b);
       // кастом-стена: образцы цветов
-      [0xff4a2b, 0x6fe0d0, 0xf4f8f6, 0x123f43, 0xe9b949].forEach((c, i) => { for (let r = 0; r < 3; r++) mk(0.6, 0.6, 0.12, c, -2.4 + i * 1.2, 1.1 + r * 0.8, -5.8); });
+      [0xff4a2b, 0xb9c2cc, 0xeef1f4, 0x1c2026, 0xc9a24b].forEach((c, i) => { for (let r = 0; r < 3; r++) mk(0.6, 0.6, 0.12, c, -2.4 + i * 1.2, 1.1 + r * 0.8, -5.8); });
       // верстак
-      mk(3, 1, 0.9, 0x24545a, -3.5, 0.5, 5.4); mk(3, 0.06, 1, 0xff4a2b, -3.5, 1.02, 5.4, 0xff4a2b);
+      mk(3, 1, 0.9, 0x2f343c, -3.5, 0.5, 5.4); mk(3, 0.06, 1, 0xff4a2b, -3.5, 1.02, 5.4, 0xff4a2b);
       const loader = new THREE.TextureLoader();
       const bill = (id: string, x: number, z: number, ry: number, w: number, y = 0.1) => {
         const tx = loader.load(photo(id), (t2) => { const a = t2.image.width / t2.image.height; m.scale.set(1, 1 / a, 1); m.position.y = y + (w / a) / 2; });
         tx.colorSpace = THREE.SRGBColorSpace;
         const m = new THREE.Mesh(new THREE.PlaneGeometry(w, w), new THREE.MeshBasicMaterial({ map: tx, transparent: true, alphaTest: 0.08, side: THREE.DoubleSide }));
         m.position.set(x, y + w / 2, z); m.rotation.y = ry; scene.add(m);
-        const p = new THREE.Mesh(new THREE.CylinderGeometry(w * 0.45, w * 0.5, 0.1, 32), new THREE.MeshStandardMaterial({ color: 0x24545a }));
+        const p = new THREE.Mesh(new THREE.CylinderGeometry(w * 0.45, w * 0.5, 0.1, 32), new THREE.MeshStandardMaterial({ color: 0x2f343c }));
         p.position.set(x, 0.05, z); scene.add(p);
       };
       bill("79bike-titaone-s", -5.6, -2.8, Math.PI / 2, 3);
@@ -170,11 +170,11 @@ function Tour() {
           ))}
         </div>
         {!gl && <div className="absolute inset-0 grid place-items-center p-6 text-center text-frost"><p>WebGL недоступен: 3D-тур появится в браузере с WebGL. Схема зала справа.</p></div>}
-        <div className="mono absolute left-4 top-4 rounded-full bg-deep/75 px-3 py-1 text-aqua">прототип 3D-тура</div>
+        <div className="mono absolute left-4 top-4 rounded-full bg-deep/75 px-3 py-1 text-gold">прототип 3D-тура</div>
         <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between gap-3 text-frost">
           <button className="grid h-11 w-11 cursor-pointer place-items-center rounded-full bg-deep/80 hover:bg-flare hover:text-ink" aria-label="Предыдущая точка" onClick={() => go.current(idx - 1)}><ChevronLeft /></button>
           <div className="min-w-0 flex-1 rounded-2xl bg-deep/80 px-4 py-2 backdrop-blur">
-            <div className="mono text-aqua">точка {s.n} из {STOPS.length}</div>
+            <div className="mono text-gold">точка {s.n} из {STOPS.length}</div>
             <div className="font-display text-lg font-extrabold uppercase leading-tight">{s.h}</div>
             <div className="hidden text-sm text-frost/85 sm:block">{t(s.ty, s.vy)}</div>
           </div>
@@ -184,11 +184,11 @@ function Tour() {
       <div className="rounded-3xl border border-ink/30 bg-frost p-4">
         <div className="mono mb-2 text-mute">план зала</div>
         <svg viewBox="0 0 280 200" className="w-full" role="group" aria-label="План зала шоурума">
-          <rect x="10" y="10" width="260" height="180" fill="none" stroke="#0b2a2e" strokeWidth="2" />
+          <rect x="10" y="10" width="260" height="180" fill="none" stroke="#0e1013" strokeWidth="2" />
           {STOPS.map((x, i) => (
             <g key={x.n} tabIndex={0} role="button" aria-label={x.h} className="cursor-pointer outline-none" onClick={() => go.current(i)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") go.current(i); }}>
-              <circle cx={x.plan[0]} cy={x.plan[1]} r="12" fill={i === idx ? "#ff4a2b" : "#e3ebe8"} stroke="#0b2a2e" strokeWidth="2" />
-              <text x={x.plan[0]} y={x.plan[1] + 4} textAnchor="middle" fontSize="12" fontWeight="700" fill="#0b2a2e" fontFamily="Martian Mono Variable" pointerEvents="none">{x.n}</text>
+              <circle cx={x.plan[0]} cy={x.plan[1]} r="12" fill={i === idx ? "#ff4a2b" : "#d9dee3"} stroke="#0e1013" strokeWidth="2" />
+              <text x={x.plan[0]} y={x.plan[1] + 4} textAnchor="middle" fontSize="12" fontWeight="700" fill="#0e1013" fontFamily="Martian Mono Variable" pointerEvents="none">{x.n}</text>
             </g>
           ))}
         </svg>
@@ -205,10 +205,10 @@ function Tour() {
 export function Showroom() {
   const { t } = useApp();
   return (
-    <section id="showroom" className="relative py-20 sm:py-28" aria-labelledby="show-h">
+    <section id="showroom" className="relative py-28 sm:py-40" aria-labelledby="show-h">
       <div className="container-x">
         <Reveal>
-          <Eyebrow n="08">шоурум</Eyebrow>
+          <Eyebrow n="10">шоурум</Eyebrow>
           <H2><span id="show-h">{t("Заходи", "Приезжайте")}</span> <span className="text-flare">{t("в Ростов", "в Ростов-на-Дону")}</span></H2>
           <p className="mt-4 max-w-2xl text-lg text-mute">{t("Офлайн-шоурум, сервис и склад в Ростове-на-Дону. Из Москвы и Краснодарского края везем технику к тебе.", "Офлайн-шоурум, сервис и склад в Ростове-на-Дону. В Москву и Краснодарский край доставляем технику.")}</p>
         </Reveal>

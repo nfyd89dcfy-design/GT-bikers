@@ -16,7 +16,7 @@ export function Reveal({ children, className, delay = 0, y = 36 }: { children: R
 
 export function Eyebrow({ n, children, dark }: { n: string; children: ReactNode; dark?: boolean }) {
   return (
-    <p className={cn("mono mb-4 flex items-center gap-3", dark ? "text-aqua" : "text-mute")}>
+    <p className={cn("mono mb-4 flex items-center gap-3", dark ? "text-gold" : "text-mute")}>
       <span className="inline-block h-px w-10 bg-current" aria-hidden="true" />
       <span>{n}</span><span>{children}</span>
     </p>

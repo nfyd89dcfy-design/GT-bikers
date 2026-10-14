@@ -178,7 +178,7 @@ export function ShaderCanvas({ frag, uniforms, className, style, fallback, fps =
 }
 
 /* ---------- Marble ---------- */
-export function Marble({ a = "#e3ebe8", b = "#6fe0d0", c = "#0b2a2e", scale = 2, turb = 6, className, style }: { a?: string; b?: string; c?: string; scale?: number; turb?: number; className?: string; style?: CSSProperties }) {
+export function Marble({ a = "#d9dee3", b = "#b9c2cc", c = "#0e1013", scale = 2, turb = 6, className, style }: { a?: string; b?: string; c?: string; scale?: number; turb?: number; className?: string; style?: CSSProperties }) {
   return (
     <ShaderCanvas frag={MARBLE} className={className} style={style} fps={30} dpr={0.7}
       fallback={`radial-gradient(120% 90% at 30% 20%, ${b}55, transparent 60%), linear-gradient(135deg, ${a}, ${c}22)`}
@@ -187,7 +187,7 @@ export function Marble({ a = "#e3ebe8", b = "#6fe0d0", c = "#0b2a2e", scale = 2,
 }
 
 /* ---------- Grid ---------- */
-export function GridBg({ a = "#0b2a2e", b = "#6fe0d0", className, style }: { a?: string; b?: string; className?: string; style?: CSSProperties }) {
+export function GridBg({ a = "#0e1013", b = "#b9c2cc", className, style }: { a?: string; b?: string; className?: string; style?: CSSProperties }) {
   return (
     <ShaderCanvas frag={GRID} className={className} style={style} fps={30} dpr={0.8} pointer
       fallback={`linear-gradient(${b}22 1px, transparent 1px) 0 0/48px 48px, linear-gradient(90deg, ${b}22 1px, transparent 1px) 0 0/48px 48px, ${a}`}
@@ -247,7 +247,7 @@ export function ChromeText({ text, className, style }: { text: string; className
       gl.uniform2f(gl.getUniformLocation(prog, "px"), 1 / cv.width, 1 / cv.height);
       gl.uniform1f(gl.getUniformLocation(prog, "k"), Math.max(0.3, cv.height / 300));
       gl.uniform3fv(gl.getUniformLocation(prog, "warm"), col3("#ff7a45"));
-      gl.uniform3fv(gl.getUniformLocation(prog, "cool"), col3("#6fe0d0"));
+      gl.uniform3fv(gl.getUniformLocation(prog, "cool"), col3("#b9c2cc"));
       gl.uniform1i(gl.getUniformLocation(prog, "tex"), 0);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     };
@@ -262,7 +262,7 @@ export function ChromeText({ text, className, style }: { text: string; className
 
   if (!ok)
     return (
-      <span className={className} style={{ ...style, fontFamily: "Unbounded", fontWeight: 800, display: "block", textAlign: "center", lineHeight: 1, backgroundImage: "linear-gradient(180deg,#f4f8f6,#6fe0d0 45%,#123f43 55%,#ff7a45)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
+      <span className={className} style={{ ...style, fontFamily: "Unbounded", fontWeight: 800, display: "block", textAlign: "center", lineHeight: 1, backgroundImage: "linear-gradient(180deg,#eef1f4,#b9c2cc 45%,#1c2026 55%,#ff7a45)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
         {text}
       </span>
     );
@@ -270,7 +270,7 @@ export function ChromeText({ text, className, style }: { text: string; className
 }
 
 /* ---------- Boids (canvas 2D) ---------- */
-export function Boids({ count = 160, a = "#6fe0d0", b = "#ff4a2b", className }: { count?: number; a?: string; b?: string; className?: string }) {
+export function Boids({ count = 160, a = "#b9c2cc", b = "#ff4a2b", className }: { count?: number; a?: string; b?: string; className?: string }) {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const cv = ref.current!;

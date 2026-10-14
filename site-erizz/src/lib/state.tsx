@@ -47,8 +47,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   });
   const [cartOpen, setCartOpen] = useState(false);
   const [toast, setToast] = useState("");
-  const [compare, setCompare] = useState<string[]>(["79bike-titaone-s", "79bike-falcon-pro", "79bike-falcon-gt"]);
-  const [driveFor, setDriveFor] = useState("79bike-falcon-pro");
+  const [compare, setCompare] = useState<string[]>(["gt-t14-pro", "gt-t19-pro", "gt-t21-base"]);
+  const [driveFor, setDriveFor] = useState("gt-t19-pro");
 
   useEffect(() => { safe.set("erizz-cart", JSON.stringify(cart)); }, [cart]);
   const setVoice = (v: Voice) => { setVoiceS(v); safe.set("erizz-voice", v); };

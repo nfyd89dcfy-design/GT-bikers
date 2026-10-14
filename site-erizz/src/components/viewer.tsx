@@ -7,7 +7,7 @@ import { Eyebrow, H2, Reveal } from "./ui-bits";
 import { InteractiveHoverButton } from "./ui/interactive-hover-button";
 import { img } from "@/lib/data";
 
-const COLORS: [string, string][] = [["Flare", "#ff4a2b"], ["Glacier", "#6fe0d0"], ["Ink", "#1b3a3e"], ["Frost", "#e8f0ee"]];
+const COLORS: [string, string][] = [["Flare", "#ff4a2b"], ["Glacier", "#b9c2cc"], ["Ink", "#1b3a3e"], ["Frost", "#e8f0ee"]];
 
 export function Viewer3D() {
   const { t } = useApp();
@@ -37,14 +37,14 @@ export function Viewer3D() {
       const scene = new THREE.Scene();
       const cam = new THREE.PerspectiveCamera(36, 1, 0.1, 50);
       cam.position.set(2.7, 1.3, 3.0);
-      scene.add(new THREE.HemisphereLight(0xcdfaf2, 0x0b2a2e, 1.25));
+      scene.add(new THREE.HemisphereLight(0xe4e8ec, 0x0e1013, 1.25));
       const key = new THREE.DirectionalLight(0xffffff, 2.2); key.position.set(3, 5, 4); scene.add(key);
       const rim = new THREE.DirectionalLight(0xff4a2b, 1.6); rim.position.set(-4, 2, -3); scene.add(rim);
 
       const black = new THREE.MeshStandardMaterial({ color: 0x0e1517, roughness: 0.55, metalness: 0.4 });
       const metal = new THREE.MeshStandardMaterial({ color: 0xb9c7c5, roughness: 0.3, metalness: 0.9 });
       const body = new THREE.MeshStandardMaterial({ color: 0xff4a2b, roughness: 0.35, metalness: 0.25 });
-      const accent = new THREE.MeshStandardMaterial({ color: 0x6fe0d0, roughness: 0.4, metalness: 0.3, emissive: 0x0a3a35 });
+      const accent = new THREE.MeshStandardMaterial({ color: 0xb9c2cc, roughness: 0.4, metalness: 0.3, emissive: 0x20242a });
 
       const bike = new THREE.Group();
       scene.add(bike);
@@ -89,9 +89,9 @@ export function Viewer3D() {
       bike.position.y = 0.02;
 
       // платформа
-      const ring = new THREE.Mesh(new THREE.RingGeometry(1.9, 1.96, 96).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: 0x6fe0d0 }));
+      const ring = new THREE.Mesh(new THREE.RingGeometry(1.9, 1.96, 96).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: 0xb9c2cc }));
       ring.position.y = 0.001; scene.add(ring);
-      const disc = new THREE.Mesh(new THREE.CircleGeometry(1.9, 64).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: 0x6fe0d0, transparent: true, opacity: 0.1 }));
+      const disc = new THREE.Mesh(new THREE.CircleGeometry(1.9, 64).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: 0xb9c2cc, transparent: true, opacity: 0.1 }));
       scene.add(disc);
 
       const controls = new OrbitControls(cam, renderer.domElement);
@@ -126,12 +126,12 @@ export function Viewer3D() {
   useEffect(() => { api.current?.setExplode(explode); }, [explode, ready]);
 
   return (
-    <section id="viewer" className="dark-zone relative isolate overflow-hidden py-20 sm:py-28" aria-labelledby="viewer-h">
+    <section id="viewer" className="dark-zone relative isolate overflow-hidden py-28 sm:py-40" aria-labelledby="viewer-h">
       <GridBg className="absolute inset-0 -z-10 h-full w-full" />
       <div className="container-x">
         <Reveal>
           <Eyebrow n="04" dark>3D / AR</Eyebrow>
-          <H2><span id="viewer-h">{t("Покрути", "Рассмотрите")}</span> <span className="text-aqua">{t("байк как хочешь", "байк со всех сторон")}</span></H2>
+          <H2><span id="viewer-h">{t("Покрути", "Рассмотрите")}</span> <span className="text-gold">{t("байк как хочешь", "байк со всех сторон")}</span></H2>
           <p className="muted mt-4 max-w-2xl text-lg">
             {t("Тяни, чтобы вращать. Ползунок разбирает байк на узлы. Это простая процедурная модель, в проде тут будут лидар-сканы реальных байков.", "Потяните, чтобы повернуть модель. Ползунок разбирает байк на узлы. Это упрощенная процедурная модель, в рабочей версии здесь будут лидар-сканы реальных байков.")}
           </p>
@@ -147,11 +147,11 @@ export function Viewer3D() {
                 </div>
               </div>
             )}
-            <span className="mono absolute left-4 top-4 rounded-full bg-deep/70 px-3 py-1 text-aqua">процедурная модель / макет</span>
+            <span className="mono absolute left-4 top-4 rounded-full bg-deep/70 px-3 py-1 text-gold">процедурная модель / макет</span>
           </div>
           <div className="flex flex-col gap-5 rounded-3xl border border-frost/20 bg-deep/50 p-5 backdrop-blur">
             <div>
-              <div className="mono mb-2 text-aqua">цвет рамы</div>
+              <div className="mono mb-2 text-gold">цвет рамы</div>
               <div className="flex flex-wrap gap-2" role="group" aria-label="Цвет модели">
                 {COLORS.map(([n, c], i) => (
                   <button key={n} aria-pressed={color === i} onClick={() => setColor(i)} className="chip flex items-center gap-2 !px-3 text-sm !text-frost aria-pressed:!text-ink">
@@ -161,7 +161,7 @@ export function Viewer3D() {
               </div>
             </div>
             <div>
-              <label htmlFor="expl" className="mono mb-2 block text-aqua">{t("разбери на узлы", "разбор на узлы")}</label>
+              <label htmlFor="expl" className="mono mb-2 block text-gold">{t("разбери на узлы", "разбор на узлы")}</label>
               <input id="expl" type="range" min={0} max={1} step={0.01} value={explode} onChange={(e) => setExplode(+e.target.value)} className="h-11 w-full accent-[#ff4a2b]" />
             </div>
             <InteractiveHoverButton text={t("Посмотреть дома (AR)", "Посмотреть дома (AR)")} className="h-14 w-full border-frost/40 bg-transparent pl-8 text-frost" onClick={() => setAr(true)} data-cursor="AR" />
