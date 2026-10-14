@@ -44,8 +44,9 @@ body { margin: 0; background: var(--color-sleet); color: var(--color-ink); font-
 
 .font-display { letter-spacing: -0.02em; }
 .mono { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
-.container-x { width: 100%; max-width: 1360px; margin: 0 auto; padding-left: 20px; padding-right: 20px; }
+.container-x { width: 100%; max-width: 1760px; margin: 0 auto; padding-left: 20px; padding-right: 20px; }
 @media (min-width: 768px) { .container-x { padding-left: 40px; padding-right: 40px; } }
+@media (min-width: 1500px) { .container-x { padding-left: 64px; padding-right: 64px; } }
 
 .dark-zone { background: var(--color-ink); color: var(--color-frost); }
 .dark-zone .muted { color: #a7afb8; }
@@ -79,7 +80,8 @@ img { max-width: 100%; }
 .brushed-dark { background-color: #1a1d22; background-image: repeating-linear-gradient(90deg, rgba(255,255,255,.04) 0 1px, rgba(0,0,0,.18) 1px 2px, transparent 2px 4px), linear-gradient(115deg, #0e1013 0%, #262b32 28%, #101216 48%, #2d333b 66%, #0e1013 100%); }
 .chrome-line { height: 2px; background: linear-gradient(90deg, transparent, #fff 18%, #8d97a2 40%, #fff 52%, #5a626c 72%, transparent); opacity: .85; }
 .gold-line { height: 1px; background: linear-gradient(90deg, transparent, #c9a24b 20%, #f1d994 50%, #c9a24b 80%, transparent); }
-.badge-base { background: var(--color-burgundy); color: #f1e4e6; border: 1px solid #9a3347; }
+.badge-base { background: #1c2026; color: #eef1f4; border: 1px solid #ff4a2b; }
+.badge-sport { background: linear-gradient(135deg,#f4f6f8,#b9c2cc 60%,#8d97a2); color: #14161a; }
 .badge-pro { background: linear-gradient(135deg, #e2c473, #c9a24b 60%, #9c7a2c); color: #1a1405; }
 .has-bolt, .has-bolt * { cursor: none !important; }
 .bolt { position: fixed; left: 0; top: 0; z-index: 500; pointer-events: none; width: 34px; height: 44px; display: none; will-change: transform; }

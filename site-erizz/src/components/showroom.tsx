@@ -4,7 +4,6 @@ import { gsap } from "@/lib/gsap";
 import { useApp, reduceMotion } from "@/lib/state";
 import { hasWebGL } from "./shaders";
 import { Eyebrow, H2, Reveal } from "./ui-bits";
-import { photo } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
 /* ---------- схема юга (адаптация карты из прошлой версии) ---------- */
@@ -40,8 +39,8 @@ function MapSvg() {
 interface Stop { n: string; h: string; ty: string; vy: string; pos: [number, number, number]; look: [number, number, number]; plan: [number, number] }
 const STOPS: Stop[] = [
   { n: "1", h: "Вход", ty: "Ресепшн, кофе и стена с новинками. Отсюда видно весь зал.", vy: "Ресепшн и стена с новинками. Отсюда виден весь зал.", pos: [0, 1.6, 5], look: [0, 1.5, -2], plan: [140, 168] },
-  { n: "2", h: "Электро-эндуро", ty: "Три уровня lite, pro, ultra рядом: сядь на каждый.", vy: "Три уровня lite, pro, ultra рядом: можно сесть на каждый.", pos: [-1.2, 1.6, 1.4], look: [-5.5, 1.2, -0.5], plan: [50, 100] },
-  { n: "3", h: "ATV и UTV", ty: "Квадрики и багги для грязи, поля и дальних выездов.", vy: "Квадроциклы и багги для бездорожья и дальних выездов.", pos: [1.2, 1.6, 1.4], look: [5.5, 1.2, -0.5], plan: [230, 100] },
+  { n: "2", h: "Электро-эндуро", ty: "Base, Sport и Pro рядом: сядь на каждый.", vy: "Base, Sport и Pro рядом: можно сесть на каждый.", pos: [-1.2, 1.6, 1.4], look: [-5.5, 1.2, -0.5], plan: [50, 100] },
+  { n: "3", h: "Зона под заказ", ty: "Квадрики, багги и снежная техника: подбираем под твою задачу.", vy: "Квадроциклы, багги и снежная техника: подбираем под вашу задачу.", pos: [1.2, 1.6, 1.4], look: [5.5, 1.2, -0.5], plan: [230, 100] },
   { n: "4", h: "Custom", ty: "Стена с цветами, наклейками и грипсами: собираем build на месте.", vy: "Стена с цветами, наклейками и аксессуарами: конфигурацию можно собрать на месте.", pos: [0, 1.6, -1.2], look: [0, 1.7, -5.9], plan: [140, 30] },
   { n: "5", h: "Сервис", ty: "Верстак, диагностика, батареи. Свой склад запчастей.", vy: "Верстак, диагностика, обслуживание батарей. Собственный склад запчастей.", pos: [-1.5, 1.6, 1.0], look: [-3.5, 1.0, 5.8], plan: [60, 168] },
 ];
@@ -96,23 +95,21 @@ function Tour() {
       [0xff4a2b, 0xb9c2cc, 0xeef1f4, 0x1c2026, 0xc9a24b].forEach((c, i) => { for (let r = 0; r < 3; r++) mk(0.6, 0.6, 0.12, c, -2.4 + i * 1.2, 1.1 + r * 0.8, -5.8); });
       // верстак
       mk(3, 1, 0.9, 0x2f343c, -3.5, 0.5, 5.4); mk(3, 0.06, 1, 0xff4a2b, -3.5, 1.02, 5.4, 0xff4a2b);
-      const loader = new THREE.TextureLoader();
-      const bill = (id: string, x: number, z: number, ry: number, w: number, y = 0.1) => {
-        const tx = loader.load(photo(id), (t2) => { const a = t2.image.width / t2.image.height; m.scale.set(1, 1 / a, 1); m.position.y = y + (w / a) / 2; });
-        tx.colorSpace = THREE.SRGBColorSpace;
-        const m = new THREE.Mesh(new THREE.PlaneGeometry(w, w), new THREE.MeshBasicMaterial({ map: tx, transparent: true, alphaTest: 0.08, side: THREE.DoubleSide }));
-        m.position.set(x, y + w / 2, z); m.rotation.y = ry; scene.add(m);
-        const p = new THREE.Mesh(new THREE.CylinderGeometry(w * 0.45, w * 0.5, 0.1, 32), new THREE.MeshStandardMaterial({ color: 0x2f343c }));
+      const bk = await import("@/lib/bike3d");
+      if (dead) return;
+      scene.environment = bk.makeEnv(renderer);
+      const put = (v: "base" | "sport" | "pro", x: number, z: number, ry: number) => {
+        const b = bk.buildBike(v, "lo").group; b.scale.setScalar(1.7); b.position.set(x, 0.1, z); b.rotation.y = ry; scene.add(b);
+        const p = new THREE.Mesh(new THREE.CylinderGeometry(1.9, 2, 0.1, 40), new THREE.MeshStandardMaterial({ color: 0x2f343c, roughness: 0.6, metalness: 0.4 }));
         p.position.set(x, 0.05, z); scene.add(p);
       };
-      bill("79bike-titaone-s", -5.6, -2.8, Math.PI / 2, 3);
-      bill("79bike-falcon-pro", -5.6, -0.4, Math.PI / 2, 3.2);
-      bill("79bike-falcon-gt-1", -5.6, 2.0, Math.PI / 2, 3.4);
-      bill("jq-jq-s1000", 5.6, -2.6, -Math.PI / 2, 2.7);
-      bill("jq-jq-u1000", 5.6, -0.2, -Math.PI / 2, 3);
-      bill("juhool-ssv-raider-pro", 5.6, 2.2, -Math.PI / 2, 2.8, 0.05);
-      bill("79bike-falcon-gt-1", 0, -4.6, 0, 2.8);
-      bill("79bike-falcon-pro", -3.6, 4.4, Math.PI, 2.2, 1.0);
+      put("base", -5.2, -2.6, Math.PI / 2 + 0.3);
+      put("sport", -5.2, -0.2, Math.PI / 2 + 0.15);
+      put("pro", -5.2, 2.2, Math.PI / 2);
+      put("pro", 5.2, -2.6, -Math.PI / 2 - 0.3);
+      put("sport", 5.2, -0.2, -Math.PI / 2 - 0.15);
+      put("base", 5.2, 2.2, -Math.PI / 2);
+      put("sport", 0, -4.6, 0.4);
 
       const cp = new THREE.Vector3(...STOPS[0].pos), tg = new THREE.Vector3(...STOPS[0].look);
       let yaw = 0, pit = 0, cur = 0;

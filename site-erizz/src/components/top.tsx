@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { Menu, ShoppingBag, X } from "lucide-react";
 import { gsap, SplitText } from "@/lib/gsap";
 import { useApp, reduceMotion, scrollToId, type Voice } from "@/lib/state";
-import { GT_BY, fmtRange, photo, rub } from "@/lib/data";
-import { Marble, ChromeText } from "./shaders";
+import { GT_BY, fmtRange, rub } from "@/lib/data";
+import { BlockGrid, ChromeText } from "./shaders";
+import { Bike3D } from "./bike";
 import { ParticleField, ObjectTracker } from "./effects";
 import { InteractiveHoverButton } from "./ui/interactive-hover-button";
 import { cn } from "@/lib/utils";
@@ -58,6 +59,7 @@ export function Header() {
 export function ToneGate() {
   const { gateOpen, setGateOpen, setVoice } = useApp();
   const ref = useRef<HTMLDivElement>(null);
+  const narrow = typeof innerWidth !== "undefined" && innerWidth < 700;
   useEffect(() => {
     document.body.style.overflow = gateOpen ? "hidden" : "";
     if (!gateOpen || !ref.current) return;
@@ -77,8 +79,10 @@ export function ToneGate() {
   };
   return (
     <div ref={ref} role="dialog" aria-modal="true" aria-label="Выбор обращения" className="dark-zone brushed-dark fixed inset-0 z-[200] grid place-items-center overflow-y-auto px-5">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_40%,rgba(255,74,43,.12),transparent_70%)]" />
-      <div className="relative mx-auto flex max-w-3xl flex-col items-center py-12 text-center">
+      <BlockGrid a="#07080a" b="#2a3038" line="#8d97a2" cells={16} scale={2.2} contrast={0.8} gain={1} lineAmt={0.3} react={1.4} speed={1.4} seed={4} className="pointer-events-none absolute inset-0 h-full w-full opacity-90" />
+      <ParticleField text="E-RIZZ" count={4200} className="pointer-events-none absolute inset-0 h-full w-full" box={narrow ? { x: 0.04, y: 0.03, w: 0.92, h: 0.3 } : { x: 0.04, y: 0.12, w: 0.92, h: 0.76 }} tones={["#3a4048", "#59616b", "#8d97a2", "#e4e8ec", "#ff4a2b"]} size={1.25} cursorRadius={0.22} wobble={0.7} />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_45%_at_50%_50%,rgba(7,8,10,.78),transparent_80%)]" />
+      <div className="relative mx-auto flex max-w-4xl flex-col items-center py-12 text-center">
         <span className="gate-in font-display text-2xl font-extrabold">E-RIZZ<span className="text-flare">.</span></span>
         <div className="chrome-line gate-in my-8 w-40" />
         <h1 className="gate-in font-display chrome-text text-[clamp(34px,7vw,92px)] font-extrabold uppercase leading-[0.95]">Мне комфортно общаться</h1>
@@ -108,7 +112,7 @@ function CountR({ lo, hi, dec = 0 }: { lo: number; hi: number; dec?: number }) {
 
 export function Hero() {
   const { t } = useApp();
-  const g = GT_BY["gt-t19-pro"];
+  const g = GT_BY["gt-sport"];
   const root = useRef<HTMLElement>(null);
   const h1 = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
@@ -116,13 +120,11 @@ export function Hero() {
     const ctx = gsap.context(() => {
       const split = new SplitText(h1.current!, { type: "words,chars", charsClass: "hc" });
       gsap.from(split.chars, { yPercent: 110, opacity: 0, stagger: 0.012, duration: 0.8, ease: "power4.out", delay: 0.15 });
-      gsap.to(".hero-bike", { yPercent: 12, scale: 1.05, ease: "none", scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true } });
+      gsap.to(".hero-bike", { yPercent: 8, scale: 1.04, ease: "none", scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true } });
       gsap.to(".hero-chrome", { yPercent: -35, ease: "none", scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true } });
-      gsap.to(".hero-bike-float", { y: "-=10", duration: 2.6, yoyo: true, repeat: -1, ease: "sine.inOut" });
     }, root);
     const mv = (e: PointerEvent) => {
       const x = e.clientX / innerWidth - 0.5, y = e.clientY / innerHeight - 0.5;
-      gsap.to(".hero-bike-in", { x: x * 36, rotate: x * 2, duration: 0.8, ease: "power2.out" });
       gsap.to(".hero-chrome-in", { x: -x * 24, y: -y * 10, duration: 1, ease: "power2.out" });
     };
     window.addEventListener("pointermove", mv);
@@ -130,33 +132,31 @@ export function Hero() {
   }, []);
 
   return (
-    <section id="top" ref={root} className="relative isolate overflow-hidden pt-16 sm:h-[max(100svh,860px)] sm:min-h-[900px]" aria-label="Главный экран">
+    <section id="top" ref={root} className="relative isolate overflow-hidden pt-16 lg:h-[max(100svh,820px)]" aria-label="Главный экран">
       <div className="brushed absolute inset-0 -z-20 opacity-90" />
-      <Marble a="#d9dee3" b="#aeb8c3" c="#8d97a2" scale={1.4} turb={5} className="absolute inset-0 -z-10 h-full w-full opacity-55 mix-blend-soft-light" />
-      <ParticleField src={photo(g.id)} count={4200} tones={["#8d97a2", "#59616b", "#2b3037", "#14171b", "#ff4a2b"]} box={{ x: 0.36, y: 0.08, w: 0.68, h: 0.82 }} cursorMode="push" className="pointer-events-none absolute inset-0 -z-10 hidden h-full w-full opacity-60 sm:block" size={1.2} />
+      <BlockGrid a="#dfe3e8" b="#b7c0ca" line="#8d97a2" cells={13} scale={2.4} contrast={0.5} gain={0.75} lineAmt={0.3} react={0.45} seed={2} className="pointer-events-none absolute inset-0 -z-10 h-full w-full opacity-70 mix-blend-multiply" />
+      <ParticleField text="SEND IT" count={3600} tones={["#8d97a2", "#59616b", "#2b3037", "#14171b", "#ff4a2b"]} box={{ x: 0.3, y: 0.34, w: 0.7, h: 0.5 }} cursorMode="push" className="pointer-events-none absolute inset-0 -z-10 hidden h-full w-full opacity-45 lg:block" size={1.2} />
       <div className="hero-chrome pointer-events-none absolute inset-x-0 top-[68px] z-0 sm:top-[72px]">
-        <div className="hero-chrome-in mx-auto h-[20vw] min-h-[96px] w-[98%] max-w-[1500px]"><ChromeText text="E-RIZZ" className="h-full w-full" /></div>
+        <div className="hero-chrome-in mx-auto h-[20vw] min-h-[96px] w-[98%] max-w-[1700px]"><ChromeText text="E-RIZZ" className="h-full w-full" /></div>
       </div>
       <div className="container-x relative z-10 flex h-full flex-col">
-        <div className="relative z-10 pt-[calc(max(96px,20vw)+30px)] sm:pt-[calc(20vw+34px)] lg:max-w-[44%] min-[1500px]:pt-[330px]">
-          <p className="mono mb-3 flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-flare" />GT 4x2 / drop 01</p>
-          <h1 ref={h1} className="font-display text-[clamp(26px,3.1vw,46px)] font-extrabold uppercase leading-[1] [overflow-wrap:normal] [hyphens:none]" aria-label={t("Катай так, чтобы оборачивались", "Электробайки с характером")}>
+        <div className="relative z-10 pt-[calc(max(96px,20vw)+30px)] lg:max-w-[40%]">
+          <p className="mono mb-3 flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-flare" />GT / drop 01</p>
+          <h1 ref={h1} className="font-display text-[clamp(26px,3.1vw,52px)] font-extrabold uppercase leading-[1] [overflow-wrap:normal] [hyphens:none]" aria-label={t("Катай так, чтобы оборачивались", "Электробайки с характером")}>
             {t("Катай так, чтобы оборачивались", "Электробайки с характером")}
           </h1>
           <p className="mt-3 max-w-md text-base text-ink/85">
-            {t("Четыре размера, две версии. Электробайки, ATV, UTV и снег. Розница и опт, шоурум в Ростове, доставка по всей России.", "Четыре размера и две версии. Электробайки, ATV, UTV и снежная техника. Розница и опт, шоурум в Ростове-на-Дону, доставка по всей России.")}
+            {t("Три модели: Base, Sport и Pro. Электробайки, ATV, UTV и снег. Розница и опт, шоурум в Ростове, доставка по всей России.", "Три модели: Base, Sport и Pro. Электробайки, ATV, UTV и снежная техника. Розница и опт, шоурум в Ростове-на-Дону, доставка по всей России.")}
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <InteractiveHoverButton text={t("Собрать свой", "Собрать байк")} className="h-14 w-52 bg-ink text-frost" onClick={() => scrollToId("config")} />
-            <InteractiveHoverButton text="Линейка 4x2" className="h-14 w-48" onClick={() => scrollToId("models")} />
+            <InteractiveHoverButton text="Линейка GT" className="h-14 w-48" onClick={() => scrollToId("models")} />
           </div>
         </div>
-        <div className="hero-bike pointer-events-none relative z-0 mt-4 overflow-hidden sm:absolute sm:inset-x-0 sm:bottom-[15%] sm:mt-0 sm:overflow-visible">
-          <div className="hero-bike-in ml-auto w-full sm:w-[62%] sm:max-w-[960px] lg:w-[58%]">
-            <div className="hero-bike-float relative">
-              <img src={photo(g.id)} alt={`${g.name}, фото`} className="w-full drop-shadow-[0_40px_30px_rgba(14,16,19,.4)]" />
-              <ObjectTracker wheels={g.wheels} className="absolute inset-0 h-full w-full" />
-            </div>
+        <div className="hero-bike pointer-events-none relative z-0 mt-2 lg:absolute lg:inset-x-0 lg:bottom-[11%] lg:mt-0">
+          <div className="relative ml-auto w-full lg:w-[74%] lg:max-w-[1300px]">
+            <Bike3D variant="sport" yaw={-0.55} pitch={0.1} sway={0.14} label="GT Sport, 3D-модель" className="h-[300px] sm:h-[420px] lg:h-[min(64svh,640px)]" />
+            <ObjectTracker wheels={g.wheels} facing="right" className="absolute inset-0 h-full w-full" />
           </div>
         </div>
         <div className="relative z-10 mt-auto pb-6">
@@ -166,9 +166,9 @@ export function Hero() {
               <div className="mt-1 text-sm">примерная цена от <b>{rub(g.price)}</b></div>
               <div className="mono mt-1 text-mute">целевая спецификация, уточняется</div>
             </div>
-            <div><div className="font-display text-[clamp(26px,3.4vw,50px)] font-extrabold leading-none"><CountR lo={g.kw[0]} hi={g.kw[1]} /><span className="ml-1 text-[0.4em] font-semibold">кВт</span></div><div className="mono mt-1 text-mute">пик</div></div>
-            <div><div className="font-display text-[clamp(26px,3.4vw,50px)] font-extrabold leading-none"><CountR lo={g.kwh[0]} hi={g.kwh[1]} dec={1} /><span className="ml-1 text-[0.4em] font-semibold">кВт·ч</span></div><div className="mono mt-1 text-mute">энергия</div></div>
-            <div><div className="font-display text-[clamp(26px,3.4vw,50px)] font-extrabold leading-none">{g.wheels}</div><div className="mono mt-1 text-mute">колеса, дюймы</div></div>
+            <div><div className="font-display text-[clamp(26px,3.4vw,56px)] font-extrabold leading-none"><CountR lo={g.kw[0]} hi={g.kw[1]} /><span className="ml-1 text-[0.4em] font-semibold">кВт</span></div><div className="mono mt-1 text-mute">пик</div></div>
+            <div><div className="font-display text-[clamp(26px,3.4vw,56px)] font-extrabold leading-none"><CountR lo={g.kwh[0]} hi={g.kwh[1]} dec={1} /><span className="ml-1 text-[0.4em] font-semibold">кВт·ч</span></div><div className="mono mt-1 text-mute">энергия</div></div>
+            <div><div className="font-display text-[clamp(26px,3.4vw,56px)] font-extrabold leading-none">{g.wheels}</div><div className="mono mt-1 text-mute">колеса, дюймы</div></div>
           </div>
         </div>
       </div>

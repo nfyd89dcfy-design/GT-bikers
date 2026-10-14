@@ -11,7 +11,7 @@ import { Delivery } from "@/components/delivery";
 import { Showroom } from "@/components/showroom";
 import { CartDrawer, Drive, Footer, Media, Service } from "@/components/media";
 
-const WORDS = ["drop", "roost", "send it", "base", "pro", "custom", "build", "e-rizz"];
+const WORDS = ["drop", "roost", "send it", "base", "sport", "pro", "custom", "e-rizz"];
 
 function Marquee({ reverse, dark }: { reverse?: boolean; dark?: boolean }) {
   const row = [...WORDS, ...WORDS];
@@ -31,7 +31,7 @@ function Marquee({ reverse, dark }: { reverse?: boolean; dark?: boolean }) {
 /** Воздух между секциями: поле частиц собирается в слово и разлетается от курсора. */
 function Space({ word }: { word: string }) {
   return (
-    <div className="dark-zone relative h-[44vh] min-h-[260px] overflow-hidden bg-deep" role="presentation">
+    <div className="dark-zone relative h-[30vh] min-h-[200px] overflow-hidden bg-deep" role="presentation">
       <ParticleField text={word} count={3200} className="absolute inset-0 h-full w-full" tones={["#3a4048", "#59616b", "#8d97a2", "#e4e8ec", "#ff4a2b"]} size={1.1} cursorRadius={0.2} />
       <div className="chrome-line absolute inset-x-0 top-0" />
       <div className="chrome-line absolute inset-x-0 bottom-0" />

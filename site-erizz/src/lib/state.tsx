@@ -25,7 +25,7 @@ interface AppCtx {
   driveFor: string;
   setDriveFor: (id: string) => void;
 }
-export interface CartItem { id: string; name: string; sub: string; price: number; img: string; qty: number }
+export interface CartItem { id: string; name: string; sub: string; price: number; variant: "base" | "sport" | "pro"; paint?: string; qty: number }
 
 const Ctx = createContext<AppCtx>(null as unknown as AppCtx);
 export const useApp = () => useContext(Ctx);
@@ -47,8 +47,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   });
   const [cartOpen, setCartOpen] = useState(false);
   const [toast, setToast] = useState("");
-  const [compare, setCompare] = useState<string[]>(["gt-t14-pro", "gt-t19-pro", "gt-t21-base"]);
-  const [driveFor, setDriveFor] = useState("gt-t19-pro");
+  const [compare, setCompare] = useState<string[]>(["gt-base", "gt-sport", "gt-pro"]);
+  const [driveFor, setDriveFor] = useState("gt-sport");
 
   useEffect(() => { safe.set("erizz-cart", JSON.stringify(cart)); }, [cart]);
   const setVoice = (v: Voice) => { setVoiceS(v); safe.set("erizz-voice", v); };

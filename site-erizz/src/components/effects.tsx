@@ -116,7 +116,7 @@ export function ParticleField({ src, text, count = 5000, cursorMode = "push", cu
 
 /* ============================================================ ObjectTracker */
 interface Region { n: string; x: number; y: number; w: number; h: number }
-export function ObjectTracker({ wheels = "19/18", className, stroke = "#c9a24b", accent = "#ff4a2b" }: { wheels?: string; className?: string; stroke?: string; accent?: string }) {
+export function ObjectTracker({ wheels = "19/18", className, stroke = "#c9a24b", accent = "#ff4a2b", facing = "left" }: { wheels?: string; className?: string; stroke?: string; accent?: string; facing?: "left" | "right" }) {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const cv = ref.current!; const ctx = cv.getContext("2d"); if (!ctx) return;
@@ -127,6 +127,7 @@ export function ObjectTracker({ wheels = "19/18", className, stroke = "#c9a24b",
       { n: "рама и АКБ", x: 0.3, y: 0.06, w: 0.42, h: 0.62 },
       { n: `заднее колесо ${wr}"`, x: 0.61, y: 0.34, w: 0.38, h: 0.66 },
     ];
+    if (facing === "right") regions.forEach((r) => { r.x = 1 - r.x - r.w; });
     let W = 0, H = 0, raf = 0, vis = true;
     const cur = { x: 0, y: 0, w: 0, h: 0 }; let target = 1; let label = regions[1].n; let conf = 0.94;
     let px = -1, py = -1, last = 0, auto = 0;
@@ -178,7 +179,7 @@ export function ObjectTracker({ wheels = "19/18", className, stroke = "#c9a24b",
     };
     if (!reduce) window.addEventListener("pointermove", mv);
     return () => { cancelAnimationFrame(raf); ro.disconnect(); io.disconnect(); window.removeEventListener("pointermove", mv); };
-  }, [wheels, stroke, accent]);
+  }, [wheels, stroke, accent, facing]);
   return <canvas ref={ref} className={className} aria-hidden="true" />;
 }
 

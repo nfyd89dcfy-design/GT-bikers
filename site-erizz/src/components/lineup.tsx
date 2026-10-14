@@ -2,79 +2,66 @@ import { useEffect, useRef } from "react";
 import { Check, MapPin, Wrench, Truck, PaintBucket, Gauge } from "lucide-react";
 import { gsap } from "@/lib/gsap";
 import { useApp, reduceMotion } from "@/lib/state";
-import { img, photo } from "@/lib/data";
 import { GlowCard } from "./ui/spotlight-card";
 import { Eyebrow, H2, Reveal } from "./ui-bits";
-import { Marble } from "./shaders";
+import { BlockGrid } from "./shaders";
+import { Bike3D, type BikeApi } from "./bike";
 import { cn } from "@/lib/utils";
 
-/* ---------------------------------------------------------------- Assembly (scroll) */
-const PIECES = [
-  { f: "asm-body", from: { yPercent: 70, scale: 0.7, opacity: 0 }, at: 0.15, z: 2 },
-  { f: "asm-rear-wheel", from: { xPercent: 90, yPercent: 40, rotation: 540, opacity: 0 }, at: 0, z: 3, origin: "83.5% 70.9%" },
-  { f: "asm-front-wheel", from: { xPercent: -90, yPercent: 40, rotation: -540, opacity: 0 }, at: 0.05, z: 3, origin: "16.4% 76.2%" },
-  { f: "asm-front", from: { xPercent: -60, yPercent: -80, rotation: -18, opacity: 0 }, at: 0.35, z: 4 },
-  { f: "asm-seat", from: { xPercent: 60, yPercent: -110, rotation: 22, opacity: 0 }, at: 0.5, z: 4 },
-];
+/* ---------------------------------------------------------------- Assembly (3D, scroll) */
 const STEPS = [
-  ["Колеса", "Колеса с дисковыми тормозами едут на место"],
-  ["Рама и батарея", "Рама встает вокруг аккумуляторного блока"],
-  ["Вилка и руль", "Подвеска и руль собираются в передний узел"],
-  ["Седло и хвост", "Последний штрих, байк готов к drop"],
+  ["Колеса и тормоза", "Обода с настоящими спицами, шины с шашками и дисковые тормоза"],
+  ["Рама и батарея", "Рама вокруг батареи с ребрами охлаждения"],
+  ["Вилка и руль", "Перевернутая вилка, траверсы и широкий руль"],
+  ["Мотор и подвеска", "Мотор с ребрами, цепь и моноамортизатор с пружиной"],
 ];
 const CALLS = [
-  { l: "батарея 2,9-4 кВт·ч", x: 41, y: 52, at: 0.62 },
-  { l: "пик 15-20 кВт", x: 57, y: 74, at: 0.7 },
-  { l: "подвеска", x: 24, y: 32, at: 0.78 },
-  { l: "контроллер Pro", x: 66, y: 22, at: 0.86 },
+  { l: "батарея 4,5-5,5 кВт·ч", x: 47, y: 50, at: 0.52 },
+  { l: "пик 25-35 кВт", x: 40, y: 72, at: 0.6 },
+  { l: "вилка и обода золотые", x: 71, y: 36, at: 0.68 },
+  { l: "моноамортизатор", x: 27, y: 44, at: 0.76 },
 ];
 
 export function Assembly() {
   const { t } = useApp();
   const root = useRef<HTMLElement>(null);
+  const bike = useRef<BikeApi>(null);
   useEffect(() => {
     if (reduceMotion() || !root.current) {
       root.current?.querySelectorAll<HTMLElement>(".asm-call").forEach((e) => (e.style.opacity = "1"));
       return;
     }
+    const y = { v: 1.0 };
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
-      mm.add("(min-width: 1px)", () => {
-        const tl = gsap.timeline({ defaults: { ease: "power3.out" }, scrollTrigger: { trigger: root.current, start: "top top", end: "+=2600", scrub: 0.7, pin: true, anticipatePin: 1 } });
-        PIECES.forEach((p) => {
-          const el = `.asm-${p.f}`;
-          tl.from(el, { ...p.from, duration: 0.42, transformOrigin: p.origin || "50% 50%" }, p.at);
-        });
-        CALLS.forEach((c, i) => tl.fromTo(`.asm-call-${i}`, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.08 }, c.at));
-        STEPS.forEach((_, i) => {
-          tl.fromTo(`.asm-step-${i}`, { opacity: 0.35 }, { opacity: 1, duration: 0.05 }, [0.05, 0.22, 0.4, 0.55][i]);
-        });
-        tl.to(".asm-stage", { x: 0, scale: 1.04, duration: 0.2 }, 0.9);
-        tl.to(".asm-bar", { scaleX: 1, ease: "none", duration: 1.1 }, 0);
+      mm.add({ wide: "(min-width: 1024px)", narrow: "(max-width: 1023px)" }, (c) => {
+        const wide = c.conditions!.wide;
+        const tl = gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: wide ? { trigger: root.current, start: "top top", end: "+=1500", scrub: 0.6, pin: true, anticipatePin: 1 } : { trigger: root.current, start: "top 80%", end: "bottom 30%", scrub: 0.6 } });
+        tl.fromTo(y, { v: 1.0 }, { v: -0.5, duration: 0.55, onUpdate: () => bike.current?.setYaw(y.v) }, 0)
+          .to(y, { v: -0.7, duration: 0.45, onUpdate: () => bike.current?.setYaw(y.v) }, 0.55);
+        CALLS.forEach((c2, i) => tl.fromTo(`.asm-call-${i}`, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.08, ease: "power2.out" }, c2.at));
+        STEPS.forEach((_, i) => tl.fromTo(`.asm-step-${i}`, { opacity: 0.35 }, { opacity: 1, duration: 0.05 }, [0.02, 0.18, 0.34, 0.5][i]));
+        tl.to(".asm-bar", { scaleX: 1, duration: 1 }, 0);
       });
     }, root);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section id="build" ref={root} className="dark-zone relative isolate h-[100svh] min-h-[640px] overflow-hidden" aria-labelledby="build-h">
-      <Marble a="#0e1013" b="#2a2f37" c="#050608" scale={1.8} turb={7} className="absolute inset-0 -z-10 h-full w-full opacity-90" />
-      <div className="container-x relative flex h-full flex-col pt-24">
-        <Eyebrow n="04" dark>сборка / скролль</Eyebrow>
-        <h2 id="build-h" className="font-display text-[clamp(28px,4.6vw,64px)] font-extrabold uppercase leading-[0.95]">
-          {t("Смотри, как собирается", "Как собирается")} <span className="chrome-text">GT T19 Pro</span>
+    <section id="build" ref={root} className="dark-zone relative isolate overflow-hidden py-20 lg:flex lg:h-[100svh] lg:min-h-[680px] lg:flex-col lg:py-0 lg:pt-20" aria-labelledby="build-h">
+      <BlockGrid a="#07080a" b="#20252c" line="#59616b" gain={0.9} cells={18} rotation={45} lineAmt={0.2} react={0.6} seed={5} className="pointer-events-none absolute inset-0 -z-10 h-full w-full opacity-70" />
+      <div className="container-x relative flex flex-1 flex-col">
+        <Eyebrow n="04" dark>конструкция / скролль</Eyebrow>
+        <h2 id="build-h" className="font-display text-[clamp(28px,4.6vw,72px)] font-extrabold uppercase leading-[0.95]">
+          {t("Смотри, из чего собран", "Из чего собран")} <span className="chrome-text">GT Pro</span>
         </h2>
         <div className="relative mt-2 flex-1">
-          <div className="asm-stage absolute inset-x-0 top-1/2 mx-auto aspect-[900/567] w-[min(94vw,880px,calc((100svh-410px)*1.587))] -translate-y-1/2">
-            <img src={img("79bike-falcon-gt-1.webp")} alt="" className="absolute inset-0 h-full w-full opacity-[0.09]" />
-            {PIECES.map((p) => (
-              <img key={p.f} src={img(`${p.f}.webp`)} alt="" className={cn("absolute inset-0 h-full w-full will-change-transform", `asm-${p.f}`)} style={{ zIndex: p.z }} />
-            ))}
-            <span className="sr-only-x">Фото GT T19 Pro, собранное из пяти частей: колеса, рама, вилка, седло.</span>
+          <div className="relative mx-auto w-full max-w-[1500px] lg:absolute lg:inset-0">
+            <Bike3D ref={bike} variant="pro" yaw={1.0} pitch={0.1} sway={0} label="GT Pro: 3D-модель, вращается при прокрутке" className="h-[300px] sm:h-[420px] lg:h-full" />
             {CALLS.map((c, i) => (
-              <div key={c.l} className={cn("asm-call absolute z-10 flex items-center gap-2", `asm-call-${i}`)} style={{ left: `${c.x}%`, top: `${c.y}%` }}>
+              <div key={c.l} className={cn("asm-call pointer-events-none absolute z-10 hidden items-center gap-2 sm:flex", `asm-call-${i}`)} style={{ left: `${c.x}%`, top: `${c.y}%` }}>
                 <span className="relative grid h-3 w-3 place-items-center"><span className="ping absolute h-3 w-3 rounded-full bg-flare/70" /><span className="h-2 w-2 rounded-full bg-flare" /></span>
-                <span className="mono rounded-full bg-deep/85 px-2 py-1 text-frost sm:px-3">{c.l}</span>
+                <span className="mono rounded-full bg-deep/85 px-3 py-1 text-frost">{c.l}</span>
               </div>
             ))}
           </div>
@@ -96,16 +83,16 @@ export function Assembly() {
 
 /* ---------------------------------------------------------------- Perks */
 const PERKS = [
-  { icon: MapPin, h: "Шоурум", ty: "Приходи, потрогай, сядь. Ростов-на-Дону, прототип 3D-тура ниже.", vy: "Приезжайте, посмотрите и сядьте на технику. Ростов-на-Дону, 3D-тур ниже.", photo: "nicot-kr2-250cbf-p21", span: "lg:col-span-7" },
-  { icon: Gauge, h: "Тест-драйв", ty: "Кати до покупки: выбираешь город, дату и модель.", vy: "Прокатитесь до покупки: выберите город, дату и модель.", photo: "nicot-cqr-125re-p25", span: "lg:col-span-5" },
-  { icon: Wrench, h: "Сервис", ty: "Диагностика, батареи, расходники. Свой склад запчастей.", vy: "Диагностика, обслуживание батарей, расходники. Собственный склад запчастей.", photo: "nicot-kr4-125re-p29", span: "lg:col-span-4" },
-  { icon: Truck, h: "Доставка", ty: "Москва, Ростов, Краснодарский край. Опт отдельным рейсом.", vy: "Москва, Ростов-на-Дону, Краснодарский край. Оптовые партии отдельным рейсом.", photo: "zzssv-zz1400-2", span: "lg:col-span-4" },
-  { icon: PaintBucket, h: "Custom", ty: "Цвет, наклейки, грипсы, батарея: собери свой build.", vy: "Цвет, наклейки, аксессуары, батарея: соберите свою конфигурацию.", photo: "nicot-ht5-450nc-p35", span: "lg:col-span-4" },
+  { icon: MapPin, h: "Шоурум", ty: "Приходи, потрогай, сядь. Ростов-на-Дону, прототип 3D-тура ниже.", vy: "Приезжайте, посмотрите и сядьте на технику. Ростов-на-Дону, 3D-тур ниже.", span: "lg:col-span-7" },
+  { icon: Gauge, h: "Тест-драйв", ty: "Кати до покупки: выбираешь город, дату и модель.", vy: "Прокатитесь до покупки: выберите город, дату и модель.", span: "lg:col-span-5" },
+  { icon: Wrench, h: "Сервис", ty: "Диагностика, батареи, расходники. Свой склад запчастей.", vy: "Диагностика, обслуживание батарей, расходники. Собственный склад запчастей.", span: "lg:col-span-4" },
+  { icon: Truck, h: "Доставка", ty: "Москва, Ростов, Краснодарский край. Опт отдельным рейсом.", vy: "Москва, Ростов-на-Дону, Краснодарский край. Оптовые партии отдельным рейсом.", span: "lg:col-span-4" },
+  { icon: PaintBucket, h: "Custom", ty: "Цвет, наклейки, грипсы, батарея: собери свой build.", vy: "Цвет, наклейки, аксессуары, батарея: соберите свою конфигурацию.", span: "lg:col-span-4" },
 ];
 export function Perks() {
   const { t } = useApp();
   return (
-    <section className="dark-zone relative py-28 sm:py-40" aria-labelledby="perks-h">
+    <section className="dark-zone relative py-20 sm:py-28" aria-labelledby="perks-h">
       <div className="container-x">
         <Reveal>
           <Eyebrow n="05" dark>почему мы</Eyebrow>
@@ -116,8 +103,9 @@ export function Perks() {
             <Reveal key={p.h} className={p.span}>
               <GlowCard customSize glowColor="flare" className="touch-pan-y! h-[300px] !p-0 sm:h-[340px]">
                 <div className="relative row-span-2 h-full overflow-hidden rounded-2xl">
-                  <img src={photo(p.photo)} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover opacity-70" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-deep via-deep/55 to-deep/10" />
+                  <div className="brushed-dark absolute inset-0 opacity-60" />
+                  <p.icon className="absolute right-5 top-5 text-frost/10" size={150} strokeWidth={1} aria-hidden="true" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-deep via-deep/30 to-transparent" />
                   <div className="relative flex h-full flex-col justify-end p-5">
                     <p.icon className="mb-3 text-gold" size={28} aria-hidden="true" />
                     <h3 className="font-display text-2xl font-extrabold uppercase">{p.h}</h3>

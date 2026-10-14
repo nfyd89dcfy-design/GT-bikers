@@ -127,7 +127,7 @@ export function ShaderCanvas({ frag, uniforms, className, style, fallback, fps =
 
     const reduce = reduceMotion();
     let vis = true, raf = 0, last = 0;
-    const mouse = [0.5, 0.5], tgt = [0.5, 0.5];
+    const mouse = pointer ? [-2, -2] : [0.5, 0.5], tgt = pointer ? [-2, -2] : [0.5, 0.5];
     const resize = () => {
       const r = cv.getBoundingClientRect();
       const d = Math.min(dpr, window.devicePixelRatio || 1);
@@ -192,6 +192,42 @@ export function GridBg({ a = "#0e1013", b = "#b9c2cc", className, style }: { a?:
     <ShaderCanvas frag={GRID} className={className} style={style} fps={30} dpr={0.8} pointer
       fallback={`linear-gradient(${b}22 1px, transparent 1px) 0 0/48px 48px, linear-gradient(90deg, ${b}22 1px, transparent 1px) 0 0/48px 48px, ${a}`}
       uniforms={() => ({ cA: col3(a), cB: col3(b) })} />
+  );
+}
+
+
+/* ---------- BlockNoise x Grid (WebGL-эквивалент shaders.com BlockNoise + Grid) ---------- */
+export const BLOCKGRID = `precision mediump float;varying vec2 uv;uniform float t;uniform vec2 res,mouse;uniform vec3 cA,cB,cG;
+uniform float cells,scale,contrast,balance,seed,thick,soft,rot,vari,gain,mAmt,lineAmt,speed;
+float h(vec2 p){return fract(sin(dot(p+seed,vec2(127.1,311.7)))*43758.5453);}
+float vn(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}
+void main(){
+  float asp=res.x/res.y;
+  vec2 p=vec2(uv.x*asp,uv.y);
+  float cs=cos(rot),sn=sin(rot);
+  vec2 q=mat2(cs,-sn,sn,cs)*(p-vec2(asp*.5,.5))+vec2(asp*.5,.5);
+  vec2 g=q*cells; vec2 id=floor(g); vec2 f=fract(g);
+  float tt=t*speed*.35;
+  float v=vn(id*.16*(2./scale)+vec2(tt*.7,-tt*.4));
+  v=.6*v+.4*vn(id*.37*(2./scale)-vec2(tt*.5,tt*.3)+9.);
+  v=clamp((v-.5)*(1.+contrast)+.5+balance,0.,1.);
+  float md=distance(p,vec2(mouse.x*asp,mouse.y));
+  float near=smoothstep(.34,0.,md);
+  float flick=h(id+floor(t*3.));
+  v=clamp(v+mAmt*near*(.35+.65*flick),0.,1.);
+  float cellJit=1.+vari*(h(id+3.7)-.5);
+  vec3 col=mix(cA,cB,v*gain*cellJit);
+  vec2 e=min(f,1.-f); float d=min(e.x,e.y);
+  float l=1.-smoothstep(thick*.5,thick*.5+soft*.06+.004,d);
+  col=mix(col,cG,l*lineAmt*(.35+.65*v+near*.6));
+  gl_FragColor=vec4(col,1.);
+}`;
+export interface BlockGridProps { a?: string; b?: string; line?: string; cells?: number; scale?: number; contrast?: number; balance?: number; seed?: number; thick?: number; soft?: number; rotation?: number; vari?: number; gain?: number; react?: number; lineAmt?: number; speed?: number; className?: string; style?: CSSProperties }
+export function BlockGrid({ a = "#0e1013", b = "#2a3038", line = "#8d97a2", cells = 14, scale = 2, contrast = 0.6, balance = 0, seed = 1, thick = 0.04, soft = 0.4, rotation = 0, vari = 0.5, gain = 1, react = 0.7, lineAmt = 0.35, speed = 1, className, style }: BlockGridProps) {
+  return (
+    <ShaderCanvas frag={BLOCKGRID} className={className} style={style} fps={30} dpr={0.6} pointer
+      fallback={`linear-gradient(${line}22 1px, transparent 1px) 0 0/56px 56px, linear-gradient(90deg, ${line}22 1px, transparent 1px) 0 0/56px 56px, ${a}`}
+      uniforms={() => ({ cA: col3(a), cB: col3(b), cG: col3(line), cells, scale, contrast, balance, seed, thick, soft, rot: (rotation * Math.PI) / 180, vari, gain, mAmt: react, lineAmt, speed })} />
   );
 }
 

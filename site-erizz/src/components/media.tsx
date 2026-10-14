@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Play, X, Send, Clapperboard, Camera, Users, Wrench, Truck, ShieldCheck, KeyRound, Minus, Plus, Trash2, Check } from "lucide-react";
 import { useApp, scrollToId } from "@/lib/state";
-import { CATALOG, COMPARE_IDS, DIRS, modelName, photo, rub } from "@/lib/data";
+import { GT, GT_BY, modelName, rub } from "@/lib/data";
+import { Bike3D, BikeThumb } from "./bike";
 import { Boids, ChromeText } from "./shaders";
 import { Eyebrow, H2, Reveal } from "./ui-bits";
 import { InteractiveHoverButton } from "./ui/interactive-hover-button";
@@ -16,22 +17,23 @@ const SOCS = [
   { n: "Instagram", h: "@erizz.stub", d: ["Фото клиентов и кастом-билды", "Фото клиентов и кастомные сборки"], icon: Camera },
   { n: "VK", h: "vk.com/erizz_stub", d: ["Сообщество и розыгрыши", "Сообщество, новости и отзывы"], icon: Users },
 ];
-const VIDS = [
-  { t: "Dune roost: KR3 в песках", d: "0:48", p: "nicot-cqr-125re-p25", c: "Тест на песке, 3 камеры" },
-  { t: "GT T19 Pro: первый drop", d: "1:12", p: "79bike-falcon-gt-3", c: "Обзор и замеры" },
-  { t: "Ночной город, G7 Pro", d: "0:36", p: "julong-g7-pro-8", c: "Город после заката" },
-  { t: "Прыжок на KR9", d: "0:29", p: "nicot-ht5-450nc-p35", c: "Slow-mo send it" },
-  { t: "Юг, багги на пляже", d: "1:05", p: "juhool-utv-titan", c: "Поездка к морю" },
-  { t: "Custom build за 10 минут", d: "0:58", p: "esuvehicle-es01", c: "Сборка в шоуруме" },
+type Shot = { t: string; d?: string; v: "base" | "sport" | "pro"; yaw: number; c: string };
+const VIDS: Shot[] = [
+  { t: "Dune roost: GT Sport в песках", d: "0:48", v: "sport", yaw: -0.9, c: "Тест на песке, 3 камеры" },
+  { t: "GT Pro: первый drop", d: "1:12", v: "pro", yaw: -0.4, c: "Обзор и замеры" },
+  { t: "Ночной город, GT Base", d: "0:36", v: "base", yaw: -0.7, c: "Город после заката" },
+  { t: "Прыжок на GT Pro", d: "0:29", v: "pro", yaw: 0.5, c: "Slow-mo send it" },
+  { t: "Юг, GT Sport у моря", d: "1:05", v: "sport", yaw: 0.2, c: "Поездка к морю" },
+  { t: "Custom build за 10 минут", d: "0:58", v: "base", yaw: -0.2, c: "Сборка в шоуруме" },
 ];
 
-const PHOTOS = [
-  { t: "Рассвет, песок и roost", p: "nicot-cqy-125re-p27", c: "Дюны под Ростовом" },
-  { t: "Красные овраги", p: "nicot-kr2-250cbf-p21", c: "Тест в оврагах" },
-  { t: "Лесной трейл", p: "nicot-kr4-125re-p29", c: "Утро в лесу" },
-  { t: "Горы и drop", p: "nicot-kr9-250ncs-p40", c: "Выезд в горы" },
-  { t: "Город на закате", p: "nicot-bt-250fe-p45", c: "Трасса на закате" },
-  { t: "Багги на пляже", p: "juhool-utv-titan", c: "Поездка к морю" },
+const PHOTOS: Shot[] = [
+  { t: "Рассвет, песок и roost", v: "sport", yaw: -0.6, c: "Дюны под Ростовом" },
+  { t: "Бордо и золото", v: "pro", yaw: -0.9, c: "Студийный кадр" },
+  { t: "Лесной трейл", v: "base", yaw: -0.3, c: "Утро в лесу" },
+  { t: "Хром и сталь", v: "sport", yaw: 0.7, c: "Детали подвески" },
+  { t: "Город на закате", v: "base", yaw: 0.4, c: "Трасса на закате" },
+  { t: "Золотые обода", v: "pro", yaw: 0.2, c: "Колесо крупно" },
 ];
 
 export function Media() {
@@ -39,7 +41,7 @@ export function Media() {
   const [tab, setTab] = useState<"soc" | "vid" | "ph">("soc");
   const items = tab === "vid" ? VIDS.map((v) => ({ ...v, vid: true })) : PHOTOS.map((v) => ({ ...v, d: "", vid: false }));
   return (
-    <section id="media" className="dark-zone relative isolate overflow-hidden py-28 sm:py-40" aria-labelledby="media-h">
+    <section id="media" className="dark-zone relative isolate overflow-hidden py-20 sm:py-28" aria-labelledby="media-h">
       <Boids className="absolute inset-0 -z-10 h-full w-full opacity-50" count={170} a="#8d97a2" b="#ff4a2b" />
       <div className="container-x">
         <Reveal>
@@ -67,13 +69,13 @@ export function Media() {
           <div id={`panel-${tab}`} role="tabpanel" aria-labelledby={`tab-${tab}`} className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((v) => (
               <MorphTile key={tab + v.t} label={`${v.vid ? "Видео" : "Фото"}: ${v.t}`} className="aspect-video"
-                media={<img src={photo(v.p)} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />}
+                media={<div className="absolute inset-0" style={{ background: `linear-gradient(150deg, ${GT_BY[`gt-${v.v}`].bg}, #0e1013 85%)` }}><BikeThumb variant={v.v} yaw={v.yaw} w={720} h={405} alt="" className="absolute inset-0 h-full w-full object-contain" /></div>}
                 detail={
                   <div className="relative flex h-full min-h-[320px] flex-col justify-end bg-gradient-to-t from-deep/95 via-deep/30 to-transparent p-6 text-frost sm:p-10">
                     {v.vid && <div className="absolute left-1/2 top-1/2 grid h-24 w-24 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-flare text-ink"><Play fill="currentColor" size={36} /></div>}
-                    <p className="mono text-gold">{v.vid ? "плеер-заглушка" : "фото из каталога"} / {v.c}</p>
+                    <p className="mono text-gold">{v.vid ? "плеер-заглушка" : "3D-рендер"} / {v.c}</p>
                     <h3 className="font-display mt-2 text-3xl font-extrabold uppercase sm:text-5xl">{v.t}</h3>
-                    <p className="muted mt-2 max-w-xl">{v.vid ? "В рабочей версии здесь будет настоящий плеер. Сейчас это постер из каталога." : "Кадр из каталога. Свои фото можно будет отправить в канал."}</p>
+                    <p className="muted mt-2 max-w-xl">{v.vid ? "В рабочей версии здесь будет настоящий плеер. Сейчас это рендер-постер." : "Рендер модели. Свои фото можно будет отправить в канал."}</p>
                   </div>
                 }
               >
@@ -101,7 +103,7 @@ const SVC = [
 export function Service() {
   const { t } = useApp();
   return (
-    <section id="service" className="relative py-28 sm:py-40" aria-labelledby="svc-h">
+    <section id="service" className="relative py-20 sm:py-28" aria-labelledby="svc-h">
       <div className="container-x">
         <Reveal>
           <Eyebrow n="12">сервис</Eyebrow>
@@ -138,7 +140,7 @@ export function Drive() {
   const [phone, setPhone] = useState("");
   const [err, setErr] = useState<Record<string, string>>({});
   const [done, setDone] = useState<null | { no: string }>(null);
-  const ids = Array.from(new Set([...COMPARE_IDS, driveFor]));
+  const ids = GT.map((g) => g.id);
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const er: Record<string, string> = {};
@@ -156,7 +158,7 @@ export function Drive() {
           <Eyebrow n="13" dark>тест-драйв</Eyebrow>
           <H2><span id="drive-h">{t("Кати", "Запишитесь")}</span> <span className="text-gold">{t("до покупки", "на тест-драйв")}</span></H2>
           <p className="muted mt-4 max-w-md text-lg">{t("Выбери город, дату и модель. Мы подтвердим время и подготовим байк.", "Выберите город, дату и модель. Мы подтвердим время и подготовим технику.")}</p>
-          <img src={photo(driveFor)} alt={modelName(driveFor)} className={cn("mt-8 w-full max-w-md rounded-3xl bg-kelp", (CATALOG[driveFor]?.cut ?? true) ? "object-contain p-4" : "object-cover")} style={{ aspectRatio: "16/10" }} />
+          <div className="mt-8 w-full max-w-xl overflow-hidden rounded-3xl" style={{ aspectRatio: "16/10", background: `linear-gradient(150deg, ${(GT_BY[driveFor] ?? GT[1]).bg}, #0e1013 85%)` }}><Bike3D variant={(GT_BY[driveFor] ?? GT[1]).ver} yaw={-0.5} sway={0.1} label={`${modelName(driveFor)}, 3D-модель`} className="h-full w-full" /></div>
         </Reveal>
         <div className="rounded-3xl bg-frost p-6 text-ink sm:p-8" aria-live="polite">
           {done ? (
@@ -300,7 +302,7 @@ export function CartDrawer() {
             <ul className="grid gap-4" data-testid="cart-list">
               {cart.map((c) => (
                 <li key={c.id} className="grid grid-cols-[84px_1fr_auto] items-center gap-3 border-b border-ink/10 pb-4">
-                  <img src={c.img} alt="" className="h-[64px] w-[84px] rounded-lg bg-ink/10 object-contain" />
+                  <div className="h-[64px] w-[84px] overflow-hidden rounded-lg" style={{ background: `linear-gradient(150deg, ${GT.find((g) => g.ver === c.variant)!.bg}, #0e1013)` }}><BikeThumb variant={c.variant} paint={c.paint} yaw={-0.5} w={168} h={128} alt="" className="h-full w-full object-contain" /></div>
                   <div className="min-w-0"><div className="truncate font-semibold">{c.name}</div><div className="truncate text-xs text-mute">{c.sub}</div>
                     <div className="mt-1 flex items-center gap-1">
                       <button className="grid h-11 w-11 cursor-pointer place-items-center rounded-full border border-ink/30 hover:bg-ink/10" aria-label={`Меньше: ${c.name}`} onClick={() => setQty(c.id, -1)}><Minus size={16} /></button>
@@ -329,4 +331,4 @@ export function CartDrawer() {
   );
 }
 
-void DIRS;
+
