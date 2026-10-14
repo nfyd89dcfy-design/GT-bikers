@@ -79,7 +79,7 @@ export function ToneGate() {
   };
   return (
     <div ref={ref} role="dialog" aria-modal="true" aria-label="Выбор обращения" className="dark-zone brushed-dark fixed inset-0 z-[200] grid place-items-center overflow-y-auto px-5">
-      <BlockGrid a="#07080a" b="#2a3038" line="#8d97a2" cells={16} scale={2.2} contrast={0.8} gain={1} lineAmt={0.3} react={1.4} speed={1.4} seed={4} className="pointer-events-none absolute inset-0 h-full w-full opacity-90" />
+      <BlockGrid a="#07080a" b="#2a3038" line="#8d97a2" cells={16} scale={2.2} contrast={0.8} gain={1} lineAmt={0.3} react={1.4} speed={1.4} seed={4} className="pointer-events-none absolute inset-0 h-full w-full opacity-60" />
       <ParticleField text="E-RIZZ" count={4200} className="pointer-events-none absolute inset-0 h-full w-full" box={narrow ? { x: 0.04, y: 0.03, w: 0.92, h: 0.3 } : { x: 0.04, y: 0.12, w: 0.92, h: 0.76 }} tones={["#3a4048", "#59616b", "#8d97a2", "#e4e8ec", "#ff4a2b"]} size={1.25} cursorRadius={0.22} wobble={0.7} />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_45%_at_50%_50%,rgba(7,8,10,.78),transparent_80%)]" />
       <div className="relative mx-auto flex max-w-4xl flex-col items-center py-12 text-center">
@@ -119,7 +119,7 @@ export function Hero() {
     if (reduceMotion() || !root.current) return;
     const ctx = gsap.context(() => {
       const split = new SplitText(h1.current!, { type: "words,chars", charsClass: "hc" });
-      gsap.from(split.chars, { yPercent: 110, opacity: 0, stagger: 0.012, duration: 0.8, ease: "power4.out", delay: 0.15 });
+      gsap.from(split.chars, { yPercent: 110, opacity: 0, stagger: 0.008, duration: 1.1, ease: "power2.out", delay: 0.15 });
       gsap.to(".hero-bike", { yPercent: 8, scale: 1.04, ease: "none", scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true } });
       gsap.to(".hero-chrome", { yPercent: -35, ease: "none", scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true } });
     }, root);
@@ -135,15 +135,15 @@ export function Hero() {
     <section id="top" ref={root} className="relative isolate overflow-hidden pt-16 lg:h-[max(100svh,820px)]" aria-label="Главный экран">
       <div className="brushed absolute inset-0 -z-20 opacity-90" />
       <BlockGrid a="#dfe3e8" b="#b7c0ca" line="#8d97a2" cells={13} scale={2.4} contrast={0.5} gain={0.75} lineAmt={0.3} react={0.45} seed={2} className="pointer-events-none absolute inset-0 -z-10 h-full w-full opacity-70 mix-blend-multiply" />
-      <ParticleField text="SEND IT" count={3600} tones={["#8d97a2", "#59616b", "#2b3037", "#14171b", "#ff4a2b"]} box={{ x: 0.3, y: 0.34, w: 0.7, h: 0.5 }} cursorMode="push" className="pointer-events-none absolute inset-0 -z-10 hidden h-full w-full opacity-45 lg:block" size={1.2} />
+      <ParticleField text="GT" count={2400} tones={["#8d97a2", "#59616b", "#2b3037", "#14171b", "#ff4a2b"]} box={{ x: 0.3, y: 0.34, w: 0.7, h: 0.5 }} cursorMode="push" className="pointer-events-none absolute inset-0 -z-10 hidden h-full w-full opacity-45 lg:block" size={1.2} />
       <div className="hero-chrome pointer-events-none absolute inset-x-0 top-[68px] z-0 sm:top-[72px]">
-        <div className="hero-chrome-in mx-auto h-[20vw] min-h-[96px] w-[98%] max-w-[1700px]"><ChromeText text="E-RIZZ" className="h-full w-full" /></div>
+        <div className="hero-chrome-in mx-auto h-[20vw] min-h-[96px] w-[98%] max-w-[1700px]"><ChromeText text="E-RIZZ" className="h-full w-full opacity-75" /></div>
       </div>
       <div className="container-x relative z-10 flex h-full flex-col">
         <div className="relative z-10 pt-[calc(max(96px,20vw)+30px)] lg:max-w-[40%]">
-          <p className="mono mb-3 flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-flare" />GT / drop 01</p>
-          <h1 ref={h1} className="font-display text-[clamp(26px,3.1vw,52px)] font-extrabold uppercase leading-[1] [overflow-wrap:normal] [hyphens:none]" aria-label={t("Катай так, чтобы оборачивались", "Электробайки с характером")}>
-            {t("Катай так, чтобы оборачивались", "Электробайки с характером")}
+          <p className="mono mb-3 flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-flare" />GT / коллекция 01</p>
+          <h1 ref={h1} className="font-display text-[clamp(26px,3.1vw,52px)] font-extrabold uppercase leading-[1] [overflow-wrap:normal] [hyphens:none]" aria-label="Электробайки с характером">
+            {t("Электробайки с характером", "Электробайки с характером")}
           </h1>
           <p className="mt-3 max-w-md text-base text-ink/85">
             {t("Три модели: Base, Sport и Pro. Электробайки, ATV, UTV и снег. Розница и опт, шоурум в Ростове, доставка по всей России.", "Три модели: Base, Sport и Pro. Электробайки, ATV, UTV и снежная техника. Розница и опт, шоурум в Ростове-на-Дону, доставка по всей России.")}

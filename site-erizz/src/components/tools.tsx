@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 const BATT = [{ n: "Стандарт", k: 1, p: 0 }, { n: "+10%", k: 1.1, p: 35000 }, { n: "+20%", k: 1.2, p: 80000 }, { n: "Dual", k: 2, p: 150000 }];
 const CTRL = [{ n: "Stock", p: 0, d: "ровный отклик" }, { n: "Sport", p: 25000, d: "резкий старт" }, { n: "Pro tune", p: 60000, d: "тонкая настройка" }];
 const PAINT: { n: string; c?: string }[] = [{ n: "Стандарт" }, { n: "Flare", c: "#ff4a2b" }, { n: "Бордо", c: "#7a1b2e" }, { n: "Сталь", c: "#aeb7c1" }, { n: "Графит", c: "#23272d" }];
-const DECAL = [{ n: "Без наклеек", p: 0, txt: "" }, { n: "send it", p: 7000, txt: "SEND IT" }, { n: "roost", p: 7000, txt: "ROOST" }, { n: "custom plate", p: 14000, txt: "RIZZ 01" }];
+const DECAL = [{ n: "Без наклеек", p: 0, txt: "" }, { n: "GT", p: 7000, txt: "GT" }, { n: "E-RIZZ", p: 7000, txt: "E-RIZZ" }, { n: "custom plate", p: 14000, txt: "RIZZ 01" }];
 
 function Price({ value }: { value: number }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -43,10 +43,10 @@ export function Configurator() {
   const id = `build-${ver}${bt}${ct}${cl}${dc}`;
 
   const Opt = ({ label, children }: { label: string; children: React.ReactNode }) => (
-    <fieldset className="border-0 p-0"><legend className="mono mb-2 text-gold">{label}</legend><div className="flex flex-wrap gap-2">{children}</div></fieldset>
+    <fieldset className="border-0 p-0"><legend className="mono mb-2 text-sky">{label}</legend><div className="flex flex-wrap gap-2">{children}</div></fieldset>
   );
   return (
-    <section id="config" className="dark-zone relative isolate overflow-hidden py-20 sm:py-28" aria-labelledby="config-h">
+    <section id="config" className="dark-zone relative isolate overflow-hidden py-24 sm:py-36" aria-labelledby="config-h">
       <BlockGrid a="#07080a" b="#1f242b" line="#6b747e" gain={0.9} cells={15} lineAmt={0.3} react={0.8} seed={9} className="absolute inset-0 -z-10 h-full w-full opacity-80" />
       <div className="container-x">
         <Reveal>
@@ -63,7 +63,7 @@ export function Configurator() {
             </div>
             {DECAL[dc].txt && <div className="font-display pointer-events-none absolute left-[44%] top-[46%] -rotate-[8deg] rounded bg-flare px-2 py-0.5 text-[clamp(9px,1.5vw,18px)] font-extrabold text-ink shadow-lg">{DECAL[dc].txt}</div>}
             <div className="absolute bottom-4 left-4 right-4">
-              <div className="mono text-gold">{m.name}</div>
+              <div className="mono text-sky">{m.name}</div>
               <div className="mono muted max-w-[20rem] truncate sm:max-w-none">{summary}</div>
             </div>
           </div>
@@ -152,7 +152,7 @@ export function Quiz() {
   const gt = res && res.id ? GT_BY[res.id] : null;
 
   return (
-    <section id="quiz" className="relative py-20 sm:py-28" aria-labelledby="quiz-h">
+    <section id="quiz" className="relative py-24 sm:py-36" aria-labelledby="quiz-h">
       <div className="container-x grid gap-10 lg:grid-cols-[1fr_1.1fr]">
         <Reveal>
           <Eyebrow n="06">подбор</Eyebrow>
@@ -162,7 +162,7 @@ export function Quiz() {
         <div className="rounded-3xl bg-ink p-6 text-frost sm:p-8" aria-live="polite">
           {!done ? (
             <>
-              <div className="mono mb-4 flex items-center justify-between text-gold"><span>вопрос {step + 1} / {QUIZ.length}</span><span className="h-1 w-24 overflow-hidden rounded bg-frost/20"><span className="block h-full bg-flare" style={{ width: `${(step / QUIZ.length) * 100}%` }} /></span></div>
+              <div className="mono mb-4 flex items-center justify-between text-sky"><span>вопрос {step + 1} / {QUIZ.length}</span><span className="h-1 w-24 overflow-hidden rounded bg-frost/20"><span className="block h-full bg-flare" style={{ width: `${(step / QUIZ.length) * 100}%` }} /></span></div>
               <h3 className="font-display text-2xl font-extrabold uppercase leading-tight sm:text-3xl">{t(QUIZ[step].q[0], QUIZ[step].q[1])}</h3>
               <div className="mt-6 grid gap-3">
                 {QUIZ[step].a.map((a) => (
@@ -172,14 +172,14 @@ export function Quiz() {
             </>
           ) : res && (
             <div>
-              <div className="mono text-gold">{t("твой результат", "ваш результат")}: {res.d.ru}{gt ? ` / ${verLabel(gt.ver)}` : ""}</div>
+              <div className="mono text-sky">{t("твой результат", "ваш результат")}: {res.d.ru}{gt ? ` / ${verLabel(gt.ver)}` : ""}</div>
               <div className="mt-4 grid items-center gap-4 sm:grid-cols-2">
                 {gt ? <div className="rounded-2xl p-2" style={{ background: `linear-gradient(160deg, ${gt.bg}, #0e1013)` }}><BikeThumb variant={gt.ver} yaw={-0.5} w={560} h={380} alt={`${gt.name}, 3D-рендер`} className="w-full" /></div> : <div className="grid min-h-[200px] place-items-center rounded-2xl bg-kelp p-6 text-center"><span className="font-display chrome-text text-4xl font-extrabold uppercase">{res.d.ru}</span></div>}
                 <div>
                   <h3 className="font-display text-3xl font-extrabold uppercase leading-none">{gt ? gt.name : t("Под заказ", "Под заказ")}</h3>
                   {gt ? <p className="muted mt-1">{t(gt.tag[0], gt.tag[1])}</p> : <p className="muted mt-1">{t("Такую технику мы подбираем под заказ: оставь заявку, и мы пришлем варианты.", "Такую технику мы подбираем под заказ: оставьте заявку, и мы пришлем варианты.")}</p>}
                   {gt && <ul className="mt-3 text-sm">{gtSpec(gt).map((x) => <li key={x.k}><span className="muted">{x.k}:</span> {x.v}</li>)}</ul>}
-                  {gt && <p className="mono mt-1 text-gold">целевая спецификация, уточняется</p>}
+                  {gt && <p className="mono mt-1 text-sky">целевая спецификация, уточняется</p>}
                   {gt && <div className="mt-3 font-display text-xl font-extrabold">{rub(gt.price)} <span className="mono muted">примерная цена</span></div>}
                 </div>
               </div>
@@ -188,7 +188,7 @@ export function Quiz() {
                 {gt && <button className="btn-ghost" onClick={() => { toggleCompare(gt.id); scrollToId("compare"); }}>Сравнить</button>}
                 <button className="btn-ghost" onClick={() => { setDriveFor(gt ? gt.id : "gt-sport"); scrollToId("drive"); }}>{gt ? "Тест-драйв" : "Оставить заявку"}</button>
                 <button className="btn-ghost" onClick={() => { setDir(res.d.key); scrollToId(gt ? "lineup" : "directions"); }}>{gt ? "Вся линейка" : "Все в направлении"}</button>
-                <button className="mono inline-flex min-h-11 cursor-pointer items-center gap-2 px-2 text-frost/80 hover:text-gold" onClick={() => { setStep(0); setScore({}); }}><RotateCcw size={16} />еще раз</button>
+                <button className="mono inline-flex min-h-11 cursor-pointer items-center gap-2 px-2 text-frost/80 hover:text-sky" onClick={() => { setStep(0); setScore({}); }}><RotateCcw size={16} />еще раз</button>
               </div>
             </div>
           )}
@@ -211,7 +211,7 @@ export function Compare() {
   const { t, compare, toggleCompare, addCart } = useApp();
   const ids = compare.filter((id) => GT_BY[id]);
   return (
-    <section id="compare" className="relative bg-frost py-20 sm:py-28" aria-labelledby="cmp-h">
+    <section id="compare" className="relative bg-frost py-24 sm:py-36" aria-labelledby="cmp-h">
       <div className="container-x">
         <Reveal>
           <Eyebrow n="07">сравнение</Eyebrow>

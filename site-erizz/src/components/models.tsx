@@ -23,7 +23,7 @@ function fillRange(el: HTMLElement | null, lo: number, hi: number, dec: number) 
 const GRID_TONES: Record<string, { a: string; b: string; line: string; gain: number }> = {
   base: { a: "#0e1013", b: "#2b3037", line: "#8d97a2", gain: 0.9 },
   sport: { a: "#ff4a2b", b: "#ff8a6a", line: "#14161a", gain: 0.55 },
-  pro: { a: "#4a0e1c", b: "#8a2236", line: "#c9a24b", gain: 0.8 },
+  pro: { a: "#4a0e1c", b: "#8a2236", line: "#9cc9ff", gain: 0.8 },
 };
 
 function PinnedModel({ g, prev, index }: { g: GTModel; prev: string; index: number }) {
@@ -50,7 +50,7 @@ function PinnedModel({ g, prev, index }: { g: GTModel; prev: string; index: numb
       const mm = gsap.matchMedia();
       mm.add({ wide: "(min-width: 1024px)", narrow: "(max-width: 1023px)" }, (c) => {
         const wide = c.conditions!.wide;
-        const tl = gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: wide ? { trigger: el, start: "top top", end: "+=1500", scrub: 0.6, pin: true, anticipatePin: 1 } : { trigger: el, start: "top 85%", end: "bottom 25%", scrub: 0.6 } });
+        const tl = gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: wide ? { trigger: el, start: "top top", end: "+=1500", scrub: 1.1, pin: true, anticipatePin: 1 } : { trigger: el, start: "top 85%", end: "bottom 25%", scrub: 1.1 } });
         tl.fromTo(el, { backgroundColor: prev }, { backgroundColor: g.bg, duration: 0.18 }, 0)
           .fromTo(yaw, { v: 0.6 }, { v: -0.85, duration: 1, onUpdate: () => bike.current?.setYaw(yaw.v) }, 0)
           .fromTo(q(".sz-word"), { xPercent: 8 }, { xPercent: -12, duration: 1 }, 0)
@@ -70,7 +70,7 @@ function PinnedModel({ g, prev, index }: { g: GTModel; prev: string; index: numb
   const stroke = dark ? "#0e1013" : "#eef1f4";
   return (
     <section ref={root} id={`model-${g.ver}`} className={cn("relative isolate overflow-hidden py-24 lg:flex lg:h-[100svh] lg:min-h-[700px] lg:flex-col lg:py-0 lg:pt-20", col)} style={{ background: g.bg }} aria-label={`${g.name}: колеса ${g.wheels}`}>
-      <BlockGrid a={tone.a} b={tone.b} line={tone.line} gain={tone.gain} cells={g.ver === "pro" ? 18 : 14} rotation={g.ver === "sport" ? 0 : g.ver === "pro" ? 45 : 0} contrast={0.4} lineAmt={g.ver === "sport" ? 0.18 : 0.3} react={0.55} seed={index * 7 + 1} className="pointer-events-none absolute inset-0 -z-20 h-full w-full opacity-[0.5]" />
+      <BlockGrid a={tone.a} b={tone.b} line={tone.line} gain={tone.gain} cells={g.ver === "pro" ? 18 : 14} rotation={g.ver === "sport" ? 0 : g.ver === "pro" ? 45 : 0} contrast={0.4} lineAmt={g.ver === "sport" ? 0.18 : 0.3} react={0.55} seed={index * 7 + 1} className="pointer-events-none absolute inset-0 -z-20 h-full w-full opacity-[0.35]" />
       <div className="brushed-dark pointer-events-none absolute inset-0 -z-10 opacity-[0.12] mix-blend-overlay" />
       {/* огромное слово */}
       <div className="sz-word pointer-events-none absolute left-0 top-[18%] z-0 select-none whitespace-nowrap font-display text-[30vw] font-extrabold uppercase leading-none lg:top-[8%] lg:text-[26vw]" aria-hidden="true" style={{ WebkitTextStroke: `2px ${stroke}`, color: "transparent", opacity: 0.18 }}>{g.word} {g.word}</div>
@@ -90,7 +90,7 @@ function PinnedModel({ g, prev, index }: { g: GTModel; prev: string; index: numb
         <div className="sz-in relative z-10 -mx-5 lg:-mx-[11%]">
           <div className="relative mx-auto w-full max-w-[1500px]">
             <Bike3D ref={bike} variant={g.ver} yaw={0.6} pitch={0.12} sway={0.06} label={`${g.name}, 3D-модель`} className="h-[300px] sm:h-[420px] lg:h-[min(68svh,740px)]" />
-            <ObjectTracker wheels={g.wheels} facing="right" className="pointer-events-none absolute inset-0 h-full w-full" stroke="#c9a24b" />
+            <ObjectTracker wheels={g.wheels} facing="right" className="pointer-events-none absolute inset-0 h-full w-full" stroke="#9cc9ff" />
           </div>
         </div>
 
@@ -100,7 +100,7 @@ function PinnedModel({ g, prev, index }: { g: GTModel; prev: string; index: numb
             <span className="mono">{g.wheels}</span>
           </div>
           <div className="font-display mt-3 text-2xl font-extrabold uppercase">{g.name}</div>
-          <div className="gold-line mt-3" />
+          <div className="sky-line mt-3" />
           <dl className="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-1">
             <div><dt className="mono opacity-70">пик, целевой</dt><dd className="font-display text-2xl font-extrabold leading-none sm:text-4xl xl:text-5xl"><span ref={kwRef}>{fmtRange(g.kw)}</span> <span className="text-base font-semibold">кВт</span></dd></div>
             <div><dt className="mono opacity-70">энергия, целевая</dt><dd className="font-display whitespace-nowrap text-2xl font-extrabold leading-none sm:text-4xl xl:text-5xl"><span ref={kwhRef}>{fmtRange(g.kwh)}</span> <span className="text-base font-semibold">кВт·ч</span></dd></div>
@@ -143,11 +143,11 @@ function GTCard({ g }: { g: GTModel }) {
             <span className={cn("mono w-fit rounded-full px-3 py-1 font-bold", verBadge(g.ver))}>{verLabel(g.ver)}</span>
             <h3 className="font-display text-4xl font-extrabold uppercase leading-none sm:text-6xl">{g.name}</h3>
             <p className="muted text-lg">{t(g.tag[0], g.tag[1])} {t(g.look[0], g.look[1])}</p>
-            <div className="gold-line" />
+            <div className="sky-line" />
             <dl className="grid grid-cols-3 gap-4">
               {gtSpec(g).map((x) => <div key={x.k}><dt className="mono muted">{x.k}</dt><dd className="font-display text-xl font-extrabold sm:text-2xl">{x.v}</dd></div>)}
             </dl>
-            <p className="mono text-gold">целевая спецификация, уточняется</p>
+            <p className="mono text-sky">целевая спецификация, уточняется</p>
             <div className="font-display text-2xl font-extrabold">{rub(g.price)} <span className="mono muted">примерная цена</span></div>
             <div className="flex flex-wrap gap-2">
               <button className="btn-solid" onClick={() => { addCart({ id: g.id, name: g.name, sub: "примерная цена", price: g.price, variant: g.ver }); setCartOpen(true); }}>В корзину</button>
@@ -167,7 +167,7 @@ function GTCard({ g }: { g: GTModel }) {
         <div>
           <div className="font-display text-3xl font-extrabold uppercase">{g.name}</div>
           <div className="mono mt-1 text-frost/80">{fmtRange(g.kw)} кВт / {fmtRange(g.kwh)} кВт·ч</div>
-          <div className="mt-2 flex items-center justify-between text-sm"><span>{rub(g.price)} <span className="mono opacity-70">прим.</span></span><span className="mono text-gold">подробнее</span></div>
+          <div className="mt-2 flex items-center justify-between text-sm"><span>{rub(g.price)} <span className="mono opacity-70">прим.</span></span><span className="mono text-sky">подробнее</span></div>
         </div>
       </div>
     </MorphTile>
@@ -177,7 +177,7 @@ function GTCard({ g }: { g: GTModel }) {
 export function LineupGrid() {
   const { t } = useApp();
   return (
-    <section id="lineup" className="dark-zone relative overflow-hidden py-20 sm:py-28" aria-labelledby="lineup-h">
+    <section id="lineup" className="dark-zone relative overflow-hidden py-24 sm:py-36" aria-labelledby="lineup-h">
       <BlockGrid a="#07080a" b="#1c2026" line="#59616b" gain={0.8} cells={16} lineAmt={0.22} react={0.5} className="pointer-events-none absolute inset-0 -z-10 h-full w-full opacity-60" seed={11} />
       <div className="container-x">
         <Reveal>
@@ -230,7 +230,7 @@ export function Directions() {
                     <span className={cn("mono absolute left-4 top-4 rounded-full px-3 py-1 font-bold", verBadge(g.ver))}>{verLabel(g.ver)}</span>
                   </div>
                   <div className="p-5">
-                    <div className="mono text-gold">{d.en}</div>
+                    <div className="mono text-sky">{d.en}</div>
                     <h3 className="font-display text-2xl font-extrabold uppercase leading-tight">{g.name}</h3>
                     <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                       {gtSpec(g).map((s) => <div key={s.k} className="border-t border-frost/20 pt-2"><dt className="mono muted">{s.k}</dt><dd className="font-semibold">{s.v}</dd></div>)}
@@ -250,7 +250,7 @@ export function Directions() {
               <GlowCard customSize glowColor="flare" className="h-full !p-0">
                 <div className="flex h-full flex-col justify-between gap-6 p-6 sm:p-8">
                   <div>
-                    <div className="mono text-gold">{d.en} / под заказ</div>
+                    <div className="mono text-sky">{d.en} / под заказ</div>
                     <h3 className="font-display mt-2 text-3xl font-extrabold uppercase leading-tight sm:text-4xl">{d.ids.length === 0 ? t("Подберем под твою задачу", "Подберем под вашу задачу") : t("Нужно что-то еще?", "Нужно что-то другое?")}</h3>
                     <p className="muted mt-3 max-w-md">{t("Кроме линейки GT возим технику других классов под заказ: подбираем, считаем доставку и обслуживаем.", "Кроме линейки GT поставляем технику других классов под заказ: подбираем, считаем доставку и обслуживаем.")}</p>
                   </div>

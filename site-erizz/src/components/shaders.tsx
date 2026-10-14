@@ -219,7 +219,8 @@ void main(){
   vec3 col=mix(cA,cB,v*gain*cellJit);
   vec2 e=min(f,1.-f); float d=min(e.x,e.y);
   float l=1.-smoothstep(thick*.5,thick*.5+soft*.06+.004,d);
-  col=mix(col,cG,l*lineAmt*(.35+.65*v+near*.6));
+  col=mix(col,cG,l*lineAmt*.55*(.35+.65*v+near*.6));
+  col=mix(cA,col,.5);
   gl_FragColor=vec4(col,1.);
 }`;
 export interface BlockGridProps { a?: string; b?: string; line?: string; cells?: number; scale?: number; contrast?: number; balance?: number; seed?: number; thick?: number; soft?: number; rotation?: number; vari?: number; gain?: number; react?: number; lineAmt?: number; speed?: number; className?: string; style?: CSSProperties }
@@ -263,9 +264,9 @@ export function ChromeText({ text, className, style }: { text: string; className
       const c = tx.getContext("2d")!;
       c.clearRect(0, 0, tx.width, tx.height);
       let fs = tx.height * 0.78;
-      c.font = `800 ${fs}px Unbounded, sans-serif`;
+      c.font = `500 ${fs}px Unbounded, sans-serif`;
       const w = c.measureText(text).width;
-      if (w > tx.width * 0.96) { fs *= (tx.width * 0.96) / w; c.font = `800 ${fs}px Unbounded, sans-serif`; }
+      if (w > tx.width * 0.96) { fs *= (tx.width * 0.96) / w; c.font = `500 ${fs}px Unbounded, sans-serif`; }
       c.textAlign = "center"; c.textBaseline = "middle"; c.fillStyle = "#fff";
       c.fillText(text, tx.width / 2, tx.height * 0.54);
       gl.viewport(0, 0, cv.width, cv.height);

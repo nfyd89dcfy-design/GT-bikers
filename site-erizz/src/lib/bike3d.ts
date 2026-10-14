@@ -19,7 +19,7 @@ interface Pal {
 export const PAL: Record<Variant, Pal> = {
   base: { frame: "#101216", frameM: 0.45, frameR: 0.62, plastic: "#15171b", plasticClear: false, rim: "#3d434b", rimM: 0.95, rimR: 0.38, lowers: "#1b1e23", stanch: "#4a5058", spring: "#ff4a2b", battery: "#1a1d22", batteryM: 0.6, batteryR: 0.5, clamp: "#16181c", clampM: 0.7, clampR: 0.4, caliper: "#ff4a2b", seat: "#0c0d0f", decal: "#ff4a2b", stripe: "#ff4a2b", trim: null, wheelsIn: [17, 14], s: 0.9 },
   sport: { frame: "#9aa3ad", frameM: 0.95, frameR: 0.32, plastic: "#1f242a", plasticClear: true, rim: "#ff4a2b", rimM: 0.55, rimR: 0.3, lowers: "#c4ccd4", stanch: "#eef1f4", spring: "#ff4a2b", battery: "#262b32", batteryM: 0.8, batteryR: 0.35, clamp: "#e4e8ec", clampM: 1, clampR: 0.08, caliper: "#e4e8ec", seat: "#0c0d0f", decal: "#f2f4f6", stripe: "#ff4a2b", trim: "#e4e8ec", wheelsIn: [19, 18], s: 0.96 },
-  pro: { frame: "#4d0f1e", frameM: 0.2, frameR: 0.32, plastic: "#6c1629", plasticClear: true, rim: "#c9a24b", rimM: 1, rimR: 0.24, lowers: "#c9a24b", stanch: "#e0bd6a", spring: "#c9a24b", battery: "#dfe4e9", batteryM: 1, batteryR: 0.1, clamp: "#c9a24b", clampM: 1, clampR: 0.2, caliper: "#c9a24b", seat: "#0c0d0f", decal: "#e6c46f", stripe: "#c9a24b", trim: "#c9a24b", wheelsIn: [21, 18], s: 1 },
+  pro: { frame: "#4d0f1e", frameM: 0.2, frameR: 0.32, plastic: "#6c1629", plasticClear: true, rim: "#2a5bd7", rimM: 0.85, rimR: 0.28, lowers: "#2a5bd7", stanch: "#c4d9f2", spring: "#9cc9ff", battery: "#dfe4e9", batteryM: 1, batteryR: 0.1, clamp: "#8db4e8", clampM: 1, clampR: 0.2, caliper: "#9cc9ff", seat: "#0c0d0f", decal: "#bcd9ff", stripe: "#9cc9ff", trim: "#bcd0e8", wheelsIn: [21, 18], s: 1 },
 };
 
 /* ------------------------------------------------------------ GLB */

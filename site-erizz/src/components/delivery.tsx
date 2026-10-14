@@ -55,7 +55,7 @@ export function Delivery() {
         <Reveal>
           <Eyebrow n="09">доставка</Eyebrow>
           <H2><span id="del-h">{t("Доставка", "Доставка")}</span> <span className="chrome-text-dark">по России</span></H2>
-          <div className="gold-line mt-6 max-w-md" />
+          <div className="sky-line mt-6 max-w-md" />
           <p className="mt-5 max-w-2xl text-lg text-mute">{t("Отправляем из Москвы и Ростова-на-Дону в любой город. Выбери город на карте и посмотри примерный срок.", "Отправляем из Москвы и Ростова-на-Дону в любой город. Выберите город на карте и посмотрите примерный срок.")}</p>
         </Reveal>
 
@@ -80,8 +80,8 @@ export function Delivery() {
                 const [x, y] = pr(c.lon, c.lat);
                 return (
                   <g key={c.n}>
-                    <circle cx={x} cy={y} r="14" fill="none" stroke="#c9a24b" strokeWidth="1.5" opacity={i === from ? 1 : 0.4}><animate attributeName="r" values="9;16;9" dur="2.4s" repeatCount="indefinite" /></circle>
-                    <circle cx={x} cy={y} r="7" fill="#c9a24b" stroke="#0e1013" strokeWidth="2" />
+                    <circle cx={x} cy={y} r="14" fill="none" stroke="#9cc9ff" strokeWidth="1.5" opacity={i === from ? 1 : 0.4}><animate attributeName="r" values="9;16;9" dur="2.4s" repeatCount="indefinite" /></circle>
+                    <circle cx={x} cy={y} r="7" fill="#9cc9ff" stroke="#0e1013" strokeWidth="2" />
                     <text x={x + (i ? 12 : -12)} y={y + (i ? 20 : -14)} textAnchor={i ? "start" : "end"} fontSize="13" fontFamily="Onest" fontWeight="800" fill="#f1d994">{c.n}</text>
                   </g>
                 );
@@ -97,7 +97,7 @@ export function Delivery() {
             <div className="rounded-3xl border border-ink/25 bg-frost p-6" aria-live="polite">
               <div className="mono text-mute">{o.n} → {to}</div>
               <div className="font-display mt-2 text-4xl font-extrabold uppercase leading-none">{e.txt}</div>
-              <div className="gold-line my-3" />
+              <div className="sky-line my-3" />
               <p className="text-mute">Расстояние около {e.d} км. Срок <b className="text-ink">примерный</b>: зависит от транспортной компании, погоды и загрузки.</p>
             </div>
             <label className="mono text-mute" htmlFor="del-sel">другой город</label>
@@ -110,7 +110,7 @@ export function Delivery() {
             <li key={s.h}>
               <GlowCard customSize glowColor="flare" className="touch-pan-y! h-full min-h-[220px] !bg-ink text-frost">
                 <div>
-                  <div className="flex items-center justify-between"><s.icon size={30} className="text-gold" aria-hidden="true" /><span className="font-display text-5xl font-extrabold text-frost/20">0{i + 1}</span></div>
+                  <div className="flex items-center justify-between"><s.icon size={30} className="text-sky" aria-hidden="true" /><span className="font-display text-5xl font-extrabold text-frost/20">0{i + 1}</span></div>
                   <h3 className="font-display mt-4 text-2xl font-extrabold uppercase">{s.h}</h3>
                 </div>
                 <p className={cn("text-frost/80")}>{t(s.ty, s.vy)}</p>

@@ -92,7 +92,7 @@ function Tour() {
       for (let i = 0; i < 5; i++) mk(2.4, 0.06, 0.12, 0xeef1f4, -5.2 + i * 2.6, 3.9, -1.5 + (i % 2 ? 2 : 0), 0xeef1f4);
       mk(14, 0.04, 0.1, 0xff4a2b, 0, 0.05, -5.9, 0xff4a2b);
       // кастом-стена: образцы цветов
-      [0xff4a2b, 0xb9c2cc, 0xeef1f4, 0x1c2026, 0xc9a24b].forEach((c, i) => { for (let r = 0; r < 3; r++) mk(0.6, 0.6, 0.12, c, -2.4 + i * 1.2, 1.1 + r * 0.8, -5.8); });
+      [0xff4a2b, 0xb9c2cc, 0xeef1f4, 0x1c2026, 0x2a5bd7].forEach((c, i) => { for (let r = 0; r < 3; r++) mk(0.6, 0.6, 0.12, c, -2.4 + i * 1.2, 1.1 + r * 0.8, -5.8); });
       // верстак
       mk(3, 1, 0.9, 0x2f343c, -3.5, 0.5, 5.4); mk(3, 0.06, 1, 0xff4a2b, -3.5, 1.02, 5.4, 0xff4a2b);
       const bk = await import("@/lib/bike3d");
@@ -167,11 +167,11 @@ function Tour() {
           ))}
         </div>
         {!gl && <div className="absolute inset-0 grid place-items-center p-6 text-center text-frost"><p>WebGL недоступен: 3D-тур появится в браузере с WebGL. Схема зала справа.</p></div>}
-        <div className="mono absolute left-4 top-4 rounded-full bg-deep/75 px-3 py-1 text-gold">прототип 3D-тура</div>
+        <div className="mono absolute left-4 top-4 rounded-full bg-deep/75 px-3 py-1 text-sky">прототип 3D-тура</div>
         <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between gap-3 text-frost">
           <button className="grid h-11 w-11 cursor-pointer place-items-center rounded-full bg-deep/80 hover:bg-flare hover:text-ink" aria-label="Предыдущая точка" onClick={() => go.current(idx - 1)}><ChevronLeft /></button>
           <div className="min-w-0 flex-1 rounded-2xl bg-deep/80 px-4 py-2 backdrop-blur">
-            <div className="mono text-gold">точка {s.n} из {STOPS.length}</div>
+            <div className="mono text-sky">точка {s.n} из {STOPS.length}</div>
             <div className="font-display text-lg font-extrabold uppercase leading-tight">{s.h}</div>
             <div className="hidden text-sm text-frost/85 sm:block">{t(s.ty, s.vy)}</div>
           </div>

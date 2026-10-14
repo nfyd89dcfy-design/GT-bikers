@@ -18,12 +18,12 @@ export function Viewer3D() {
   const api = useRef<BikeApi>(null);
   const g = GT.find((x) => x.ver === ver)!;
   return (
-    <section id="viewer" className="dark-zone relative isolate overflow-hidden py-20 sm:py-28" aria-labelledby="viewer-h">
+    <section id="viewer" className="dark-zone relative isolate overflow-hidden py-24 sm:py-36" aria-labelledby="viewer-h">
       <BlockGrid a="#07080a" b="#1b2026" line="#59616b" gain={0.85} cells={20} lineAmt={0.25} react={0.7} seed={21} className="absolute inset-0 -z-10 h-full w-full opacity-80" />
       <div className="container-x">
         <Reveal>
           <Eyebrow n="04" dark>3D / AR</Eyebrow>
-          <H2><span id="viewer-h">{t("Покрути", "Рассмотрите")}</span> <span className="text-gold">{t("байк как хочешь", "байк со всех сторон")}</span></H2>
+          <H2><span id="viewer-h">{t("Покрути", "Рассмотрите")}</span> <span className="text-sky">{t("байк как хочешь", "байк со всех сторон")}</span></H2>
           <p className="muted mt-4 max-w-2xl text-lg">
             {t("Тяни, чтобы вращать, и меняй модель и цвет пластика. Это процедурные модели E-Rizz, в рабочей версии здесь будут сканы реальных байков.", "Потяните, чтобы повернуть, и меняйте модель и цвет пластика. Это процедурные модели E-Rizz, в рабочей версии здесь будут сканы реальных байков.")}
           </p>
@@ -32,17 +32,17 @@ export function Viewer3D() {
           <div className="relative min-h-[360px] overflow-hidden rounded-3xl border border-frost/20 bg-deep/40 sm:min-h-[580px]" data-cursor="drag">
             <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_58%,rgba(185,194,204,.2),transparent_70%)]" />
             <Bike3D ref={api} variant={ver} paint={PAINT[paint][1]} interactive yaw={-0.55} sway={0.05} label={`${g.name}, 3D-модель: тяните, чтобы повернуть`} className="absolute inset-0 h-full w-full" />
-            <span className="mono absolute left-4 top-4 rounded-full bg-deep/70 px-3 py-1 text-gold">{g.name} / колеса {g.wheels}</span>
+            <span className="mono absolute left-4 top-4 rounded-full bg-deep/70 px-3 py-1 text-sky">{g.name} / колеса {g.wheels}</span>
           </div>
           <div className="flex flex-col gap-5 rounded-3xl border border-frost/20 bg-deep/50 p-5 backdrop-blur">
             <div>
-              <div className="mono mb-2 text-gold">модель</div>
+              <div className="mono mb-2 text-sky">модель</div>
               <div className="flex flex-wrap gap-2" role="group" aria-label="Модель">
                 {GT.map((x) => <button key={x.id} aria-pressed={ver === x.ver} onClick={() => setVer(x.ver)} className="chip text-sm !text-frost aria-pressed:!text-ink">{x.short}</button>)}
               </div>
             </div>
             <div>
-              <div className="mono mb-2 text-gold">цвет пластика</div>
+              <div className="mono mb-2 text-sky">цвет пластика</div>
               <div className="flex flex-wrap gap-2" role="group" aria-label="Цвет пластика">
                 {PAINT.map(([n, c], i) => (
                   <button key={n} aria-pressed={paint === i} onClick={() => setPaint(i)} className="chip flex items-center gap-2 !px-3 text-sm !text-frost aria-pressed:!text-ink">
@@ -52,7 +52,7 @@ export function Viewer3D() {
               </div>
             </div>
             <div>
-              <label htmlFor="yaw" className="mono mb-2 block text-gold">{t("поверни", "поворот")}</label>
+              <label htmlFor="yaw" className="mono mb-2 block text-sky">{t("поверни", "поворот")}</label>
               <input id="yaw" type="range" min={-3.14} max={3.14} step={0.01} value={yaw} onChange={(e) => { setYaw(+e.target.value); api.current?.setYaw(+e.target.value); }} className="h-11 w-full accent-[#ff4a2b]" />
             </div>
             <InteractiveHoverButton text="Посмотреть дома (AR)" className="h-14 w-full border-frost/40 bg-transparent pl-8 text-frost" onClick={() => setAr(true)} data-cursor="AR" />

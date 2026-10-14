@@ -12,28 +12,28 @@ import { cn } from "@/lib/utils";
 
 /* ---------------------------------------------------------------- Media */
 const SOCS = [
-  { n: "Telegram", h: "@erizz_stub", d: ["Дропы, анонсы и закулисье", "Анонсы поставок и новости"], icon: Send },
-  { n: "YouTube", h: "E-Rizz", d: ["Обзоры, тесты и send it", "Обзоры и тест-драйвы моделей"], icon: Clapperboard },
+  { n: "Telegram", h: "@erizz_stub", d: ["Анонсы поставок и закулисье", "Анонсы поставок и новости"], icon: Send },
+  { n: "YouTube", h: "E-Rizz", d: ["Обзоры и тесты моделей", "Обзоры и тест-драйвы моделей"], icon: Clapperboard },
   { n: "Instagram", h: "@erizz.stub", d: ["Фото клиентов и кастом-билды", "Фото клиентов и кастомные сборки"], icon: Camera },
   { n: "VK", h: "vk.com/erizz_stub", d: ["Сообщество и розыгрыши", "Сообщество, новости и отзывы"], icon: Users },
 ];
 type Shot = { t: string; d?: string; v: "base" | "sport" | "pro"; yaw: number; c: string };
 const VIDS: Shot[] = [
-  { t: "Dune roost: GT Sport в песках", d: "0:48", v: "sport", yaw: -0.9, c: "Тест на песке, 3 камеры" },
-  { t: "GT Pro: первый drop", d: "1:12", v: "pro", yaw: -0.4, c: "Обзор и замеры" },
+  { t: "GT Sport в песках", d: "0:48", v: "sport", yaw: -0.9, c: "Тест на песке, 3 камеры" },
+  { t: "GT Pro: первый выезд", d: "1:12", v: "pro", yaw: -0.4, c: "Обзор и замеры" },
   { t: "Ночной город, GT Base", d: "0:36", v: "base", yaw: -0.7, c: "Город после заката" },
-  { t: "Прыжок на GT Pro", d: "0:29", v: "pro", yaw: 0.5, c: "Slow-mo send it" },
+  { t: "Прыжок на GT Pro", d: "0:29", v: "pro", yaw: 0.5, c: "Замедленная съемка" },
   { t: "Юг, GT Sport у моря", d: "1:05", v: "sport", yaw: 0.2, c: "Поездка к морю" },
   { t: "Custom build за 10 минут", d: "0:58", v: "base", yaw: -0.2, c: "Сборка в шоуруме" },
 ];
 
 const PHOTOS: Shot[] = [
-  { t: "Рассвет, песок и roost", v: "sport", yaw: -0.6, c: "Дюны под Ростовом" },
-  { t: "Бордо и золото", v: "pro", yaw: -0.9, c: "Студийный кадр" },
+  { t: "Рассвет и песок", v: "sport", yaw: -0.6, c: "Дюны под Ростовом" },
+  { t: "Бордо и синий", v: "pro", yaw: -0.9, c: "Студийный кадр" },
   { t: "Лесной трейл", v: "base", yaw: -0.3, c: "Утро в лесу" },
   { t: "Хром и сталь", v: "sport", yaw: 0.7, c: "Детали подвески" },
   { t: "Город на закате", v: "base", yaw: 0.4, c: "Трасса на закате" },
-  { t: "Золотые обода", v: "pro", yaw: 0.2, c: "Колесо крупно" },
+  { t: "Синие обода", v: "pro", yaw: 0.2, c: "Колесо крупно" },
 ];
 
 export function Media() {
@@ -41,7 +41,7 @@ export function Media() {
   const [tab, setTab] = useState<"soc" | "vid" | "ph">("soc");
   const items = tab === "vid" ? VIDS.map((v) => ({ ...v, vid: true })) : PHOTOS.map((v) => ({ ...v, d: "", vid: false }));
   return (
-    <section id="media" className="dark-zone relative isolate overflow-hidden py-20 sm:py-28" aria-labelledby="media-h">
+    <section id="media" className="dark-zone relative isolate overflow-hidden py-24 sm:py-36" aria-labelledby="media-h">
       <Boids className="absolute inset-0 -z-10 h-full w-full opacity-50" count={170} a="#8d97a2" b="#ff4a2b" />
       <div className="container-x">
         <Reveal>
@@ -59,7 +59,7 @@ export function Media() {
             {SOCS.map((s) => (
               <a key={s.n} href="#media" onClick={(e) => { e.preventDefault(); say("Ссылка-заглушка: подставим настоящий канал"); }} className="block">
                 <GlowCard customSize glowColor="flare" className="touch-pan-y! h-full min-h-[200px]">
-                  <div><s.icon size={30} className="text-gold" aria-hidden="true" /><div className="font-display mt-4 text-2xl font-extrabold uppercase">{s.n}</div><div className="mono mt-1 text-gold">{s.h}</div></div>
+                  <div><s.icon size={30} className="text-sky" aria-hidden="true" /><div className="font-display mt-4 text-2xl font-extrabold uppercase">{s.n}</div><div className="mono mt-1 text-sky">{s.h}</div></div>
                   <p className="muted text-sm">{t(s.d[0], s.d[1])} <span className="mono">(заглушка)</span></p>
                 </GlowCard>
               </a>
@@ -73,7 +73,7 @@ export function Media() {
                 detail={
                   <div className="relative flex h-full min-h-[320px] flex-col justify-end bg-gradient-to-t from-deep/95 via-deep/30 to-transparent p-6 text-frost sm:p-10">
                     {v.vid && <div className="absolute left-1/2 top-1/2 grid h-24 w-24 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-flare text-ink"><Play fill="currentColor" size={36} /></div>}
-                    <p className="mono text-gold">{v.vid ? "плеер-заглушка" : "3D-рендер"} / {v.c}</p>
+                    <p className="mono text-sky">{v.vid ? "плеер-заглушка" : "3D-рендер"} / {v.c}</p>
                     <h3 className="font-display mt-2 text-3xl font-extrabold uppercase sm:text-5xl">{v.t}</h3>
                     <p className="muted mt-2 max-w-xl">{v.vid ? "В рабочей версии здесь будет настоящий плеер. Сейчас это рендер-постер." : "Рендер модели. Свои фото можно будет отправить в канал."}</p>
                   </div>
@@ -103,7 +103,7 @@ const SVC = [
 export function Service() {
   const { t } = useApp();
   return (
-    <section id="service" className="relative py-20 sm:py-28" aria-labelledby="svc-h">
+    <section id="service" className="relative py-24 sm:py-36" aria-labelledby="svc-h">
       <div className="container-x">
         <Reveal>
           <Eyebrow n="12">сервис</Eyebrow>
@@ -156,7 +156,7 @@ export function Drive() {
       <div className="container-x grid gap-10 lg:grid-cols-[1fr_1fr]">
         <Reveal>
           <Eyebrow n="13" dark>тест-драйв</Eyebrow>
-          <H2><span id="drive-h">{t("Кати", "Запишитесь")}</span> <span className="text-gold">{t("до покупки", "на тест-драйв")}</span></H2>
+          <H2><span id="drive-h">{t("Кати", "Запишитесь")}</span> <span className="text-sky">{t("до покупки", "на тест-драйв")}</span></H2>
           <p className="muted mt-4 max-w-md text-lg">{t("Выбери город, дату и модель. Мы подтвердим время и подготовим байк.", "Выберите город, дату и модель. Мы подтвердим время и подготовим технику.")}</p>
           <div className="mt-8 w-full max-w-xl overflow-hidden rounded-3xl" style={{ aspectRatio: "16/10", background: `linear-gradient(150deg, ${(GT_BY[driveFor] ?? GT[1]).bg}, #0e1013 85%)` }}><Bike3D variant={(GT_BY[driveFor] ?? GT[1]).ver} yaw={-0.5} sway={0.1} label={`${modelName(driveFor)}, 3D-модель`} className="h-full w-full" /></div>
         </Reveal>
@@ -210,19 +210,19 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-4">
           <div className="md:col-span-2">
             <p className="font-display text-3xl font-extrabold uppercase leading-none">{t("Rizz – это когда", "E-Rizz")}</p>
-            <p className="font-display text-3xl font-extrabold uppercase leading-none text-gold">{t("на тебя смотрят.", "Электро и не только.")}</p>
+            <p className="font-display text-3xl font-extrabold uppercase leading-none text-sky">{t("Электро и не только.", "Электро и не только.")}</p>
             <div className="mt-6 flex flex-wrap gap-3">
               <InteractiveHoverButton text="Опт и дилерам" className="h-12 w-52 border-frost/40 bg-transparent text-frost" onClick={() => say("Заглушка: форма запроса оптового прайса")} />
               <button className="btn-ghost" onClick={() => scrollToId("drive")}>Тест-драйв</button>
             </div>
           </div>
           <div>
-            <div className="mono mb-3 text-gold">контакты (заглушки)</div>
+            <div className="mono mb-3 text-sky">контакты (заглушки)</div>
             <ul className="space-y-2 text-sm"><li>+7 (000) 000-00-00</li><li>hello@erizz.example</li><li>Ростов-на-Дону, ул. Примерная, 0</li><li>Москва, Краснодарский край</li></ul>
           </div>
           <div>
-            <div className="mono mb-3 text-gold">соцсети (заглушки)</div>
-            <ul className="space-y-1 text-sm">{["Telegram", "YouTube", "Instagram", "VK"].map((s) => <li key={s}><a href="#" onClick={stub} className="inline-flex min-h-9 items-center underline underline-offset-4 hover:text-gold">{s}</a></li>)}</ul>
+            <div className="mono mb-3 text-sky">соцсети (заглушки)</div>
+            <ul className="space-y-1 text-sm">{["Telegram", "YouTube", "Instagram", "VK"].map((s) => <li key={s}><a href="#" onClick={stub} className="inline-flex min-h-9 items-center underline underline-offset-4 hover:text-sky">{s}</a></li>)}</ul>
           </div>
         </div>
         <div className="relative mt-10 h-[22vw] min-h-[90px] w-full">

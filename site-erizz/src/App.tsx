@@ -11,7 +11,7 @@ import { Delivery } from "@/components/delivery";
 import { Showroom } from "@/components/showroom";
 import { CartDrawer, Drive, Footer, Media, Service } from "@/components/media";
 
-const WORDS = ["drop", "roost", "send it", "base", "sport", "pro", "custom", "e-rizz"];
+const WORDS = ["base", "17/14", "sport", "19/18", "pro", "21/18", "e-rizz"];
 
 function Marquee({ reverse, dark }: { reverse?: boolean; dark?: boolean }) {
   const row = [...WORDS, ...WORDS];
@@ -61,14 +61,13 @@ function Page() {
       <main>
         <Hero />
         <Marquee />
-        <Space word="SEND IT" />
+        <Space word="GT" />
         <PinnedSizes />
-        <Marquee dark reverse />
         <LineupGrid />
         <Directions />
         <Assembly />
         <Perks />
-        <Space word="ROOST" />
+        <Space word="E-RIZZ" />
         <Viewer3D />
         <Configurator />
         <Quiz />

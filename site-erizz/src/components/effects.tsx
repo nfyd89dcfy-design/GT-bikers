@@ -116,7 +116,7 @@ export function ParticleField({ src, text, count = 5000, cursorMode = "push", cu
 
 /* ============================================================ ObjectTracker */
 interface Region { n: string; x: number; y: number; w: number; h: number }
-export function ObjectTracker({ wheels = "19/18", className, stroke = "#c9a24b", accent = "#ff4a2b", facing = "left" }: { wheels?: string; className?: string; stroke?: string; accent?: string; facing?: "left" | "right" }) {
+export function ObjectTracker({ wheels = "19/18", className, stroke = "#9cc9ff", accent = "#ff4a2b", facing = "left" }: { wheels?: string; className?: string; stroke?: string; accent?: string; facing?: "left" | "right" }) {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const cv = ref.current!; const ctx = cv.getContext("2d"); if (!ctx) return;
@@ -195,7 +195,7 @@ export function BoltCursor() {
     let x = -100, y = -100, tx = -100, ty = -100, rot = 0, sc = 1, tsc = 1, raf = 0, W = 0, H = 0;
     type S = { x: number; y: number; vx: number; vy: number; life: number; max: number; col: string };
     const sparks: S[] = [];
-    const cols = ["#ffffff", "#ffe2a0", "#ff4a2b", "#c9a24b", "#b9c2cc"];
+    const cols = ["#ffffff", "#cfe4ff", "#ff4a2b", "#9cc9ff", "#b9c2cc"];
     const rs = () => { W = c.width = innerWidth; H = c.height = innerHeight; };
     rs();
     const mv = (e: PointerEvent) => {

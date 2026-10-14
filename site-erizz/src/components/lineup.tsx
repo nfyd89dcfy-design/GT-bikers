@@ -18,7 +18,7 @@ const STEPS = [
 const CALLS = [
   { l: "батарея 4,5-5,5 кВт·ч", x: 47, y: 50, at: 0.52 },
   { l: "пик 25-35 кВт", x: 40, y: 72, at: 0.6 },
-  { l: "вилка и обода золотые", x: 71, y: 36, at: 0.68 },
+  { l: "вилка и обода синие", x: 71, y: 36, at: 0.68 },
   { l: "моноамортизатор", x: 27, y: 44, at: 0.76 },
 ];
 
@@ -36,7 +36,7 @@ export function Assembly() {
       const mm = gsap.matchMedia();
       mm.add({ wide: "(min-width: 1024px)", narrow: "(max-width: 1023px)" }, (c) => {
         const wide = c.conditions!.wide;
-        const tl = gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: wide ? { trigger: root.current, start: "top top", end: "+=1500", scrub: 0.6, pin: true, anticipatePin: 1 } : { trigger: root.current, start: "top 80%", end: "bottom 30%", scrub: 0.6 } });
+        const tl = gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: wide ? { trigger: root.current, start: "top top", end: "+=1500", scrub: 1.1, pin: true, anticipatePin: 1 } : { trigger: root.current, start: "top 80%", end: "bottom 30%", scrub: 1.1 } });
         tl.fromTo(y, { v: 1.0 }, { v: -0.5, duration: 0.55, onUpdate: () => bike.current?.setYaw(y.v) }, 0)
           .to(y, { v: -0.7, duration: 0.45, onUpdate: () => bike.current?.setYaw(y.v) }, 0.55);
         CALLS.forEach((c2, i) => tl.fromTo(`.asm-call-${i}`, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.08, ease: "power2.out" }, c2.at));
@@ -69,7 +69,7 @@ export function Assembly() {
         <div className="relative z-10 grid gap-3 pb-6 sm:grid-cols-4">
           {STEPS.map((s, i) => (
             <div key={s[0]} className={cn("asm-step border-t border-frost/30 pt-2", `asm-step-${i}`)}>
-              <div className="mono text-gold">0{i + 1}</div>
+              <div className="mono text-sky">0{i + 1}</div>
               <div className="font-display text-sm font-bold uppercase sm:text-base">{s[0]}</div>
               <p className="muted hidden text-sm sm:block">{s[1]}</p>
             </div>
@@ -92,11 +92,11 @@ const PERKS = [
 export function Perks() {
   const { t } = useApp();
   return (
-    <section className="dark-zone relative py-20 sm:py-28" aria-labelledby="perks-h">
+    <section className="dark-zone relative py-24 sm:py-36" aria-labelledby="perks-h">
       <div className="container-x">
         <Reveal>
           <Eyebrow n="05" dark>почему мы</Eyebrow>
-          <H2><span id="perks-h">{t("Не просто", "Больше,")}</span> <span className="text-gold">{t("магазин", "чем магазин")}</span></H2>
+          <H2><span id="perks-h">{t("Не просто", "Больше,")}</span> <span className="text-sky">{t("магазин", "чем магазин")}</span></H2>
         </Reveal>
         <div className="mt-10 grid gap-4 lg:grid-cols-12">
           {PERKS.map((p) => (
@@ -107,7 +107,7 @@ export function Perks() {
                   <p.icon className="absolute right-5 top-5 text-frost/10" size={150} strokeWidth={1} aria-hidden="true" />
                   <div className="absolute inset-0 bg-gradient-to-t from-deep via-deep/30 to-transparent" />
                   <div className="relative flex h-full flex-col justify-end p-5">
-                    <p.icon className="mb-3 text-gold" size={28} aria-hidden="true" />
+                    <p.icon className="mb-3 text-sky" size={28} aria-hidden="true" />
                     <h3 className="font-display text-2xl font-extrabold uppercase">{p.h}</h3>
                     <p className="mt-1 max-w-md text-frost/90">{t(p.ty, p.vy)}</p>
                   </div>
@@ -118,7 +118,7 @@ export function Perks() {
         </div>
         <ul className="mt-10 grid gap-3 text-sm sm:grid-cols-3">
           {["Розница и опт", "Москва, Ростов-на-Дону, Краснодарский край", "Байк под ключ: подбор, сборка, выдача"].map((x) => (
-            <li key={x} className="flex items-center gap-2 border-t border-frost/25 pt-3"><Check size={16} className="text-gold" aria-hidden="true" />{x}</li>
+            <li key={x} className="flex items-center gap-2 border-t border-frost/25 pt-3"><Check size={16} className="text-sky" aria-hidden="true" />{x}</li>
           ))}
         </ul>
       </div>

@@ -12,7 +12,7 @@ const InteractiveHoverButton = React.forwardRef<HTMLButtonElement, InteractiveHo
       <button
         ref={ref}
         className={cn(
-          "group relative w-32 cursor-pointer overflow-hidden rounded-full border border-border bg-background p-2 text-center font-semibold text-foreground",
+          "group relative w-32 cursor-pointer overflow-hidden rounded-md border border-border bg-background p-2 text-center font-semibold text-foreground",
           className
         )}
         {...props}
@@ -24,7 +24,7 @@ const InteractiveHoverButton = React.forwardRef<HTMLButtonElement, InteractiveHo
           <span>{text}</span>
           <ArrowRight />
         </div>
-        <div className="absolute left-[20%] top-[40%] h-2 w-2 scale-[1] rounded-lg bg-primary transition-all duration-300 group-hover:left-[0%] group-hover:top-[0%] group-hover:h-full group-hover:w-full group-hover:scale-[1.8] group-hover:bg-primary group-focus-visible:left-[0%] group-focus-visible:top-[0%] group-focus-visible:h-full group-focus-visible:w-full group-focus-visible:scale-[1.8]"></div>
+        <div className="absolute left-[20%] top-[40%] h-2 w-2 scale-[1] rounded-sm bg-primary transition-all duration-300 group-hover:left-[0%] group-hover:top-[0%] group-hover:h-full group-hover:w-full group-hover:scale-[1.8] group-hover:bg-primary group-focus-visible:left-[0%] group-focus-visible:top-[0%] group-focus-visible:h-full group-focus-visible:w-full group-focus-visible:scale-[1.8]"></div>
       </button>
     );
   }
