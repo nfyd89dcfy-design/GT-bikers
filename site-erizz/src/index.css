@@ -1,0 +1,74 @@
+@import "tailwindcss";
+@import "@fontsource/unbounded/cyrillic-500.css";
+@import "@fontsource/unbounded/latin-500.css";
+@import "@fontsource/unbounded/cyrillic-800.css";
+@import "@fontsource/unbounded/latin-800.css";
+@import "@fontsource/onest/cyrillic-400.css";
+@import "@fontsource/onest/latin-400.css";
+@import "@fontsource/onest/cyrillic-600.css";
+@import "@fontsource/onest/latin-600.css";
+@import "@fontsource-variable/martian-mono/wght.css";
+
+@theme {
+  --font-display: "Unbounded", "Onest", sans-serif;
+  --font-sans: "Onest", system-ui, sans-serif;
+  --font-mono: "Martian Mono Variable", ui-monospace, monospace;
+
+  --color-ink: #0b2a2e;
+  --color-kelp: #123f43;
+  --color-deep: #071b1e;
+  --color-sleet: #e3ebe8;
+  --color-frost: #f4f8f6;
+  --color-flare: #ff4a2b;
+  --color-aqua: #6fe0d0;
+  --color-mute: #4d6b69;
+
+  --color-background: var(--color-sleet);
+  --color-foreground: var(--color-ink);
+  --color-primary: var(--color-flare);
+  --color-primary-foreground: var(--color-ink);
+  --color-border: rgb(11 42 46 / 0.28);
+}
+
+:root { color-scheme: light; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--color-sleet); color: var(--color-ink); font-family: var(--font-sans); overflow-x: hidden; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+:focus-visible { outline: 3px solid var(--color-flare); outline-offset: 3px; border-radius: 6px; }
+.dark-zone :focus-visible { outline-color: var(--color-aqua); }
+
+.font-display { letter-spacing: -0.02em; }
+.mono { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+.container-x { width: 100%; max-width: 1360px; margin: 0 auto; padding-left: 20px; padding-right: 20px; }
+@media (min-width: 768px) { .container-x { padding-left: 40px; padding-right: 40px; } }
+
+.dark-zone { background: var(--color-ink); color: var(--color-frost); }
+.dark-zone .muted { color: #a9c4c1; }
+.muted { color: var(--color-mute); }
+
+/* custom cursor */
+.cur { position: fixed; left: 0; top: 0; z-index: 400; pointer-events: none; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 999px; background: var(--color-flare); display: none; place-items: center; color: var(--color-ink); font: 700 11px/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; transition: width .22s, height .22s, margin .22s, background .22s; }
+.cur.on { display: grid; }
+.cur.big { width: 84px; height: 84px; margin: -42px 0 0 -42px; background: var(--color-aqua); mix-blend-mode: normal; }
+@media (hover: none), (pointer: coarse) { .cur { display: none !important; } }
+
+/* marquee */
+@keyframes marq { to { transform: translateX(-50%); } }
+.marq-track { display: flex; width: max-content; animation: marq 38s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .marq-track { animation: none; } }
+
+@keyframes ping-ring { 0% { transform: scale(.6); opacity: 1 } 100% { transform: scale(2.2); opacity: 0 } }
+.ping { animation: ping-ring 2.2s ease-out infinite; }
+@media (prefers-reduced-motion: reduce) { .ping { animation: none; opacity: .5; } }
+
+.sr-only-x { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.chip { min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1.5px solid currentColor; font-weight: 600; cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
+.chip[aria-pressed="true"], .chip[aria-selected="true"] { background: var(--color-flare); color: var(--color-ink); border-color: var(--color-flare); }
+.input { width: 100%; min-height: 48px; border-radius: 12px; border: 1.5px solid rgb(11 42 46 / .45); background: var(--color-frost); color: var(--color-ink); padding: 0 14px; font: inherit; }
+textarea.input { padding: 12px 14px; }
+.btn-solid { min-height: 48px; padding: 0 26px; border-radius: 999px; background: var(--color-flare); color: var(--color-ink); font-weight: 700; cursor: pointer; border: 0; }
+.btn-solid:hover { filter: brightness(1.08); }
+.btn-ghost { min-height: 44px; padding: 0 20px; border-radius: 999px; border: 1.5px solid currentColor; font-weight: 600; background: transparent; cursor: pointer; color: inherit; }
+.btn-ghost:hover { background: rgb(111 224 208 / .18); }
+img { max-width: 100%; }

@@ -1,0 +1,634 @@
+{
+ "79bike-falcon-gt": {
+  "id": "79bike-falcon-gt",
+  "brand": "79BIKE",
+  "model": "FALCON GT",
+  "cat": "ebike-enduro",
+  "fuel": "ev",
+  "files": [
+   "79bike-falcon-gt-1.webp",
+   "79bike-falcon-gt-2.webp",
+   "79bike-falcon-gt-3.webp"
+  ],
+  "cut": true,
+  "kw": 16.8,
+  "wh": 2880,
+  "kmh": 95,
+  "km": 120,
+  "kg": 65,
+  "cc": null,
+  "nm": 590
+ },
+ "79bike-falcon-pro": {
+  "id": "79bike-falcon-pro",
+  "brand": "79BIKE",
+  "model": "FALCON PRO",
+  "cat": "ebike-enduro",
+  "fuel": "ev",
+  "files": [
+   "79bike-falcon-pro.webp"
+  ],
+  "cut": true,
+  "kw": 8.5,
+  "wh": 2520,
+  "kmh": 85,
+  "km": 120,
+  "kg": 59.2,
+  "cc": null,
+  "nm": 410
+ },
+ "79bike-lynx-trail": {
+  "id": "79bike-lynx-trail",
+  "brand": "79BIKE",
+  "model": "LYNX TRAIL",
+  "cat": "ebike-enduro",
+  "fuel": "ev",
+  "files": [
+   "79bike-lynx-trail.webp"
+  ],
+  "cut": true,
+  "kw": 10,
+  "wh": 2880,
+  "kmh": 90,
+  "km": 80,
+  "kg": 66,
+  "cc": null,
+  "nm": 405
+ },
+ "79bike-titaone-s": {
+  "id": "79bike-titaone-s",
+  "brand": "79BIKE",
+  "model": "TITAONE S",
+  "cat": "ebike-enduro",
+  "fuel": "ev",
+  "files": [
+   "79bike-titaone-s.webp"
+  ],
+  "cut": true,
+  "kw": 3.5,
+  "wh": 1200,
+  "kmh": 50,
+  "km": 60,
+  "kg": 43,
+  "cc": null,
+  "nm": 165
+ },
+ "beiguma-cq": {
+  "id": "beiguma-cq",
+  "brand": "Beiguma",
+  "model": "CQ",
+  "cat": "ebike-sport",
+  "fuel": "ev",
+  "files": [
+   "beiguma-cq.webp"
+  ],
+  "cut": true,
+  "kw": null,
+  "wh": null,
+  "kmh": null,
+  "km": null,
+  "kg": null,
+  "cc": null,
+  "nm": null
+ },
+ "beiguma-jl-1": {
+  "id": "beiguma-jl-1",
+  "brand": "Beiguma",
+  "model": "JL-1",
+  "cat": "ebike-sport",
+  "fuel": "ev",
+  "files": [
+   "beiguma-jl-1.webp"
+  ],
+  "cut": true,
+  "kw": null,
+  "wh": null,
+  "kmh": null,
+  "km": null,
+  "kg": null,
+  "cc": null,
+  "nm": null
+ },
+ "beiguma-dl": {
+  "id": "beiguma-dl",
+  "brand": "Beiguma",
+  "model": "DL",
+  "cat": "ebike-sport",
+  "fuel": "ev",
+  "files": [
+   "beiguma-dl.webp"
+  ],
+  "cut": true,
+  "kw": null,
+  "wh": null,
+  "kmh": null,
+  "km": null,
+  "kg": null,
+  "cc": null,
+  "nm": null
+ },
+ "esuvehicle-es01": {
+  "id": "esuvehicle-es01",
+  "brand": "ESUVEHICLE",
+  "model": "ES01",
+  "cat": "ebike-city",
+  "fuel": "ev",
+  "files": [
+   "esuvehicle-es01.webp"
+  ],
+  "cut": false,
+  "kw": 0.75,
+  "wh": 2400,
+  "kmh": 32,
+  "km": 80,
+  "kg": 48,
+  "cc": null,
+  "nm": null
+ },
+ "julong-t1-8": {
+  "id": "julong-t1-8",
+  "brand": "JULONG",
+  "model": "T1",
+  "cat": "ebike-city",
+  "fuel": "ev",
+  "files": [
+   "julong-t1-8.webp"
+  ],
+  "cut": true,
+  "kw": 2.5,
+  "wh": 3600,
+  "kmh": 80,
+  "km": 100,
+  "kg": null,
+  "cc": null,
+  "nm": null
+ },
+ "julong-g39-12": {
+  "id": "julong-g39-12",
+  "brand": "JULONG",
+  "model": "G39",
+  "cat": "ebike-city",
+  "fuel": "ev",
+  "files": [
+   "julong-g39-12.webp"
+  ],
+  "cut": true,
+  "kw": 2,
+  "wh": 1440,
+  "kmh": 65,
+  "km": 100,
+  "kg": null,
+  "cc": null,
+  "nm": null
+ },
+ "jq-jq-s1000": {
+  "id": "jq-jq-s1000",
+  "brand": "Yiwu Jiaqi",
+  "model": "JQ-S1000",
+  "cat": "quad",
+  "fuel": "gas",
+  "files": [
+   "jq-jq-s1000.webp"
+  ],
+  "cut": true,
+  "kw": null,
+  "wh": null,
+  "kmh": 100,
+  "km": null,
+  "kg": 550,
+  "cc": 1000,
+  "nm": null
+ },
+ "jq-jq-s500": {
+  "id": "jq-jq-s500",
+  "brand": "Yiwu Jiaqi",
+  "model": "JQ-S500",
+  "cat": "quad",
+  "fuel": "gas",
+  "files": [
+   "jq-jq-s500.webp"
+  ],
+  "cut": true,
+  "kw": null,
+  "wh": null,
+  "kmh": 90,
+  "km": null,
+  "kg": 368,
+  "cc": 500,
+  "nm": null
+ },
+ "jq-jq-m200": {
+  "id": "jq-jq-m200",
+  "brand": "Yiwu Jiaqi",
+  "model": "JQ-M200",
+  "cat": "quad",
+  "fuel": "gas",
+  "files": [
+   "jq-jq-m200.webp"
+  ],
+  "cut": true,
+  "kw": null,
+  "wh": null,
+  "kmh": 60,
+  "km": null,
+  "kg": 205,
+  "cc": 200,
+  "nm": null
+ },
+ "jq-jq-b350": {
+  "id": "jq-jq-b350",
+  "brand": "Yiwu Jiaqi",
+  "model": "JQ-B350",
+  "cat": "quad",
+  "fuel": "gas",
+  "files": [
+   "jq-jq-b350.webp"
+  ],
+  "cut": true,
+  "kw": null,
+  "wh": null,
+  "kmh": 80,
+  "km": null,
+  "kg": 260,
+  "cc": 350,
+  "nm": null
+ },
+ "juhool-atv300": {
+  "id": "juhool-atv300",
+  "brand": "Juhool",
+  "model": "ATV300",
+  "cat": "quad",
+  "fuel": "gas",
+  "files": [
+   "juhool-atv300.webp"
+  ],
+  "cut": true,
+  "kw": null,
+  "wh": null,
+  "kmh": 80,
+  "km": null,
+  "kg": 280,
+  "cc": 271,
+  "nm": 22
+ },
+ "juhool-atv200": {
+  "id": "juhool-atv200",
+  "brand": "Juhool",
+  "model": "ATV200",
+  "cat": "quad",
+  "fuel": "gas",
+  "files": [
+   "juhool-atv200.webp"
+  ],
+  "cut": true,
+  "kw": 8.3,
+  "wh": null,
+  "kmh": 65,
+  "km": null,
+  "kg": 200,
+  "cc": 200,
+  "nm": 11
+ },
+ "jq-jq-u1000": {
+  "id": "jq-jq-u1000",
+  "brand": "Yiwu Jiaqi",
+  "model": "JQ-U1000",
+  "cat": "utv",
+  "fuel": "gas",
+  "files": [
+   "jq-jq-u1000.webp"
+  ],
+  "cut": true,
+  "kw": null,
+  "wh": null,
+  "kmh": 100,
+  "km": null,
+  "kg": 720,
+  "cc": 1000,
+  "nm": null
+ },
+ "jq-jq-u200": {
+  "id": "jq-jq-u200",
+  "brand": "Yiwu Jiaqi",
+  "model": "JQ-U200",
+  "cat": "utv",
+  "fuel": "gas",
+  "files": [
+   "jq-jq-u200.webp"
+  ],
+  "cut": true,
+  "kw": null,
+  "wh": null,
+  "kmh": 60,
+  "km": null,
+  "kg": 280,
+  "cc": 200,
+  "nm": null
+ },
+ "juhool-utv-titan-pro": {
+  "id": "juhool-utv-titan-pro",
+  "brand": "Juhool",
+  "model": "UTV Titan Pro",
+  "cat": "utv",
+  "fuel": "gas",
+  "files": [
+   "juhool-utv-titan-pro.webp"
+  ],
+  "cut": false,
+  "kw": null,
+  "wh": null,
+  "kmh": 98,
+  "km": null,
+  "kg": null,
+  "cc": 1298,
+  "nm": 120
+ },
+ "juhool-utv-titan": {
+  "id": "juhool-utv-titan",
+  "brand": "Juhool",
+  "model": "UTV Titan",
+  "cat": "utv",
+  "fuel": "gas",
+  "files": [
+   "juhool-utv-titan.webp"
+  ],
+  "cut": false,
+  "kw": null,
+  "wh": null,
+  "kmh": 98,
+  "km": null,
+  "kg": null,
+  "cc": 1298,
+  "nm": 120
+ },
+ "juhool-ssv-raider-pro": {
+  "id": "juhool-ssv-raider-pro",
+  "brand": "Juhool",
+  "model": "SSV Raider Pro",
+  "cat": "utv",
+  "fuel": "gas",
+  "files": [
+   "juhool-ssv-raider-pro.webp"
+  ],
+  "cut": false,
+  "kw": 110,
+  "wh": null,
+  "kmh": 120,
+  "km": null,
+  "kg": null,
+  "cc": 1500,
+  "nm": 210
+ },
+ "juhool-ssv-raider": {
+  "id": "juhool-ssv-raider",
+  "brand": "Juhool",
+  "model": "SSV Raider",
+  "cat": "utv",
+  "fuel": "gas",
+  "files": [
+   "juhool-ssv-raider.webp"
+  ],
+  "cut": false,
+  "kw": 59,
+  "wh": null,
+  "kmh": 110,
+  "km": null,
+  "kg": null,
+  "cc": 1000,
+  "nm": 82
+ },
+ "zzssv-zz1400-2": {
+  "id": "zzssv-zz1400-2",
+  "brand": "ZZSSV",
+  "model": "ZZ-1400",
+  "cat": "utv",
+  "fuel": "gas",
+  "files": [
+   "zzssv-zz1400-2.webp"
+  ],
+  "cut": false,
+  "kw": 110,
+  "wh": null,
+  "kmh": 136,
+  "km": null,
+  "kg": 820,
+  "cc": 1395,
+  "nm": 250
+ },
+ "beiguma-xdc": {
+  "id": "beiguma-xdc",
+  "brand": "Beiguma",
+  "model": "XDC",
+  "cat": "snow",
+  "fuel": "ev",
+  "files": [
+   "beiguma-xdc.webp"
+  ],
+  "cut": true,
+  "kw": null,
+  "wh": null,
+  "kmh": null,
+  "km": null,
+  "kg": null,
+  "cc": null,
+  "nm": null
+ },
+ "jq-jq-sn300": {
+  "id": "jq-jq-sn300",
+  "brand": "Yiwu Jiaqi",
+  "model": "JQ-SN300",
+  "cat": "snow",
+  "fuel": "gas",
+  "files": [
+   "jq-jq-sn300.webp"
+  ],
+  "cut": true,
+  "kw": null,
+  "wh": null,
+  "kmh": 48,
+  "km": null,
+  "kg": 250,
+  "cc": 300,
+  "nm": null
+ },
+ "nicot-cqr-125re-p25": {
+  "id": "nicot-cqr-125re-p25",
+  "brand": "NICOT",
+  "model": "CQR 125RE",
+  "cat": "moto",
+  "fuel": "gas",
+  "files": [
+   "nicot-cqr-125re-p25.webp"
+  ],
+  "cut": false,
+  "kw": 7.1,
+  "wh": null,
+  "kmh": 90,
+  "km": null,
+  "kg": 118,
+  "cc": 124,
+  "nm": 8.6
+ },
+ "nicot-cqy-125re-p27": {
+  "id": "nicot-cqy-125re-p27",
+  "brand": "NICOT",
+  "model": "CQY 125RE",
+  "cat": "moto",
+  "fuel": "gas",
+  "files": [
+   "nicot-cqy-125re-p27.webp"
+  ],
+  "cut": false,
+  "kw": 7.1,
+  "wh": null,
+  "kmh": 90,
+  "km": null,
+  "kg": 126,
+  "cc": 124,
+  "nm": 8.6
+ },
+ "nicot-ht5-450nc-p35": {
+  "id": "nicot-ht5-450nc-p35",
+  "brand": "NICOT",
+  "model": "HT5 450NC",
+  "cat": "moto",
+  "fuel": "gas",
+  "files": [
+   "nicot-ht5-450nc-p35.webp"
+  ],
+  "cut": false,
+  "kw": 32,
+  "wh": null,
+  "kmh": 140,
+  "km": null,
+  "kg": 129,
+  "cc": 449,
+  "nm": 38
+ },
+ "nicot-kr2-250cbf-p21": {
+  "id": "nicot-kr2-250cbf-p21",
+  "brand": "NICOT",
+  "model": "KR2 250CBF",
+  "cat": "moto",
+  "fuel": "gas",
+  "files": [
+   "nicot-kr2-250cbf-p21.webp"
+  ],
+  "cut": false,
+  "kw": 14.5,
+  "wh": null,
+  "kmh": 110,
+  "km": null,
+  "kg": 114,
+  "cc": 250,
+  "nm": 19.5
+ },
+ "nicot-kr3-250cbf-p23": {
+  "id": "nicot-kr3-250cbf-p23",
+  "brand": "NICOT",
+  "model": "KR3 250CBF",
+  "cat": "moto",
+  "fuel": "gas",
+  "files": [
+   "nicot-kr3-250cbf-p23.webp"
+  ],
+  "cut": false,
+  "kw": 14.5,
+  "wh": null,
+  "kmh": 110,
+  "km": null,
+  "kg": 124,
+  "cc": 250,
+  "nm": 19.5
+ },
+ "nicot-kr4-125re-p29": {
+  "id": "nicot-kr4-125re-p29",
+  "brand": "NICOT",
+  "model": "KR4 125RE",
+  "cat": "moto",
+  "fuel": "gas",
+  "files": [
+   "nicot-kr4-125re-p29.webp"
+  ],
+  "cut": false,
+  "kw": 7.1,
+  "wh": null,
+  "kmh": 90,
+  "km": null,
+  "kg": 130,
+  "cc": 124,
+  "nm": 8.6
+ },
+ "nicot-kr9-250ncs-p40": {
+  "id": "nicot-kr9-250ncs-p40",
+  "brand": "NICOT",
+  "model": "KR9 250NCS",
+  "cat": "moto",
+  "fuel": "gas",
+  "files": [
+   "nicot-kr9-250ncs-p40.webp"
+  ],
+  "cut": false,
+  "kw": 21.5,
+  "wh": null,
+  "kmh": 125,
+  "km": null,
+  "kg": 125,
+  "cc": 250,
+  "nm": 23.5
+ },
+ "nicot-bt-250fe-p45": {
+  "id": "nicot-bt-250fe-p45",
+  "brand": "NICOT",
+  "model": "BT 250FE",
+  "cat": "moto",
+  "fuel": "gas",
+  "files": [
+   "nicot-bt-250fe-p45.webp"
+  ],
+  "cut": false,
+  "kw": 18,
+  "wh": null,
+  "kmh": 110,
+  "km": null,
+  "kg": 132,
+  "cc": 249,
+  "nm": 23
+ },
+ "nicot-bt-150cg-3-p47": {
+  "id": "nicot-bt-150cg-3-p47",
+  "brand": "NICOT",
+  "model": "BT 150CG-3",
+  "cat": "moto",
+  "fuel": "gas",
+  "files": [
+   "nicot-bt-150cg-3-p47.webp"
+  ],
+  "cut": false,
+  "kw": 8.5,
+  "wh": null,
+  "kmh": 95,
+  "km": null,
+  "kg": 130,
+  "cc": 149,
+  "nm": 10
+ },
+ "julong-g7-pro-8": {
+  "id": "julong-g7-pro-8",
+  "brand": "JULONG",
+  "model": "G7 PRO",
+  "cat": "ebike-city",
+  "fuel": "ev",
+  "files": [
+   "julong-g7-pro-8.webp"
+  ],
+  "cut": false,
+  "kw": 1.5,
+  "wh": 1440,
+  "kmh": 65,
+  "km": 100,
+  "kg": null,
+  "cc": null,
+  "nm": null
+ }
+}
