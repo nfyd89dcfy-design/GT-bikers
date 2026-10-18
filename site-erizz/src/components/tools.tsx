@@ -5,7 +5,8 @@ import { useApp, reduceMotion, scrollToId } from "@/lib/state";
 import { DEPOSIT, DIRS, GT, LINEUP, L_BY, STATUS, glbKey, lSpec, num, rub, verLabel, type DirKey, type Ver } from "@/lib/data";
 import { BlockGrid } from "./shaders";
 import { ObjectTracker } from "./effects";
-import { Bike3D, BikeThumb } from "./bike";
+import { Bike3D } from "./bike";
+import { ProductShot, STUDIO } from "./product";
 import { Eyebrow, H2, Reveal } from "./ui-bits";
 import { InteractiveHoverButton } from "./ui/interactive-hover-button";
 import { ARButton, type ARKey } from "./ar";
@@ -188,7 +189,7 @@ export function Quiz() {
             <div>
               <div className="mono text-sky">{t("твой результат", "ваш результат")}: {res.d.ru}{m ? ` / серия ${verLabel(m.ser)}` : ""}</div>
               <div className="mt-4 grid items-center gap-4 sm:grid-cols-2">
-                {m ? <div className="rounded-2xl bg-kelp p-2"><BikeThumb variant={glbKey(m) as ARKey} paint={m.paint} yaw={-0.5} w={560} h={380} alt={`${m.name}, 3D-рендер`} className="w-full" /></div> : <div className="grid min-h-[200px] place-items-center rounded-2xl bg-kelp p-6 text-center"><span className="font-display chrome-text text-4xl font-extrabold uppercase">{res.d.ru}</span></div>}
+                {m ? <div className="h-[260px] rounded-2xl p-3" style={{ background: STUDIO[m.ser] }}><ProductShot m={m} className="h-full w-full" /></div> : <div className="grid min-h-[200px] place-items-center rounded-2xl bg-kelp p-6 text-center"><span className="font-display chrome-text text-4xl font-extrabold uppercase">{res.d.ru}</span></div>}
                 <div>
                   <h3 className="font-display text-3xl font-extrabold uppercase leading-none">{m ? m.name : t("Под заказ", "Под заказ")}</h3>
                   {m ? <p className="muted mt-1">{m.role}. {m.chassis}.</p> : <p className="muted mt-1">{t("Такую технику мы подбираем под заказ: оставь заявку, и мы пришлем варианты.", "Такую технику мы подбираем под заказ: оставьте заявку, и мы пришлем варианты.")}</p>}
@@ -246,7 +247,7 @@ export function Compare() {
                 <th className="w-[18%] p-2 sm:p-4" scope="col"><span className="sr-only-x">Параметр</span></th>
                 {ids.map((id) => (
                   <th key={id} scope="col" className="p-2 align-bottom sm:p-4">
-                    <div className="grid place-items-center overflow-hidden rounded-xl bg-ink"><BikeThumb variant={glbKey(L_BY[id]) as ARKey} paint={L_BY[id].paint} yaw={-0.5} w={420} h={280} alt={`${L_BY[id].name}, 3D-рендер`} className="h-24 w-auto sm:h-36" /></div>
+                    <div className="h-28 overflow-hidden rounded-xl p-2 sm:h-40" style={{ background: STUDIO[L_BY[id].ser] }}><ProductShot m={L_BY[id]} className="h-full w-full" /></div>
                     <div className="font-display mt-2 text-base font-extrabold uppercase sm:text-xl">{L_BY[id].name}</div>
                   </th>
                 ))}

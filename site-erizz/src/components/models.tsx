@@ -7,7 +7,8 @@ import { GlowCard } from "./ui/spotlight-card";
 import { Eyebrow, H2, Reveal } from "./ui-bits";
 import { MorphTile } from "./morph";
 import { ObjectTracker } from "./effects";
-import { Bike3D, BikeThumb, type BikeApi } from "./bike";
+import { Bike3D, type BikeApi } from "./bike";
+import { ProductCollage, ProductFace, ProductShot, STUDIO, WheelMark } from "./product";
 import { BlockGrid } from "./shaders";
 import { ARButton, type ARKey } from "./ar";
 import { cn } from "@/lib/utils";
@@ -136,51 +137,9 @@ export function StatusPill({ m }: { m: LModel }) {
 }
 
 function LCard({ m }: { m: LModel }) {
-  const { t, addCart, setDriveFor, toggleCompare, compare, setCartOpen } = useApp();
-  const inCmp = compare.includes(m.id);
-  const key = glbKey(m) as ARKey;
-  const tone = GRID_TONES[m.ser];
   return (
-    <MorphTile label={`${m.name}: подробнее`} className="aspect-[4/5]"
-      detail={
-        <div className="grid h-full min-h-0 gap-0 bg-ink text-frost md:grid-cols-[1.25fr_1fr]">
-          <div className="relative grid min-h-[300px] place-items-center overflow-hidden" style={{ background: `linear-gradient(160deg, ${tone.a}, #0e1013 85%)` }}>
-            <div className="pointer-events-none absolute inset-0 opacity-40" style={{ background: `linear-gradient(${tone.line}22 1px, transparent 1px) 0 0/56px 56px, linear-gradient(90deg, ${tone.line}22 1px, transparent 1px) 0 0/56px 56px` }} />
-            <Bike3D variant={key} paint={m.paint} interactive yaw={-0.5} sway={0.1} label={`${m.name}, 3D-модель: потяни, чтобы повернуть`} className="relative h-[300px] w-full md:h-[min(70vh,620px)]" />
-            <span className="mono absolute left-4 top-4 rounded-full bg-deep/70 px-3 py-1 text-sky">{String(m.n).padStart(2, "0")} / {m.role}</span>
-          </div>
-          <div className="flex flex-col justify-center gap-4 overflow-y-auto p-6 sm:p-10">
-            <div className="flex flex-wrap items-center gap-2"><span className={cn("mono w-fit rounded-full px-3 py-1 font-bold", verBadge(m.ser))}>{verLabel(m.ser)}</span><StatusPill m={m} /></div>
-            <h3 className="font-display text-4xl font-extrabold uppercase leading-none sm:text-5xl">{m.name}</h3>
-            <p className="muted">{m.chassis}.</p>
-            <div className="sky-line" />
-            <dl className="grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-3">
-              {lSpec(m).map((x) => <div key={x.k}><dt className="mono muted">{x.k}</dt><dd className="font-display text-lg font-extrabold leading-tight">{x.v}</dd>{x.s && <dd className="mono text-frost/50">{x.s}</dd>}</div>)}
-            </dl>
-            <p className="mono text-sky">данные производителя, уточняются на тестах образца</p>
-            <div className="font-display text-2xl font-extrabold">бронь {rub(DEPOSIT)} <span className="mono muted">цена после теста</span></div>
-            <div className="flex flex-wrap gap-2">
-              <button className="btn-solid" onClick={() => { addCart({ id: m.id, name: m.name, sub: `бронь · ${m.wheels}`, price: DEPOSIT, variant: key, paint: m.paint }); setCartOpen(true); }}>Забронировать</button>
-              <ARButton k={key} name={m.name} />
-              <button className="btn-ghost" onClick={() => toggleCompare(m.id)}>{inCmp ? "Убрать из сравнения" : "Сравнить"}</button>
-              <button className="btn-ghost" onClick={() => { setDriveFor(m.id); (document.querySelector(".morph-open button[aria-label=Закрыть]") as HTMLElement | null)?.click(); setTimeout(() => scrollToId("drive"), 850); }}>{t("Тест-драйв", "Тест-драйв")}</button>
-            </div>
-          </div>
-        </div>
-      }
-    >
-      <div className="metal-hover relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-frost/15 p-4 text-frost" style={{ background: `linear-gradient(165deg, ${m.ser === "sport" ? "#3a1a14" : tone.a}, #0e1013 78%)` }}>
-        <div className="flex items-start justify-between gap-2">
-          <span className="mono text-frost/60">{String(m.n).padStart(2, "0")}</span>
-          <StatusPill m={m} />
-        </div>
-        <BikeThumb variant={key} paint={m.paint} yaw={-0.5} w={640} h={420} alt={`${m.name}, 3D-рендер`} className="mx-auto my-1 w-full object-contain transition-transform duration-500 group-hover:scale-105" />
-        <div>
-          <div className="mono text-sky">{m.wheels} / {m.role}</div>
-          <div className="font-display mt-1 text-xl font-extrabold uppercase leading-tight sm:text-2xl">{m.name}</div>
-          <div className="mono mt-2 text-frost/75">{m.peak ? `${num(m.peak)} кВт` : "кВт уточн."} · {m.kwh ? `${num(m.kwh)} кВт·ч` : "АКБ уточн."} · {m.kmh} км/ч</div>
-        </div>
-      </div>
+    <MorphTile label={`${m.name}: открыть коллаж`} className="aspect-[4/5]" detail={<ProductCollage m={m} />}>
+      <ProductFace m={m} />
     </MorphTile>
   );
 }
@@ -192,7 +151,7 @@ export function LineupGrid() {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (reduceMotion() || !ref.current) return;
-    gsap.fromTo(ref.current.children, { y: 24, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.03, duration: 0.45, ease: "power3.out" });
+    gsap.fromTo(ref.current.children, { y: 24, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.03, duration: 0.45, ease: "power3.out", clearProps: "transform" });
     const tm = setTimeout(() => ScrollTrigger.refresh(), 300);
     return () => clearTimeout(tm);
   }, [grp]);
@@ -253,8 +212,9 @@ export function Directions() {
             return (
               <article key={id}>
                 <GlowCard customSize glowColor="flare" className="touch-pan-y! h-full !p-0">
-                  <div className="relative overflow-hidden rounded-t-2xl p-3" style={{ background: `linear-gradient(160deg, ${GRID_TONES[m.ser].a}, #0e1013)` }}>
-                    <BikeThumb variant={key} paint={m.paint} yaw={-0.5} w={640} h={400} alt={`${m.name}, 3D-рендер`} className="mx-auto w-full object-contain" />
+                  <div className="relative h-[250px] overflow-hidden rounded-t-2xl sm:h-[280px]" style={{ background: STUDIO[m.ser] }}>
+                    <WheelMark m={m} className="-right-2 top-3 text-[10rem]" />
+                    <ProductShot m={m} className="absolute inset-x-3 bottom-2 top-10" />
                     <span className="absolute left-4 top-4"><StatusPill m={m} /></span>
                   </div>
                   <div className="p-5">

@@ -43,7 +43,7 @@ export function Atmos() {
               media={<img src={photo(s.main)} alt="" loading="lazy" className="atm-img absolute inset-0 h-full w-full object-cover" />}
               detail={
                 <div className="grid h-full min-h-0 grid-cols-1 gap-2 bg-deep p-2 text-frost md:grid-cols-[1.4fr_1fr] md:p-3">
-                  <div className="relative min-h-[40vh] overflow-hidden rounded-2xl">
+                  <div data-tile className="relative min-h-[40vh] overflow-hidden rounded-2xl">
                     <img src={photo(s.main)} alt={s.t} className="absolute inset-0 h-full w-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-deep/90 via-transparent to-transparent" />
                     <div className="absolute bottom-0 left-0 p-6 sm:p-10">
@@ -54,7 +54,7 @@ export function Atmos() {
                     </div>
                   </div>
                   <div className="grid grid-rows-3 gap-2">
-                    {s.more.slice(0, 3).map((m) => <div key={m} className="relative min-h-[120px] overflow-hidden rounded-2xl"><img src={photo(m)} alt="" className="absolute inset-0 h-full w-full object-cover" /></div>)}
+                    {s.more.slice(0, 3).map((m) => <div key={m} data-tile className="relative min-h-[120px] overflow-hidden rounded-2xl"><img src={photo(m)} alt="" className="absolute inset-0 h-full w-full object-cover" /></div>)}
                   </div>
                 </div>
               }

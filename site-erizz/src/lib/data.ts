@@ -148,3 +148,12 @@ export const COMPARE_IDS = ["gt-spark-14", "gt-send-19r", "gt-pulse-17"];
 
 /** Фото-атмосфера: файлы в public/photos (Unsplash, лицензия Unsplash). */
 export const photo = (n: string, sm = false) => `${import.meta.env.BASE_URL}photos/${sm ? "sm-" : ""}${n}.webp`;
+/** Фото модели (вырезанное, прозрачный фон). n – номер позиции 1-20. */
+export const prod = (n: number, sm = false) => `${import.meta.env.BASE_URL}products/${sm ? "sm-" : ""}m${String(n).padStart(2, "0")}.webp`;
+/** Кадры «в деле» для коллажа модели: по группе. Сток до собственной съемки. */
+export const SCENES: Record<LModel["group"], string[]> = {
+  spark: ["kid_rider", "kids_pair", "backlit_dust", "forest_sun"],
+  send: ["dust_rider", "orange_dust", "dust_turn", "bw_dust"],
+  ridge: ["forest_orange", "trail_green", "hill_silhouette", "forest_sun"],
+  road: ["night_city", "night_motion", "night_road", "rider_sea"],
+};

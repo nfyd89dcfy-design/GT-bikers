@@ -31,7 +31,14 @@ export function MorphTile({ label, className, children, detail, media, onOpen }:
       duration: 0.75, ease: "power3.inOut", scale: false, absolute: false, props: "borderRadius", zIndex: 320,
       onComplete: () => {
         busy.current = false;
-        if (to) { closeBtn.current?.focus(); if (det.current) gsap.fromTo(det.current.children, { y: 28, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.06, duration: 0.5, ease: "power3.out" }); }
+        if (to) {
+          closeBtn.current?.focus();
+          if (det.current) {
+            const tiles = det.current.querySelectorAll<HTMLElement>("[data-tile]");
+            if (tiles.length) gsap.fromTo(tiles, { y: 40, opacity: 0, scale: 0.96, clipPath: "inset(12% 8% 12% 8% round 18px)" }, { y: 0, opacity: 1, scale: 1, clipPath: "inset(0% 0% 0% 0% round 16px)", stagger: 0.07, duration: 0.7, ease: "expo.out", clearProps: "clipPath,transform" });
+            else gsap.fromTo(det.current.children, { y: 28, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.06, duration: 0.5, ease: "power3.out" });
+          }
+        }
         else f.focus({ preventScroll: true });
       },
     });
