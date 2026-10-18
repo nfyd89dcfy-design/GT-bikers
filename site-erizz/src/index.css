@@ -113,13 +113,13 @@ img { max-width: 100%; }
 :root, [data-theme="day"] {
   --t-bg: #eef1f4; --t-bg2: #e3e7eb; --t-fg: #0e1013; --t-mute: #5a626c; --t-line: rgb(14 16 19 / .14);
   --t-tile: linear-gradient(180deg, #f3f5f7 0%, #dfe4e9 100%);
-  --t-floor: rgb(14 16 19 / .38); --t-glow: transparent; --t-label: #5a626c; --t-head: rgb(238 241 244 / .8);
+  --t-floor: rgb(14 16 19 / .38); --t-glow: transparent; --t-label: #5a626c; --t-head: rgb(238 241 244 / .92);
   --t-chip: #0e1013; --t-chip-fg: #eef1f4;
 }
 [data-theme="night"] {
   --t-bg: #0b0d10; --t-bg2: #121519; --t-fg: #eef1f4; --t-mute: #8d97a2; --t-line: rgb(238 241 244 / .12);
-  --t-tile: radial-gradient(120% 95% at 50% 26%, #2b3139 0%, #15181c 52%, #0c0e11 100%);
-  --t-floor: rgb(0 0 0 / .8); --t-glow: rgb(156 201 255 / .14); --t-label: #9cc9ff; --t-head: rgb(11 13 16 / .74);
+  --t-tile: radial-gradient(60% 60% at 50% 55%, rgb(185 194 204 / .18) 0%, transparent 70%), #1c2026;
+  --t-floor: rgb(0 0 0 / .8); --t-glow: rgb(156 201 255 / .14); --t-label: #9cc9ff; --t-head: rgb(14 16 19 / .92);
   --t-chip: #eef1f4; --t-chip-fg: #0e1013;
 }
 body { background: var(--t-bg); }

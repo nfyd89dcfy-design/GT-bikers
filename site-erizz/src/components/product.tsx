@@ -38,16 +38,6 @@ export function ProductFace({ m }: { m: LModel }) {
   );
 }
 
-/** Детальный кадр: тот же снимок крупно в нужной точке. */
-function Zoom({ m, x, y, z, label }: { m: LModel; x: string; y: string; z: number; label: string }) {
-  return (
-    <figure data-tile className="zoom-tile t-tile relative min-h-[200px] overflow-hidden rounded-xl md:col-span-5 md:min-h-0" style={{ ["--zx" as string]: x, ["--zy" as string]: y, ["--z" as string]: String(z) }}>
-      <img src={studio(m.n)} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-contain" />
-      <figcaption className="mono t-label absolute bottom-3 left-4">{label}</figcaption>
-    </figure>
-  );
-}
-
 /** Раскрытая карточка: коллаж в сетке 12 колонок. */
 export function ProductCollage({ m }: { m: LModel }) {
   const { t, addCart, setDriveFor, toggleCompare, compare, setCartOpen } = useApp();
@@ -56,38 +46,38 @@ export function ProductCollage({ m }: { m: LModel }) {
   const close = () => (document.querySelector(".morph-open button[aria-label=Закрыть]") as HTMLElement | null)?.click();
   const spec = lSpec(m);
   return (
-    <div className="t-zone grid min-h-full grid-cols-1 gap-3 p-3 md:h-full md:grid-cols-12 md:grid-rows-[1fr_1fr_auto] md:p-4">
-      <div data-tile className="t-tile relative min-h-[46svh] overflow-hidden rounded-xl md:col-span-7 md:row-span-2 md:min-h-0">
-        <ProductShot m={m} sm={false} eager zoom={1.1} className="absolute inset-x-[3%] top-[12%]" />
-        <div className="absolute left-5 top-5 sm:left-7 sm:top-6">
-          <p className="mono t-label">{String(m.n).padStart(2, "0")} / {m.role} / {m.wheels}</p>
-          <h3 className="font-display mt-2 text-4xl font-extrabold uppercase leading-[0.95] sm:text-6xl">{m.name}</h3>
-        </div>
+    <div className="t-zone flex min-h-full flex-col md:h-full">
+      <div className="flex h-16 shrink-0 items-center gap-3 px-5 pr-20 md:px-6">
+        <span className="mono t-label">{String(m.n).padStart(2, "0")} / {m.role} / {m.wheels}</span>
       </div>
-      <Zoom m={m} x="78%" y="62%" z={2.3} label="передняя подвеска и тормоз" />
-      <Zoom m={m} x="45%" y="58%" z={2.4} label="батарея и мотор" />
-      <div data-tile className="rounded-xl border t-line p-5 md:col-span-4 md:p-6">
-        <dl className="grid grid-cols-2 gap-x-4 gap-y-3">
-          {spec.map((x) => (
-            <div key={x.k} className="border-t t-line pt-2">
-              <dt className="mono t-mute">{x.k}</dt>
-              <dd className="font-display text-base font-extrabold leading-tight sm:text-lg">{x.v}</dd>
-              {x.s && <dd className="mono t-mute opacity-80">{x.s}</dd>}
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 px-3 pb-3 md:grid-cols-12 md:grid-rows-[minmax(0,1fr)_auto] md:px-4 md:pb-4">
+        <div data-tile className="t-tile relative min-h-[46svh] overflow-hidden rounded-xl md:col-span-8 md:min-h-0">
+          <ProductShot m={m} sm={false} eager zoom={1.08} className="absolute inset-x-[3%] bottom-[2%]" />
+          <h3 className="font-display absolute left-5 top-5 text-4xl font-extrabold uppercase leading-[0.95] sm:left-7 sm:top-6 sm:text-6xl">{m.name}</h3>
+        </div>
+        <figure data-tile className="relative min-h-[240px] overflow-hidden rounded-xl md:col-span-4 md:row-span-2 md:min-h-0">
+          <img src={photo(sc[0])} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+        </figure>
+        <div data-tile className="grid gap-4 rounded-xl border t-line p-5 md:col-span-8 md:grid-cols-[1.4fr_1fr] md:p-6">
+          <dl className="grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-3">
+            {spec.map((x) => (
+              <div key={x.k} className="border-t t-line pt-2">
+                <dt className="mono t-mute">{x.k}</dt>
+                <dd className="font-display text-base font-extrabold leading-tight">{x.v}</dd>
+                {x.s && <dd className="mono t-mute opacity-80">{x.s}</dd>}
+              </div>
+            ))}
+          </dl>
+          <div className="flex flex-col justify-between gap-4">
+            <p className="leading-snug">{m.chassis[0].toUpperCase() + m.chassis.slice(1)}. {t("Приезжай на тест-драйв: шлем и защиту дадим.", "Приезжайте на тест-драйв: шлем и защиту дадим.")}</p>
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+              <button className="btn-solid" onClick={() => { addCart({ id: m.id, name: m.name, sub: `бронь · ${m.wheels}`, price: DEPOSIT, variant: "sport", paint: m.paint }); setCartOpen(true); }}>Бронь {rub(DEPOSIT)}</button>
+              <button className="min-h-11 cursor-pointer font-semibold underline-offset-4 hover:underline" onClick={() => { setDriveFor(m.id); close(); setTimeout(() => scrollToId("drive"), 850); }}>Тест-драйв</button>
+              <button className="min-h-11 cursor-pointer font-semibold underline-offset-4 hover:underline" onClick={() => toggleCompare(m.id)}>{inCmp ? "В сравнении ✓" : "Сравнить"}</button>
             </div>
-          ))}
-        </dl>
-      </div>
-      <div data-tile className="flex flex-col justify-between gap-5 rounded-xl border t-line p-5 md:col-span-4 md:p-6">
-        <p className="text-lg leading-snug">{m.chassis[0].toUpperCase() + m.chassis.slice(1)}. {t("Приезжай на тест-драйв: шлем и защиту дадим.", "Приезжайте на тест-драйв: шлем и защиту дадим.")}</p>
-        <div className="flex flex-wrap items-center gap-2">
-          <button className="btn-solid" onClick={() => { addCart({ id: m.id, name: m.name, sub: `бронь · ${m.wheels}`, price: DEPOSIT, variant: "sport", paint: m.paint }); setCartOpen(true); }}>Бронь {rub(DEPOSIT)}</button>
-          <button className="btn-ghost" onClick={() => { setDriveFor(m.id); close(); setTimeout(() => scrollToId("drive"), 850); }}>Тест-драйв</button>
-          <button className="btn-ghost" onClick={() => toggleCompare(m.id)}>{inCmp ? "В сравнении" : "Сравнить"}</button>
+          </div>
         </div>
       </div>
-      <figure data-tile className="relative min-h-[220px] overflow-hidden rounded-xl md:col-span-4 md:min-h-0">
-        <img src={photo(sc[0])} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
-      </figure>
     </div>
   );
 }
