@@ -17,20 +17,20 @@ function MapSvg() {
   }
   return (
     <svg viewBox="0 0 520 470" role="img" aria-label="Схема: Москва, Ростов-на-Дону с шоурумом и Краснодарский край" className="h-full w-full">
-      <rect width="520" height="470" fill="#d9dee3" />
-      {dots.map((d, i) => <circle key={i} cx={d.x} cy={d.y} r={d.r} fill="#0e1013" opacity=".16" />)}
+      <rect width="520" height="470" fill="var(--sm-bg)" />
+      {dots.map((d, i) => <circle key={i} cx={d.x} cy={d.y} r={d.r} fill="var(--sm-ink)" opacity=".16" />)}
       <path d={`M${mo} Q${mo[0] + 60},${(mo[1] + ro[1]) / 2} ${ro}`} fill="none" stroke="#ff4a2b" strokeWidth="3" strokeDasharray="6 6" />
       <path d={`M${ro} L${kr}`} stroke="#ff4a2b" strokeWidth="3" fill="none" />
-      <ellipse cx={kr[0]} cy={kr[1] + 6} rx="86" ry="42" fill="rgba(185,194,204,.28)" stroke="#0e1013" strokeDasharray="4 5" strokeWidth="2" />
-      <g><circle cx={mo[0]} cy={mo[1]} r="11" fill="#0e1013" /><text x={mo[0] + 20} y={mo[1] + 5} fill="#0e1013" fontFamily="Onest" fontWeight="600" fontSize="15">Москва · доставка</text></g>
+      <ellipse cx={kr[0]} cy={kr[1] + 6} rx="86" ry="42" fill="rgba(185,194,204,.28)" stroke="var(--sm-ink)" strokeDasharray="4 5" strokeWidth="2" />
+      <g><circle cx={mo[0]} cy={mo[1]} r="11" fill="var(--sm-ink)" /><text x={mo[0] + 20} y={mo[1] + 5} fill="var(--sm-ink)" fontFamily="Onest" fontWeight="600" fontSize="15">Москва · доставка</text></g>
       <g>
         <circle cx={ro[0]} cy={ro[1]} r="22" fill="none" stroke="#ff4a2b" strokeWidth="3"><animate attributeName="r" values="14;30;14" dur="2.4s" repeatCount="indefinite" /><animate attributeName="opacity" values="1;0;1" dur="2.4s" repeatCount="indefinite" /></circle>
-        <circle cx={ro[0]} cy={ro[1]} r="12" fill="#ff4a2b" stroke="#0e1013" strokeWidth="3" />
-        <text x={ro[0] + 24} y={ro[1] - 8} fill="#0e1013" fontFamily="Onest" fontWeight="800" fontSize="16">Ростов-на-Дону</text>
-        <text x={ro[0] + 24} y={ro[1] + 10} fill="#0e1013" fontFamily="Onest" fontSize="13">шоурум · сервис · склад</text>
+        <circle cx={ro[0]} cy={ro[1]} r="12" fill="#ff4a2b" stroke="var(--sm-ink)" strokeWidth="3" />
+        <text x={ro[0] + 24} y={ro[1] - 8} fill="var(--sm-ink)" fontFamily="Onest" fontWeight="800" fontSize="16">Ростов-на-Дону</text>
+        <text x={ro[0] + 24} y={ro[1] + 10} fill="var(--sm-ink)" fontFamily="Onest" fontSize="13">шоурум · сервис · склад</text>
       </g>
-      <g><circle cx={kr[0]} cy={kr[1]} r="9" fill="#0e1013" /><text x={kr[0] - 60} y={kr[1] + 52} fill="#0e1013" fontFamily="Onest" fontWeight="600" fontSize="15">Краснодарский край · выезд</text></g>
-      <text x="16" y="458" fill="#5a626c" fontFamily="Onest" fontSize="12">схема условная, не карта</text>
+      <g><circle cx={kr[0]} cy={kr[1]} r="9" fill="var(--sm-ink)" /><text x={kr[0] - 60} y={kr[1] + 52} fill="var(--sm-ink)" fontFamily="Onest" fontWeight="600" fontSize="15">Краснодарский край · выезд</text></g>
+      <text x="16" y="458" fill="var(--sm-mute)" fontFamily="Onest" fontSize="12">схема условная, не карта</text>
     </svg>
   );
 }
@@ -159,7 +159,7 @@ function Tour() {
   const s = STOPS[idx];
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_280px]">
-      <div className="relative min-h-[340px] overflow-hidden rounded-3xl border border-ink/30 bg-ink sm:min-h-[460px]" data-cursor="drag">
+      <div className="dark-zone relative min-h-[340px] overflow-hidden rounded-3xl border border-ink/30 bg-ink sm:min-h-[460px]" data-cursor="drag">
         <div ref={wrap} className="absolute inset-0" />
         <div ref={hs} className="pointer-events-none absolute inset-0 overflow-hidden">
           {STOPS.map((x, i) => (
@@ -181,11 +181,11 @@ function Tour() {
       <div className="rounded-3xl border border-ink/30 bg-frost p-4">
         <div className="mono mb-2 text-mute">план зала</div>
         <svg viewBox="0 0 280 200" className="w-full" role="group" aria-label="План зала шоурума">
-          <rect x="10" y="10" width="260" height="180" fill="none" stroke="#0e1013" strokeWidth="2" />
+          <rect x="10" y="10" width="260" height="180" fill="none" stroke="var(--sm-ink)" strokeWidth="2" />
           {STOPS.map((x, i) => (
             <g key={x.n} tabIndex={0} role="button" aria-label={x.h} className="cursor-pointer outline-none" onClick={() => go.current(i)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") go.current(i); }}>
-              <circle cx={x.plan[0]} cy={x.plan[1]} r="12" fill={i === idx ? "#ff4a2b" : "#d9dee3"} stroke="#0e1013" strokeWidth="2" />
-              <text x={x.plan[0]} y={x.plan[1] + 4} textAnchor="middle" fontSize="12" fontWeight="700" fill="#0e1013" fontFamily="Martian Mono Variable" pointerEvents="none">{x.n}</text>
+              <circle cx={x.plan[0]} cy={x.plan[1]} r="12" fill={i === idx ? "#ff4a2b" : "var(--sm-bg)"} stroke="var(--sm-ink)" strokeWidth="2" />
+              <text x={x.plan[0]} y={x.plan[1] + 4} textAnchor="middle" fontSize="12" fontWeight="700" fill="var(--sm-ink)" fontFamily="Martian Mono Variable" pointerEvents="none">{x.n}</text>
             </g>
           ))}
         </svg>
@@ -213,7 +213,7 @@ export function Showroom() {
         <div className="mt-8 grid gap-4 lg:grid-cols-[0.8fr_1.2fr]">
           <div className="overflow-hidden rounded-3xl border border-ink/30"><MapSvg /></div>
           <div className="rounded-3xl border border-ink/30 bg-frost p-5 text-sm">
-            <div className="mono text-mute">шоурум E-Rizz</div>
+            <div className="mono text-mute">шоурум GT</div>
             <p className="font-display mt-2 text-2xl font-extrabold uppercase">Ростов-на-Дону</p>
             <dl className="mt-4 grid gap-3 sm:grid-cols-3">
               <div><dt className="mono text-mute">адрес</dt><dd className="font-semibold">ул. Примерная, 0 (заглушка)</dd></div>

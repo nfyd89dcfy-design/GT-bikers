@@ -34,7 +34,7 @@ export const Bike3D = forwardRef<BikeApi, Props>(function Bike3D({ variant, pain
   const mounted = useRef(false);
   useEffect(() => { if (!mounted.current) { mounted.current = true; return; } view.current?.setVariant(variant, paint); }, [variant, paint]);
   useEffect(() => { view.current?.setPitch(pitch); }, [pitch]);
-  return <canvas ref={cv} role="img" aria-label={label ?? "3D-модель байка E-Rizz"} className={cn("block w-full", className)} style={{ touchAction: "pan-y" }} />;
+  return <canvas ref={cv} role="img" aria-label={label ?? "3D-модель байка GT"} className={cn("block w-full", className)} style={{ touchAction: "pan-y" }} />;
 });
 
 /** Превью-картинка: рендер 3D-модели в PNG (корзина, сравнение, карточки). */

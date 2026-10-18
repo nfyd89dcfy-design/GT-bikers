@@ -40,11 +40,13 @@ export function HeroSky({ theme, onFail }: { theme: Theme } & Fail) {
 }
 
 /** Ячеистая текстура (WorleyNoise) с зерном для темных блоков. */
-export function CellsBg({ tone, onFail }: { tone: "steel" | "flare" } & Fail) {
+export function CellsBg({ tone, theme, onFail }: { tone: "steel" | "flare"; theme: Theme } & Fail) {
+  const day = theme === "day";
+  const [a, b] = day ? (tone === "flare" ? ["#ffffff", "#ffe1d6"] : ["#ffffff", "#eceef1"]) : (tone === "flare" ? ["#000000", "#3a1209"] : ["#000000", "#17191d"]);
   return (
-    <Shader disableTelemetry style={{ ...fill, opacity: 0.55 }} onUnavailable={onFail}>
-      <WorleyNoise colorA={tone === "flare" ? "#2a0d07" : "#0b0d10"} colorB={tone === "flare" ? "#7a2414" : "#232a33"} scale={3.2} speed={0.12} contrast={0.6} />
-      <FilmGrain strength={0.14} animated />
+    <Shader disableTelemetry style={{ ...fill, opacity: day ? 0.7 : 0.6 }} onUnavailable={onFail}>
+      <WorleyNoise colorA={a} colorB={b} scale={3.2} speed={0.12} contrast={0.6} />
+      <FilmGrain strength={day ? 0.06 : 0.14} animated />
     </Shader>
   );
 }

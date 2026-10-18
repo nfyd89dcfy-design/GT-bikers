@@ -2,7 +2,7 @@ import { Component, lazy, Suspense, useEffect, useRef, useState, type ReactNode 
 import { flushSync } from "react-dom";
 import { ArrowRight } from "lucide-react";
 import { gsap, ScrollTrigger, SplitText } from "@/lib/gsap";
-import { reduceMotion, type Theme } from "@/lib/state";
+import { reduceMotion, useApp, type Theme } from "@/lib/state";
 import { cn } from "@/lib/utils";
 
 /* ================================================================
@@ -81,11 +81,12 @@ export function HeroBackdrop({ theme }: { theme: Theme }) {
 
 /** Ячеистая текстура (WorleyNoise) для темных секций. */
 export function CellsBackdrop({ tone = "steel" }: { tone?: "steel" | "flare" }) {
+  const { theme } = useApp();
   const ok = useGpu();
   const [dead, setDead] = useState(false);
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-      {ok && !dead && <Near><Safe><Suspense fallback={null}><FX.Cells tone={tone} onFail={off(setDead)} /></Suspense></Safe></Near>}
+      {ok && !dead && <Near><Safe><Suspense fallback={null}><FX.Cells tone={tone} theme={theme} onFail={off(setDead)} /></Suspense></Safe></Near>}
       <div className="grain absolute inset-0" />
     </div>
   );

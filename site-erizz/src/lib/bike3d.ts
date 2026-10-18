@@ -1,4 +1,4 @@
-/* Процедурные 3D-модели E-Rizz (three.js) + общий рендерер + загрузчик GLB.
+/* Процедурные 3D-модели GT (three.js) + общий рендерер + загрузчик GLB.
    Модели: Base / Sport / Pro. Если в public/models лежит base.glb | sport.glb | pro.glb,
    используется он (GLTFLoader), иначе строится процедурная модель.
    Координаты: +X вперед, +Y вверх, Z вбок. Единицы: метры. */
@@ -132,7 +132,7 @@ function logoTex(color: string, sub: string) {
   const draw = () => {
     const x = c.getContext("2d")!; x.clearRect(0, 0, 768, 256);
     x.fillStyle = color; x.textAlign = "left"; x.textBaseline = "middle";
-    x.font = "800 150px Unbounded, Arial Black, sans-serif"; x.fillText("E-RIZZ", 24, 100);
+    x.font = "800 150px Unbounded, Arial Black, sans-serif"; x.fillText("GT", 24, 100);
     x.font = "600 44px 'Martian Mono Variable', Menlo, monospace"; x.globalAlpha = 0.85; x.fillText(sub, 30, 212);
     tex.needsUpdate = true;
   };

@@ -12,6 +12,7 @@ import { Showroom } from "@/components/showroom";
 import { CartDrawer, Drive, Footer, Service } from "@/components/media";
 import { ARLayer } from "@/components/ar";
 import { Atmos } from "@/components/atmos";
+import { Gear, Tuning } from "@/components/shop";
 
 function Toast() {
   const { toast } = useApp();
@@ -43,6 +44,8 @@ function Page() {
         <Atmos />
         <Viewer3D />
         <Configurator />
+        <Tuning />
+        <Gear />
         <Quiz />
         <Compare />
         <Delivery />

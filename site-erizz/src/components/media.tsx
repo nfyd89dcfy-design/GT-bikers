@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { Play, X, Send, Clapperboard, Camera, Users, Wrench, Truck, ShieldCheck, KeyRound, Minus, Plus, Trash2, Check } from "lucide-react";
+import { Play, X, Send, Clapperboard, Camera, Users, Wrench, Truck, ShieldCheck, KeyRound, Minus, Plus, Trash2, Check, Move3d } from "lucide-react";
 import { useApp, scrollToId } from "@/lib/state";
 import { DEPOSIT, LINEUP, L_BY, glbKey, modelName, photo, prod, rub } from "@/lib/data";
 import type { Variant } from "@/lib/bike3d";
 import { Bike3D, BikeThumb } from "./bike";
-import { Boids, ChromeText } from "./shaders";
+import { Boids } from "./shaders";
+import { GTMark } from "./logo";
 import { Eyebrow, H2, Reveal } from "./ui-bits";
 import { InteractiveHoverButton } from "./ui/interactive-hover-button";
 import { GlowCard } from "./ui/spotlight-card";
@@ -14,10 +15,10 @@ import { CellsBackdrop, MetalFigure } from "./fx";
 
 /* ---------------------------------------------------------------- Media */
 const SOCS = [
-  { n: "Telegram", h: "@erizz_stub", d: ["Анонсы поставок и закулисье", "Анонсы поставок и новости"], icon: Send },
-  { n: "YouTube", h: "E-Rizz", d: ["Обзоры и тесты моделей", "Обзоры и тест-драйвы моделей"], icon: Clapperboard },
-  { n: "Instagram", h: "@erizz.stub", d: ["Фото клиентов и кастом-билды", "Фото клиентов и кастомные сборки"], icon: Camera },
-  { n: "VK", h: "vk.com/erizz_stub", d: ["Сообщество и розыгрыши", "Сообщество, новости и отзывы"], icon: Users },
+  { n: "Telegram", h: "@gt_bikes_stub", d: ["Анонсы поставок и закулисье", "Анонсы поставок и новости"], icon: Send },
+  { n: "YouTube", h: "GT", d: ["Обзоры и тесты моделей", "Обзоры и тест-драйвы моделей"], icon: Clapperboard },
+  { n: "Instagram", h: "@gt.bikes.stub", d: ["Фото клиентов и кастом-билды", "Фото клиентов и кастомные сборки"], icon: Camera },
+  { n: "VK", h: "vk.com/gt_bikes_stub", d: ["Сообщество и розыгрыши", "Сообщество, новости и отзывы"], icon: Users },
 ];
 type Shot = { t: string; d?: string; p: string; c: string };
 const VIDS: Shot[] = [
@@ -172,9 +173,9 @@ export function Drive() {
           <Eyebrow n="14" dark>тест-драйв</Eyebrow>
           <H2><span id="drive-h">{t("Кати", "Запишитесь")}</span> <span className="text-sky">{t("до покупки", "на тест-драйв")}</span></H2>
           <p className="muted mt-4 max-w-md text-lg">{t("Выбери город, дату и модель. Мы подтвердим время и подготовим байк.", "Выберите город, дату и модель. Мы подтвердим время и подготовим технику.")}</p>
-          <div className="relative mt-8 w-full max-w-xl overflow-hidden rounded-3xl bg-kelp" style={{ aspectRatio: "16/10" }}><img src={photo("garage_moody")} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" /><Bike3D variant={glbKey(dm) as Variant} paint={dm.paint} yaw={-0.5} sway={0.1} label={`${dm.name}, 3D-модель`} className="relative h-full w-full" /></div>
+          <div className="relative mt-8 w-full max-w-xl overflow-hidden rounded-3xl bg-kelp" style={{ aspectRatio: "16/10" }} data-cursor="drag"><img src={photo("garage_moody")} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" /><Bike3D variant={glbKey(dm) as Variant} paint={dm.paint} yaw={-0.5} sway={0.06} interactive label={`${dm.name}, 3D-модель: тяните, чтобы повернуть`} className="relative h-full w-full cursor-grab active:cursor-grabbing" /><span className="mono pointer-events-none absolute bottom-3 left-3 flex items-center gap-2 rounded-full bg-deep/70 px-3 py-1.5 text-frost/85"><Move3d size={14} aria-hidden="true" />{t("тяни, чтобы покрутить", "потяните, чтобы повернуть")}</span><span className="mono pointer-events-none absolute left-3 top-3 rounded-full bg-deep/70 px-3 py-1.5 text-sky">{dm.name}</span></div>
         </Reveal>
-        <div className="rounded-3xl bg-frost p-6 text-ink sm:p-8" aria-live="polite">
+        <div className="light-zone rounded-3xl bg-frost p-6 text-ink sm:p-8" aria-live="polite">
           {done ? (
             <div data-testid="drive-ok">
               <div className="grid h-14 w-14 place-items-center rounded-full bg-flare"><Check size={30} /></div>
@@ -223,8 +224,8 @@ export function Footer() {
       <div className="container-x">
         <div className="grid gap-10 md:grid-cols-4">
           <div className="md:col-span-2">
-            <p className="font-display text-3xl font-extrabold uppercase leading-none">{t("Rizz – это когда", "E-Rizz")}</p>
-            <p className="font-display text-3xl font-extrabold uppercase leading-none text-sky">{t("Электро и не только.", "Электро и не только.")}</p>
+            <p className="font-display text-3xl font-extrabold uppercase leading-none">GT</p>
+            <p className="font-display text-3xl font-extrabold uppercase leading-none text-sky">электробайки, тюнинг, экипировка</p>
             <div className="mt-6 flex flex-wrap gap-3">
               <InteractiveHoverButton text="Опт и дилерам" className="h-12 w-52 border-frost/40 bg-transparent text-frost" onClick={() => say("Заглушка: форма запроса оптового прайса")} />
               <button className="btn-ghost" onClick={() => scrollToId("drive")}>Тест-драйв</button>
@@ -232,7 +233,7 @@ export function Footer() {
           </div>
           <div>
             <div className="mono mb-3 text-sky">контакты (заглушки)</div>
-            <ul className="space-y-2 text-sm"><li>+7 (000) 000-00-00</li><li>hello@erizz.example</li><li>Ростов-на-Дону, ул. Примерная, 0</li><li>Москва, Краснодарский край</li></ul>
+            <ul className="space-y-2 text-sm"><li>+7 (000) 000-00-00</li><li>hello@gt.example</li><li>Ростов-на-Дону, ул. Примерная, 0</li><li>Москва, Краснодарский край</li></ul>
           </div>
           <div>
             <div className="mono mb-3 text-sky">соцсети (заглушки)</div>
@@ -244,9 +245,7 @@ export function Footer() {
           <p className="mt-3">3D-модели (CC BY 4.0, перекрашены и доработаны под GT): «X-Pro Dirt bike», автор JJDYT; «pitbike», автор edol-ask; «eScrambler Low Poly», автор Abhishek Jathan. Источник: Sketchfab через Objaverse.</p>
           <p className="mt-2">Фото: Unsplash, лицензия Unsplash. Ссылки на авторов в файле credits/photos.json репозитория.</p>
         </details>
-        <div className="relative mt-10 h-[22vw] min-h-[90px] w-full">
-          <ChromeText text="E-RIZZ" className="h-full w-full" />
-        </div>
+        <div className="mt-10 flex justify-center opacity-90"><GTMark className="w-[min(34vw,260px)]" /></div>
         <div className="mono flex flex-wrap justify-between gap-2 border-t border-frost/20 py-5 text-frost/70">
           <span>макет сайта / характеристики по данным производителей / платежи и контакты: заглушки</span>
           <span>розница и опт / Москва, Ростов-на-Дону, Краснодарский край</span>
@@ -288,7 +287,7 @@ export function CartDrawer() {
   return (
     <div className="fixed inset-0 z-[180]" role="dialog" aria-modal="true" aria-label="Корзина">
       <div className="absolute inset-0 bg-deep/70 backdrop-blur-sm" onClick={() => setCartOpen(false)} />
-      <aside className="absolute right-0 top-0 flex h-full w-full max-w-[460px] flex-col bg-frost text-ink shadow-2xl">
+      <aside className="light-zone absolute right-0 top-0 flex h-full w-full max-w-[460px] flex-col bg-frost text-ink shadow-2xl">
         <div className="flex items-center justify-between border-b border-ink/15 p-5">
           <h2 className="font-display text-2xl font-extrabold uppercase">{view === "form" ? "Оформление" : view === "ok" ? "Готово" : "Корзина"}</h2>
           <button ref={closeBtn} className="grid h-11 w-11 cursor-pointer place-items-center rounded-full hover:bg-ink/10" aria-label="Закрыть корзину" onClick={() => setCartOpen(false)}><X /></button>

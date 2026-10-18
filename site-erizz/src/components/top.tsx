@@ -25,8 +25,8 @@ export function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-[60] border-b border-ink/15 bg-sleet/80 text-ink backdrop-blur-md">
       <div className="container-x flex h-16 items-center gap-3">
-        <a href="#top" className="font-display text-xl font-extrabold tracking-tight" aria-label="E-Rizz, на главную">
-          E-RIZZ<span className="text-flare">.</span>
+        <a href="#top" className="font-display text-xl font-extrabold tracking-tight" aria-label="GT, на главную">
+          GT<span className="text-flare">.</span>
         </a>
         <nav className="ml-6 hidden items-center gap-5 lg:flex" aria-label="Разделы">
           {NAV.map(([id, l]) => <button key={id} onClick={() => go(id)} className="mono min-h-11 cursor-pointer hover:text-flare">{l}</button>)}
@@ -139,7 +139,7 @@ export function Hero() {
       <BlockGrid a="#dfe3e8" b="#b7c0ca" line="#8d97a2" cells={13} scale={2.4} contrast={0.5} gain={0.75} lineAmt={0.3} react={0.45} seed={2} className="pointer-events-none absolute inset-0 -z-10 h-full w-full opacity-70 mix-blend-multiply" />
       <ParticleField text="GT" count={2400} tones={["#8d97a2", "#59616b", "#2b3037", "#14171b", "#ff4a2b"]} box={{ x: 0.3, y: 0.34, w: 0.7, h: 0.5 }} cursorMode="push" className="pointer-events-none absolute inset-0 -z-10 hidden h-full w-full opacity-45 lg:block" size={1.2} />
       <div className="hero-chrome pointer-events-none absolute inset-x-0 top-[68px] z-0 sm:top-[72px]">
-        <div className="hero-chrome-in mx-auto h-[20vw] min-h-[96px] w-[98%] max-w-[1700px]"><ChromeText text="E-RIZZ" className="h-full w-full opacity-75" /></div>
+        <div className="hero-chrome-in mx-auto h-[20vw] min-h-[96px] w-[98%] max-w-[1700px]"><ChromeText text="GT" className="h-full w-full opacity-75" /></div>
       </div>
       <div className="container-x relative z-10 flex h-full flex-col">
         <div className="relative z-10 pt-[calc(max(96px,20vw)+30px)] lg:max-w-[40%]">

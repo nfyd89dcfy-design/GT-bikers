@@ -7,18 +7,11 @@ import { LCard } from "./product";
 import { CineSwitch, Cta, HeroBackdrop, CellsBackdrop, Tracker, switchTheme, type Hud } from "./fx";
 import { cn } from "@/lib/utils";
 
-/* ---------------------------------------------------------------- Логотип: шильд GT слева, E-Rizz справа */
-export function Logo({ size = 1, only, className }: { size?: number; only?: "gt" | "erizz"; className?: string }) {
-  return (
-    <span className={cn("logo-lockup", className)} style={{ fontSize: `${size}rem` }}>
-      {only !== "erizz" && <span className="gt-plate">GT</span>}
-      {only !== "gt" && <span className="logo-w1">E<span className="bar" />RIZZ</span>}
-    </span>
-  );
-}
+export { Logo } from "./logo";
+import { Logo } from "./logo";
 
 /* ---------------------------------------------------------------- Шапка */
-const NAV: [string, string][] = [["catalog", "Модели"], ["build", "Сборка"], ["config", "Конструктор"], ["viewer", "3D и AR"], ["showroom", "Шоурум"]];
+const NAV: [string, string][] = [["catalog", "Модели"], ["tuning", "Тюнинг"], ["gear", "Экипировка"], ["config", "Конструктор"], ["viewer", "3D и AR"], ["showroom", "Шоурум"]];
 
 export function ThemeSwitch({ className }: { className?: string }) {
   const { theme, setTheme } = useApp();
@@ -29,21 +22,18 @@ export function Header2() {
   const { cart, setCartOpen } = useApp();
   const [solid, setSolid] = useState(false);
   const [open, setOpen] = useState(false);
-  const [over, setOver] = useState(false);
   useEffect(() => {
     const f = () => {
       setSolid(window.scrollY > 40);
-      const el = document.elementFromPoint(window.innerWidth / 2, 70);
-      setOver(!!el?.closest("#build, .dark-zone, [data-dark]"));
     };
     f(); window.addEventListener("scroll", f, { passive: true }); return () => window.removeEventListener("scroll", f);
   }, []);
   const n = cart.reduce((a, c) => a + c.qty, 0);
   const go = (id: string) => { setOpen(false); scrollToId(id); };
   return (
-    <header data-theme={over ? "night" : undefined} className={cn("fixed inset-x-0 top-0 z-[60] border-b transition-[background-color,border-color] duration-300", solid || open ? "t-line backdrop-blur-[12px]" : "border-transparent")} style={{ background: solid || open ? (over ? "rgb(14 16 19 / .92)" : "var(--t-head)") : "transparent", color: "var(--t-fg)" }}>
+    <header className={cn("fixed inset-x-0 top-0 z-[60] border-b transition-[background-color,border-color] duration-300", solid || open ? "t-line backdrop-blur-[12px]" : "border-transparent")} style={{ background: solid || open ? "var(--t-head)" : "transparent", color: "var(--t-fg)" }}>
       <div className="container-x flex h-16 items-center gap-4">
-        <a href="#top" aria-label="GT и E-Rizz, на главную" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}><Logo size={0.95} /></a>
+        <a href="#top" aria-label="GT, на главную" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}><Logo size={0.95} /></a>
         <nav className="ml-8 hidden items-center gap-7 lg:flex" aria-label="Разделы">
           {NAV.map(([id, l]) => <button key={id} onClick={() => go(id)} className="min-h-11 cursor-pointer text-[14px] font-semibold opacity-75 transition-opacity hover:opacity-100">{l}</button>)}
         </nav>
@@ -203,7 +193,7 @@ export function BuildScroll() {
     return () => ctx.revert();
   }, []);
   return (
-    <section ref={root} id="build" className="relative isolate h-[100svh] min-h-[600px] overflow-hidden bg-[#0b0d10] text-frost" aria-labelledby="build-h">
+    <section ref={root} id="build" className="dark-zone relative isolate h-[100svh] min-h-[600px] overflow-hidden bg-ink text-frost" aria-labelledby="build-h">
       <CellsBackdrop />
       <div className="container-x flex h-full flex-col pb-6 pt-20 sm:pt-24">
         <div className="flex flex-wrap items-end justify-between gap-4">
@@ -215,8 +205,8 @@ export function BuildScroll() {
         </div>
         <div className="relative flex min-h-0 flex-1 items-center justify-center">
           <div className="relative aspect-[16/9]" style={{ width: "min(100%, calc((100svh - 380px) * 1.7778))" }}>
-            <div className="absolute inset-[10%_12%_12%] rounded-full bg-[#2a3038] opacity-80 blur-[70px]" aria-hidden="true" />
-            <div className="absolute bottom-[5%] left-1/2 h-[6%] w-[62%] -translate-x-1/2 rounded-full bg-black/80 blur-[14px]" aria-hidden="true" />
+            <div className="build-glow absolute inset-[10%_12%_12%] rounded-full blur-[70px]" aria-hidden="true" />
+            <div className="build-floor absolute bottom-[5%] left-1/2 h-[6%] w-[62%] -translate-x-1/2 rounded-full blur-[14px]" aria-hidden="true" />
             {["frame", ...LAYERS.map((l) => l.k)].map((k) => (
               <img key={k} data-l={k} src={`${import.meta.env.BASE_URL}build/${k}.webp`} alt={k === "frame" ? "GT Send 19 Factory собирается из узлов" : ""} className="absolute inset-0 h-full w-full object-contain will-change-transform" />
             ))}
@@ -251,7 +241,7 @@ export function Ticker() {
     </div>
   );
   return (
-    <div className="relative overflow-hidden border-y border-frost/10 bg-ink py-5 text-frost" role="marquee" aria-label="Серии GT: Spark, Send, Ridge, Pulse, Drift, Grand">
+    <div className="dark-zone relative overflow-hidden border-y border-frost/10 bg-ink py-5 text-frost" role="marquee" aria-label="Серии GT: Spark, Send, Ridge, Pulse, Drift, Grand">
       <div className="ticker">{row("a")}{row("b")}</div>
     </div>
   );

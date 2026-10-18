@@ -61,19 +61,19 @@ export function Delivery() {
         </Reveal>
 
         <div className="mt-10 grid gap-5 lg:grid-cols-[1.6fr_1fr]">
-          <div className="brushed-dark relative overflow-hidden rounded-3xl border border-ink/30 p-2 text-frost">
+          <div className="map-card relative overflow-hidden rounded-3xl border border-ink/30 p-2">
             <svg viewBox="0 0 900 450" role="img" aria-label={`Карта России: маршрут из ${o.n} в ${to}`} className="h-auto w-full">
-              <path d={path} fill="#232830" stroke="#8d97a2" strokeWidth="1.2" strokeLinejoin="round" />
-              {Array.from({ length: 14 }).map((_, i) => <line key={i} x1={20 + i * 64} y1="10" x2={20 + i * 64} y2="440" stroke="#fff" strokeOpacity=".04" />)}
-              {CITIES.map((c) => <path key={c.n} d={curve(o, c)} fill="none" stroke="#8d97a2" strokeOpacity={c.n === to ? 0 : 0.28} strokeWidth="1" />)}
+              <path d={path} fill="var(--map-land)" stroke="var(--map-edge)" strokeWidth="1.2" strokeLinejoin="round" />
+              {Array.from({ length: 14 }).map((_, i) => <line key={i} x1={20 + i * 64} y1="10" x2={20 + i * 64} y2="440" stroke="var(--map-grid)" strokeOpacity=".06" />)}
+              {CITIES.map((c) => <path key={c.n} d={curve(o, c)} fill="none" stroke="var(--map-edge)" strokeOpacity={c.n === to ? 0 : 0.28} strokeWidth="1" />)}
               <path d={curve(o, sel)} fill="none" stroke="#ff4a2b" strokeWidth="2.6" strokeDasharray="7 6" className="route-anim" />
               {CITIES.map((c) => {
                 const [x, y] = pr(c.lon, c.lat); const on = c.n === to;
                 return (
                   <g key={c.n} role="button" tabIndex={0} aria-label={`Город: ${c.n}`} onClick={() => setTo(c.n)} onKeyDown={(ev) => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); setTo(c.n); } }} className="cursor-pointer outline-none">
                     <circle cx={x} cy={y} r="14" fill="transparent" />
-                    <circle cx={x} cy={y} r={on ? 6 : 3.6} fill={on ? "#ff4a2b" : "#e4e8ec"} stroke={on ? "#fff" : "none"} strokeWidth="1.5" />
-                    <text x={x + 8} y={y - 7} fontSize={on ? 14 : 11} fontFamily="Onest" fontWeight={on ? 700 : 400} fill={on ? "#fff" : "#b9c2cc"}>{c.n}</text>
+                    <circle cx={x} cy={y} r={on ? 6 : 3.6} fill={on ? "#ff4a2b" : "var(--map-dot)"} stroke={on ? "var(--map-on)" : "none"} strokeWidth="1.5" />
+                    <text x={x + 8} y={y - 7} fontSize={on ? 14 : 11} fontFamily="Onest" fontWeight={on ? 700 : 400} fill={on ? "var(--map-on)" : "var(--map-txt)"}>{c.n}</text>
                   </g>
                 );
               })}
@@ -82,8 +82,8 @@ export function Delivery() {
                 return (
                   <g key={c.n}>
                     <circle cx={x} cy={y} r="14" fill="none" stroke="#9cc9ff" strokeWidth="1.5" opacity={i === from ? 1 : 0.4}><animate attributeName="r" values="9;16;9" dur="2.4s" repeatCount="indefinite" /></circle>
-                    <circle cx={x} cy={y} r="7" fill="#9cc9ff" stroke="#0e1013" strokeWidth="2" />
-                    <text x={x + (i ? 12 : -12)} y={y + (i ? 20 : -14)} textAnchor={i ? "start" : "end"} fontSize="13" fontFamily="Onest" fontWeight="800" fill="#f1d994">{c.n}</text>
+                    <circle cx={x} cy={y} r="7" fill="#9cc9ff" stroke="var(--map-land)" strokeWidth="2" />
+                    <text x={x + (i ? 12 : -12)} y={y + (i ? 20 : -14)} textAnchor={i ? "start" : "end"} fontSize="13" fontFamily="Onest" fontWeight="800" fill="var(--map-origin)">{c.n}</text>
                   </g>
                 );
               })}
@@ -109,7 +109,7 @@ export function Delivery() {
         <ol className="mt-12 grid gap-4 md:grid-cols-3">
           {STEPS.map((s, i) => (
             <li key={s.h}>
-              <GlowCard customSize glowColor="flare" className="touch-pan-y! h-full min-h-[220px] !bg-ink text-frost">
+              <GlowCard customSize glowColor="flare" className="dark-zone touch-pan-y! h-full min-h-[220px] !bg-ink text-frost">
                 <div>
                   <div className="flex items-center justify-between"><s.icon size={30} className="text-sky" aria-hidden="true" /><span className="font-display text-5xl font-extrabold text-frost/20">0{i + 1}</span></div>
                   <h3 className="font-display mt-4 text-2xl font-extrabold uppercase">{s.h}</h3>

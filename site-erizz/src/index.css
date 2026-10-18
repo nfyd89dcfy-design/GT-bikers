@@ -9,6 +9,8 @@
 @import "@fontsource/onest/latin-600.css";
 @import "@fontsource-variable/martian-mono/wght.css";
 @import "@fontsource/archivo-black/latin-400.css";
+@import "@fontsource/playfair-display/latin-900.css";
+@import "@fontsource/bodoni-moda/latin-800.css";
 
 @theme {
   --font-display: "Unbounded", "Onest", sans-serif;
@@ -69,8 +71,8 @@ body { margin: 0; background: var(--color-sleet); color: var(--color-ink); font-
 
 .sr-only-x { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .chip { min-height: 44px; padding: 0 18px; border-radius: 6px; border: 1px solid currentColor; font-weight: 500; cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
-.chip[aria-pressed="true"], .chip[aria-selected="true"] { background: var(--color-frost); color: var(--color-ink) !important; border-color: var(--color-frost); }
-.input { width: 100%; min-height: 48px; border-radius: 6px; border: 1px solid rgb(14 16 19 / .35); background: var(--color-frost); color: var(--color-ink); padding: 0 14px; font: inherit; }
+.chip[aria-pressed="true"], .chip[aria-selected="true"] { background: var(--on-bg, var(--color-frost)); color: var(--on-fg, var(--color-ink)) !important; border-color: var(--on-bg, var(--color-frost)); }
+.input { width: 100%; min-height: 48px; border-radius: 6px; border: 1px solid color-mix(in srgb, var(--color-ink) 30%, transparent); background: var(--input-bg, var(--color-frost)); color: var(--color-ink); padding: 0 14px; font: inherit; }
 textarea.input { padding: 12px 14px; }
 .btn-solid { min-height: 48px; padding: 0 26px; border-radius: 6px; background: var(--color-flare); color: var(--color-ink); font-weight: 700; cursor: pointer; border: 0; }
 .btn-solid:hover { filter: brightness(1.08); }
@@ -111,15 +113,15 @@ img { max-width: 100%; }
 
 /* ===================== v2: тема день / ночь ===================== */
 :root, [data-theme="day"] {
-  --t-bg: #eef1f4; --t-bg2: #e3e7eb; --t-fg: #0e1013; --t-mute: #5a626c; --t-line: rgb(14 16 19 / .14);
+  --t-bg: #ffffff; --t-bg2: #f4f5f7; --t-fg: #0e1013; --t-mute: #5a626c; --t-line: rgb(14 16 19 / .14);
   --t-tile: linear-gradient(180deg, #f3f5f7 0%, #dfe4e9 100%);
-  --t-floor: rgb(14 16 19 / .38); --t-glow: transparent; --t-label: #5a626c; --t-head: rgb(238 241 244 / .92);
+  --t-floor: rgb(14 16 19 / .38); --t-glow: transparent; --t-label: #5a626c; --t-head: rgb(255 255 255 / .92);
   --t-chip: #0e1013; --t-chip-fg: #eef1f4;
 }
 [data-theme="night"] {
-  --t-bg: #0b0d10; --t-bg2: #121519; --t-fg: #eef1f4; --t-mute: #8d97a2; --t-line: rgb(238 241 244 / .12);
-  --t-tile: radial-gradient(60% 60% at 50% 55%, rgb(185 194 204 / .18) 0%, transparent 70%), #1c2026;
-  --t-floor: rgb(0 0 0 / .8); --t-glow: rgb(156 201 255 / .14); --t-label: #9cc9ff; --t-head: rgb(14 16 19 / .92);
+  --t-bg: #000000; --t-bg2: #0d0e10; --t-fg: #f2f4f6; --t-mute: #8d97a2; --t-line: rgb(238 241 244 / .12);
+  --t-tile: radial-gradient(60% 60% at 50% 55%, rgb(185 194 204 / .13) 0%, transparent 70%), #0f1012;
+  --t-floor: rgb(0 0 0 / .8); --t-glow: rgb(156 201 255 / .14); --t-label: #9cc9ff; --t-head: rgb(0 0 0 / .9);
   --t-chip: #eef1f4; --t-chip-fg: #0e1013;
 }
 body { background: var(--t-bg); }
@@ -264,3 +266,56 @@ body { background: var(--t-bg); }
 .ticker:hover { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .bike-idle, .ticker, .css-orb, .hud--on .hud__scan, .hud--on .hud__box, .cine--night .cine__stars i { animation: none !important; } }
 .hud__label--b { bottom: auto; top: calc(100% + 4px); }
+
+/* ===================== v4: тотал вайт днем, тотал блэк ночью =====================
+   Секции нарисованы как "темные" (.dark-zone) и "светлые" (.light-zone). Вместо смешения
+   подменяем палитру внутри зоны, чтобы вся страница шла в тон темы. */
+.dark-zone { --on-bg: var(--color-frost); --on-fg: var(--color-ink); }
+.light-zone { --on-bg: var(--color-ink); --on-fg: var(--color-frost); --input-bg: var(--color-sleet); }
+
+[data-theme="day"] .light-zone { --color-sleet: #ffffff; --color-frost: #f4f5f7; }
+[data-theme="day"] .dark-zone { --color-ink: #ffffff; --color-deep: #ffffff; --color-kelp: #f4f5f7; --color-frost: #0e1013; --color-sky: #2a5bd7; --color-aqua: #5a626c; --color-steel: #5a626c; --color-sleet: #ffffff; }
+[data-theme="day"] .dark-zone .muted { color: #5a626c; }
+[data-theme="day"] .light-zone .dark-zone { --color-ink: #f4f5f7; --color-deep: #f4f5f7; }
+[data-theme="day"] .dark-zone .light-zone { --color-ink: #0e1013; --color-frost: #f4f5f7; --color-sleet: #ffffff; --color-deep: #f4f5f7; --color-sky: #2a5bd7; }
+
+[data-theme="night"] .dark-zone { --color-ink: #000000; --color-deep: #000000; --color-kelp: #121316; }
+[data-theme="night"] .light-zone { --color-sleet: #000000; --color-frost: #121316; --color-ink: #f2f4f6; --color-mute: #8d97a2; --color-deep: #000000; --color-kelp: #1a1c20; }
+[data-theme="night"] .light-zone .dark-zone { --color-ink: #121316; --color-deep: #0b0c0e; --color-frost: #eef1f4; --color-kelp: #1a1c20; }
+[data-theme="night"] .dark-zone .light-zone { --color-frost: #121316; --color-ink: #f2f4f6; --color-sleet: #000000; --color-mute: #8d97a2; }
+[data-theme="night"] .light-zone .text-mute { color: #8d97a2; }
+
+/* фоны с зерном держатся тона темы */
+[data-theme="day"] .bg-horizon { background:
+  radial-gradient(70% 90% at 80% 20%, #ffffff 0%, rgb(255 255 255 / 0) 60%),
+  radial-gradient(60% 70% at 10% 90%, #e4e8ed 0%, rgb(228 232 237 / 0) 65%),
+  linear-gradient(170deg, #ffffff 0%, #f3f5f7 60%, #ffffff 100%); }
+[data-theme="night"] .bg-silk, [data-theme="night"] .bg-silk-blue { background:
+  radial-gradient(90% 50% at 50% 115%, #0f1d40 0%, rgb(15 29 64 / 0) 65%),
+  linear-gradient(180deg, #000 0%, #030407 70%, #070b16 100%); }
+[data-theme="day"] .bg-ember { background:
+  radial-gradient(60% 70% at 92% 10%, #ffd7c2 0%, rgb(255 215 194 / 0) 60%),
+  radial-gradient(70% 80% at 75% 105%, #ffb39f 0%, rgb(255 179 159 / 0) 60%),
+  linear-gradient(120deg, #ffffff 0%, #fff7f3 45%, #ffe6dc 100%); }
+[data-theme="night"] .bg-ember { background:
+  radial-gradient(70% 80% at 90% 10%, rgb(255 110 50 / .55) 0%, rgb(255 110 50 / 0) 55%),
+  radial-gradient(80% 90% at 75% 105%, rgb(255 74 43 / .6) 0%, rgb(255 74 43 / 0) 60%),
+  linear-gradient(120deg, #000 0%, #0c0503 40%, #3a1209 80%, #7a2210 100%); }
+[data-theme="day"] .grain { opacity: .1; mix-blend-mode: multiply; }
+
+/* карты и свечения в тон темы */
+.map-card { background: var(--map-bg); color: var(--t-fg); }
+:root, [data-theme="day"] { --map-bg: #f4f5f7; --map-land: #ffffff; --map-edge: #8d97a2; --map-grid: #0e1013; --map-dot: #5a626c; --map-on: #0e1013; --map-txt: #5a626c; --map-origin: #8a6510;
+  --sm-bg: #f4f5f7; --sm-ink: #0e1013; --sm-mute: #5a626c; }
+[data-theme="night"] { --map-bg: #0d0e10; --map-land: #1a1d22; --map-edge: #8d97a2; --map-grid: #ffffff; --map-dot: #e4e8ec; --map-on: #ffffff; --map-txt: #b9c2cc; --map-origin: #f1d994;
+  --sm-bg: #121316; --sm-ink: #eef1f4; --sm-mute: #8d97a2; }
+.build-glow { background: #2a3038; opacity: .8; }
+.build-floor { background: rgb(0 0 0 / .8); }
+[data-theme="day"] .build-glow { background: #eef0f3; opacity: 1; }
+[data-theme="day"] .build-floor { background: rgb(14 16 19 / .35); }
+
+/* тюнинг: полосы мощности заполняются при появлении */
+@keyframes tier-in { from { transform: scaleX(0); } }
+.tier-bar { transform-origin: left; animation: tier-in 1.2s cubic-bezier(.2,.9,.2,1) both; animation-delay: var(--d, 0s); }
+@supports (animation-timeline: view()) { .tier-bar { animation-timeline: view(); animation-range: entry 20% cover 45%; animation-delay: 0s; } }
+@media (prefers-reduced-motion: reduce) { .tier-bar { animation: none; } }

@@ -16,7 +16,7 @@ import { MetalFigure } from "./fx";
 const BATT = [{ n: "Стандарт", k: 1, p: 0 }, { n: "+20% емкости", k: 1.2, p: 60000 }, { n: "Вторая батарея", k: 2, p: 140000 }];
 const CTRL = [{ n: "Stock", p: 0, d: "ровный отклик" }, { n: "Sport", p: 25000, d: "резкий старт" }, { n: "Pro tune", p: 60000, d: "тонкая настройка под райдера" }];
 const PAINT: { n: string; c?: string }[] = [{ n: "Заводской" }, { n: "Flare", c: "#ff4a2b" }, { n: "Иней", c: "#eef1f4" }, { n: "Графит", c: "#23272d" }, { n: "Небо", c: "#9cc9ff" }, { n: "Бордо", c: "#7a1b2e" }];
-const DECAL = [{ n: "Без наклеек", p: 0, txt: "" }, { n: "GT", p: 7000, txt: "GT" }, { n: "E-RIZZ", p: 7000, txt: "E-RIZZ" }, { n: "Номер райдера", p: 14000, txt: "RIZZ 01" }];
+const DECAL = [{ n: "Без наклеек", p: 0, txt: "" }, { n: "GT", p: 7000, txt: "GT" }, { n: "Номер райдера", p: 14000, txt: "RIZZ 01" }];
 /* Конструктор показывает фото героя серии; цвет пластика имитируем фильтром (черное, белое и хром не меняются). */
 const CFG_N: Record<Ver, number> = { base: 2, sport: 10, pro: 14, road: 16 };
 const BASE_HUE: Record<Ver, number> = { base: 12, sport: 78, pro: 70, road: 0 };
@@ -182,7 +182,7 @@ export function Quiz() {
           <H2><span id="quiz-h">{t("Не знаешь, что", "Не знаете, что")}</span><br /><span className="text-flare">выбрать?</span></H2>
           <p className="mt-4 max-w-md text-lg text-mute">{t("Четыре вопроса, и мы подскажем модель из 20. Если не наше, подберем под заказ.", "Четыре вопроса, и мы подскажем модель из двадцати. Если подходящей нет, подберем технику под заказ.")}</p>
         </Reveal>
-        <div className="rounded-3xl bg-ink p-6 text-frost sm:p-8" aria-live="polite">
+        <div className="dark-zone rounded-3xl bg-ink p-6 text-frost sm:p-8" aria-live="polite">
           {!done ? (
             <>
               <div className="mono mb-4 flex items-center justify-between text-sky"><span>вопрос {step + 1} / {QUIZ.length}</span><span className="h-1 w-24 overflow-hidden rounded bg-frost/20"><span className="block h-full bg-flare" style={{ width: `${(step / QUIZ.length) * 100}%` }} /></span></div>
@@ -237,7 +237,7 @@ export function Compare() {
   const { t, compare, toggleCompare, addCart } = useApp();
   const ids = compare.filter((id) => L_BY[id]);
   return (
-    <section id="compare" className="relative bg-frost py-24 sm:py-36" aria-labelledby="cmp-h">
+    <section id="compare" className="light-zone relative bg-frost py-24 sm:py-36" aria-labelledby="cmp-h">
       <div className="container-x">
         <Reveal>
           <Eyebrow n="08">сравнение</Eyebrow>
