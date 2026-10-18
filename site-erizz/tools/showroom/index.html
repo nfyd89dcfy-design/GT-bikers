@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<title>Шоурум GT, Ростов-на-Дону: схема</title>
+<style>
+  @font-face { font-family: "Onest"; font-weight: 400; src: url(/node_modules/@fontsource/onest/files/onest-cyrillic-400-normal.woff2); unicode-range: U+0400-04FF; }
+  @font-face { font-family: "Onest"; font-weight: 400; src: url(/node_modules/@fontsource/onest/files/onest-latin-400-normal.woff2); unicode-range: U+0000-00FF, U+2000-206F; }
+  @font-face { font-family: "Onest"; font-weight: 600; src: url(/node_modules/@fontsource/onest/files/onest-cyrillic-600-normal.woff2); unicode-range: U+0400-04FF; }
+  @font-face { font-family: "Onest"; font-weight: 600; src: url(/node_modules/@fontsource/onest/files/onest-latin-600-normal.woff2); unicode-range: U+0000-00FF, U+2000-206F; }
+  @font-face { font-family: "Unb"; font-weight: 800; src: url(/node_modules/@fontsource/unbounded/files/unbounded-cyrillic-800-normal.woff2); unicode-range: U+0400-04FF; }
+  @font-face { font-family: "Unb"; font-weight: 800; src: url(/node_modules/@fontsource/unbounded/files/unbounded-latin-800-normal.woff2); unicode-range: U+0000-00FF, U+2000-206F; }
+  @font-face { font-family: "AB"; src: url(/node_modules/@fontsource/archivo-black/files/archivo-black-latin-400-normal.woff2); }
+  @font-face { font-family: "Mono"; src: url(/node_modules/@fontsource-variable/martian-mono/files/martian-mono-cyrillic-wght-normal.woff2); unicode-range: U+0400-04FF; }
+  @font-face { font-family: "Mono"; src: url(/node_modules/@fontsource-variable/martian-mono/files/martian-mono-latin-wght-normal.woff2); unicode-range: U+0000-00FF, U+2000-206F; }
+  :root { --u: calc(100vw / 1920); --ink: #0e1013; --flare: #ff4a2b; }
+  html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #e9edf2; }
+  canvas { position: absolute; inset: 0; display: block; }
+  #ov { position: absolute; inset: 0; pointer-events: none; font-family: Onest, sans-serif; color: var(--ink); }
+  #ov #lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .chip { position: absolute; transform: translate(-50%, -100%); white-space: nowrap; padding: calc(9 * var(--u)) calc(14 * var(--u)) calc(10 * var(--u));
+    border-radius: calc(12 * var(--u)); background: rgba(255,255,255,.80); border: calc(1 * var(--u)) solid rgba(255,255,255,.95);
+    box-shadow: 0 calc(10 * var(--u)) calc(30 * var(--u)) rgba(14,16,19,.14), inset 0 0 0 calc(1 * var(--u)) rgba(14,16,19,.05);
+    backdrop-filter: blur(calc(14 * var(--u))); -webkit-backdrop-filter: blur(calc(14 * var(--u))); }
+  .chip b { display: block; font-weight: 600; font-size: calc(17 * var(--u)); letter-spacing: -.01em; line-height: 1.15; }
+  .chip span { display: block; margin-top: calc(3 * var(--u)); font-size: calc(12.5 * var(--u)); color: #5a626c; line-height: 1.2; }
+  .chip i { position: absolute; left: calc(14 * var(--u)); top: calc(-7 * var(--u)); padding: calc(2 * var(--u)) calc(7 * var(--u)); border-radius: 99px; background: var(--flare); color: #0e1013;
+    font: 600 calc(9.5 * var(--u))/1.3 Mono, monospace; font-style: normal; letter-spacing: .08em; text-transform: uppercase; }
+  .chip.dark { background: rgba(14,16,19,.82); color: #f2f4f6; border-color: rgba(255,255,255,.12); }
+  .chip.dark span { color: #b9c2cc; }
+  .chip.l2 i { background: #2a5bd7; color: #fff; }
+  .title { position: absolute; left: calc(64 * var(--u)); top: calc(56 * var(--u)); }
+  .title .k { font: 500 calc(13 * var(--u))/1 Mono, monospace; letter-spacing: .22em; text-transform: uppercase; color: #5a626c; }
+  .title h1 { margin: calc(14 * var(--u)) 0 0; font: 800 calc(46 * var(--u))/1.02 Unb, sans-serif; text-transform: uppercase; letter-spacing: -.01em; }
+  .title h1 em { font-style: normal; color: var(--flare); }
+  .title p { margin: calc(14 * var(--u)) 0 0; font-size: calc(17 * var(--u)); color: #3c434c; max-width: calc(560 * var(--u)); line-height: 1.35; }
+  .stats { position: absolute; left: calc(64 * var(--u)); bottom: calc(52 * var(--u)); display: flex; gap: calc(34 * var(--u)); }
+  .stats div b { display: block; font: 800 calc(30 * var(--u))/1 Unb, sans-serif; }
+  .stats div span { display: block; margin-top: calc(6 * var(--u)); font: 500 calc(11 * var(--u))/1.2 Mono, monospace; letter-spacing: .12em; text-transform: uppercase; color: #5a626c; }
+  .logo { position: absolute; right: calc(64 * var(--u)); top: calc(54 * var(--u)); display: flex; align-items: center; gap: calc(12 * var(--u)); font: 500 calc(11 * var(--u))/1.25 Mono, monospace; letter-spacing: .2em; text-transform: uppercase; }
+  .logo svg { position: static; width: calc(46 * var(--u)); height: auto; }
+  .note { position: absolute; right: calc(64 * var(--u)); bottom: calc(52 * var(--u)); font: 500 calc(11 * var(--u))/1.4 Mono, monospace; letter-spacing: .1em; text-transform: uppercase; color: #5a626c; text-align: right; }
+  .dim { font: 600 calc(15 * var(--u))/1 Mono, monospace; fill: #0e1013; }
+  .panel { background: rgba(255,255,255,.8); backdrop-filter: blur(calc(16 * var(--u))); -webkit-backdrop-filter: blur(calc(16 * var(--u))); padding: calc(22 * var(--u)) calc(26 * var(--u)); border-radius: calc(16 * var(--u)); box-shadow: 0 calc(12 * var(--u)) calc(40 * var(--u)) rgba(14,16,19,.18); }
+  .title.panel { left: calc(40 * var(--u)); top: calc(34 * var(--u)); }
+  .logo.panel { right: calc(40 * var(--u)); top: calc(34 * var(--u)); padding: calc(12 * var(--u)) calc(18 * var(--u)); }
+  .note.panel { right: calc(40 * var(--u)); bottom: calc(34 * var(--u)); padding: calc(10 * var(--u)) calc(16 * var(--u)); }
+</style>
+<script type="importmap">{ "imports": { "three": "/node_modules/three/build/three.module.js", "three/addons/": "/node_modules/three/examples/jsm/" } }</script>
+</head>
+<body>
+<div id="ov"><svg id="lines"></svg></div>
+<script type="module">
+import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+
+/* ============================================================
+   Шоурум GT, Ростов-на-Дону. Схема: зал 20 x 15 м (300 м²), высота 7,2 м,
+   антресоль по задней стене 20 x 5,5 м на отметке +3,6.
+   Оси: x вдоль улицы (-10..10), z вглубь (+7,5 витрина, -7,5 задняя стена), y вверх. Метры.
+   ============================================================ */
+const Q = new URLSearchParams(location.search);
+const VIEW = Q.get("view") || "hero";
+const DPR = +(Q.get("dpr") || 1);
+const W = innerWidth, H = innerHeight;
+
+const C = { flare: 0xff4a2b, ink: 0x0e1013, graph: 0x22262d, white: 0xf6f7f8, sky: 0x9cc9ff, cobalt: 0x2a5bd7, ridge: 0xb0283f, frost: 0xeef1f4 };
+
+const renderer = new THREE.WebGLRenderer({ antialias: DPR < 2, preserveDrawingBuffer: true, powerPreference: "high-performance" });
+renderer.setPixelRatio(DPR);
+renderer.setSize(W, H);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFShadowMap;
+renderer.toneMapping = THREE.NeutralToneMapping;
+renderer.toneMappingExposure = 1.0;
+document.body.prepend(renderer.domElement);
+
+const scene = new THREE.Scene();
+// фон: мягкий градиент, его же видно сквозь стекло
+{
+  const c = document.createElement("canvas"); c.width = 16; c.height = 512;
+  const g = c.getContext("2d"); const gr = g.createLinearGradient(0, 0, 0, 512);
+  gr.addColorStop(0, "#f7f9fc"); gr.addColorStop(0.55, "#e8edf4"); gr.addColorStop(1, "#d9e0ea");
+  g.fillStyle = gr; g.fillRect(0, 0, 16, 512);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; scene.background = t;
+}
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = 0.45;
+
+/* ---------- материалы ---------- */
+const M = {
+  floor: new THREE.MeshPhysicalMaterial({ color: 0xcfd4db, roughness: 0.28, metalness: 0, clearcoat: 0.6, clearcoatRoughness: 0.2 }),
+  plinth: new THREE.MeshStandardMaterial({ color: 0x23272e, roughness: 0.55, metalness: 0.1 }),
+  slab: new THREE.MeshStandardMaterial({ color: 0xf7f8fa, roughness: 0.55 }),
+  white: new THREE.MeshStandardMaterial({ color: 0xf6f7f8, roughness: 0.38 }),
+  gloss: new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.12, clearcoat: 1, clearcoatRoughness: 0.08 }),
+  graph: new THREE.MeshStandardMaterial({ color: C.graph, roughness: 0.5, metalness: 0.2 }),
+  steel: new THREE.MeshStandardMaterial({ color: 0x2b3038, roughness: 0.35, metalness: 0.75 }),
+  fabric: new THREE.MeshStandardMaterial({ color: 0x3a4049, roughness: 0.9 }),
+  wood: new THREE.MeshStandardMaterial({ color: 0xc9a77c, roughness: 0.6 }),
+  person: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.55 }),
+  plant: new THREE.MeshStandardMaterial({ color: 0x5f8f62, roughness: 0.8 }),
+  glass: new THREE.MeshPhysicalMaterial({ color: 0xdfe9ff, metalness: 0, roughness: 0.05, transmission: 1, thickness: 0.12, ior: 1.45,
+    attenuationColor: new THREE.Color(0x8fb2ff), attenuationDistance: 2.0, specularIntensity: 0.8, envMapIntensity: 0.8, side: THREE.DoubleSide }),
+  frost: new THREE.MeshPhysicalMaterial({ color: 0xd6e2fa, metalness: 0, roughness: 0.22, transmission: 1, thickness: 0.2, ior: 1.45,
+    attenuationColor: new THREE.Color(0x7fa3f0), attenuationDistance: 1.6, envMapIntensity: 0.7, side: THREE.DoubleSide }),
+  glow: (c, k = 6) => new THREE.MeshStandardMaterial({ color: c, emissive: c, emissiveIntensity: k, roughness: 0.4 }),
+};
+const box = (w, h, d, m, x, y, z, r = 0) => {
+  const g = r > 0 ? new RoundedBoxGeometry(w, h, d, 3, r) : new THREE.BoxGeometry(w, h, d);
+  const o = new THREE.Mesh(g, m); o.position.set(x, y, z); o.castShadow = true; o.receiveShadow = true; return o;
+};
+const cyl = (r, h, m, x, y, z, seg = 64) => { const o = new THREE.Mesh(new THREE.CylinderGeometry(r, r, h, seg), m); o.position.set(x, y, z); o.castShadow = true; o.receiveShadow = true; return o; };
+
+const world = new THREE.Group(); scene.add(world);
+const mezz = new THREE.Group(); world.add(mezz);   // все, что на антресоли (в плане скрываем)
+const add = (o, g = world) => { g.add(o); return o; };
+
+/* ---------- основание и пол ---------- */
+const MZ = -2.0, FL2 = 3.6; // край антресоли и отметка ее пола
+add(box(21.6, 0.5, 16.6, M.plinth, 0, -0.25, 0, 0.18));
+add(box(20, 0.02, 15, M.floor, 0, 0.01, 0));
+// тонкая сетка на полу, как разметка трека
+{
+  const grid = new THREE.GridHelper(20, 20, 0xc9d0da, 0xd6dce4); grid.position.y = 0.025; grid.scale.z = 0.75;
+  grid.material.transparent = true; grid.material.opacity = 0.45; add(grid);
+}
+
+/* ---------- стены: задняя и левая стеклянные на всю высоту, витрина и правая стена в разрезе ---------- */
+const HALL = 7.2;
+function glassWall(len, h, axis, x, z, m = M.frost, step = 2.5) {
+  const g = new THREE.Group();
+  const p = new THREE.Mesh(new THREE.BoxGeometry(axis === "x" ? len : 0.06, h, axis === "x" ? 0.06 : len), m);
+  p.position.set(x, h / 2, z); g.add(p);
+  const n = Math.round(len / step);
+  for (let i = 0; i <= n; i++) {
+    const t = -len / 2 + (i * len) / n;
+    const mu = box(axis === "x" ? 0.07 : 0.09, h, axis === "x" ? 0.09 : 0.07, M.graph, axis === "x" ? x + t : x, h / 2, axis === "x" ? z : z + t);
+    g.add(mu);
+  }
+  const cap = box(axis === "x" ? len + 0.1 : 0.14, 0.1, axis === "x" ? 0.14 : len + 0.1, M.graph, x, h, z); g.add(cap);
+  return add(g);
+}
+const VIEW_PLAN = VIEW === "plan";
+glassWall(20, HALL, "x", 0, -7.5);
+glassWall(15, HALL, "z", -10, 0);
+// витрина и правая стена срезаны на 1,1 м, чтобы заглянуть внутрь
+glassWall(20, 1.1, "x", 0, 7.5, M.glass);
+glassWall(15, 1.1, "z", 10, 0, M.glass);
+// вход: разрыв в витрине обозначим порогом
+add(box(2.4, 0.03, 0.5, M.graph, 3.0, 0.03, 7.5));
+
+/* ---------- антресоль ---------- */
+add(box(20, 0.22, 5.5, M.slab, 0, FL2 - 0.11, -4.75), mezz);
+// подсветка по торцу плиты
+add(box(18.4, 0.04, 0.04, M.glow(0xffffff, 2.2), -0.8, FL2 - 0.24, MZ + 0.02), mezz);
+// колонны
+for (const x of [-6, -1.5, 3, 7.5]) add(cyl(0.09, FL2 - 0.22, M.steel, x, (FL2 - 0.22) / 2, MZ - 0.15, 24), mezz);
+// стеклянное ограждение
+add(box(18.6, 1.05, 0.04, M.glass, -0.7, FL2 + 0.52, MZ + 0.05), mezz);
+add(box(18.6, 0.05, 0.07, M.steel, -0.7, FL2 + 1.06, MZ + 0.05), mezz);
+
+/* ---------- лестница вдоль правой стены ---------- */
+{
+  const g = new THREE.Group();
+  const N = 20, run = 0.27, rise = FL2 / N, z0 = 3.4;
+  for (let i = 0; i < N; i++) {
+    const s = box(1.25, 0.06, run + 0.02, M.white, 9.3, rise * (i + 1) - 0.03, z0 - run * (i + 0.5));
+    g.add(s);
+  }
+  // косоур и стекло
+  const len = Math.hypot(N * run, FL2), ang = Math.atan2(FL2, N * run);
+  const st = box(0.08, 0.32, len, M.steel, 8.66, FL2 / 2 - 0.05, z0 - (N * run) / 2); st.rotation.x = ang; g.add(st);
+  const gl = box(0.03, 1.0, len, M.glass, 8.66, FL2 / 2 + 0.55, z0 - (N * run) / 2); gl.rotation.x = ang; g.add(gl);
+  add(g, mezz);
+}
+
+/* ---------- байки ---------- */
+const loader = new GLTFLoader(); loader.setMeshoptDecoder(MeshoptDecoder);
+const REAL = { base: 1.62, sport: 1.98, pro: 2.14, road: 2.02, roadpro: 2.06 };
+const SRC = {};
+async function src(v) {
+  if (!SRC[v]) SRC[v] = loader.loadAsync(`/public/models/${v}.glb`).then((g) => {
+    const s = g.scene; s.updateMatrixWorld(true);
+    const b = new THREE.Box3().setFromObject(s, true), sz = b.getSize(new THREE.Vector3());
+    if (sz.z > sz.x) s.rotation.y = Math.PI / 2;
+    s.updateMatrixWorld(true);
+    const b2 = new THREE.Box3().setFromObject(s, true), s2 = b2.getSize(new THREE.Vector3());
+    s.scale.multiplyScalar(REAL[v] / Math.max(s2.x, s2.z)); s.updateMatrixWorld(true);
+    const b3 = new THREE.Box3().setFromObject(s, true), c = b3.getCenter(new THREE.Vector3());
+    s.position.set(-c.x, -b3.min.y, -c.z);
+    const w = new THREE.Group(); w.add(s); return w;
+  });
+  return SRC[v];
+}
+async function bike(v, paint, x, y, z, ry, g = world, body = null) {
+  const o = (await src(v)).clone(true);
+  o.traverse((m) => {
+    if (!m.isMesh) return; m.castShadow = true; m.receiveShadow = true;
+    const one = (mt) => {
+      const acc = /^GT_accent/.test(mt.name) || (v === "base" && mt.name === "GT_paint");
+      if (paint && acc) { const c = mt.clone(); c.color.set(paint); return c; }
+      if (body && mt.name === "GT_paint") { const c = mt.clone(); c.color.set(body); return c; }
+      return mt;
+    };
+    m.material = Array.isArray(m.material) ? m.material.map(one) : one(m.material);
+  });
+  o.position.set(x, y, z); o.rotation.y = ry; add(o, g); return o;
+}
+
+/* ---------- флагман на подиуме у витрины, гало над ним ---------- */
+const POD = new THREE.Vector3(-5.4, 0, 4.3);
+add(cyl(1.7, 0.24, new THREE.MeshPhysicalMaterial({ color: 0x1b1f25, roughness: 0.2, clearcoat: 1, clearcoatRoughness: 0.1 }), POD.x, 0.12, POD.z));
+add(new THREE.Mesh(new THREE.TorusGeometry(1.7, 0.025, 12, 160), M.glow(C.flare, 4))).position.set(POD.x, 0.245, POD.z);
+world.children.at(-1).rotation.x = Math.PI / 2;
+{
+  const halo = new THREE.Mesh(new THREE.TorusGeometry(2.1, 0.045, 20, 200), M.glow(0xfff4ea, 3.2));
+  halo.rotation.x = Math.PI / 2; halo.position.set(POD.x, 3.1, POD.z); add(halo);
+  for (const a of [0, 2.09, 4.19]) add(cyl(0.006, HALL - 3.1, M.steel, POD.x + Math.cos(a) * 2.1, 3.1 + (HALL - 3.1) / 2, POD.z + Math.sin(a) * 2.1, 6));
+}
+
+/* ---------- линейка на подиуме-дорожке, свет по сериям ---------- */
+const RUN = { x0: -6.2, x1: 6.0, z0: 0.0, z1: 2.3 };
+add(box(RUN.x1 - RUN.x0, 0.16, RUN.z1 - RUN.z0, M.white, (RUN.x0 + RUN.x1) / 2, 0.08, (RUN.z0 + RUN.z1) / 2, 0.04));
+const LINE = [
+  ["base", C.sky, C.sky], ["sport", C.flare, C.flare], ["sport", C.flare, C.flare], ["pro", C.ridge, C.ridge], ["road", C.cobalt, C.cobalt], ["roadpro", C.cobalt, C.cobalt],
+];
+const step = (RUN.x1 - RUN.x0) / LINE.length;
+LINE.forEach(([v, paint, led], i) => {
+  const cx = RUN.x0 + step * (i + 0.5);
+  add(box(step - 0.18, 0.03, 0.03, M.glow(led, 3), cx, 0.165, RUN.z1 + 0.005));
+});
+
+/* ---------- первый байк: круглый подиум для питбайков ---------- */
+const KID = new THREE.Vector3(-8.2, 0, -0.4);
+add(cyl(1.35, 0.14, M.white, KID.x, 0.07, KID.z));
+add(new THREE.Mesh(new THREE.TorusGeometry(1.35, 0.02, 10, 120), M.glow(C.sky, 3))).position.set(KID.x, 0.145, KID.z);
+world.children.at(-1).rotation.x = Math.PI / 2;
+
+/* ---------- ресепшн и кофе у входа ---------- */
+add(box(4.2, 1.05, 0.75, M.white, 5.6, 0.525, 5.1, 0.06));
+add(box(4.3, 0.05, 0.85, M.graph, 5.6, 1.07, 5.1, 0.02));
+add(box(3.0, 0.06, 0.02, M.glow(C.flare, 2.5), 5.6, 0.75, 5.49));
+for (const x of [4.2, 5.2, 6.2, 7.2]) { add(cyl(0.18, 0.04, M.graph, x, 0.78, 5.85, 32)); add(cyl(0.03, 0.76, M.steel, x, 0.38, 5.85, 12)); }
+add(box(0.45, 0.5, 0.45, M.graph, 7.3, 1.35, 4.95, 0.04));
+
+/* ---------- под антресолью слева: сервис за стеклом и тюнинг-бар ---------- */
+// стеклянная перегородка сервиса
+add(box(8.0, FL2 - 0.25, 0.05, M.frost, -6.0, (FL2 - 0.25) / 2, -3.3));
+for (const x of [-10, -8, -6, -4, -2]) add(box(0.06, FL2 - 0.25, 0.08, M.white, x, (FL2 - 0.25) / 2, -3.3));
+// подъемник, стенд, верстак, инструментальная стена
+add(box(2.4, 0.12, 0.9, M.steel, -8.4, 0.85, -5.2));
+add(box(0.2, 0.85, 0.2, M.steel, -8.4, 0.42, -5.2));
+add(box(2.6, 0.32, 1.0, M.graph, -4.7, 0.16, -5.4, 0.03));
+add(cyl(0.16, 0.9, M.steel, -5.55, 0.32, -5.4, 24)).rotation.x = Math.PI / 2;
+add(box(3.6, 0.9, 0.7, M.graph, -7.8, 0.45, -7.05, 0.02));
+add(box(3.6, 1.2, 0.04, M.steel, -7.8, 1.85, -7.4));
+// ворота на тест-драйв в задней стене
+add(box(3.2, 3.1, 0.12, M.graph, -3.5, 1.55, -7.48));
+for (let i = 0; i < 12; i++) add(box(3.1, 0.015, 0.02, M.steel, -3.5, 0.2 + i * 0.25, -7.41));
+add(box(3.2, 0.05, 0.03, M.glow(C.flare, 3), -3.5, 3.15, -7.4));
+// тюнинг-бар перед стеклом сервиса
+add(box(5.2, 1.05, 0.65, M.white, -6.4, 0.525, -2.75, 0.06));
+add(box(5.3, 0.05, 0.75, M.graph, -6.4, 1.07, -2.75, 0.02));
+add(box(4.0, 0.06, 0.02, M.glow(C.flare, 2.5), -6.4, 0.75, -2.41));
+for (let i = 0; i < 5; i++) { // контроллеры на стойке
+  add(box(0.32, 0.12, 0.2, M.graph, -8.2 + i * 0.9, 1.16, -2.8, 0.02));
+  add(box(0.04, 0.04, 0.04, M.glow(C.flare, 4), -8.05 + i * 0.9, 1.2, -2.69));
+}
+
+/* ---------- под антресолью справа: экипировка и примерочные ---------- */
+for (let b = 0; b < 3; b++) {
+  const x0 = -0.6 + b * 2.7;
+  add(box(2.5, 2.8, 0.45, M.white, x0, 1.4, -7.2, 0.02));
+  for (let s = 0; s < 4; s++) {
+    add(box(2.4, 0.03, 0.42, M.graph, x0, 0.4 + s * 0.65, -7.15));
+    for (let k = 0; k < 4; k++) {
+      const col = [C.flare, 0xffffff, C.graph, C.sky, C.cobalt][(b * 7 + s * 3 + k) % 5];
+      if (s >= 2) { const hm = new THREE.Mesh(new THREE.SphereGeometry(0.15, 24, 16), new THREE.MeshPhysicalMaterial({ color: col, roughness: 0.25, clearcoat: 1 })); hm.scale.set(1, 0.9, 1.15); hm.position.set(x0 - 0.85 + k * 0.57, 0.56 + s * 0.65, -7.1); hm.castShadow = true; add(hm); }
+      else add(box(0.3, 0.3, 0.24, new THREE.MeshStandardMaterial({ color: col, roughness: 0.6 }), x0 - 0.85 + k * 0.57, 0.57 + s * 0.65, -7.1, 0.03));
+    }
+  }
+}
+// столы с формой
+for (const [x, z] of [[1.0, -5.0], [4.2, -5.0]]) {
+  add(box(2.0, 0.75, 1.0, M.white, x, 0.375, z, 0.04));
+  for (let k = 0; k < 4; k++) add(box(0.36, 0.06, 0.5, new THREE.MeshStandardMaterial({ color: [C.flare, C.graph, C.sky, 0xffffff][k], roughness: 0.8 }), x - 0.66 + k * 0.44, 0.78, z));
+}
+// примерочные
+for (const x of [7.2, 8.9]) {
+  add(box(1.6, 2.4, 1.8, M.white, x, 1.2, -6.5, 0.03));
+  add(box(1.3, 2.1, 0.03, M.fabric, x, 1.1, -5.59));
+}
+add(box(0.05, 2.0, 0.9, M.gloss, 9.95, 1.1, -4.2)); // зеркало
+
+const PLANTS = [];
+/* ---------- на антресоли ---------- */
+// переговорная
+add(box(4.2, 2.7, 3.8, M.frost, -7.8, FL2 + 1.35, -5.5), mezz);
+{ const e = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(4.2, 2.7, 3.8)), new THREE.LineBasicMaterial({ color: 0x22262d })); e.position.set(-7.8, FL2 + 1.35, -5.5); add(e, mezz); }
+add(box(2.4, 0.06, 1.1, M.wood, -7.8, FL2 + 0.75, -5.5), mezz);
+for (const [x, z] of [[-8.6, -6.3], [-7.8, -6.3], [-7.0, -6.3], [-8.6, -4.7], [-7.8, -4.7], [-7.0, -4.7]]) add(box(0.45, 0.45, 0.45, M.graph, x, FL2 + 0.22, z, 0.06), mezz);
+// фотозона для соцсетей
+add(box(3.8, 2.8, 0.08, M.graph, -2.8, FL2 + 1.4, -7.3), mezz);
+add(cyl(1.05, 0.1, M.gloss, -2.8, FL2 + 0.05, -5.6), mezz);
+{
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(0.42, 0.035, 12, 80), M.glow(0xffffff, 4)); ring.position.set(-0.7, FL2 + 1.6, -4.0); ring.rotation.y = -0.9; add(ring, mezz);
+  add(cyl(0.02, 1.4, M.steel, -0.7, FL2 + 0.7, -4.0, 8), mezz);
+}
+// лаунж для родителей
+add(box(3.2, 0.42, 0.95, M.fabric, 3.0, FL2 + 0.21, -6.6, 0.12), mezz);
+add(box(3.2, 0.42, 0.25, M.fabric, 3.0, FL2 + 0.55, -6.98, 0.1), mezz);
+add(box(0.95, 0.42, 2.2, M.fabric, 0.9, FL2 + 0.21, -5.4, 0.12), mezz);
+add(box(1.4, 0.32, 0.9, M.wood, 3.0, FL2 + 0.16, -5.0, 0.06), mezz);
+add(box(1.0, 0.42, 1.0, M.fabric, 5.4, FL2 + 0.21, -4.4, 0.14), mezz);
+// кофе-точка у лестницы
+add(box(2.0, 1.0, 0.65, M.white, 8.4, FL2 + 0.5, -7.0, 0.04), mezz);
+add(box(0.4, 0.45, 0.4, M.graph, 8.9, FL2 + 1.22, -7.05, 0.04), mezz);
+// растения
+for (const [x, y, z, s] of [[6.6, FL2, -6.8, 1], [-0.2, 0, 6.6, 1.2], [9.2, 0, 6.6, 1.1], [-9.4, 0, 6.6, 1.2]]) {
+  const g = add(cyl(0.22 * s, 0.5 * s, M.white, x, y + 0.25 * s, z, 24), y > 0 ? mezz : world);
+  const f = new THREE.Mesh(new THREE.IcosahedronGeometry(0.48 * s, 1), M.plant); f.position.set(x, y + 0.5 * s + 0.4 * s, z); f.scale.y = 1.25; f.castShadow = true; add(f, y > 0 ? mezz : world);
+  PLANTS.push(g, f);
+}
+
+/* ---------- знак GT на левой стене, лайтбокс ---------- */
+async function gtTexture() {
+  await document.fonts.load("400 100px AB");
+  const c = document.createElement("canvas"); c.width = 1024; c.height = 1118;
+  const g = c.getContext("2d"); const k = 1024 / 240;
+  g.scale(k, k);
+  g.fillStyle = "#f6f7f8"; g.strokeStyle = "#f6f7f8"; g.lineWidth = 12;
+  g.strokeRect(22, 22, 178, 178);
+  g.font = "150px AB"; g.textAlign = "center"; g.fillText("G", 100, 160);
+  g.globalCompositeOperation = "destination-out"; g.font = "132px AB"; g.lineWidth = 14; g.lineJoin = "round"; g.strokeText("T", 170, 236); g.fillText("T", 170, 236);
+  g.globalCompositeOperation = "source-over"; g.fillStyle = "#ff4a2b"; g.fillText("T", 170, 236);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t;
+}
+const logoTex = await gtTexture();
+{
+  const plate = box(0.08, 3.6, 3.6, M.graph, -9.93, 5.15, 2.6, 0.04); add(plate);
+  const sign = new THREE.Mesh(new THREE.PlaneGeometry(3.0, 3.0 * 1118 / 1024), new THREE.MeshBasicMaterial({ map: logoTex, transparent: true, toneMapped: false }));
+  sign.rotation.y = Math.PI / 2; sign.position.set(-9.88, 5.15, 2.6); sign.scale.multiplyScalar(0.9); add(sign);
+  // тот же знак маленький в фотозоне
+  const s2 = new THREE.Mesh(new THREE.PlaneGeometry(1.0, 1.0 * 1118 / 1024), new THREE.MeshBasicMaterial({ map: logoTex, transparent: true, toneMapped: false }));
+  s2.position.set(-2.8, FL2 + 1.75, -7.25); add(s2, mezz);
+}
+
+/* ---------- гоночная линия на полу: от входа через линейку к тюнинг-бару ---------- */
+{
+  const pts = [[3.0, 7.3], [2.6, 4.6], [0.6, 3.2], [-3.5, 3.05], [-7.2, 2.6], [-9.0, 1.2], [-8.6, -1.4], [-6.4, -1.75], [-3.4, -1.7]].map(([x, z]) => new THREE.Vector3(x, 0, z));
+  const cv = new THREE.CatmullRomCurve3(pts, false, "centripetal", 0.5);
+  const N = 400, w = 0.07, pos = [], idx = [];
+  for (let i = 0; i <= N; i++) {
+    const p = cv.getPointAt(i / N), t = cv.getTangentAt(i / N), n = new THREE.Vector3(-t.z, 0, t.x).normalize();
+    pos.push(p.x + n.x * w, 0.03, p.z + n.z * w, p.x - n.x * w, 0.03, p.z - n.z * w);
+    if (i < N) { const a = i * 2; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); }
+  }
+  const geo = new THREE.BufferGeometry(); geo.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); geo.setIndex(idx); geo.computeVertexNormals();
+  add(new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: C.flare, side: THREE.DoubleSide, toneMapped: false })));
+}
+
+/* ---------- люди для масштаба ---------- */
+function person(x, y, z, g = world, h = 1.75) {
+  const p = new THREE.Group();
+  const body = new THREE.Mesh(new THREE.CapsuleGeometry(0.19, h * 0.5, 8, 16), M.person); body.position.y = h * 0.42; p.add(body);
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.12, 20, 14), M.person); head.position.y = h * 0.89; p.add(head);
+  p.traverse((o) => { if (o.isMesh) o.castShadow = true; });
+  p.position.set(x, y, z); add(p, g); PEOPLE.push(p); return p;
+}
+const PEOPLE = [];
+person(4.6, 0, 3.9); person(6.4, 0, 6.0); person(-3.8, 0, 3.4); person(-1.0, 0, 3.0, world, 1.55);
+person(-5.6, 0, -1.6); person(2.6, 0, -3.8); person(-8.8, 0, 1.0, world, 1.4);
+person(2.2, FL2, -2.6, mezz); person(5.0, FL2, -5.8, mezz);
+
+/* ---------- свет ---------- */
+scene.add(new THREE.HemisphereLight(0xffffff, 0xb9c3d1, 0.55));
+const sun = new THREE.DirectionalLight(0xfff8f0, 1.7);
+sun.position.set(-14, 26, 18); sun.castShadow = true;
+sun.shadow.mapSize.set(4096, 4096); sun.shadow.camera.left = -16; sun.shadow.camera.right = 16; sun.shadow.camera.top = 16; sun.shadow.camera.bottom = -16;
+sun.shadow.camera.near = 1; sun.shadow.camera.far = 80; sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.02; sun.shadow.radius = 6;
+scene.add(sun);
+const warm = new THREE.PointLight(0xffe2c4, 18, 9, 1.6); warm.position.set(POD.x, 3.0, POD.z); scene.add(warm);
+
+/* ---------- байки расставляем после загрузки ---------- */
+await Promise.all([
+  bike("sport", C.flare, POD.x, 0.24, POD.z, -0.55, world, "#f2f4f6"),
+  ...LINE.map(([v, paint], i) => bike(v, paint, RUN.x0 + step * (i + 0.5), 0.16, (RUN.z0 + RUN.z1) / 2, -0.62)),
+  bike("base", C.sky, KID.x - 0.45, 0.14, KID.z - 0.35, 0.5),
+  bike("base", C.flare, KID.x + 0.5, 0.14, KID.z + 0.4, 0.5),
+  bike("sport", C.flare, -4.7, 0.32, -5.4, 0),           // на стенде
+  bike("base", C.sky, -8.4, 0.91, -5.2, 0),              // на подъемнике
+  bike("roadpro", C.cobalt, -2.8, FL2 + 0.1, -5.6, -0.4, mezz), // в фотозоне
+]);
+
+/* ---------- потолок с линейным светом (виден только изнутри) ---------- */
+if (VIEW === "inside") {
+  add(box(20, 0.2, 15, M.graph, 0, HALL + 0.1, 0));
+  for (let i = 0; i < 6; i++) add(box(0.08, 0.04, 12.5, M.glow(0xffffff, 1.8), -8 + i * 3.2, HALL - 0.02, 0.6));
+  add(box(20, 0.02, 5.5, M.white, 0, FL2 - 0.23, -4.75), mezz);
+}
+/* ---------- камеры ---------- */
+let camera;
+const A = W / H;
+if (VIEW === "plan" || VIEW === "plan2") {
+  const hw = 17.6, hh = hw / A;
+  camera = new THREE.OrthographicCamera(-hw, hw, hh, -hh, 0.1, 100);
+  camera.position.set(-5.0, 40, 0.5); camera.up.set(0, 0, -1); camera.lookAt(-5.0, 0, 0.5);
+  mezz.visible = VIEW === "plan2";
+} else if (VIEW === "inside") {
+  camera = new THREE.PerspectiveCamera(50, A, 0.05, 120);
+  camera.position.set(3.4, 1.62, 7.2); camera.lookAt(-4.6, 2.5, -1.4);
+  for (const p of [...PEOPLE, ...PLANTS]) if (p.position.distanceTo(camera.position) < 6.5) p.visible = false;
+} else {
+  camera = new THREE.PerspectiveCamera(24, A, 0.5, 200);
+  camera.position.set(27.0, 21.0, 33.0); camera.lookAt(-1.6, 2.2, -0.6);
+}
+
+/* ---------- рендер с легким свечением ---------- */
+const composer = new EffectComposer(renderer);
+composer.setPixelRatio(DPR); composer.setSize(W, H);
+composer.addPass(new RenderPass(scene, camera));
+composer.addPass(new UnrealBloomPass(new THREE.Vector2(W, H), VIEW === "inside" ? 0.5 : VIEW === "plan" ? 0.18 : 0.38, 0.4, 1.35));
+composer.addPass(new OutputPass());
+composer.render();
+
+/* ---------- подписи зон ---------- */
+const ov = document.getElementById("ov"), svg = document.getElementById("lines");
+const proj = (x, y, z) => { const v = new THREE.Vector3(x, y, z).project(camera); return [(v.x + 1) / 2 * W, (1 - v.y) / 2 * H]; };
+const u = W / 1920;
+function label(p, title, sub, dx, dy, o = {}) {
+  const [ax, ay] = proj(...p);
+  const lx = ax + dx * u, ly = ay + dy * u;
+  const ns = "http://www.w3.org/2000/svg";
+  const ln = document.createElementNS(ns, "line"); ln.setAttribute("x1", ax); ln.setAttribute("y1", ay); ln.setAttribute("x2", lx); ln.setAttribute("y2", ly);
+  ln.setAttribute("stroke", o.l2 ? "#2a5bd7" : "#0e1013"); ln.setAttribute("stroke-width", 1.4 * u); ln.setAttribute("stroke-opacity", ".55"); svg.appendChild(ln);
+  const dot = document.createElementNS(ns, "circle"); dot.setAttribute("cx", ax); dot.setAttribute("cy", ay); dot.setAttribute("r", 5 * u);
+  dot.setAttribute("fill", o.l2 ? "#2a5bd7" : "#ff4a2b"); dot.setAttribute("stroke", "#fff"); dot.setAttribute("stroke-width", 2 * u); svg.appendChild(dot);
+  const d = document.createElement("div"); d.className = "chip" + (o.dark ? " dark" : "") + (o.l2 ? " l2" : "");
+  d.style.left = lx + "px"; d.style.top = ly + "px";
+  d.innerHTML = (o.tag ? `<i>${o.tag}</i>` : "") + `<b>${title}</b>` + (sub ? `<span>${sub}</span>` : "");
+  ov.appendChild(d);
+}
+const head = document.createElement("div"); head.className = "title";
+const stats = document.createElement("div"); stats.className = "stats";
+const logo = document.createElement("div"); logo.className = "logo";
+logo.innerHTML = `<svg viewBox="0 0 240 262"><rect x="22" y="22" width="178" height="178" fill="none" stroke="#0e1013" stroke-width="12"/><text x="100" y="160" font-family="AB" font-size="150" text-anchor="middle" fill="#0e1013">G</text><text x="170" y="236" font-family="AB" font-size="132" text-anchor="middle" fill="#ff4a2b" stroke="#e9edf2" stroke-width="14" paint-order="stroke">T</text></svg><span>GT<br>электробайки</span>`;
+const note = document.createElement("div"); note.className = "note";
+note.innerHTML = "схема условная<br>размеры приблизительные";
+
+if (VIEW === "plan") {
+  head.innerHTML = `<div class="k">шоурум GT / Ростов-на-Дону</div><h1>План <em>первого</em><br>этажа</h1><p>Зал 20 × 15 м. Пунктиром антресоль второго этажа над сервисом и экипировкой.</p>`;
+  stats.innerHTML = `<div><b>300 м²</b><span>первый этаж</span></div><div><b>≈ 110 м²</b><span>антресоль</span></div><div><b>7,2 м</b><span>высота зала</span></div>`;
+  // контур антресоли
+  const ns = "http://www.w3.org/2000/svg";
+  const c = [[-10, FL2 * 0, -7.5], [10, 0, -7.5], [10, 0, MZ], [-10, 0, MZ]].map((q) => proj(...q));
+  const pl = document.createElementNS(ns, "polygon"); pl.setAttribute("points", c.map((q) => q.join(",")).join(" "));
+  pl.setAttribute("fill", "rgba(42,91,215,.05)"); pl.setAttribute("stroke", "#2a5bd7"); pl.setAttribute("stroke-width", 2.2 * u); pl.setAttribute("stroke-dasharray", `${12 * u} ${9 * u}`); svg.appendChild(pl);
+  // размерные линии
+  const dimLine = (a, b, txt, off) => {
+    const [x1, y1] = proj(...a), [x2, y2] = proj(...b);
+    const g = document.createElementNS(ns, "g");
+    const l = document.createElementNS(ns, "line"); Object.entries({ x1, y1, x2, y2, stroke: "#0e1013", "stroke-width": 1.6 * u }).forEach(([k, v]) => l.setAttribute(k, v)); g.appendChild(l);
+    for (const [x, y] of [[x1, y1], [x2, y2]]) { const t = document.createElementNS(ns, "line"); const vert = Math.abs(x2 - x1) > Math.abs(y2 - y1); Object.entries({ x1: vert ? x : x - 9 * u, y1: vert ? y - 9 * u : y, x2: vert ? x : x + 9 * u, y2: vert ? y + 9 * u : y, stroke: "#0e1013", "stroke-width": 1.6 * u }).forEach(([k, v]) => t.setAttribute(k, v)); g.appendChild(t); }
+    const tx = document.createElementNS(ns, "text"); tx.setAttribute("class", "dim"); tx.setAttribute("x", (x1 + x2) / 2 + off[0] * u); tx.setAttribute("y", (y1 + y2) / 2 + off[1] * u); tx.setAttribute("text-anchor", "middle"); tx.textContent = txt; g.appendChild(tx);
+    svg.appendChild(g);
+  };
+  dimLine([-10, 0, 8.7], [10, 0, 8.7], "20 м", [0, 28]);
+  logo.style.display = "none"; Object.assign(note.style, { top: `${266 * u}px`, bottom: "auto", left: `${64 * u}px`, right: "auto", textAlign: "left" }); head.querySelector("p").style.maxWidth = `${470 * u}px`;
+  dimLine([10.9, 0, -7.5], [10.9, 0, 7.5], "15 м", [34, 6]);
+  label([-5.4, 0.3, 4.3], "Флагман на подиуме", "виден с улицы, гало над ним", 130, 120, { tag: "вау" });
+  label([-0.1, 0.2, 1.15], "Линейка GT", "серии по цветам: Spark, Send, Ridge, Pulse", 40, 150);
+  label([-8.2, 0.2, -0.4], "Первый байк", "питбайки для подростков", -10, 120);
+  label([5.6, 1.0, 5.1], "Ресепшн и кофе", "у входа, видно весь зал", 0, -58);
+  label([3.0, 0.1, 7.4], "Вход", "витрина во всю высоту", -150, 40);
+  label([-6.4, 1.0, -2.75], "Тюнинг-бар", "контроллеры Moxin, подбор под байк", 0, 70);
+  label([-6.0, 0.5, -5.2], "Сервис и стенд", "за стеклом, клиент видит работу", 0, -40, { dark: true });
+  label([-3.5, 0.5, -7.4], "Выезд на тест-драйв", "ворота в задней стене", 150, -30, { dark: true });
+  label([2.6, 0.5, -5.6], "Экипировка", "стена шлемов, столы с формой", 0, -40);
+  label([8.0, 0.5, -6.5], "Примерочные", "", 10, 60);
+  label([9.3, 0.5, 0.4], "Лестница", "на второй этаж", 0, -56);
+  label([0.6, 0, 3.2], "Гоночная линия на полу", "ведет от входа к тюнингу", 190, 110, { tag: "маршрут" });
+} else if (VIEW === "plan2") {
+  head.innerHTML = `<div class="k">шоурум GT / Ростов-на-Дону</div><h1>План <em>антресоли</em></h1><p>Второй этаж над сервисом и экипировкой, отметка +3,6 м. Над остальным залом второй свет на всю высоту.</p>`;
+  stats.innerHTML = `<div><b>≈ 110 м²</b><span>антресоль</span></div><div><b>+3,6 м</b><span>отметка пола</span></div><div><b>20 × 5,5 м</b><span>размер</span></div>`;
+  logo.style.display = "none"; Object.assign(note.style, { top: `${266 * u}px`, bottom: "auto", left: `${64 * u}px`, right: "auto", textAlign: "left" });
+  head.querySelector("p").style.maxWidth = `${470 * u}px`;
+  label([3.0, FL2 + 0.5, -5.6], "Лаунж для родителей", "диваны, вид на зал через стекло", 0, 150, { l2: true, tag: "2 этаж" });
+  label([-7.8, FL2 + 2.7, -5.5], "Переговорная", "сделки, лизинг, опт", 0, 170, { l2: true, tag: "2 этаж" });
+  label([-2.8, FL2 + 1.0, -5.6], "Фотозона", "контент для соцсетей, байк на подиуме", 30, 230, { l2: true, tag: "2 этаж" });
+  label([8.4, FL2 + 1.0, -7.0], "Кофе-точка", "", -10, 150, { l2: true });
+  label([9.3, 2.0, 0.6], "Лестница", "из зала", -10, -50);
+  label([-1.0, 0.2, 3.0], "Второй свет", "зал на всю высоту 7,2 м", 0, 60, { dark: true });
+} else if (VIEW === "inside") {
+  head.innerHTML = `<div class="k">шоурум GT / Ростов-на-Дону</div><h1>Вид <em>от входа</em></h1><p>Первое, что видит клиент: флагман под гало, линейка по цветам серий и знак GT на стене.</p>`;
+  stats.style.display = "none"; head.classList.add("panel"); logo.classList.add("panel"); note.classList.add("panel");
+  label([-5.4, 1.5, 4.3], "Флагман под гало", "первое, что видно с улицы", 150, -60, { tag: "вау" });
+  label([-1.0, 1.2, 1.15], "Линейка GT", "серии по цветам", 120, -170);
+  label([-6.4, 1.15, -2.75], "Тюнинг-бар", "", -60, -120);
+  label([1.5, FL2 + 1.2, -3.0], "Антресоль", "лаунж, переговорная, фотозона", -120, 130, { l2: true, tag: "2 этаж" });
+} else {
+  head.innerHTML = `<div class="k">шоурум GT / Ростов-на-Дону</div><h1>Шоурум <em>GT</em><br>300 м² + антресоль</h1><p>Прямоугольный зал 20 × 15 м, высота 7,2 м. Внизу продажи, тюнинг и сервис, наверху лаунж для родителей.</p>`;
+  stats.innerHTML = `<div><b>300 м²</b><span>первый этаж</span></div><div><b>≈ 110 м²</b><span>антресоль</span></div><div><b>20 × 15 м</b><span>прямоугольник</span></div>`;
+  label([-5.4, 1.4, 4.3], "Флагман на подиуме", "под гало, виден с улицы", -150, -120, { tag: "вау" });
+  label([-1.2, 1.1, 1.15], "Линейка GT", "серии по цветам", -40, 250);
+  label([-8.2, 1.0, -0.4], "Первый байк", "питбайки для подростков", -120, 150);
+  label([5.6, 1.1, 5.1], "Ресепшн и кофе", "", 60, 130);
+  label([-6.4, 1.15, -2.75], "Тюнинг-бар", "подбор под байк", -230, 60);
+  label([-5.2, 1.2, -5.2], "Сервис за стеклом", "стенд, подъемник", -210, -60, { dark: true });
+  label([2.8, 1.6, -5.4], "Экипировка", "стена шлемов, примерочные", 260, 120);
+  label([3.0, FL2 + 0.8, -5.4], "Лаунж для родителей", "вид на зал сверху", 240, -80, { l2: true, tag: "2 этаж" });
+  label([-7.8, FL2 + 2.7, -5.5], "Переговорная", "", -60, -110, { l2: true, tag: "2 этаж" });
+  label([-2.8, FL2 + 2.8, -7.3], "Фотозона", "контент для соцсетей", 70, -120, { l2: true, tag: "2 этаж" });
+  label([9.3, 2.0, 0.6], "Лестница", "", 160, 40);
+}
+ov.append(head, stats, logo, note);
+await document.fonts.ready;
+window.__ready = true;
+</script>
+</body>
+</html>
