@@ -9,6 +9,7 @@ import { Bike3D } from "./bike";
 import { ParticleField, ObjectTracker } from "./effects";
 import { InteractiveHoverButton } from "./ui/interactive-hover-button";
 import { cn } from "@/lib/utils";
+import { Logo } from "./v2";
 
 /* ---------------------------------------------------------------- Header */
 const NAV: [string, string][] = [
@@ -80,14 +81,12 @@ export function ToneGate() {
   };
   return (
     <div ref={ref} role="dialog" aria-modal="true" aria-label="Выбор обращения" className="dark-zone brushed-dark fixed inset-0 z-[200] grid place-items-center overflow-y-auto px-5">
-      <BlockGrid a="#07080a" b="#2a3038" line="#8d97a2" cells={16} scale={2.2} contrast={0.8} gain={1} lineAmt={0.3} react={1.4} speed={1.4} seed={4} className="pointer-events-none absolute inset-0 h-full w-full opacity-60" />
-      <ParticleField text="E-RIZZ" count={4200} className="pointer-events-none absolute inset-0 h-full w-full" box={narrow ? { x: 0.04, y: 0.03, w: 0.92, h: 0.3 } : { x: 0.04, y: 0.12, w: 0.92, h: 0.76 }} tones={["#3a4048", "#59616b", "#8d97a2", "#e4e8ec", "#ff4a2b"]} size={1.25} cursorRadius={0.22} wobble={0.7} />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_45%_at_50%_50%,rgba(7,8,10,.78),transparent_80%)]" />
       <div className="relative mx-auto flex max-w-4xl flex-col items-center py-12 text-center">
-        <span className="gate-in font-display text-2xl font-extrabold">E-RIZZ<span className="text-flare">.</span></span>
+        <span className="gate-in"><Logo size={1.4} /></span>
         <div className="chrome-line gate-in my-8 w-40" />
         <h1 className="gate-in font-display chrome-text text-[clamp(34px,7vw,92px)] font-extrabold uppercase leading-[0.95]">Мне комфортно общаться</h1>
-        <p className="gate-in muted mt-4 max-w-md">От выбора зависит тон текстов на сайте. Поменять его можно в любой момент в шапке.</p>
+        <p className="gate-in muted mt-4 max-w-md">От выбора зависит тон текстов на сайте.</p>
         <div className="gate-in mt-9 flex flex-wrap justify-center gap-4">
           <InteractiveHoverButton text="на ты" className="h-16 w-60 border-frost/40 bg-transparent text-lg text-frost" onClick={() => pick("ty")} />
           <InteractiveHoverButton text="на вы" className="h-16 w-60 border-frost/40 bg-transparent text-lg text-frost" onClick={() => pick("vy")} />

@@ -1,0 +1,229 @@
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Menu, Moon, ShoppingBag, Sun, X } from "lucide-react";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { useApp, reduceMotion, scrollToId, type Theme } from "@/lib/state";
+import { GROUPS, LINEUP, L_BY, studio } from "@/lib/data";
+import { LCard } from "./product";
+import { cn } from "@/lib/utils";
+
+/* ---------------------------------------------------------------- Логотип: шильд GT слева, E-Rizz справа */
+export function Logo({ size = 1, only, className }: { size?: number; only?: "gt" | "erizz"; className?: string }) {
+  return (
+    <span className={cn("logo-lockup", className)} style={{ fontSize: `${size}rem` }}>
+      {only !== "erizz" && <span className="gt-plate">GT</span>}
+      {only !== "gt" && <span className="logo-w1">E<span className="bar" />RIZZ</span>}
+    </span>
+  );
+}
+
+/* ---------------------------------------------------------------- Шапка */
+const NAV: [string, string][] = [["catalog", "Модели"], ["build", "Сборка"], ["config", "Конструктор"], ["viewer", "3D и AR"], ["showroom", "Шоурум"]];
+
+export function ThemeSwitch({ className }: { className?: string }) {
+  const { theme, setTheme } = useApp();
+  return (
+    <div role="group" aria-label="Оформление" className={cn("flex overflow-hidden rounded-full border t-line text-sm", className)}>
+      {(["day", "night"] as Theme[]).map((v) => (
+        <button key={v} aria-pressed={theme === v} onClick={() => setTheme(v)} className={cn("flex min-h-10 min-w-10 cursor-pointer items-center gap-1.5 px-3 transition-colors", theme === v ? "bg-[var(--t-chip)] text-[var(--t-chip-fg)]" : "opacity-70 hover:opacity-100")}>
+          {v === "day" ? <Sun size={15} aria-hidden="true" /> : <Moon size={15} aria-hidden="true" />}<span className="hidden sm:inline">{v === "day" ? "день" : "ночь"}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+export function Header2() {
+  const { cart, setCartOpen } = useApp();
+  const [solid, setSolid] = useState(false);
+  const [open, setOpen] = useState(false);
+  useEffect(() => { const f = () => setSolid(window.scrollY > 40); f(); window.addEventListener("scroll", f, { passive: true }); return () => window.removeEventListener("scroll", f); }, []);
+  const n = cart.reduce((a, c) => a + c.qty, 0);
+  const go = (id: string) => { setOpen(false); scrollToId(id); };
+  return (
+    <header className={cn("fixed inset-x-0 top-0 z-[60] border-b transition-[background-color,border-color] duration-300", solid || open ? "t-line backdrop-blur-xl" : "border-transparent")} style={{ background: solid || open ? "var(--t-head)" : "transparent", color: "var(--t-fg)" }}>
+      <div className="container-x flex h-16 items-center gap-4">
+        <a href="#top" aria-label="GT и E-Rizz, на главную" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}><Logo size={0.95} /></a>
+        <nav className="ml-8 hidden items-center gap-7 lg:flex" aria-label="Разделы">
+          {NAV.map(([id, l]) => <button key={id} onClick={() => go(id)} className="min-h-11 cursor-pointer text-[14px] font-semibold opacity-75 transition-opacity hover:opacity-100">{l}</button>)}
+        </nav>
+        <div className="ml-auto flex items-center gap-2">
+          <ThemeSwitch />
+          <button onClick={() => setCartOpen(true)} className="relative grid min-h-10 min-w-10 cursor-pointer place-items-center rounded-full border t-line" aria-label={`Корзина, товаров: ${n}`}>
+            <ShoppingBag size={18} />
+            {n > 0 && <span className="absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-flare px-1 text-[11px] font-bold text-ink">{n}</span>}
+          </button>
+          <button className="btn-solid hidden !min-h-10 items-center sm:inline-flex" onClick={() => go("drive")}>Тест-драйв</button>
+          <button className="grid min-h-10 min-w-10 cursor-pointer place-items-center rounded-full border t-line lg:hidden" aria-expanded={open} aria-label={open ? "Закрыть меню" : "Меню"} onClick={() => setOpen((o) => !o)}>{open ? <X size={18} /> : <Menu size={18} />}</button>
+        </div>
+      </div>
+      {open && (
+        <nav className="container-x grid gap-1 pb-5 lg:hidden" aria-label="Разделы">
+          {[...NAV, ["drive", "Тест-драйв"] as [string, string]].map(([id, l]) => <button key={id} onClick={() => go(id)} className="h-hero min-h-12 cursor-pointer border-b t-line py-2 text-left text-2xl">{l}</button>)}
+        </nav>
+      )}
+    </header>
+  );
+}
+
+/* ---------------------------------------------------------------- Первый экран: днем Send 19 S, ночью флагман Factory */
+type Spec = [number, number, string, string];
+const HEROES: Record<Theme, { id: string; label: string; specs: Spec[] }> = {
+  day: { id: "gt-send-19s", label: "серия Send / спортивный trail", specs: [[17, 0, "кВт", "пиковая мощность"], [3.24, 2, "кВт·ч", "батарея"], [105, 0, "км/ч", "максимальная скорость"], [140, 0, "км", "запас хода при 30-35 км/ч"]] },
+  night: { id: "gt-send-19f", label: "серия Send / флагман", specs: [[35, 0, "кВт", "пиковая мощность"], [100, 0, "км/ч", "максимальная скорость"], [120, 0, "км", "запас хода при 45 км/ч"], [95, 0, "кг", "снаряженная масса"]] },
+};
+
+function Count({ v, dec }: { v: number; dec: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    const el = ref.current!; const f = (n: number) => n.toFixed(dec).replace(".", ",");
+    if (reduceMotion()) { el.textContent = f(v); return; }
+    const o = { a: 0 }; const tw = gsap.to(o, { a: v, duration: 0.9, ease: "power2.out", delay: 0.5, onUpdate: () => { el.textContent = f(o.a); } });
+    return () => { tw.kill(); };
+  }, [v, dec]);
+  return <span ref={ref}>0</span>;
+}
+
+export function Hero2() {
+  const { theme, t } = useApp();
+  const h = HEROES[theme];
+  const m = L_BY[h.id];
+  const root = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (reduceMotion() || !root.current) return;
+    const ctx = gsap.context(() => {
+      gsap.from(".hero-in", { y: 26, opacity: 0, stagger: 0.08, duration: 0.9, ease: "power3.out", delay: 0.1 });
+      gsap.from(".hero-bike", { x: 80, opacity: 0, duration: 1.2, ease: "power3.out", delay: 0.2 });
+    }, root);
+    return () => ctx.revert();
+  }, []);
+  return (
+    <section id="top" ref={root} className="t-zone relative overflow-hidden pt-24 sm:pt-28" aria-labelledby="hero-h">
+      <div className="container-x relative">
+        <div className="relative z-10">
+          <p className="hero-in mono t-label">GT / {h.label}</p>
+          <h1 id="hero-h" className="hero-in h-hero mt-4 text-[clamp(34px,7.6vw,118px)]">Харизма<br />на электротяге</h1>
+          <p className="hero-in t-mute mt-5 max-w-[26rem] text-lg leading-snug">{t("Свои электробайки GT: тест-драйв, сервис и честные цифры.", "Собственные электробайки GT: тест-драйв, сервис и честные цифры.")}</p>
+          <div className="hero-in mt-7 flex flex-wrap items-center gap-5">
+            <button className="btn-solid !min-h-13 px-7 text-base" onClick={() => scrollToId("drive")}>Записаться на тест-драйв</button>
+            <button className="min-h-11 cursor-pointer font-semibold underline-offset-4 hover:underline" onClick={() => scrollToId("catalog")}>Вся линейка →</button>
+          </div>
+        </div>
+        <div className="hero-bike relative ml-auto mt-4 w-full max-w-[1260px] lg:-mt-[13vw] lg:w-[70%]">
+          <div className="aspect-[16/9]" />
+          {(["day", "night"] as Theme[]).map((k) => (
+            <div key={k} className={cn("absolute inset-0 transition-opacity duration-700", theme === k ? "opacity-100" : "opacity-0")} aria-hidden={theme !== k}>
+              <div className="glow" /><div className="floor" />
+              <img src={studio(L_BY[HEROES[k].id].n)} alt={theme === k ? `${L_BY[HEROES[k].id].name}, фото в профиль` : ""} className="absolute inset-0 h-full w-full object-contain" fetchPriority={k === theme ? "high" : "low"} />
+            </div>
+          ))}
+        </div>
+        <div className="mt-2 flex justify-between gap-4"><span className="mono t-mute">{m.name}</span><span className="mono t-mute hidden sm:inline">масштаб как в каталоге</span></div>
+        <dl key={theme} className="mt-5 grid grid-cols-2 gap-y-7 border-t t-line pb-16 pt-7 sm:grid-cols-4">
+          {h.specs.map(([v, dec, u, l]) => (
+            <div key={l}>
+              <dd className="font-display text-[clamp(30px,4vw,56px)] leading-none"><Count v={v} dec={dec} /> <span className="text-[0.48em]">{u}</span></dd>
+              <dt className="mono t-mute mt-3">{l}</dt>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------------------------------------------------------- Каталог как у Zero: профиль, один масштаб, клик раскрывает коллаж */
+export function Catalog() {
+  const { t } = useApp();
+  const [grp, setGrp] = useState<(typeof GROUPS)[number]["key"]>("all");
+  const list = useMemo(() => (grp === "all" ? LINEUP : LINEUP.filter((m) => m.group === grp)), [grp]);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (reduceMotion() || !ref.current) return;
+    gsap.fromTo(ref.current.children, { y: 24, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.03, duration: 0.5, ease: "power3.out", clearProps: "transform" });
+    const tm = setTimeout(() => ScrollTrigger.refresh(), 300);
+    return () => clearTimeout(tm);
+  }, [grp]);
+  return (
+    <section id="catalog" className="t-zone border-t t-line py-20 sm:py-28" aria-labelledby="cat-h">
+      <div className="container-x">
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <p className="mono t-label">линейка GT / 20 моделей</p>
+            <h2 id="cat-h" className="h-hero mt-3 text-[clamp(36px,5vw,76px)]">Шесть серий,<br />одна марка</h2>
+          </div>
+          <p className="t-mute max-w-md text-lg leading-snug">{t("Все фото в профиль и в одном масштабе: Spark 12 на экране меньше Send 19, как в жизни. Нажми на модель, чтобы раскрыть.", "Все фото в профиль и в одном масштабе: Spark 12 на экране меньше Send 19, как в жизни. Нажмите на модель, чтобы раскрыть.")}</p>
+        </div>
+        <div className="mt-8 flex flex-wrap gap-2" role="tablist" aria-label="Серии">
+          {GROUPS.map((g) => <button key={g.key} role="tab" aria-selected={grp === g.key} className="t-chip min-h-10 cursor-pointer rounded-full px-4 text-sm font-semibold" onClick={() => setGrp(g.key)}>{g.ru}</button>)}
+        </div>
+        <div ref={ref} className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          {list.map((m) => <LCard key={m.id} m={m} />)}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------------------------------------------------------- Сборка: 6 слоев фото сходятся по прокрутке */
+const LAYERS: { k: string; x: number; y: number; r: number }[] = [
+  { k: "power", x: 0, y: 26, r: 0 },
+  { k: "body", x: -3, y: -32, r: -4 },
+  { k: "fork", x: 14, y: -24, r: 8 },
+  { k: "rear", x: -24, y: 8, r: -12 },
+  { k: "front", x: 24, y: 8, r: 12 },
+];
+const STEPS: [string, string, string][] = [
+  ["01", "Колеса 19/18", "шины с шашками, гидравлические тормоза"],
+  ["02", "Вилка 220 мм", "полный ход для бездорожья"],
+  ["03", "Мотор и батарея", "35 кВт в пике, система 109 В"],
+  ["04", "Пластик и седло", "высота седла 880 мм"],
+  ["05", "Кованая рама", "алюминий, 95 кг снаряженная масса"],
+];
+
+export function BuildScroll() {
+  const { t } = useApp();
+  const root = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (!root.current || reduceMotion()) return;
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ scrollTrigger: { trigger: root.current, start: "top top", end: () => "+=" + window.innerHeight * (window.innerWidth < 768 ? 1.6 : 2.2), pin: true, scrub: 0.8, anticipatePin: 1, invalidateOnRefresh: true } });
+      tl.fromTo("[data-l=frame]", { opacity: 0.5, scale: 0.98 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" }, 0);
+      LAYERS.forEach((l, i) => tl.fromTo(`[data-l=${l.k}]`, { xPercent: l.x, yPercent: l.y, rotate: l.r }, { xPercent: 0, yPercent: 0, rotate: 0, duration: 1, ease: "power3.inOut" }, 0.1 + i * 0.16));
+      STEPS.forEach((_, i) => tl.fromTo(`[data-step="${i}"]`, { opacity: 0.3 }, { opacity: 1, duration: 0.25 }, 0.2 + i * 0.3));
+      tl.fromTo(".build-bar", { scaleX: 0 }, { scaleX: 1, ease: "none", duration: tl.duration() }, 0);
+    }, root);
+    return () => ctx.revert();
+  }, []);
+  return (
+    <section ref={root} id="build" className="relative h-[100svh] min-h-[600px] overflow-hidden bg-[#0b0d10] text-frost" aria-labelledby="build-h">
+      <div className="container-x flex h-full flex-col pb-6 pt-20 sm:pt-24">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="mono text-sky">сборка / GT Send 19 Factory</p>
+            <h2 id="build-h" className="h-hero mt-3 text-[clamp(30px,4.4vw,66px)]">{t("Смотри, из чего", "Посмотрите, из чего")}<br />собран флагман</h2>
+          </div>
+          <p className="max-w-xs text-frost/70">{t("Прокручивай: байк соберется из шести узлов.", "Прокрутите: байк соберется из шести узлов.")}</p>
+        </div>
+        <div className="relative flex min-h-0 flex-1 items-center justify-center">
+          <div className="relative aspect-[16/9]" style={{ width: "min(100%, calc((100svh - 330px) * 1.7778))" }}>
+            <div className="absolute inset-[10%_12%_12%] rounded-full bg-[#2a3038] opacity-80 blur-[70px]" aria-hidden="true" />
+            <div className="absolute bottom-[5%] left-1/2 h-[6%] w-[62%] -translate-x-1/2 rounded-full bg-black/80 blur-[14px]" aria-hidden="true" />
+            {["frame", ...LAYERS.map((l) => l.k)].map((k) => (
+              <img key={k} data-l={k} src={`${import.meta.env.BASE_URL}build/${k}.webp`} alt={k === "frame" ? "GT Send 19 Factory собирается из узлов" : ""} className="absolute inset-0 h-full w-full object-contain will-change-transform" />
+            ))}
+          </div>
+        </div>
+        <ol className="grid grid-cols-2 gap-x-4 gap-y-3 border-t border-frost/15 pt-4 sm:grid-cols-5">
+          {STEPS.map(([n, h, p], i) => (
+            <li key={n} data-step={i} className={i === 4 ? "col-span-2 sm:col-span-1" : ""}>
+              <span className="mono text-flare">{n}</span>
+              <h3 className="mt-1 font-semibold leading-tight">{h}</h3>
+              <p className="hidden text-sm text-frost/60 sm:block">{p}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <div className="build-bar absolute bottom-0 left-0 h-[2px] w-full origin-left bg-flare" />
+    </section>
+  );
+}

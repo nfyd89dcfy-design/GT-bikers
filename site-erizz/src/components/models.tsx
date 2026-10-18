@@ -8,7 +8,7 @@ import { Eyebrow, H2, Reveal } from "./ui-bits";
 import { MorphTile } from "./morph";
 import { ObjectTracker } from "./effects";
 import { Bike3D, type BikeApi } from "./bike";
-import { ProductCollage, ProductFace, ProductShot, STUDIO, WheelMark } from "./product";
+import { LCard } from "./product";
 import { BlockGrid } from "./shaders";
 import { ARButton, type ARKey } from "./ar";
 import { cn } from "@/lib/utils";
@@ -136,14 +136,6 @@ export function StatusPill({ m }: { m: LModel }) {
   return <span className="mono inline-flex items-center gap-1.5 rounded-full bg-deep/70 px-2.5 py-1 text-frost"><span className="h-1.5 w-1.5 rounded-full" style={{ background: c }} />{l}</span>;
 }
 
-function LCard({ m }: { m: LModel }) {
-  return (
-    <MorphTile label={`${m.name}: открыть коллаж`} className="aspect-[4/5]" detail={<ProductCollage m={m} />}>
-      <ProductFace m={m} />
-    </MorphTile>
-  );
-}
-
 export function LineupGrid() {
   const { t } = useApp();
   const [grp, setGrp] = useState<(typeof GROUPS)[number]["key"]>("all");
@@ -186,7 +178,7 @@ export function Directions() {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (reduceMotion() || !ref.current) return;
-    gsap.fromTo(ref.current.children, { y: 36, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.08, duration: 0.55, ease: "power3.out" });
+    gsap.fromTo(ref.current.children, { y: 36, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.08, duration: 0.55, ease: "power3.out", clearProps: "transform" });
   }, [dir]);
   const stats = dirStats(d.cats);
   return (
@@ -206,33 +198,7 @@ export function Directions() {
         </div>
         <p className="mt-4 text-frost/85">{t(d.note[0], d.note[1])}</p>
         <div ref={ref} className="mt-8 grid gap-4 md:grid-cols-3 lg:gap-6">
-          {d.ids.map((id) => {
-            const m = L_BY[id];
-            const key = glbKey(m) as ARKey;
-            return (
-              <article key={id}>
-                <GlowCard customSize glowColor="flare" className="touch-pan-y! h-full !p-0">
-                  <div className="relative h-[250px] overflow-hidden rounded-t-2xl sm:h-[280px]" style={{ background: STUDIO[m.ser] }}>
-                    <WheelMark m={m} className="-right-2 top-3 text-[10rem]" />
-                    <ProductShot m={m} className="absolute inset-x-3 bottom-2 top-10" />
-                    <span className="absolute left-4 top-4"><StatusPill m={m} /></span>
-                  </div>
-                  <div className="p-5">
-                    <div className="mono text-sky">{d.en} / {m.wheels}</div>
-                    <h3 className="font-display text-2xl font-extrabold uppercase leading-tight">{m.name}</h3>
-                    <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                      {lSpec(m).slice(1, 5).map((s) => <div key={s.k} className="border-t border-frost/20 pt-2"><dt className="mono muted">{s.k}</dt><dd className="font-semibold">{s.v}</dd></div>)}
-                    </dl>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      <InteractiveHoverButton text="Забронировать" className="h-12 w-full basis-full border-frost/40 bg-transparent text-frost" onClick={() => addCart({ id, name: m.name, sub: `${d.ru} · бронь`, price: DEPOSIT, variant: key, paint: m.paint })} />
-                      <ARButton k={key} name={m.name} className="!min-h-12 text-sm" />
-                      <button className="btn-ghost !min-h-12 text-sm" onClick={() => { setDriveFor(id); scrollToId("drive"); }}>Тест-драйв</button>
-                    </div>
-                  </div>
-                </GlowCard>
-              </article>
-            );
-          })}
+          {d.ids.map((id) => <LCard key={id} m={L_BY[id]} />)}
           {d.ids.length < 3 && (
             <article className={d.ids.length === 0 ? "md:col-span-3" : "md:col-span-1"}>
               <GlowCard customSize glowColor="flare" className="h-full !p-0">

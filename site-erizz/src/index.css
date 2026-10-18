@@ -8,6 +8,7 @@
 @import "@fontsource/onest/cyrillic-600.css";
 @import "@fontsource/onest/latin-600.css";
 @import "@fontsource-variable/martian-mono/wght.css";
+@import "@fontsource/archivo-black/latin-400.css";
 
 @theme {
   --font-display: "Unbounded", "Onest", sans-serif;
@@ -68,7 +69,7 @@ body { margin: 0; background: var(--color-sleet); color: var(--color-ink); font-
 
 .sr-only-x { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .chip { min-height: 44px; padding: 0 18px; border-radius: 6px; border: 1px solid currentColor; font-weight: 500; cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
-.chip[aria-pressed="true"], .chip[aria-selected="true"] { background: var(--color-flare); color: var(--color-ink); border-color: var(--color-flare); }
+.chip[aria-pressed="true"], .chip[aria-selected="true"] { background: var(--color-frost); color: var(--color-ink) !important; border-color: var(--color-frost); }
 .input { width: 100%; min-height: 48px; border-radius: 6px; border: 1px solid rgb(14 16 19 / .35); background: var(--color-frost); color: var(--color-ink); padding: 0 14px; font: inherit; }
 textarea.input { padding: 12px 14px; }
 .btn-solid { min-height: 48px; padding: 0 26px; border-radius: 6px; background: var(--color-flare); color: var(--color-ink); font-weight: 700; cursor: pointer; border: 0; }
@@ -107,3 +108,39 @@ img { max-width: 100%; }
 .outline-num { color: transparent; -webkit-text-stroke: 1.5px rgb(238 241 244 / 0.12); letter-spacing: -0.05em; }
 .prod-card { transition: border-color .4s; }
 .group:hover .prod-card { border-color: rgb(255 74 43 / 0.45); }
+
+/* ===================== v2: тема день / ночь ===================== */
+:root, [data-theme="day"] {
+  --t-bg: #eef1f4; --t-bg2: #e3e7eb; --t-fg: #0e1013; --t-mute: #5a626c; --t-line: rgb(14 16 19 / .14);
+  --t-tile: linear-gradient(180deg, #f3f5f7 0%, #dfe4e9 100%);
+  --t-floor: rgb(14 16 19 / .38); --t-glow: transparent; --t-label: #5a626c; --t-head: rgb(238 241 244 / .8);
+  --t-chip: #0e1013; --t-chip-fg: #eef1f4;
+}
+[data-theme="night"] {
+  --t-bg: #0b0d10; --t-bg2: #121519; --t-fg: #eef1f4; --t-mute: #8d97a2; --t-line: rgb(238 241 244 / .12);
+  --t-tile: radial-gradient(120% 95% at 50% 26%, #2b3139 0%, #15181c 52%, #0c0e11 100%);
+  --t-floor: rgb(0 0 0 / .8); --t-glow: rgb(156 201 255 / .14); --t-label: #9cc9ff; --t-head: rgb(11 13 16 / .74);
+  --t-chip: #eef1f4; --t-chip-fg: #0e1013;
+}
+body { background: var(--t-bg); }
+.t-zone { background: var(--t-bg); color: var(--t-fg); transition: background-color .6s ease, color .6s ease; }
+.t-mute { color: var(--t-mute); }
+.t-label { color: var(--t-label); }
+.t-line { border-color: var(--t-line) !important; }
+.t-tile { background: var(--t-tile); }
+.t-chip { border: 1px solid var(--t-line); color: var(--t-fg); }
+.t-chip[aria-selected="true"], .t-chip[aria-pressed="true"] { background: var(--t-chip); color: var(--t-chip-fg); border-color: var(--t-chip); }
+.floor { position: absolute; left: 50%; bottom: 5.5%; width: 58%; height: 6%; transform: translateX(-50%); border-radius: 50%; background: var(--t-floor); filter: blur(14px); pointer-events: none; }
+.glow { position: absolute; inset: 8% 10% 10%; border-radius: 50%; background: var(--t-glow); filter: blur(60px); pointer-events: none; }
+.h-hero { font-family: var(--font-display); text-transform: uppercase; line-height: .95; letter-spacing: -.02em; }
+[data-theme="night"] .h-hero { letter-spacing: -.01em; }
+.logo-w1 { display: inline-flex; align-items: center; gap: .16em; font-family: var(--font-display); font-weight: 800 !important; letter-spacing: -.02em; line-height: 1; }
+.logo-w1 .bar { display: inline-block; width: .5em; height: .17em; background: var(--color-flare); border-radius: 1px; }
+.zoom-tile img { transform-origin: var(--zx, 50%) var(--zy, 50%); transform: scale(var(--z, 2.4)); }
+/* убираем хром и градиентный текст (решение по итогам критики) */
+.chrome-text, .chrome-text-dark { background: none !important; -webkit-text-fill-color: currentColor !important; color: inherit !important; }
+
+.logo-lockup { display: inline-flex; align-items: center; gap: .62em; color: inherit; white-space: nowrap; }
+.gt-plate { font-family: "Archivo Black", var(--font-display); font-size: 1em; line-height: 1; letter-spacing: -.045em; padding: .2em .4em .17em; border: .13em solid currentColor; border-radius: .3em; }
+.logo-lockup .logo-w1 { font-size: 1.12em; }
+.btn-ghost { color: inherit; }

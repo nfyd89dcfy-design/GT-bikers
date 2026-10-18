@@ -3,7 +3,10 @@ import { COMPARE_IDS, DIRS, type DirKey } from "./data";
 
 /* ---------- голос: ты / вы ---------- */
 export type Voice = "ty" | "vy";
+export type Theme = "day" | "night";
 interface AppCtx {
+  theme: Theme;
+  setTheme: (t: Theme) => void;
   voice: Voice;
   setVoice: (v: Voice) => void;
   t: (ty: string, vy: string) => string;
@@ -52,6 +55,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => { safe.set("erizz-cart4", JSON.stringify(cart)); }, [cart]);
   const setVoice = (v: Voice) => { setVoiceS(v); safe.set("erizz-voice", v); };
+  const [theme, setThemeS] = useState<Theme>(() => { const q = new URLSearchParams(location.search).get("theme"); return q === "night" || q === "day" ? q : safe.get("erizz-theme") === "night" ? "night" : "day"; });
+  useEffect(() => { document.documentElement.dataset.theme = theme; }, [theme]);
+  const setTheme = (v: Theme) => { setThemeS(v); safe.set("erizz-theme", v); };
   const setDir = (d: DirKey) => { setDirS(d); safe.set("erizz-dir", d); };
   const t = useCallback((ty: string, vy: string) => (voice === "ty" ? ty : vy), [voice]);
   const say = useCallback((s: string) => {
@@ -70,9 +76,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setCompare((c) => (c.includes(id) ? (c.length > 2 ? c.filter((x) => x !== id) : c) : c.length >= 3 ? [...c.slice(1), id] : [...c, id]));
 
   const value = useMemo(
-    () => ({ voice, setVoice, t, dir, setDir, gateOpen, setGateOpen, cart, addCart, setQty, removeCart, clearCart, cartOpen, setCartOpen, toast, say, compare, toggleCompare, driveFor, setDriveFor }),
+    () => ({ theme, setTheme, voice, setVoice, t, dir, setDir, gateOpen, setGateOpen, cart, addCart, setQty, removeCart, clearCart, cartOpen, setCartOpen, toast, say, compare, toggleCompare, driveFor, setDriveFor }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [voice, t, dir, gateOpen, cart, cartOpen, toast, say, compare, driveFor]
+    [theme, voice, t, dir, gateOpen, cart, cartOpen, toast, say, compare, driveFor]
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

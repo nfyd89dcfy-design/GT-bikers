@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { RotateCcw } from "lucide-react";
 import { gsap } from "@/lib/gsap";
 import { useApp, reduceMotion, scrollToId } from "@/lib/state";
-import { DEPOSIT, DIRS, GT, LINEUP, L_BY, STATUS, glbKey, lSpec, num, rub, verLabel, type DirKey, type Ver } from "@/lib/data";
+import { DEPOSIT, DIRS, GT, LINEUP, L_BY, STATUS, glbKey, lSpec, num, rub, studio, verLabel, type DirKey, type Ver } from "@/lib/data";
 import { BlockGrid } from "./shaders";
 import { ObjectTracker } from "./effects";
 import { Bike3D } from "./bike";
@@ -17,6 +17,13 @@ const BATT = [{ n: "Стандарт", k: 1, p: 0 }, { n: "+20% емкости",
 const CTRL = [{ n: "Stock", p: 0, d: "ровный отклик" }, { n: "Sport", p: 25000, d: "резкий старт" }, { n: "Pro tune", p: 60000, d: "тонкая настройка под райдера" }];
 const PAINT: { n: string; c?: string }[] = [{ n: "Заводской" }, { n: "Flare", c: "#ff4a2b" }, { n: "Иней", c: "#eef1f4" }, { n: "Графит", c: "#23272d" }, { n: "Небо", c: "#9cc9ff" }, { n: "Бордо", c: "#7a1b2e" }];
 const DECAL = [{ n: "Без наклеек", p: 0, txt: "" }, { n: "GT", p: 7000, txt: "GT" }, { n: "E-RIZZ", p: 7000, txt: "E-RIZZ" }, { n: "Номер райдера", p: 14000, txt: "RIZZ 01" }];
+/* Конструктор показывает фото героя серии; цвет пластика имитируем фильтром (черное, белое и хром не меняются). */
+const CFG_N: Record<Ver, number> = { base: 2, sport: 10, pro: 14, road: 16 };
+const BASE_HUE: Record<Ver, number> = { base: 12, sport: 78, pro: 70, road: 0 };
+const paintFilter = (i: number, v: Ver) => {
+  const b = BASE_HUE[v];
+  return ["none", `hue-rotate(${9 - b}deg) saturate(1.35)`, "grayscale(1) brightness(1.22)", "grayscale(1) brightness(.72)", `hue-rotate(${213 - b}deg) saturate(.75) brightness(1.08)`, `hue-rotate(${347 - b}deg) saturate(1.2) brightness(.72)`][i] ?? "none";
+};
 const KIT = [{ n: "Без пакета", p: 0 }, { n: "Защита: рама, радиатор, руки", p: 18000 }, { n: "Свет и номер для дороги", p: 26000 }];
 
 function Price({ value }: { value: number }) {
@@ -52,8 +59,7 @@ export function Configurator() {
   );
   return (
     <section id="config" className="dark-zone relative isolate overflow-hidden py-24 sm:py-36" aria-labelledby="config-h">
-      <BlockGrid a="#07080a" b="#1f242b" line="#6b747e" gain={0.9} cells={15} lineAmt={0.3} react={0.8} seed={9} className="absolute inset-0 -z-10 h-full w-full opacity-70" />
-      <div className="container-x">
+            <div className="container-x">
         <Reveal>
           <Eyebrow n="06" dark>конструктор</Eyebrow>
           <H2><span id="config-h">{t("Собери", "Соберите")}</span> <span className="chrome-text">{t("свой build", "свою конфигурацию")}</span></H2>
@@ -62,9 +68,8 @@ export function Configurator() {
         <div className="mt-8 grid gap-4 lg:grid-cols-[1.6fr_1fr] lg:gap-6">
           <div className="relative min-h-[320px] overflow-hidden rounded-3xl border border-frost/20 bg-deep/45 sm:min-h-[520px]">
             <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_55%,rgba(185,194,204,.22),transparent_70%)]" />
-            <div className="absolute inset-0">
-              <Bike3D variant={m.ver} paint={PAINT[cl].c} interactive yaw={-0.5} sway={0.08} label={`${m.name}, цвет: ${PAINT[cl].n}. Потяни, чтобы повернуть`} className="h-full w-full" />
-              <ObjectTracker wheels={m.wheels} facing="right" className="pointer-events-none absolute inset-0 h-full w-full" />
+            <div className="absolute inset-x-[4%] bottom-[14%] top-[6%]">
+              <img src={studio(CFG_N[m.ver])} alt={`${m.name}, цвет: ${PAINT[cl].n}`} className="h-full w-full object-contain transition-[filter] duration-500" style={{ filter: paintFilter(cl, m.ver) }} />
             </div>
             {DECAL[dc].txt && <div className="font-display pointer-events-none absolute left-[44%] top-[44%] -rotate-[8deg] rounded bg-flare px-2 py-0.5 text-[clamp(9px,1.5vw,18px)] font-extrabold text-ink shadow-lg">{DECAL[dc].txt}</div>}
             <div className="absolute bottom-4 left-4 right-4 flex flex-wrap items-end justify-between gap-3">
@@ -72,7 +77,6 @@ export function Configurator() {
                 <div className="mono text-sky">{m.name}</div>
                 <div className="mono muted max-w-[20rem] truncate sm:max-w-[36rem]">{summary}</div>
               </div>
-              <ARButton k={m.ver as ARKey} name={m.name} className="!min-h-11 text-sm" />
             </div>
           </div>
           <div className="space-y-5 rounded-3xl border border-frost/20 bg-deep/55 p-5 backdrop-blur sm:p-6">
