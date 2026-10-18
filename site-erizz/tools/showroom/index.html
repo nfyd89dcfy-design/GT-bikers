@@ -225,6 +225,13 @@ world.children.at(-1).rotation.x = Math.PI / 2;
   const halo = new THREE.Mesh(new THREE.TorusGeometry(1.7, 0.045, 20, 200), M.glow(0xfff4ea, 3.2));
   halo.rotation.x = Math.PI / 2; halo.position.set(POD.x, 2.35, POD.z); add(halo);
   for (const a of [0, 2.09, 4.19]) add(cyl(0.006, HALL - 2.35, M.steel, POD.x + Math.cos(a) * 1.7, 2.35 + (HALL - 2.35) / 2, POD.z + Math.sin(a) * 1.7, 6));
+  // мягкий световой столб от гало к подиуму: связывает их визуально
+  const c = document.createElement("canvas"); c.width = 4; c.height = 256;
+  const g = c.getContext("2d"); const gr = g.createLinearGradient(0, 0, 0, 256);
+  gr.addColorStop(0, "rgba(255,236,220,0.30)"); gr.addColorStop(0.7, "rgba(255,190,160,0.10)"); gr.addColorStop(1, "rgba(255,120,90,0.0)");
+  g.fillStyle = gr; g.fillRect(0, 0, 4, 256);
+  const beam = new THREE.Mesh(new THREE.CylinderGeometry(1.68, 1.72, 2.1, 96, 1, true), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(c), transparent: true, depthWrite: false, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, toneMapped: false }));
+  beam.position.set(POD.x, 0.24 + 2.1 / 2, POD.z); add(beam);
 }
 
 /* ---------- линейка на подиуме-дорожке, свет по сериям ---------- */
