@@ -1,6 +1,7 @@
 import { BatteryCharging, Cpu, Disc3, Snowflake, Wrench, Zap } from "lucide-react";
 import { useApp } from "@/lib/state";
 import { Cta } from "./fx";
+import { GearPicker, TunePicker, useDive } from "./pickers";
 
 const shop = (n: string) => `${import.meta.env.BASE_URL}shop/${n}.webp`;
 
@@ -33,7 +34,8 @@ function ControllerArt() {
 }
 
 export function Tuning() {
-  const { t, say } = useApp();
+  const { t } = useApp();
+  const dive = useDive();
   return (
     <section id="tuning" className="t-zone relative py-24 sm:py-32" aria-labelledby="tun-h">
       <div className="container-x">
@@ -71,7 +73,7 @@ export function Tuning() {
             </ul>
             <p className="mono t-mute mt-6">IP68 · КПД 99% · гироскоп · гарантия 1 год · дисплеи 3, 5 и 7 дюймов</p>
             <div className="mt-6 flex flex-wrap items-center gap-4">
-              <Cta onClick={() => say("Заглушка: подбор контроллера под модель")}>{t("Подобрать под мой байк", "Подобрать под мой байк")}</Cta>
+              <Cta onClick={dive.open} aria-haspopup="dialog">Подобрать под мой байк</Cta>
               <span className="mono t-mute">совместимость подтверждаем по модели</span>
             </div>
           </article>
@@ -116,6 +118,7 @@ export function Tuning() {
           ))}
         </div>
       </div>
+      {dive.at && <TunePicker at={dive.at} onClose={dive.close} />}
     </section>
   );
 }
@@ -131,7 +134,8 @@ const GEAR: { img: string; k: string; n: string; b: string }[] = [
 ];
 
 export function Gear() {
-  const { t, say } = useApp();
+  const { t } = useApp();
+  const dive = useDive();
   return (
     <section id="gear" className="t-zone relative border-t t-line py-24 sm:py-32" aria-labelledby="gear-h">
       <div className="container-x">
@@ -140,11 +144,12 @@ export function Gear() {
             <p className="mono t-label">экипировка</p>
             <h2 id="gear-h" className="h-hero mt-3 text-[clamp(34px,4.6vw,72px)]">Байк любой.<br /><span className="text-flare">Без экипировки</span><br />это снаряд</h2>
             <p className="t-mute mt-5 max-w-md text-lg leading-snug">{t("Шлем, маска, перчатки, защита колен, ботинки и форма. Брендовая экипировка в шоуруме, размер подберем на месте.", "Шлем, маска, перчатки, защита колен, ботинки и форма. Брендовая экипировка в шоуруме, размер подберем на месте.")}</p>
+            {/* к родителям всегда на "вы", даже в режиме "на ты" */}
             <div className="spot mt-6 max-w-md rounded-xl border t-line p-5">
-              <p className="mono t-label">родителям</p>
-              <p className="mt-2 leading-snug">{t("Покупаешь байк подростку? Соберем полный комплект под рост, с запасом на вырост.", "Покупаете байк подростку? Соберем полный комплект под рост, с запасом на вырост.")}</p>
+              <p className="mono t-label">заботливым родителям</p>
+              <p className="mt-2 leading-snug">Покупаете байк подростку? Соберем полный комплект под рост, с запасом на вырост.</p>
             </div>
-            <div className="mt-6"><Cta onClick={() => say("Заглушка: подбор комплекта экипировки")}>Подобрать комплект</Cta></div>
+            <div className="mt-6"><Cta onClick={dive.open} aria-haspopup="dialog">Подобрать комплект</Cta></div>
           </div>
           <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
             {GEAR.map((g) => (
@@ -160,6 +165,7 @@ export function Gear() {
           </ul>
         </div>
       </div>
+      {dive.at && <GearPicker at={dive.at} onClose={dive.close} />}
     </section>
   );
 }

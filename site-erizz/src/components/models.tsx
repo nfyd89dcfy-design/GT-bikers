@@ -152,7 +152,7 @@ export function LineupGrid() {
       <BlockGrid a="#07080a" b="#1c2026" line="#59616b" gain={0.8} cells={16} lineAmt={0.22} react={0.5} className="pointer-events-none absolute inset-0 -z-10 h-full w-full opacity-50" seed={11} />
       <div className="container-x">
         <Reveal>
-          <Eyebrow n="02" dark>вся линейка</Eyebrow>
+          <Eyebrow dark>вся линейка</Eyebrow>
           <div className="flex flex-wrap items-end justify-between gap-6">
             <H2><span id="lineup-h">20 моделей,</span><br /><span className="chrome-text">четыре серии</span></H2>
             <p className="muted max-w-xl text-lg">{t("14 внедорожных и 6 дорожных. Нажми на карточку: модель раскроется на весь экран, ее можно покрутить и поставить у себя в AR.", "14 внедорожных и 6 дорожных моделей. Нажмите на карточку: модель раскроется на весь экран, ее можно повернуть и поставить у себя в AR.")}</p>
@@ -189,7 +189,7 @@ export function Directions() {
       </div>
       <div className="container-x relative">
         <Reveal>
-          <Eyebrow n="03" dark>направления</Eyebrow>
+          <Eyebrow dark>направления</Eyebrow>
           <H2><span id="dir-h">{t("Куда", "Какое")}</span> <span className="chrome-text">{t("поедем?", "направление?")}</span></H2>
           <p className="muted mt-4 max-w-2xl text-lg">{t("Первый байк, эндуро, город, багги, квадрик, снег: выбери, и подборка ниже поменяется.", "Первый байк, эндуро, город, багги, квадроцикл, снег: выберите направление, и подборка ниже изменится.")}</p>
         </Reveal>

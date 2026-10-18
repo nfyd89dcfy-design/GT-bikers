@@ -201,9 +201,79 @@ export function CineSwitch({ theme, onChange, className }: { theme: Theme; onCha
 
 /* ---------------------------------------------------------------- HUD-трекер поверх фото (в духе ObjectTracker) */
 export type Hud = { x: number; y: number; w: number; h: number; l: string; b?: boolean };
-export function Tracker({ boxes, run }: { boxes: Hud[]; run: boolean }) {
+/** Цель прицела: узел байка [x, y, w, h] в процентах кадра и подпись. k = "all" значит байк целиком. */
+export type Roam = { k: string; box: [number, number, number, number]; l: string };
+
+/**
+ * Прицелы на первом экране.
+ * Сначала по очереди появляются статичные рамки (boxes). Потом главный прицел сам перескакивает по узлам (parts)
+ * и подсвечивает деталь. Если навести курсор на байк, прицел следует за ним и цепляется за ближайший узел.
+ */
+export function Tracker({ boxes, parts = [], src, run }: { boxes: Hud[]; parts?: Roam[]; src?: string; run: boolean }) {
+  const root = useRef<HTMLDivElement>(null);
+  const cross = useRef<HTMLDivElement>(null);
+  const [cur, setCur] = useState(0);
+  const [live, setLive] = useState(false);
+  const [hov, setHov] = useState(false);
+  const curRef = useRef(0);
+  curRef.current = cur;
+
+  // после того как статичные рамки появились, включаем главный прицел
+  useEffect(() => {
+    if (!run || !parts.length) { setLive(false); return; }
+    const t = window.setTimeout(() => setLive(true), (1.6 + boxes.length * 0.22) * 1000);
+    return () => window.clearTimeout(t);
+  }, [run, boxes.length, parts.length]);
+
+  // без курсора прицел сам перескакивает по узлам
+  useEffect(() => {
+    if (!run || !live || hov || reduceMotion() || parts.length < 2) return;
+    const t = window.setInterval(() => setCur((c) => (c + 1) % parts.length), 1900);
+    return () => window.clearInterval(t);
+  }, [run, live, hov, parts.length]);
+
+  // курсор: ближайший узел под указателем
+  useEffect(() => {
+    if (!run || !parts.length) return;
+    let away = 0, inside = false;
+    const all = parts.find((p) => p.k === "all")?.box ?? [10, 15, 80, 80];
+    const mv = (e: PointerEvent) => {
+      if (e.pointerType === "touch" || !root.current) return;
+      const r = root.current.getBoundingClientRect();
+      if (!r.width) return;
+      const x = ((e.clientX - r.left) / r.width) * 100, y = ((e.clientY - r.top) / r.height) * 100;
+      const pad = 5;
+      const hit = x > all[0] - pad && x < all[0] + all[2] + pad && y > all[1] - pad && y < all[1] + all[3] + pad;
+      if (hit) {
+        window.clearTimeout(away);
+        if (!inside) { inside = true; setHov(true); setLive(true); }
+        if (cross.current) cross.current.style.transform = `translate(${(x / 100) * r.width}px, ${(y / 100) * r.height}px)`;
+        let best = -1, area = 1e9;
+        parts.forEach((p, i) => {
+          if (p.k === "all") return;
+          const [bx, by, bw, bh] = p.box;
+          if (x >= bx && x <= bx + bw && y >= by && y <= by + bh && bw * bh < area) { area = bw * bh; best = i; }
+        });
+        if (best < 0) {
+          let d0 = 1e9;
+          parts.forEach((p, i) => { if (p.k === "all") return; const [bx, by, bw, bh] = p.box; const d = (bx + bw / 2 - x) ** 2 + (by + bh / 2 - y) ** 2; if (d < d0) { d0 = d; best = i; } });
+        }
+        if (best >= 0 && best !== curRef.current) setCur(best);
+      } else if (inside) {
+        inside = false;
+        away = window.setTimeout(() => setHov(false), 700);
+      }
+    };
+    window.addEventListener("pointermove", mv, { passive: true });
+    return () => { window.removeEventListener("pointermove", mv); window.clearTimeout(away); };
+  }, [run, parts]);
+
+  const p = parts[cur] ?? parts[0];
+  const [x, y, w, h] = p ? p.box : [0, 0, 0, 0];
+  const conf = p ? 91 + ((p.l.length * 7 + cur * 3) % 9) : 0;
   return (
-    <div aria-hidden="true" className={cn("hud pointer-events-none absolute inset-0 hidden lg:block", run && "hud--on")}>
+    <div ref={root} aria-hidden="true" className={cn("hud pointer-events-none absolute inset-0 hidden lg:block", run && "hud--on", run && live && "hud--live", hov && "hud--hover")}>
+      {src && p && <img src={src} alt="" className="hud__lit" style={{ clipPath: `inset(${y}% ${100 - x - w}% ${100 - y - h}% ${x}% round 6px)` }} />}
       <div className="hud__scan" />
       {boxes.map((b, i) => (
         <div key={b.l} className="hud__box" style={{ left: `${b.x}%`, top: `${b.y}%`, width: `${b.w}%`, height: `${b.h}%`, ["--i" as string]: i }}>
@@ -211,6 +281,13 @@ export function Tracker({ boxes, run }: { boxes: Hud[]; run: boolean }) {
           <span className={cn("hud__label mono", b.b && "hud__label--b")}>{b.l}</span>
         </div>
       ))}
+      {p && (
+        <div className="hud__roam" style={{ left: `${x}%`, top: `${y}%`, width: `${w}%`, height: `${h}%` }}>
+          <i /><i /><i /><i />
+          <span key={p.l} className={cn("hud__label hud__label--roam mono", y < 12 && "hud__label--b")}>{p.l}<b>{conf}%</b></span>
+        </div>
+      )}
+      <div ref={cross} className="hud__cross"><span /></div>
     </div>
   );
 }

@@ -52,7 +52,7 @@ export function Assembly() {
     <section id="build" ref={root} className="dark-zone relative isolate overflow-hidden py-20 lg:flex lg:h-[100svh] lg:min-h-[680px] lg:flex-col lg:py-0 lg:pt-20" aria-labelledby="build-h">
       <BlockGrid a="#07080a" b="#20252c" line="#59616b" gain={0.9} cells={18} rotation={45} lineAmt={0.2} react={0.6} seed={5} className="pointer-events-none absolute inset-0 -z-10 h-full w-full opacity-70" />
       <div className="container-x relative flex flex-1 flex-col">
-        <Eyebrow n="04" dark>конструкция / скролль</Eyebrow>
+        <Eyebrow dark>конструкция / скролль</Eyebrow>
         <h2 id="build-h" className="font-display text-[clamp(28px,4.6vw,72px)] font-extrabold uppercase leading-[0.95]">
           {t("Смотри, из чего собран", "Из чего собран")} <span className="chrome-text">GT Send 19 R</span>
         </h2>
@@ -96,7 +96,7 @@ export function Perks() {
     <section className="dark-zone relative py-24 sm:py-36" aria-labelledby="perks-h">
       <div className="container-x">
         <Reveal>
-          <Eyebrow n="05" dark>почему мы</Eyebrow>
+          <Eyebrow dark>почему мы</Eyebrow>
           <H2><span id="perks-h">{t("Не просто", "Больше,")}</span> <span className="text-sky">{t("магазин", "чем магазин")}</span></H2>
         </Reveal>
         <div className="mt-10 grid gap-4 lg:grid-cols-12">

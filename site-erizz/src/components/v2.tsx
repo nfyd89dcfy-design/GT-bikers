@@ -4,7 +4,8 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useApp, reduceMotion, scrollToId, type Theme } from "@/lib/state";
 import { GROUPS, LINEUP, L_BY, studio } from "@/lib/data";
 import { LCard } from "./product";
-import { CineSwitch, Cta, HeroBackdrop, CellsBackdrop, Tracker, switchTheme, type Hud } from "./fx";
+import { CineSwitch, Cta, HeroBackdrop, CellsBackdrop, Tracker, switchTheme, type Hud, type Roam } from "./fx";
+import { PARTS } from "@/lib/parts";
 import { cn } from "@/lib/utils";
 
 export { Logo } from "./logo";
@@ -58,9 +59,11 @@ export function Header2() {
 
 /* ---------------------------------------------------------------- Первый экран: днем Send 19 S, ночью флагман Factory */
 type Spec = [number, number, string, string];
-const HEROES: Record<Theme, { id: string; label: string; specs: Spec[]; hud: Hud[] }> = {
-  day: { id: "gt-send-19s", label: "серия Send / спортивный trail", specs: [[17, 0, "кВт", "пиковая мощность"], [3.24, 2, "кВт·ч", "батарея"], [105, 0, "км/ч", "максимальная скорость"], [140, 0, "км", "запас хода при 30-35 км/ч"]], hud: [{ x: 41, y: 43, w: 17, h: 18, l: "АКБ · 3,24 кВт·ч" }, { x: 44, y: 63, w: 13, h: 14, l: "мотор · 17 кВт пик", b: true }, { x: 60, y: 54, w: 23, h: 40, l: "колесо · 19″" }] },
-  night: { id: "gt-send-19f", label: "серия Send / флагман", specs: [[35, 0, "кВт", "пиковая мощность"], [100, 0, "км/ч", "максимальная скорость"], [120, 0, "км", "запас хода при 45 км/ч"], [95, 0, "кг", "снаряженная масса"]], hud: [{ x: 37, y: 40, w: 23, h: 22, l: "рама · кованый алюминий" }, { x: 46, y: 63, w: 11, h: 14, l: "мотор · 35 кВт пик", b: true }, { x: 60, y: 57, w: 22, h: 37, l: "вилка · 220 мм" }] },
+const HEROES: Record<Theme, { id: string; label: string; specs: Spec[]; hud: Hud[]; parts: Roam[] }> = {
+  day: { id: "gt-send-19s", label: "серия Send / спортивный trail", specs: [[17, 0, "кВт", "пиковая мощность"], [3.24, 2, "кВт·ч", "батарея"], [105, 0, "км/ч", "максимальная скорость"], [140, 0, "км", "запас хода при 30-35 км/ч"]], hud: [{ x: 41, y: 43, w: 17, h: 18, l: "АКБ · 3,24 кВт·ч" }, { x: 44, y: 63, w: 13, h: 14, l: "мотор · 17 кВт пик", b: true }, { x: 60, y: 54, w: 23, h: 40, l: "колесо · 19″" }],
+    parts: [{ k: "bat", box: PARTS[9].bat, l: "АКБ · 3,24 кВт·ч" }, { k: "mot", box: PARTS[9].mot, l: "мотор · 17 кВт пик" }, { k: "fw", box: PARTS[9].fw, l: "переднее колесо · 19″" }, { k: "fork", box: PARTS[9].fork, l: "вилка · гидравлика 220 мм" }, { k: "rw", box: PARTS[9].rw, l: "заднее колесо · 19″" }, { k: "all", box: PARTS[9].all, l: "GT Send 19 S · 73 кг · 105 км/ч" }] },
+  night: { id: "gt-send-19f", label: "серия Send / флагман", specs: [[35, 0, "кВт", "пиковая мощность"], [100, 0, "км/ч", "максимальная скорость"], [120, 0, "км", "запас хода при 45 км/ч"], [95, 0, "кг", "снаряженная масса"]], hud: [{ x: 37, y: 40, w: 23, h: 22, l: "рама · кованый алюминий" }, { x: 46, y: 63, w: 11, h: 14, l: "мотор · 35 кВт пик", b: true }, { x: 60, y: 57, w: 22, h: 37, l: "вилка · 220 мм" }],
+    parts: [{ k: "ctl", box: PARTS[12].ctl, l: "рама · кованый алюминий" }, { k: "bat", box: PARTS[12].bat, l: "АКБ · система 109 В" }, { k: "mot", box: PARTS[12].mot, l: "мотор · 35 кВт пик" }, { k: "fork", box: PARTS[12].fork, l: "вилка · 220 мм" }, { k: "fw", box: PARTS[12].fw, l: "переднее колесо · 19″" }, { k: "rw", box: PARTS[12].rw, l: "заднее колесо · 18″" }, { k: "all", box: PARTS[12].all, l: "GT Send 19 Factory · 95 кг" }] },
 };
 
 function Count({ v, dec }: { v: number; dec: number }) {
@@ -109,7 +112,7 @@ export function Hero2() {
                 <div className="absolute inset-0 origin-[50%_93%] scale-[1.12]">
                   <div className="bike-idle absolute inset-0">
                     <img src={studio(L_BY[HEROES[k].id].n)} alt={theme === k ? `${L_BY[HEROES[k].id].name}, фото в профиль` : ""} className="absolute inset-0 h-full w-full object-contain" fetchPriority={k === theme ? "high" : "low"} />
-                    <Tracker boxes={HEROES[k].hud} run={theme === k} />
+                    <Tracker boxes={HEROES[k].hud} parts={HEROES[k].parts} src={studio(L_BY[HEROES[k].id].n)} run={theme === k} />
                   </div>
                 </div>
               </div>
@@ -219,8 +222,8 @@ export function BuildScroll() {
         <ol className="mt-10 grid grid-cols-3 gap-x-4 gap-y-3 border-t border-frost/15 pt-4 lg:grid-cols-6">
           {STEPS.map(([n, h, p], i) => (
             <li key={n} data-step={i}>
-              <span className="mono text-flare">{n}</span>
-              <h3 className="mt-1 font-semibold leading-tight">{h}</h3>
+              <span className="block h-[3px] w-7 rounded-full bg-flare" aria-hidden="true" />
+              <h3 className="mt-2 font-semibold leading-tight">{h}</h3>
               <p className="hidden text-sm text-frost/60 lg:block">{p}</p>
             </li>
           ))}

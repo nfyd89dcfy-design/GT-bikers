@@ -51,7 +51,7 @@ export function Media() {
       <Boids className="absolute inset-0 -z-10 h-full w-full opacity-50" count={170} a="#8d97a2" b="#ff4a2b" />
       <div className="container-x">
         <Reveal>
-          <Eyebrow n="12" dark>медиа</Eyebrow>
+          <Eyebrow dark>медиа</Eyebrow>
           <H2><span id="media-h">{t("Наше", "Наши")}</span> <span className="chrome-text">{t("комьюнити", "каналы и видео")}</span></H2>
           <p className="muted mt-4 max-w-2xl text-lg">{t("Подпишись, смотри обзоры и присылай свои билды. Нажми на плитку: она раскроется на весь экран.", "Подписывайтесь на каналы и смотрите обзоры. Нажмите на плитку: она раскроется на весь экран.")}</p>
         </Reveal>
@@ -114,7 +114,7 @@ export function Service() {
       <div className="grain pointer-events-none absolute inset-0 -z-10" aria-hidden="true" />
       <div className="container-x">
         <Reveal>
-          <Eyebrow n="13">сервис</Eyebrow>
+          <Eyebrow>сервис</Eyebrow>
           <H2><span id="svc-h">{t("После покупки", "После покупки")}</span> <span className="text-flare">{t("мы рядом", "мы на связи")}</span></H2>
         </Reveal>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -170,7 +170,7 @@ export function Drive() {
       <MetalFigure kind="liquid" className="absolute -right-24 -top-24 -z-10 hidden h-[440px] w-[440px] lg:block" />
       <div className="container-x grid gap-10 lg:grid-cols-[1fr_1fr]">
         <Reveal>
-          <Eyebrow n="14" dark>тест-драйв</Eyebrow>
+          <Eyebrow dark>тест-драйв</Eyebrow>
           <H2><span id="drive-h">{t("Кати", "Запишитесь")}</span> <span className="text-sky">{t("до покупки", "на тест-драйв")}</span></H2>
           <p className="muted mt-4 max-w-md text-lg">{t("Выбери город, дату и модель. Мы подтвердим время и подготовим байк.", "Выберите город, дату и модель. Мы подтвердим время и подготовим технику.")}</p>
           <div className="relative mt-8 w-full max-w-xl overflow-hidden rounded-3xl bg-kelp" style={{ aspectRatio: "16/10" }} data-cursor="drag"><img src={photo("garage_moody")} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" /><Bike3D variant={glbKey(dm) as Variant} paint={dm.paint} yaw={-0.5} sway={0.06} interactive label={`${dm.name}, 3D-модель: тяните, чтобы повернуть`} className="relative h-full w-full cursor-grab active:cursor-grabbing" /><span className="mono pointer-events-none absolute bottom-3 left-3 flex items-center gap-2 rounded-full bg-deep/70 px-3 py-1.5 text-frost/85"><Move3d size={14} aria-hidden="true" />{t("тяни, чтобы покрутить", "потяните, чтобы повернуть")}</span><span className="mono pointer-events-none absolute left-3 top-3 rounded-full bg-deep/70 px-3 py-1.5 text-sky">{dm.name}</span></div>

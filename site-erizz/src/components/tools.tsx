@@ -65,7 +65,7 @@ export function Configurator() {
       <MetalFigure kind="voxels" className="absolute right-[4%] top-10 hidden h-64 w-64 xl:block" />
             <div className="container-x">
         <Reveal>
-          <Eyebrow n="06" dark>конструктор</Eyebrow>
+          <Eyebrow dark>конструктор</Eyebrow>
           <H2><span id="config-h">{t("Собери", "Соберите")}</span> <span className="chrome-text">{t("свой build", "свою конфигурацию")}</span></H2>
           <p className="muted mt-4 max-w-2xl text-lg">{t("Серия, батарея, контроллер, цвет, наклейки, пакет. Стоимость опций пересчитывается сразу, базовую цену фиксируем после теста образца.", "Серия, батарея, контроллер, цвет, наклейки и пакет. Стоимость опций пересчитывается сразу, базовая цена фиксируется после теста образца.")}</p>
         </Reveal>
@@ -84,26 +84,26 @@ export function Configurator() {
             </div>
           </div>
           <div className="space-y-5 rounded-3xl border border-frost/20 bg-deep/55 p-5 backdrop-blur sm:p-6">
-            <Opt label="01 серия">
+            <Opt label="серия">
               {GT.map((x) => <button key={x.id} className="chip !text-frost aria-pressed:!text-ink" aria-pressed={ver === x.ver} onClick={() => setVer(x.ver)}>{x.short} · {x.wheels}</button>)}
             </Opt>
-            <Opt label="02 батарея">
+            <Opt label="батарея">
               {BATT.map((x, i) => <button key={x.n} className="chip !text-frost aria-pressed:!text-ink" aria-pressed={bt === i} onClick={() => setBt(i)}>{x.n}</button>)}
             </Opt>
-            <Opt label="03 контроллер">
+            <Opt label="контроллер">
               {CTRL.map((x, i) => <button key={x.n} className="chip !text-frost aria-pressed:!text-ink" aria-pressed={ct === i} onClick={() => setCt(i)} title={x.d}>{x.n}</button>)}
             </Opt>
-            <Opt label="04 цвет пластика">
+            <Opt label="цвет пластика">
               {PAINT.map((p, i) => (
                 <button key={p.n} aria-pressed={cl === i} aria-label={`Цвет: ${p.n}`} onClick={() => setCl(i)}
                   className={cn("h-11 w-11 cursor-pointer rounded-full border-2", cl === i ? "border-flare ring-2 ring-flare/40" : "border-frost/40")}
                   style={{ background: p.c ?? "linear-gradient(135deg,#222,#ff4a2b)" }} />
               ))}
             </Opt>
-            <Opt label="05 наклейки">
+            <Opt label="наклейки">
               {DECAL.map((x, i) => <button key={x.n} className="chip !text-frost aria-pressed:!text-ink" aria-pressed={dc === i} onClick={() => setDc(i)}>{x.n}</button>)}
             </Opt>
-            <Opt label="06 пакет">
+            <Opt label="пакет">
               {KIT.map((x, i) => <button key={x.n} className="chip !text-frost aria-pressed:!text-ink" aria-pressed={kt === i} onClick={() => setKt(i)}>{x.n}</button>)}
             </Opt>
             <div className="border-t border-frost/25 pt-4">
@@ -153,7 +153,7 @@ const QUIZ: Q[] = [
 ];
 
 export function Quiz() {
-  const { t, addCart, toggleCompare, setDriveFor, setDir } = useApp();
+  const { t, addCart, toggleCompare, setDriveFor } = useApp();
   const [step, setStep] = useState(0);
   const [score, setScore] = useState<Record<string, number>>({});
   const [dk, setDk] = useState<DirKey | null>(null);
@@ -179,7 +179,7 @@ export function Quiz() {
       <div className="grain pointer-events-none absolute inset-0 -z-10" aria-hidden="true" />
       <div className="container-x grid gap-10 lg:grid-cols-[1fr_1.1fr]">
         <Reveal>
-          <Eyebrow n="07">подбор</Eyebrow>
+          <Eyebrow>подбор</Eyebrow>
           <H2><span id="quiz-h">{t("Не знаешь, что", "Не знаете, что")}</span><br /><span className="text-flare">выбрать?</span></H2>
           <p className="mt-4 max-w-md text-lg text-mute">{t("Четыре вопроса, и мы подскажем модель из 20. Если не наше, подберем под заказ.", "Четыре вопроса, и мы подскажем модель из двадцати. Если подходящей нет, подберем технику под заказ.")}</p>
         </Reveal>
@@ -210,7 +210,6 @@ export function Quiz() {
                 {m && <ARButton k={glbKey(m) as ARKey} name={m.name} />}
                 {m && <button className="btn-ghost" onClick={() => { toggleCompare(m.id); scrollToId("compare"); }}>Сравнить</button>}
                 <button className="btn-ghost" onClick={() => { setDriveFor(m ? m.id : "gt-pulse-17"); scrollToId("drive"); }}>{m ? "Тест-драйв" : "Оставить заявку"}</button>
-                <button className="btn-ghost" onClick={() => { setDir(res.d.key); scrollToId("directions"); }}>Все в направлении</button>
                 <button className="mono inline-flex min-h-11 cursor-pointer items-center gap-2 px-2 text-frost/80 hover:text-sky" onClick={() => { setStep(0); setScore({}); setDk(null); }}><RotateCcw size={16} />еще раз</button>
               </div>
             </div>
@@ -241,7 +240,7 @@ export function Compare() {
     <section id="compare" className="light-zone relative bg-frost py-24 sm:py-36" aria-labelledby="cmp-h">
       <div className="container-x">
         <Reveal>
-          <Eyebrow n="08">сравнение</Eyebrow>
+          <Eyebrow>сравнение</Eyebrow>
           <H2><span id="cmp-h">{t("Сравни", "Сравните")}</span> <span className="text-flare">2-3 модели</span></H2>
         </Reveal>
         <div className="mt-6 flex flex-wrap gap-2" role="group" aria-label="Выбор моделей для сравнения">

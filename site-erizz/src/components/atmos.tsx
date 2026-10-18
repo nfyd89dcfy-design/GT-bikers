@@ -28,7 +28,7 @@ export function Atmos() {
     <section id="atmos" ref={root} className="dark-zone relative overflow-hidden bg-deep py-24 sm:py-36" aria-labelledby="atm-h">
       <div className="container-x">
         <Reveal>
-          <Eyebrow n="09" dark>атмосфера</Eyebrow>
+          <Eyebrow dark>атмосфера</Eyebrow>
           <div className="flex flex-wrap items-end justify-between gap-6">
             <H2><span id="atm-h">{t("Где мы", "Где мы")}</span> <span className="chrome-text">{t("катаем", "ездим")}</span></H2>
             <p className="muted max-w-md">{t("Нажми на кадр: он раскроется в коллаж.", "Нажмите на кадр: он раскроется в коллаж.")}</p>

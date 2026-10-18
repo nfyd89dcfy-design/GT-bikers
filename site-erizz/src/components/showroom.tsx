@@ -206,7 +206,7 @@ export function Showroom() {
       <div className="grain pointer-events-none absolute inset-0 -z-10" aria-hidden="true" />
       <div className="container-x">
         <Reveal>
-          <Eyebrow n="10">шоурум</Eyebrow>
+          <Eyebrow>шоурум</Eyebrow>
           <H2><span id="show-h">{t("Заходи", "Приезжайте")}</span> <span className="text-flare">{t("в Ростов", "в Ростов-на-Дону")}</span></H2>
           <p className="mt-4 max-w-2xl text-lg text-mute">{t("Офлайн-шоурум, сервис и склад в Ростове-на-Дону. Из Москвы и Краснодарского края везем технику к тебе.", "Офлайн-шоурум, сервис и склад в Ростове-на-Дону. В Москву и Краснодарский край доставляем технику.")}</p>
         </Reveal>

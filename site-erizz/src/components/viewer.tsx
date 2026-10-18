@@ -30,7 +30,7 @@ export function Viewer3D() {
       <MetalFigure kind="chrome" className="absolute right-[3%] top-6 hidden h-72 w-72 lg:block" />
       <div className="container-x">
         <Reveal className="lg:pr-[320px]">
-          <Eyebrow n="05" dark>3D / AR</Eyebrow>
+          <Eyebrow dark>3D / AR</Eyebrow>
           <H2><span id="viewer-h">{t("Покрути и поставь", "Рассмотрите и поставьте")}</span> <span className="text-sky">{t("у себя дома", "у себя дома")}</span></H2>
           <p className="muted mt-4 max-w-2xl text-lg">
             {t("Тяни, чтобы вращать, меняй модель и цвет. Кнопка AR ставит байк в комнату или во двор в реальном размере.", "Потяните, чтобы повернуть, меняйте модель и цвет. Кнопка AR ставит модель в комнату или во двор в реальном размере.")}

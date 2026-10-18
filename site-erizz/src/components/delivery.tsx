@@ -54,7 +54,7 @@ export function Delivery() {
       <div className="grain pointer-events-none absolute inset-0 -z-10" aria-hidden="true" />
       <div className="container-x">
         <Reveal>
-          <Eyebrow n="09">доставка</Eyebrow>
+          <Eyebrow>доставка</Eyebrow>
           <H2><span id="del-h">{t("Доставка", "Доставка")}</span> <span className="chrome-text-dark">по России</span></H2>
           <div className="sky-line mt-6 max-w-md" />
           <p className="mt-5 max-w-2xl text-lg text-mute">{t("Отправляем из Москвы и Ростова-на-Дону в любой город. Выбери город на карте и посмотри примерный срок.", "Отправляем из Москвы и Ростова-на-Дону в любой город. Выберите город на карте и посмотрите примерный срок.")}</p>

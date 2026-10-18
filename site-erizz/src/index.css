@@ -267,6 +267,37 @@ body { background: var(--t-bg); }
 @media (prefers-reduced-motion: reduce) { .bike-idle, .ticker, .css-orb, .hud--on .hud__scan, .hud--on .hud__box, .cine--night .cine__stars i { animation: none !important; } }
 .hud__label--b { bottom: auto; top: calc(100% + 4px); }
 
+/* главный прицел: перескакивает по узлам и подсвечивает деталь, на наведении следует за курсором */
+.hud { --hud-e: cubic-bezier(.2,.9,.2,1); }
+.hud__roam { position: absolute; --hud-c: #ff4a2b; opacity: 0; transform: scale(1.15);
+  background: rgb(255 74 43 / .06); box-shadow: inset 0 0 0 1px rgb(255 74 43 / .18);
+  transition: left .62s var(--hud-e), top .62s var(--hud-e), width .62s var(--hud-e), height .62s var(--hud-e), opacity .45s ease, transform .6s var(--hud-e); }
+.hud--live .hud__roam { opacity: 1; transform: none; }
+.hud__roam i { position: absolute; width: 18px; height: 18px; border: 2px solid var(--hud-c); }
+.hud__roam i:nth-child(1) { left: -2px; top: -2px; border-right: 0; border-bottom: 0; }
+.hud__roam i:nth-child(2) { right: -2px; top: -2px; border-left: 0; border-bottom: 0; }
+.hud__roam i:nth-child(3) { left: -2px; bottom: -2px; border-right: 0; border-top: 0; }
+.hud__roam i:nth-child(4) { right: -2px; bottom: -2px; border-left: 0; border-top: 0; }
+.hud__label--roam { font-size: 10.5px; padding: 4px 8px; display: inline-flex; gap: 8px; color: #0e1013; animation: hud-type .45s steps(6) both; }
+.hud__label--roam b { font-weight: 500; opacity: .75; }
+@keyframes hud-type { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+/* после старта главного прицела статичные рамки уходят в тень */
+.hud--live .hud__box { opacity: .3; transition: opacity .6s ease; }
+.hud--live .hud__box .hud__label { opacity: 0; transition: opacity .4s ease; }
+/* подсветка детали: копия фото ярче, видна только внутри прицела */
+.hud__lit { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; filter: brightness(1.22) saturate(1.35) contrast(1.08) drop-shadow(0 0 18px rgb(255 74 43 / .35));
+  transition: clip-path .62s var(--hud-e), opacity .5s ease; }
+[data-theme="night"] .hud__lit { filter: brightness(1.75) saturate(1.25) drop-shadow(0 0 18px rgb(156 201 255 / .35)); }
+.hud--live .hud__lit { opacity: 1; }
+/* перекрестие у курсора */
+.hud__cross { position: absolute; left: 0; top: 0; width: 0; height: 0; opacity: 0; transition: opacity .25s ease; }
+.hud__cross span { position: absolute; left: -13px; top: -13px; width: 26px; height: 26px; border: 1.5px solid #ff4a2b; border-radius: 50%; }
+.hud__cross::before, .hud__cross::after { content: ""; position: absolute; background: #ff4a2b; }
+.hud__cross::before { left: -20px; top: -.75px; width: 40px; height: 1.5px; }
+.hud__cross::after { top: -20px; left: -.75px; height: 40px; width: 1.5px; }
+.hud--hover .hud__cross { opacity: .9; }
+@media (prefers-reduced-motion: reduce) { .hud__roam, .hud__lit { transition: none; } .hud__label--roam { animation: none; } }
+
 /* ===================== v4: тотал вайт днем, тотал блэк ночью =====================
    Секции нарисованы как "темные" (.dark-zone) и "светлые" (.light-zone). Вместо смешения
    подменяем палитру внутри зоны, чтобы вся страница шла в тон темы. */
@@ -319,3 +350,39 @@ body { background: var(--t-bg); }
 .tier-bar { transform-origin: left; animation: tier-in 1.2s cubic-bezier(.2,.9,.2,1) both; animation-delay: var(--d, 0s); }
 @supports (animation-timeline: view()) { .tier-bar { animation-timeline: view(); animation-range: entry 20% cover 45%; animation-delay: 0s; } }
 @media (prefers-reduced-motion: reduce) { .tier-bar { animation: none; } }
+
+
+/* ===================== подбор: экран "проваливается" из кнопки ===================== */
+.dive { -webkit-overflow-scrolling: touch; }
+.dive__head { background: var(--t-head, var(--t-bg)); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.dive-step { animation: dive-step .55s cubic-bezier(.2,.9,.2,1) both; }
+@keyframes dive-step { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+.dive-card { outline: 2px solid transparent; outline-offset: -2px; transition: outline-color .25s ease, transform .35s cubic-bezier(.2,.9,.2,1); }
+.dive-card:hover { transform: translateY(-3px); }
+.dive-card.is-on { outline-color: var(--color-flare); }
+.dive-goal { transition: border-color .25s ease, background-color .25s ease; }
+.dive-goal:hover { border-color: var(--color-flare) !important; }
+.dive-goal.is-on { border-color: var(--color-flare) !important; background: rgb(255 74 43 / .08); }
+.dive-goal.is-on .dive-goal__box { background: var(--color-flare); border-color: var(--color-flare) !important; color: #0e1013; }
+/* силуэт для "другого байка": схема вместо фото */
+.dive__sil { filter: brightness(0); opacity: .82; }
+[data-theme="night"] .dive__sil { filter: brightness(0) invert(1); opacity: .78; }
+/* рамки узлов на фото в подборе */
+.dive__mark { position: absolute; opacity: 0; transform: scale(1.2); animation: dive-mark .55s cubic-bezier(.2,.9,.2,1) calc(.15s + var(--i) * .16s) forwards; background: rgb(255 74 43 / .07); }
+@keyframes dive-mark { to { opacity: 1; transform: none; } }
+.dive__mark i { position: absolute; width: 14px; height: 14px; border: 2px solid var(--color-flare); }
+.dive__mark i:nth-child(1) { left: -2px; top: -2px; border-right: 0; border-bottom: 0; }
+.dive__mark i:nth-child(2) { right: -2px; top: -2px; border-left: 0; border-bottom: 0; }
+.dive__mark i:nth-child(3) { left: -2px; bottom: -2px; border-right: 0; border-top: 0; }
+.dive__mark i:nth-child(4) { right: -2px; bottom: -2px; border-left: 0; border-top: 0; }
+.dive__mark span { position: absolute; left: -2px; bottom: calc(100% + 4px); white-space: nowrap; padding: 3px 7px; font-size: 10px; color: #0e1013; background: var(--color-flare); border-radius: 2px; max-width: 34ch; overflow: hidden; text-overflow: ellipsis; }
+.dive__mark span.dive__mark-b { bottom: auto; top: calc(100% + 4px); }
+.dive__mark span.dive__mark-r { bottom: auto; top: 6px; left: calc(100% + 6px); }
+@media (max-width: 640px) { .dive__mark span { font-size: 8.5px; padding: 2px 5px; } }
+.dive-item { animation: dive-step .5s cubic-bezier(.2,.9,.2,1) calc(var(--i) * .06s) both; }
+.dive-bar { animation: dive-bar 1s cubic-bezier(.2,.9,.2,1) .3s both; transform-origin: left; }
+@keyframes dive-bar { from { transform: scaleX(0); } }
+.dive-range { -webkit-appearance: none; appearance: none; height: 6px; border-radius: 99px; background: var(--t-line); accent-color: var(--color-flare); cursor: pointer; }
+.dive-range::-webkit-slider-thumb { -webkit-appearance: none; width: 30px; height: 30px; border-radius: 50%; background: var(--color-flare); box-shadow: 0 0 0 6px rgb(255 74 43 / .2); }
+.dive-range::-moz-range-thumb { width: 30px; height: 30px; border: 0; border-radius: 50%; background: var(--color-flare); box-shadow: 0 0 0 6px rgb(255 74 43 / .2); }
+@media (prefers-reduced-motion: reduce) { .dive-step, .dive-item, .dive-bar, .dive__mark { animation: none !important; opacity: 1; transform: none; } }

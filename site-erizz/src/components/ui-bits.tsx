@@ -14,11 +14,12 @@ export function Reveal({ children, className, delay = 0, y = 18 }: { children: R
   return <div ref={r} className={className}>{children}</div>;
 }
 
-export function Eyebrow({ n, children, dark }: { n: string; children: ReactNode; dark?: boolean }) {
+/** Подпись над заголовком раздела. Разделы не нумеруем. */
+export function Eyebrow({ children, dark }: { children: ReactNode; dark?: boolean }) {
   return (
     <p className={cn("mono mb-4 flex items-center gap-3", dark ? "text-sky" : "text-mute")}>
       <span className="inline-block h-px w-10 bg-current" aria-hidden="true" />
-      <span>{n}</span><span>{children}</span>
+      <span>{children}</span>
     </p>
   );
 }
