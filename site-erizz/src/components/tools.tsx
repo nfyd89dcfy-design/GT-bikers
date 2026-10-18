@@ -16,10 +16,11 @@ import { MetalFigure } from "./fx";
 const BATT = [{ n: "Стандарт", k: 1, p: 0 }, { n: "+20% емкости", k: 1.2, p: 60000 }, { n: "Вторая батарея", k: 2, p: 140000 }];
 const CTRL = [{ n: "Stock", p: 0, d: "ровный отклик" }, { n: "Sport", p: 25000, d: "резкий старт" }, { n: "Pro tune", p: 60000, d: "тонкая настройка под райдера" }];
 const PAINT: { n: string; c?: string }[] = [{ n: "Заводской" }, { n: "Flare", c: "#ff4a2b" }, { n: "Иней", c: "#eef1f4" }, { n: "Графит", c: "#23272d" }, { n: "Небо", c: "#9cc9ff" }, { n: "Бордо", c: "#7a1b2e" }];
-const DECAL = [{ n: "Без наклеек", p: 0, txt: "" }, { n: "GT", p: 7000, txt: "GT" }, { n: "Номер райдера", p: 14000, txt: "RIZZ 01" }];
+const DECAL = [{ n: "Без наклеек", p: 0, txt: "" }, { n: "GT", p: 7000, txt: "GT" }, { n: "Номер райдера", p: 14000, txt: "GT 01" }];
 /* Конструктор показывает фото героя серии; цвет пластика имитируем фильтром (черное, белое и хром не меняются). */
 const CFG_N: Record<Ver, number> = { base: 2, sport: 10, pro: 14, road: 16 };
-const BASE_HUE: Record<Ver, number> = { base: 12, sport: 78, pro: 70, road: 0 };
+/* оттенок акцента серии на фото после ливреи GT: Spark небо, Send flare, Ridge бордо, Pulse кобальт */
+const BASE_HUE: Record<Ver, number> = { base: 213, sport: 9, pro: 350, road: 222 };
 const paintFilter = (i: number, v: Ver) => {
   const b = BASE_HUE[v];
   return ["none", `hue-rotate(${9 - b}deg) saturate(1.35)`, "grayscale(1) brightness(1.22)", "grayscale(1) brightness(.72)", `hue-rotate(${213 - b}deg) saturate(.75) brightness(1.08)`, `hue-rotate(${347 - b}deg) saturate(1.2) brightness(.72)`][i] ?? "none";
