@@ -31,6 +31,14 @@ function loadModelViewer() {
 }
 
 const isMobile = () => typeof matchMedia !== "undefined" && matchMedia("(pointer: coarse)").matches;
+const UA = typeof navigator !== "undefined" ? navigator.userAgent : "";
+const isIOS = () => /iPad|iPhone|iPod/.test(UA) || (/Macintosh/.test(UA) && typeof navigator !== "undefined" && navigator.maxTouchPoints > 1);
+const isAndroid = () => /Android/i.test(UA);
+const inApp = () => /Telegram|Instagram|FBAN|FBAV|Line\/|VKClient|YaBrowser\/.*Mobile.*YaApp|WhatsApp/i.test(UA);
+const abs = (p: string) => new URL(p, location.href).href;
+/** Прямая ссылка в Scene Viewer (Android): камера открывается без WebXR. */
+const sceneViewer = (glb: string, title: string) =>
+  `intent://arvr.google.com/scene-viewer/1.0?file=${encodeURIComponent(abs(glb))}&mode=ar_preferred&resizable=false&title=${encodeURIComponent(title)}#Intent;scheme=https;package=com.google.android.googlequicksearchbox;action=android.intent.action.VIEW;S.browser_fallback_url=${encodeURIComponent(location.href)};end;`;
 
 type MV = HTMLElement & { canActivateAR?: boolean; activateAR?: () => Promise<void> };
 
@@ -117,10 +125,22 @@ export function ARLayer() {
           <p className="muted">{t("Байк встанет на пол в реальном размере: в комнате, во дворе, в гараже. Можно обойти вокруг и сфотографировать.", "Модель встанет на пол в реальном размере: в комнате, во дворе или в гараже. Ее можно обойти и сфотографировать.")}</p>
           {mobile ? (
             <>
-              <button className="btn-solid flex !min-h-14 items-center justify-center gap-2 text-lg" onClick={start} disabled={can === false} aria-disabled={can === false}>
-                <Smartphone size={22} aria-hidden="true" />{can === null ? "Загружаем модель…" : can ? t("Запустить AR", "Запустить AR") : "AR недоступен"}
-              </button>
-              {can === false && <p className="text-sm text-frost/80">{t("Этот браузер не умеет AR. Открой сайт в Safari на iPhone или в Chrome на Android.", "Этот браузер не поддерживает AR. Откройте сайт в Safari на iPhone или в Chrome на Android.")}</p>}
+              {isIOS() ? (
+                <a rel="ar" href={`${abs(`${import.meta.env.BASE_URL}models/${st.key}.usdz`)}#allowsContentScaling=0`} className="btn-solid flex !min-h-14 items-center justify-center gap-2 text-lg">
+                  <img src={`${import.meta.env.BASE_URL}photos/sm-garage_moody.webp`} alt="" width={1} height={1} style={{ width: 1, height: 1, opacity: 0, position: "absolute" }} />
+                  <Smartphone size={22} aria-hidden="true" />{t("Открыть камеру", "Открыть камеру")}
+                </a>
+              ) : isAndroid() ? (
+                <a href={sceneViewer(`${import.meta.env.BASE_URL}models/ar/${st.key}.glb`, st.name)} className="btn-solid flex !min-h-14 items-center justify-center gap-2 text-lg">
+                  <Smartphone size={22} aria-hidden="true" />{t("Открыть камеру", "Открыть камеру")}
+                </a>
+              ) : (
+                <button className="btn-solid flex !min-h-14 items-center justify-center gap-2 text-lg" onClick={start} disabled={can === false}>
+                  <Smartphone size={22} aria-hidden="true" />{can === null ? "Загружаем модель…" : can ? "Запустить AR" : "AR недоступен"}
+                </button>
+              )}
+              {inApp() && <p className="rounded-xl bg-flare/15 p-3 text-sm text-frost">{t("Ты во встроенном браузере мессенджера: там камера для AR не работает. Нажми «…» и выбери «Открыть в Safari» или «Открыть в Chrome».", "Вы во встроенном браузере мессенджера: там камера для AR не работает. Нажмите «…» и выберите «Открыть в Safari» или «Открыть в Chrome».")}</p>}
+              {!inApp() && !isIOS() && !isAndroid() && can === false && <p className="text-sm text-frost/80">{t("Открой сайт в Safari на iPhone или в Chrome на Android.", "Откройте сайт в Safari на iPhone или в Chrome на Android.")}</p>}
               <ul className="mono space-y-1 text-frost/70"><li>iPhone: Quick Look</li><li>Android: Scene Viewer / WebXR</li></ul>
             </>
           ) : (
