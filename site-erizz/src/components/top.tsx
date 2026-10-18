@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Menu, ShoppingBag, X } from "lucide-react";
+import { bootDelay } from "@/lib/boot";
 import { gsap, SplitText } from "@/lib/gsap";
 import { useApp, reduceMotion, scrollToId, type Voice } from "@/lib/state";
 import { DEPOSIT, L_BY, rub } from "@/lib/data";
@@ -69,7 +70,7 @@ export function ToneGate() {
     ref.current.querySelector<HTMLElement>("button")?.focus({ preventScroll: true });
     if (reduceMotion()) return;
     const ctx = gsap.context(() => {
-      gsap.from(".gate-in", { y: 34, opacity: 0, stagger: 0.1, duration: 0.8, ease: "power3.out" });
+      gsap.from(".gate-in", { y: 34, opacity: 0, stagger: 0.1, duration: 0.8, ease: "power3.out", delay: bootDelay() });
     }, ref);
     return () => ctx.revert();
   }, [gateOpen]);

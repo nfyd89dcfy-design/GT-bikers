@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Menu, ShoppingBag, X } from "lucide-react";
+import { bootDelay } from "@/lib/boot";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useApp, reduceMotion, scrollToId, type Theme } from "@/lib/state";
 import { GROUPS, LINEUP, L_BY, studio } from "@/lib/data";
@@ -85,8 +86,8 @@ export function Hero2() {
   useEffect(() => {
     if (reduceMotion() || !root.current) return;
     const ctx = gsap.context(() => {
-      gsap.from(".hero-in", { y: 26, opacity: 0, stagger: 0.08, duration: 0.9, ease: "power3.out", delay: 0.1 });
-      gsap.from(".hero-bike", { x: 80, opacity: 0, duration: 1.2, ease: "power3.out", delay: 0.2 });
+      gsap.from(".hero-in", { y: 26, opacity: 0, stagger: 0.08, duration: 0.9, ease: "power3.out", delay: 0.1 + bootDelay() });
+      gsap.from(".hero-bike", { x: 80, opacity: 0, duration: 1.2, ease: "power3.out", delay: 0.2 + bootDelay() });
     }, root);
     return () => ctx.revert();
   }, []);
