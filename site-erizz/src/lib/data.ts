@@ -159,3 +159,5 @@ export const SCENES: Record<LModel["group"], string[]> = {
 };
 /** Студийный кадр модели: профиль вправо, общий масштаб (540 px на метр), линия земли на 93% высоты кадра 16:9. */
 export const studio = (n: number, sm = false) => `${import.meta.env.BASE_URL}products/studio/${sm ? "sm-" : ""}s${String(n).padStart(2, "0")}.webp`;
+/** Реальные кадры моделей в деле из базы знаний (номер позиции → фото). */
+export const LIFE: Record<number, string[]> = { 3: ["life_m03a", "life_m03b"], 8: ["life_m08a", "life_m08b"] };

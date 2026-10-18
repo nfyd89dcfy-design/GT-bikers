@@ -1,4 +1,4 @@
-import { DEPOSIT, SCENES, lSpec, num, photo, rub, studio, type LModel, type Ver } from "@/lib/data";
+import { DEPOSIT, LIFE, SCENES, lSpec, num, photo, rub, studio, type LModel, type Ver } from "@/lib/data";
 import { useApp, scrollToId } from "@/lib/state";
 import { cn } from "@/lib/utils";
 import { MorphTile } from "./morph";
@@ -41,7 +41,7 @@ export function ProductFace({ m }: { m: LModel }) {
 /** Раскрытая карточка: коллаж в сетке 12 колонок. */
 export function ProductCollage({ m }: { m: LModel }) {
   const { t, addCart, setDriveFor, toggleCompare, compare, setCartOpen } = useApp();
-  const sc = SCENES[m.group];
+  const sc = LIFE[m.n] ?? SCENES[m.group];
   const inCmp = compare.includes(m.id);
   const close = () => (document.querySelector(".morph-open button[aria-label=Закрыть]") as HTMLElement | null)?.click();
   const spec = lSpec(m);
