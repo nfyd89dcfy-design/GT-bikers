@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { RotateCcw } from "lucide-react";
 import { gsap } from "@/lib/gsap";
 import { useApp, reduceMotion, scrollToId } from "@/lib/state";
-import { DEPOSIT, DIRS, GT, LINEUP, L_BY, STATUS, glbKey, lSpec, num, rub, studio, verLabel, type DirKey, type Ver } from "@/lib/data";
+import { DEPOSIT, DIRS, GROUP_RU, GT, LINEUP, L_BY, STATUS, glbKey, lSpec, num, rub, studio, type DirKey, type Ver } from "@/lib/data";
 import { ObjectTracker } from "./effects";
 import { Bike3D } from "./bike";
 import { ProductShot, STUDIO } from "./product";
@@ -18,8 +18,7 @@ const CTRL = [{ n: "Stock", p: 0, d: "ровный отклик" }, { n: "Sport"
 const PAINT: { n: string; c?: string }[] = [{ n: "Заводской" }, { n: "Flare", c: "#ff4a2b" }, { n: "Иней", c: "#eef1f4" }, { n: "Графит", c: "#23272d" }, { n: "Небо", c: "#9cc9ff" }, { n: "Бордо", c: "#7a1b2e" }];
 const DECAL = [{ n: "Без наклеек", p: 0, txt: "" }, { n: "GT", p: 7000, txt: "GT" }, { n: "Номер райдера", p: 14000, txt: "GT 01" }];
 /* Конструктор показывает фото героя серии; цвет пластика имитируем фильтром (черное, белое и хром не меняются). */
-const CFG_N: Record<Ver, number> = { base: 2, sport: 10, pro: 14, road: 16 };
-/* оттенок акцента серии на фото после ливреи GT: Spark небо, Send flare, Ridge бордо, Pulse кобальт */
+/* оттенок акцента на фото героя: Mini небо, Trail и Race flare, Trail Pro бордо, Road кобальт */
 const BASE_HUE: Record<Ver, number> = { base: 213, sport: 9, pro: 350, road: 222 };
 const paintFilter = (i: number, v: Ver) => {
   const b = BASE_HUE[v];
@@ -42,13 +41,14 @@ function Price({ value }: { value: number }) {
 
 export function Configurator() {
   const { t, addCart, setDriveFor } = useApp();
-  const [ver, setVer] = useState<Ver>("sport");
+  const [sel, setSel] = useState("gt-trail-19");
   const [bt, setBt] = useState(0);
   const [ct, setCt] = useState(0);
   const [cl, setCl] = useState(0);
   const [dc, setDc] = useState(0);
   const [kt, setKt] = useState(0);
-  const m = GT.find((g) => g.ver === ver)!;
+  const m = GT.find((g) => g.id === sel) ?? GT[1];
+  const ver = m.ver;
   const hero = L_BY[m.id];
   const opts = BATT[bt].p + CTRL[ct].p + (cl ? 12000 : 0) + DECAL[dc].p + KIT[kt].p;
   const kwh = hero?.kwh ? Math.round(hero.kwh * BATT[bt].k * 100) / 100 : null;
@@ -73,7 +73,7 @@ export function Configurator() {
           <div className="relative min-h-[320px] overflow-hidden rounded-3xl border border-frost/20 bg-deep/45 sm:min-h-[520px]">
             <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_55%,rgba(185,194,204,.22),transparent_70%)]" />
             <div className="absolute inset-x-[4%] bottom-[14%] top-[6%]">
-              <img src={studio(CFG_N[m.ver])} alt={`${m.name}, цвет: ${PAINT[cl].n}`} className="h-full w-full object-contain transition-[filter] duration-500" style={{ filter: paintFilter(cl, m.ver) }} />
+              <img src={studio(hero?.n ?? 4)} alt={`${m.name}, цвет: ${PAINT[cl].n}`} className="h-full w-full object-contain transition-[filter] duration-500" style={{ filter: paintFilter(cl, m.ver) }} />
             </div>
             {DECAL[dc].txt && <div className="font-display pointer-events-none absolute left-[44%] top-[44%] -rotate-[8deg] rounded bg-flare px-2 py-0.5 text-[clamp(9px,1.5vw,18px)] font-extrabold text-ink shadow-lg">{DECAL[dc].txt}</div>}
             <div className="absolute bottom-4 left-4 right-4 flex flex-wrap items-end justify-between gap-3">
@@ -85,7 +85,7 @@ export function Configurator() {
           </div>
           <div className="space-y-5 rounded-3xl border border-frost/20 bg-deep/55 p-5 backdrop-blur sm:p-6">
             <Opt label="серия">
-              {GT.map((x) => <button key={x.id} className="chip !text-frost aria-pressed:!text-ink" aria-pressed={ver === x.ver} onClick={() => setVer(x.ver)}>{x.short} · {x.wheels}</button>)}
+              {GT.map((x) => <button key={x.id} className="chip !text-frost aria-pressed:!text-ink" aria-pressed={sel === x.id} onClick={() => setSel(x.id)}>{x.short} · {x.wheels}</button>)}
             </Opt>
             <Opt label="батарея">
               {BATT.map((x, i) => <button key={x.n} className="chip !text-frost aria-pressed:!text-ink" aria-pressed={bt === i} onClick={() => setBt(i)}>{x.n}</button>)}
@@ -129,26 +129,26 @@ type Sc = Partial<Record<string, number>>;
 interface Q { q: [string, string]; a: { l: [string, string]; s: Sc; d?: DirKey }[] }
 const QUIZ: Q[] = [
   { q: ["Что катаем?", "Какая техника вас интересует?"], a: [
-    { l: ["Первый байк для подростка", "Первый байк для подростка"], s: { "gt-spark-14": 4, "gt-spark-17": 3 }, d: "first" },
-    { l: ["Эндуро и лес", "Эндуро и бездорожье"], s: { "gt-send-19": 3, "gt-send-19r": 3, "gt-ridge-21": 2 }, d: "enduro" },
-    { l: ["Город и трасса", "Город и трасса"], s: { "gt-pulse-17": 4, "gt-pulse-duo": 2, "gt-drift-19": 2 }, d: "city" },
+    { l: ["Первый байк для подростка", "Первый байк для подростка"], s: { "gt-mini-12": 2, "gt-trail-14": 4, "gt-trail-17": 3 }, d: "first" },
+    { l: ["Эндуро и лес", "Эндуро и бездорожье"], s: { "gt-trail-19": 3, "gt-trail-21-pro": 3, "gt-race-19": 2 }, d: "enduro" },
+    { l: ["Город и трасса", "Город и трасса"], s: { "gt-city": 4, "gt-utility": 2, "gt-scrambler": 2 }, d: "city" },
     { l: ["Багги, квадрик, снег", "Багги, квадроцикл, снегоход"], s: {}, d: "buggy" },
   ] },
   { q: ["Кто поедет?", "Кто будет ездить?"], a: [
-    { l: ["Подросток, рост до 165", "Подросток, рост до 165 см"], s: { "gt-spark-12": 2, "gt-spark-14": 3, "gt-spark-14s": 2 } },
-    { l: ["Подросток повыше или новичок", "Подросток повыше или новичок"], s: { "gt-spark-17": 3, "gt-spark-17s": 2, "gt-send-19c": 2, "gt-pulse-17c": 2 } },
-    { l: ["Взрослый, есть опыт", "Взрослый с опытом"], s: { "gt-send-19r": 3, "gt-send-19s": 2, "gt-ridge-21": 2, "gt-pulse-17": 2 } },
+    { l: ["Подросток, рост до 165", "Подросток, рост до 165 см"], s: { "gt-mini-12": 2, "gt-trail-14": 3, "gt-trail-14-pro": 2 } },
+    { l: ["Подросток повыше или новичок", "Подросток повыше или новичок"], s: { "gt-trail-17": 3, "gt-trail-17-pro": 2, "gt-trail-19": 2, "gt-city-compact": 2 } },
+    { l: ["Взрослый, есть опыт", "Взрослый с опытом"], s: { "gt-trail-19-pro": 3, "gt-race-19": 2, "gt-trail-21-pro": 2, "gt-city": 2 } },
   ] },
   { q: ["Где будешь кататься?", "Где вы планируете ездить?"], a: [
-    { l: ["Двор, парк, дача", "Двор, парк, дача"], s: { "gt-spark-14": 2, "gt-pulse-17c": 2, "gt-pulse-duo": 2 } },
-    { l: ["Лес, песок, овраги", "Лес, песок, грунт"], s: { "gt-send-19": 2, "gt-send-19r": 2, "gt-spark-17s": 1 } },
-    { l: ["Горы и тяжелый рельеф", "Горы и тяжелый рельеф"], s: { "gt-ridge-21": 3, "gt-ridge-21s": 2, "gt-send-19x": 1 } },
-    { l: ["Асфальт каждый день", "Асфальт каждый день"], s: { "gt-pulse-17": 3, "gt-pulse-duo": 2, "gt-pulse-17r": 1 } },
+    { l: ["Двор, парк, дача", "Двор, парк, дача"], s: { "gt-trail-14": 2, "gt-city-compact": 2, "gt-utility": 2 } },
+    { l: ["Лес, песок, овраги", "Лес, песок, грунт"], s: { "gt-trail-19": 2, "gt-trail-19-pro": 2, "gt-trail-17-pro": 1 } },
+    { l: ["Горы и тяжелый рельеф", "Горы и тяжелый рельеф"], s: { "gt-trail-21-pro": 3, "gt-trail-21": 2, "gt-race-21": 1 } },
+    { l: ["Асфальт каждый день", "Асфальт каждый день"], s: { "gt-city": 3, "gt-utility": 2, "gt-city-pro": 1 } },
   ] },
   { q: ["Что важнее?", "Что для вас важнее?"], a: [
-    { l: ["Простота и цена", "Простота и цена"], s: { "gt-spark-14": 2, "gt-send-19": 2, "gt-pulse-17c": 2 } },
-    { l: ["Запас хода", "Запас хода"], s: { "gt-send-19r": 2, "gt-pulse-duo": 3, "gt-send-19s": 2 } },
-    { l: ["Мощность и оснащение", "Мощность и оснащение"], s: { "gt-send-19x": 2, "gt-send-19f": 3, "gt-pulse-17r": 2 } },
+    { l: ["Простота и цена", "Простота и цена"], s: { "gt-trail-14": 2, "gt-trail-19": 2, "gt-city-compact": 2 } },
+    { l: ["Запас хода", "Запас хода"], s: { "gt-trail-21-pro": 2, "gt-utility": 3, "gt-roadster": 2 } },
+    { l: ["Мощность и оснащение", "Мощность и оснащение"], s: { "gt-race-19": 2, "gt-race-21": 3, "gt-city-pro": 2 } },
   ] },
 ];
 
@@ -168,7 +168,7 @@ export function Quiz() {
     if (!done) return null;
     const d = DIRS.find((x) => x.key === dk) ?? DIRS[1];
     if (d.key === "buggy" || d.key === "quad" || d.key === "snow") return { d, id: null as string | null };
-    const pool = LINEUP.filter((m) => (d.key === "first" ? m.group === "spark" : d.key === "city" ? m.group === "road" : m.group === "send" || m.group === "ridge"));
+    const pool = LINEUP.filter((m) => (d.key === "first" ? m.group === "mini" || (m.group === "trail" && m.ser === "base") : d.key === "city" ? m.group === "road" : m.group === "trail" || m.group === "trailpro" || m.group === "race"));
     const best = pool.map((m) => [m.id, score[m.id] || 0] as const).sort((a, b) => b[1] - a[1])[0];
     return { d, id: best ? best[0] : null };
   }, [done, score, dk]);
@@ -196,7 +196,7 @@ export function Quiz() {
             </>
           ) : res && (
             <div>
-              <div className="mono text-sky">{t("твой результат", "ваш результат")}: {res.d.ru}{m ? ` / серия ${verLabel(m.ser)}` : ""}</div>
+              <div className="mono text-sky">{t("твой результат", "ваш результат")}: {res.d.ru}{m ? ` / серия ${GROUP_RU[m.group]}` : ""}</div>
               <div className="mt-4 grid items-center gap-4 sm:grid-cols-2">
                 {m ? <div className="h-[260px] rounded-2xl p-3" style={{ background: STUDIO[m.ser] }}><ProductShot m={m} className="h-full w-full" /></div> : <div className="grid min-h-[200px] place-items-center rounded-2xl bg-kelp p-6 text-center"><span className="font-display chrome-text text-4xl font-extrabold uppercase">{res.d.ru}</span></div>}
                 <div>
@@ -209,7 +209,7 @@ export function Quiz() {
                 {m && <button className="btn-solid" onClick={() => addCart({ id: m.id, name: m.name, sub: "бронь", price: DEPOSIT, variant: glbKey(m), paint: m.paint })}>Забронировать</button>}
                 {m && <ARButton k={glbKey(m) as ARKey} name={m.name} />}
                 {m && <button className="btn-ghost" onClick={() => { toggleCompare(m.id); scrollToId("compare"); }}>Сравнить</button>}
-                <button className="btn-ghost" onClick={() => { setDriveFor(m ? m.id : "gt-pulse-17"); scrollToId("drive"); }}>{m ? "Тест-драйв" : "Оставить заявку"}</button>
+                <button className="btn-ghost" onClick={() => { setDriveFor(m ? m.id : "gt-city"); scrollToId("drive"); }}>{m ? "Тест-драйв" : "Оставить заявку"}</button>
                 <button className="mono inline-flex min-h-11 cursor-pointer items-center gap-2 px-2 text-frost/80 hover:text-sky" onClick={() => { setStep(0); setScore({}); setDk(null); }}><RotateCcw size={16} />еще раз</button>
               </div>
             </div>
@@ -223,11 +223,11 @@ export function Quiz() {
 /* ---------------------------------------------------------------- Compare */
 type Row = { k: string; get: (id: string) => number | string | null; best?: "max" | "min"; show?: (id: string) => string };
 const ROWS: Row[] = [
-  { k: "Серия", get: (i) => verLabel(L_BY[i].ser) },
+  { k: "Серия", get: (i) => GROUP_RU[L_BY[i].group] },
   { k: "Колеса, дюймы", get: (i) => L_BY[i].wheels },
   { k: "Мощность", get: (i) => L_BY[i].peak, show: (i) => (L_BY[i].peak ? `${num(L_BY[i].peak!)} кВт` : "уточняется"), best: "max" },
   { k: "Батарея", get: (i) => L_BY[i].kwh, show: (i) => (L_BY[i].kwh ? `${num(L_BY[i].kwh!)} кВт·ч` : "уточняется"), best: "max" },
-  { k: "Скорость", get: (i) => L_BY[i].kmh, show: (i) => `${L_BY[i].kmh} км/ч`, best: "max" },
+  { k: "Скорость", get: (i) => L_BY[i].kmh, show: (i) => (L_BY[i].kmh ? `${L_BY[i].kmh} км/ч` : "уточняется"), best: "max" },
   { k: "Запас хода", get: (i) => L_BY[i].range },
   { k: "Седло", get: (i) => L_BY[i].seat, show: (i) => (L_BY[i].seat ? `${L_BY[i].seat} мм` : "уточняется") },
   { k: "Масса", get: (i) => L_BY[i].kg },

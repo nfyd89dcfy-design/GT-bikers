@@ -115,7 +115,7 @@ function CountV({ v, dec = 0 }: { v: number; dec?: number }) {
 
 export function Hero() {
   const { t } = useApp();
-  const g = L_BY["gt-send-19r"];
+  const g = L_BY["gt-race-19"];
   const root = useRef<HTMLElement>(null);
   const h1 = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
@@ -149,17 +149,17 @@ export function Hero() {
             {t("Электробайки с характером", "Электробайки с характером")}
           </h1>
           <p className="mt-3 max-w-md text-base text-ink/85">
-            {t("Серии Spark, Send, Ridge и Pulse: от первого питбайка до дорожного флагмана. ATV, UTV и снег под заказ. Розница и опт, шоурум в Ростове, доставка по России.", "Серии Spark, Send, Ridge и Pulse: от первого питбайка до дорожного флагмана. ATV, UTV и снежная техника под заказ. Розница и опт, шоурум в Ростове-на-Дону, доставка по России.")}
+            {t("Серии Mini, Trail, Trail Pro, Race и Road: от первого питбайка до флагмана 65 кВт. ATV, UTV и снег под заказ. Розница и опт, шоурум в Ростове, доставка по России.", "Серии Mini, Trail, Trail Pro, Race и Road: от первого питбайка до флагмана 65 кВт. ATV, UTV и снежная техника под заказ. Розница и опт, шоурум в Ростове-на-Дону, доставка по России.")}
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <InteractiveHoverButton text={t("Собрать свой", "Собрать байк")} className="h-14 w-52 bg-ink text-frost" onClick={() => scrollToId("config")} />
             <InteractiveHoverButton text="Линейка GT" className="h-14 w-48" onClick={() => scrollToId("lineup")} />
-            <button className="btn-ghost !min-h-14 inline-flex items-center gap-2" onClick={() => openAR("sport", "GT Send 19 R")}>AR у себя</button>
+            <button className="btn-ghost !min-h-14 inline-flex items-center gap-2" onClick={() => openAR("sport", "GT Race 19")}>AR у себя</button>
           </div>
         </div>
         <div className="hero-bike pointer-events-none relative z-0 mt-2 lg:absolute lg:inset-x-0 lg:bottom-[11%] lg:mt-0">
           <div className="relative ml-auto w-full lg:w-[74%] lg:max-w-[1300px]">
-            <Bike3D variant="sport" yaw={-0.55} pitch={0.1} sway={0.14} label="GT Send 19 R, 3D-модель" className="h-[300px] sm:h-[420px] lg:h-[min(64svh,640px)]" />
+            <Bike3D variant="sport" yaw={-0.55} pitch={0.1} sway={0.14} label="GT Race 19, 3D-модель" className="h-[300px] sm:h-[420px] lg:h-[min(64svh,640px)]" />
             <ObjectTracker wheels={g.wheels} facing="right" className="absolute inset-0 h-full w-full" />
           </div>
         </div>

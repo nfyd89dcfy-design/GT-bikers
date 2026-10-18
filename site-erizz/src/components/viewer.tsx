@@ -9,11 +9,11 @@ import { MetalFigure } from "./fx";
 
 const PAINT: [string, string | undefined][] = [["Заводской", undefined], ["Flare", "#ff4a2b"], ["Иней", "#eef1f4"], ["Графит", "#23272d"], ["Небо", "#9cc9ff"], ["Бордо", "#7a1b2e"]];
 const MODELS: { k: ARKey; n: string; w: string; size: string }[] = [
-  { k: "base", n: "GT Spark", w: "14/12", size: "1,62 м" },
-  { k: "sport", n: "GT Send 19 R", w: "19/18", size: "1,98 м" },
-  { k: "pro", n: "GT Ridge 21", w: "21/18", size: "2,14 м" },
-  { k: "road", n: "GT Pulse 17", w: "17/17", size: "2,02 м" },
-  { k: "roadpro", n: "GT Pulse 17 R", w: "17/17", size: "2,06 м" },
+  { k: "base", n: "GT Trail 14", w: "14/12", size: "1,62 м" },
+  { k: "sport", n: "GT Race 19", w: "19/18", size: "1,98 м" },
+  { k: "pro", n: "GT Trail 21 Pro", w: "21/18", size: "2,14 м" },
+  { k: "road", n: "GT City", w: "17/17", size: "2,02 м" },
+  { k: "roadpro", n: "GT City Pro", w: "17/17", size: "2,06 м" },
 ];
 
 export function Viewer3D() {

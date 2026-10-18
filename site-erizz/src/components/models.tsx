@@ -106,7 +106,7 @@ function PinnedModel({ g, prev, index }: { g: GTModel; prev: string; index: numb
             <div><dt className="mono opacity-70">мощность в серии</dt><dd className="font-display text-2xl font-extrabold leading-none sm:text-4xl xl:text-5xl"><span ref={kwRef}>{fmtRange(g.kw)}</span> <span className="text-base font-semibold">кВт</span></dd></div>
             <div><dt className="mono opacity-70">батарея в серии</dt><dd className="font-display whitespace-nowrap text-2xl font-extrabold leading-none sm:text-4xl xl:text-5xl"><span ref={kwhRef}>{fmtRange(g.kwh)}</span> <span className="text-base font-semibold">кВт·ч</span></dd></div>
           </dl>
-          {hero && <p className="mono mt-3 opacity-80">{hero.name}: {hero.peak ? `${num(hero.peak)} кВт` : ""} · {hero.kwh ? `${num(hero.kwh)} кВт·ч` : ""} · {hero.kmh} км/ч</p>}
+          {hero && <p className="mono mt-3 opacity-80">{hero.name}: {hero.peak ? `${num(hero.peak)} кВт` : ""} · {hero.kwh ? `${num(hero.kwh)} кВт·ч` : ""} · {hero.kmh ? `${hero.kmh} км/ч` : ""}</p>}
           <p className="mono mt-1 opacity-60">данные производителя, уточняются на тестах</p>
           <div className="mt-3 flex flex-wrap items-baseline gap-2"><span className="font-display text-xl font-extrabold">бронь {rub(DEPOSIT)}</span><span className="mono opacity-70">цена после теста образца</span></div>
           <div className="mt-3 flex flex-wrap gap-2">
@@ -124,7 +124,7 @@ export function PinnedSizes() {
   const prevs = ["#0e1013", GT[0].bg, GT[1].bg, GT[2].bg];
   useEffect(() => { const t = setTimeout(() => ScrollTrigger.refresh(), 400); return () => clearTimeout(t); }, []);
   return (
-    <div id="models" aria-label="Серии GT: Spark, Send, Ridge, Pulse">
+    <div id="models" aria-label="Серии GT: Mini, Trail, Trail Pro, Race, Road">
       {GT.map((g, i) => <PinnedModel key={g.id} g={g} prev={prevs[i]} index={i} />)}
     </div>
   );

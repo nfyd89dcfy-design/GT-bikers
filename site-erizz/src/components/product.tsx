@@ -20,7 +20,7 @@ export function ProductShot({ m, sm = true, eager, className, imgClass, zoom = 1
   );
 }
 
-const specLine = (m: LModel) => `${m.peak ? `${num(m.peak)} кВт` : "кВт уточн."} · ${m.kwh ? `${num(m.kwh)} кВт·ч` : "АКБ уточн."} · ${m.kmh} км/ч`;
+const specLine = (m: LModel) => `${m.peak ? `${num(m.peak)} кВт` : "кВт уточн."} · ${m.kwh ? `${num(m.kwh)} кВт·ч` : "АКБ уточн."} · ${m.kmh ? `${m.kmh} км/ч` : "км/ч уточн."}`;
 
 /** Лицевая сторона карточки: только фото, название и одна строка цифр. */
 export function ProductFace({ m }: { m: LModel }) {
@@ -28,7 +28,7 @@ export function ProductFace({ m }: { m: LModel }) {
     <div className="t-tile spot relative flex h-full flex-col justify-between overflow-hidden rounded-xl p-4 sm:p-5" style={{ color: "var(--t-fg)" }}>
       <div className="flex items-start justify-between gap-2">
         <span className="mono t-mute">{String(m.n).padStart(2, "0")}</span>
-        {m.status === "order" && <span className="mono rounded-full bg-flare px-2.5 py-1 text-ink">первая партия</span>}
+        {(m.status === "order" || m.status === "sale") && <span className="mono rounded-full bg-flare px-2.5 py-1 text-ink">{m.status === "sale" ? "в продаже" : "первая партия"}</span>}
       </div>
       <ProductShot m={m} zoom={1.32} className="-mx-3 transition-transform duration-700 ease-out group-hover:-translate-y-1.5 group-hover:scale-[1.03]" />
       <div>

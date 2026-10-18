@@ -6,7 +6,7 @@ import { useApp } from "@/lib/state";
 /* AR: model-viewer (WebXR на Android, Scene Viewer, Quick Look на iPhone).
    GLB для просмотра: models/ar/<key>.glb, USDZ для iPhone: models/<key>.usdz. Реальный масштаб, метры. */
 export type ARKey = "base" | "sport" | "pro" | "road" | "roadpro";
-export const AR_LABEL: Record<ARKey, string> = { base: "GT Spark", sport: "GT Send 19", pro: "GT Ridge 21", road: "GT Pulse 17", roadpro: "GT Pulse 17 R" };
+export const AR_LABEL: Record<ARKey, string> = { base: "GT Trail 14", sport: "GT Race 19", pro: "GT Trail 21 Pro", road: "GT City", roadpro: "GT City Pro" };
 export function openAR(key: string, name?: string) {
   window.dispatchEvent(new CustomEvent("erizz-ar", { detail: { key, name } }));
 }

@@ -51,7 +51,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [cartOpen, setCartOpen] = useState(false);
   const [toast, setToast] = useState("");
   const [compare, setCompare] = useState<string[]>(COMPARE_IDS);
-  const [driveFor, setDriveFor] = useState("gt-pulse-17");
+  const [driveFor, setDriveFor] = useState("gt-city");
 
   useEffect(() => { safe.set("erizz-cart4", JSON.stringify(cart)); }, [cart]);
   const setVoice = (v: Voice) => { setVoiceS(v); safe.set("erizz-voice", v); };

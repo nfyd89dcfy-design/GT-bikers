@@ -7,9 +7,9 @@ import { Eyebrow, H2, Reveal } from "./ui-bits";
 
 /* Атмосфера: плитки раскрываются в коллаж (как в Touski): главное фото, 2-3 дополнительных и короткий текст. */
 const SCENES: { k: string; t: string; en: string; main: string; more: string[]; ty: string; vy: string; to: string; span: string }[] = [
-  { k: "night", t: "Ночь", en: "after dark", main: "night_motion", more: ["night_blur", "night_orange", "night_mountain"], ty: "Город пустеет, свет фар и тишина мотора. Pulse 17 и Send 19 любят ночь.", vy: "Город пустеет, остаются свет фар и тишина мотора. Pulse 17 и Send 19 хорошо смотрятся ночью.", to: "catalog", span: "md:col-span-7 md:row-span-2" },
-  { k: "dust", t: "Пыль", en: "send it", main: "dust_rider", more: ["bw_dust", "orange_dust", "dust_turn"], ty: "Песок, вираж, облако за спиной. Send и Ridge для тех, кто едет туда, где нет асфальта.", vy: "Песок, вираж и облако пыли. Серии Send и Ridge для поездок туда, где нет асфальта.", to: "catalog", span: "md:col-span-5" },
-  { k: "first", t: "Первый байк", en: "first ride", main: "kid_rider", more: ["kids_pair", "backlit_dust"], ty: "Spark: низкое седло, понятная мощность, тест-драйв вместе с родителями.", vy: "Серия Spark: низкое седло, плавная мощность и тест-драйв вместе с родителями.", to: "catalog", span: "md:col-span-5" },
+  { k: "night", t: "Ночь", en: "after dark", main: "night_motion", more: ["night_blur", "night_orange", "night_mountain"], ty: "Город пустеет, свет фар и тишина мотора. GT City и Race 19 любят ночь.", vy: "Город пустеет, остаются свет фар и тишина мотора. GT City и Race 19 хорошо смотрятся ночью.", to: "catalog", span: "md:col-span-7 md:row-span-2" },
+  { k: "dust", t: "Пыль", en: "send it", main: "dust_rider", more: ["bw_dust", "orange_dust", "dust_turn"], ty: "Песок, вираж, облако за спиной. Trail и Race для тех, кто едет туда, где нет асфальта.", vy: "Песок, вираж и облако пыли. Серии Trail и Race для поездок туда, где нет асфальта.", to: "catalog", span: "md:col-span-5" },
+  { k: "first", t: "Первый байк", en: "first ride", main: "kid_rider", more: ["kids_pair", "backlit_dust"], ty: "Mini и Trail 14: низкое седло, понятная мощность, тест-драйв вместе с родителями.", vy: "Mini и Trail 14: низкое седло, плавная мощность и тест-драйв вместе с родителями.", to: "catalog", span: "md:col-span-5" },
 ];
 
 export function Atmos() {

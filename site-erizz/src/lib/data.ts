@@ -26,81 +26,89 @@ export const rub = (n: number) => new Intl.NumberFormat("ru-RU").format(Math.rou
 export const DEPOSIT = 10000;
 
 /* ---------------- Серии GT ----------------
-   Ver: ключ 3D-модели и цветовой сцены.
-   base = Spark (питбайки и первый байк), sport = Send (trail 19), pro = Ridge (enduro 21), road = Pulse / Drift / Grand (дорога). */
+   Ver: ключ 3D-модели и цветовой сцены конфигуратора.
+   base = питбайк 14-17, sport = байк 19, pro = эндуро 21, road = дорога. Серия модели задается полем group. */
 export type Ver = "base" | "sport" | "pro" | "road";
 export interface GTModel {
   id: string; ver: Ver; name: string; short: string; series: string; wheels: string; front: number; rear: number; kw: [number, number]; kwh: [number, number]; price: number;
   bg: string; fg: "light" | "dark"; word: string; tag: [string, string]; look: [string, string]; accent: string; count: number; models: string;
 }
-/** Четыре героя: по одному на серию. Диапазоны kw / kwh показывают всю серию. */
+/** Герои серий для конфигуратора: по одному на серию. ver задает 3D-модель и сцену. Диапазоны kw / kwh показывают всю серию. */
 export const GT: GTModel[] = [
-  { id: "gt-spark-14", ver: "base", name: "GT Spark 14", short: "Spark", series: "Spark", wheels: "14/12", front: 14, rear: 12, kw: [1, 8], kwh: [0.4, 2.2], price: DEPOSIT, bg: "#14161a", fg: "light", word: "SPARK", accent: "#ff4a2b", count: 5, models: "Spark 12, 14, 14 S, 17, 17 S",
-    tag: ["Первый заряд: питбайки 12-17 дюймов, с которых начинают и не хотят слезать.", "Первый серьезный байк: питбайки 12-17 дюймов для подростков и тех, кто начинает."],
-    look: ["Flare-пластик, черная рама, низкое седло от 700 мм.", "Пластик цвета flare, черная рама, низкое седло от 700 мм."] },
-  { id: "gt-send-19r", ver: "sport", name: "GT Send 19 R", short: "Send", series: "Send", wheels: "19/18", front: 19, rear: 18, kw: [8, 35], kwh: [2.2, 4.3], price: DEPOSIT, bg: "#ff4a2b", fg: "dark", word: "SEND", accent: "#e4e8ec", count: 7, models: "Send 19 C, CR, 19, S, R, X, Factory",
-    tag: ["Взрослый trail: лес, песок, длинные выезды. Send it.", "Взрослый trail для леса, песка и длинных выездов."],
-    look: ["Батарея 4,32 кВт·ч, ход подвески 200/208 мм, гидравлика 220/203 мм.", "Батарея 4,32 кВт·ч, ход подвески 200/208 мм, гидравлические тормоза 220/203 мм."] },
-  { id: "gt-ridge-21", ver: "pro", name: "GT Ridge 21", short: "Ridge", series: "Ridge", wheels: "21/18", front: 21, rear: 18, kw: [10, 12], kwh: [2.5, 3.6], price: DEPOSIT, bg: "#5e1224", fg: "light", word: "RIDGE", accent: "#9cc9ff", count: 2, models: "Ridge 21, 21 S",
-    tag: ["Полноразмерный эндуро 21/18: камни, корни, подъемы.", "Полноразмерный эндуро 21/18 для сложного рельефа."],
-    look: ["Колеса 21/18, масса от 71 кг, скорость до 100 км/ч.", "Колеса 21/18, масса от 71 кг, скорость до 100 км/ч."] },
-  { id: "gt-pulse-17", ver: "road", name: "GT Pulse 17", short: "Pulse", series: "Road", wheels: "17/17", front: 17, rear: 17, kw: [5, 20], kwh: [2.9, 8.4], price: DEPOSIT, bg: "#1c2026", fg: "light", word: "PULSE", accent: "#9cc9ff", count: 6, models: "Pulse 17, 17 C, Duo, R, Drift 19, Grand",
-    tag: ["Город и трасса: тихо, быстро, каждый день. Первая партия уже в пути.", "Город и трасса: тихо, быстро, каждый день. Первая партия уже заказана."],
-    look: ["7,5 кВт, 105 км/ч, до 120 км. Дорожная серия с ABS в старших версиях.", "7,5 кВт, 105 км/ч, до 120 км. В старших версиях ABS."] },
+  { id: "gt-mini-12", ver: "base", name: "GT Mini 12", short: "Mini", series: "Mini", wheels: "12/10", front: 12, rear: 10, kw: [1, 1], kwh: [0.37, 0.37], price: DEPOSIT, bg: "#14161a", fg: "light", word: "MINI", accent: "#ff4a2b", count: 1, models: "Mini 12",
+    tag: ["Первый заряд: 12 дюймов, низкое седло и понятная мощность.", "Первый байк ребенка: 12 дюймов, низкое седло, плавная мощность."],
+    look: ["1 кВт, 33 км/ч, седло 700 мм.", "1 кВт, 33 км/ч, седло 700 мм."] },
+  { id: "gt-trail-19", ver: "sport", name: "GT Trail 19", short: "Trail", series: "Trail", wheels: "19/16", front: 19, rear: 16, kw: [3, 10], kwh: [0.96, 2.52], price: DEPOSIT, bg: "#ff4a2b", fg: "dark", word: "TRAIL", accent: "#e4e8ec", count: 4, models: "Trail 14, 17, 19, 21",
+    tag: ["Основа линейки: от питбайка 14 до trail 21. Trail 14 и 17 уже в продаже.", "Основа линейки: от питбайка 14 до trail 21. Trail 14 и 17 уже в продаже."],
+    look: ["Четыре размера колес, батарея до 2,52 кВт·ч.", "Четыре размера колес, батарея до 2,52 кВт·ч."] },
+  { id: "gt-trail-21-pro", ver: "pro", name: "GT Trail 21 Pro", short: "Trail Pro", series: "Trail Pro", wheels: "21/18", front: 21, rear: 18, kw: [4, 15], kwh: [1.8, 3.6], price: DEPOSIT, bg: "#5e1224", fg: "light", word: "PRO", accent: "#9cc9ff", count: 4, models: "Trail 14 Pro, 17 Pro, 19 Pro, 21 Pro",
+    tag: ["Те же размеры, что у Trail, но больше батарея, мощность и подвеска.", "Усиленные версии Trail: больше батарея, мощность и подвеска."],
+    look: ["Колеса 21/18, батарея 3,6 кВт·ч, скорость до 100 км/ч.", "Колеса 21/18, батарея 3,6 кВт·ч, скорость до 100 км/ч."] },
+  { id: "gt-race-19", ver: "sport", name: "GT Race 19", short: "Race", series: "Race", wheels: "19/18", front: 19, rear: 18, kw: [10, 65], kwh: [2.52, 6.72], price: DEPOSIT, bg: "#ff4a2b", fg: "dark", word: "RACE", accent: "#e4e8ec", count: 5, models: "Race 17, 19, SM, Track, 21",
+    tag: ["Спорт и флагман: кованая рама, супермото, гусеница на зиму. Send it.", "Спортивная серия: супермото, зимняя гусеница и флагман 65 кВт."],
+    look: ["От 10 до 65 кВт пик, флагман Race 21 до 150 км/ч.", "От 10 до 65 кВт пик, флагман Race 21 до 150 км/ч."] },
+  { id: "gt-city", ver: "road", name: "GT City", short: "Road", series: "Road", wheels: "17/17", front: 17, rear: 17, kw: [5, 20], kwh: [2.88, 8.35], price: DEPOSIT, bg: "#1c2026", fg: "light", word: "ROAD", accent: "#9cc9ff", count: 6, models: "City Compact, City, City Pro, Scrambler, Utility, Roadster",
+    tag: ["Город и трасса: тихо, быстро, каждый день. Первая партия GT City уже заказана.", "Город и трасса: тихо, быстро, каждый день. Первая партия GT City уже заказана."],
+    look: ["7,5 кВт, 105 км/ч, до 120 км. В старших версиях ABS и трекшн-контроль.", "7,5 кВт, 105 км/ч, до 120 км. В старших версиях ABS и трекшн-контроль."] },
 ];
 export const GT_BY_HERO: Record<string, GTModel> = Object.fromEntries(GT.map((g) => [g.id, g]));
 
-/* ---------------- Полная линейка: 20 моделей ---------------- */
-export type Status = "order" | "cand" | "reserve";
+/* ---------------- Полная линейка: 20 моделей (утверждена 18.10) ---------------- */
+export type Status = "sale" | "order" | "cand" | "request";
+export type Group = "mini" | "trail" | "trailpro" | "race" | "road";
 export interface LModel {
-  id: string; n: number; name: string; ser: Ver; group: "spark" | "send" | "ridge" | "road";
-  wheels: string; peak: number | null; peakNote: string; kwh: number | null; kwhNote?: string; kmh: number; range: string; seat: number | null; kg: string;
-  chassis: string; role: string; status: Status; paint: string; trim: string;
+  id: string; n: number; name: string; ser: Ver; group: Group;
+  wheels: string; peak: number | null; peakNote: string; kwh: number | null; kwhNote?: string; kmh: number | null; range: string; seat: number | null; kg: string;
+  chassis: string; role: string; status: Status; paint: string; trim: string; photo?: false;
 }
 const L = (x: LModel) => x;
+const U = "уточняется";
 export const LINEUP: LModel[] = [
-  L({ id: "gt-spark-12", n: 1, name: "GT Spark 12", ser: "base", group: "spark", wheels: "12/10", peak: 1, peakNote: "мощность", kwh: 0.37, kmh: 33, range: "20 км", seat: 700, kg: "42,5 кг", chassis: "гидравлические дисковые тормоза", role: "Вход в серию", status: "cand", paint: "#9cc9ff", trim: "Base" }),
-  L({ id: "gt-spark-14", n: 2, name: "GT Spark 14", ser: "base", group: "spark", wheels: "14/12", peak: 3, peakNote: "1,5 ном. / 3 пик", kwh: 1.4, kmh: 60, range: "50 км при 45 км/ч", seat: null, kg: "52 кг", chassis: "дисковые тормоза, гидроподвеска", role: "Базовый питбайк", status: "cand", paint: "#ff4a2b", trim: "Base" }),
-  L({ id: "gt-spark-14s", n: 3, name: "GT Spark 14 S", ser: "base", group: "spark", wheels: "14/12", peak: 5.5, peakNote: "макс.", kwh: 2.16, kmh: 65, range: "85 км при 60 км/ч", seat: 700, kg: "65 кг", chassis: "центральный мотор, ход вилки 120 мм", role: "Старший питбайк", status: "cand", paint: "#eef1f4", trim: "S" }),
-  L({ id: "gt-spark-17", n: 4, name: "GT Spark 17", ser: "base", group: "spark", wheels: "17/14", peak: 5, peakNote: "мощность", kwh: 1.8, kmh: 75, range: "75 км", seat: 810, kg: "уточняется", chassis: "72 В, мотор с редуктором", role: "Средний питбайк", status: "cand", paint: "#ff4a2b", trim: "Base" }),
-  L({ id: "gt-spark-17s", n: 5, name: "GT Spark 17 S", ser: "base", group: "spark", wheels: "17/14", peak: 8, peakNote: "3 ном. / 8+ макс.", kwh: 2.16, kmh: 80, range: "уточняется", seat: 800, kg: "75,5 кг", chassis: "база 1240 мм", role: "Старшая версия 17", status: "cand", paint: "#2a2e35", trim: "S" }),
-  L({ id: "gt-send-19c", n: 6, name: "GT Send 19 C", ser: "sport", group: "send", wheels: "19/16", peak: 8, peakNote: "3 ном. / 8+ макс.", kwh: 2.16, kmh: 88, range: "уточняется", seat: 845, kg: "77 кг", chassis: "компактная посадка", role: "Переход во взрослый класс", status: "cand", paint: "#eef1f4", trim: "C" }),
-  L({ id: "gt-send-19cr", n: 7, name: "GT Send 19 CR", ser: "sport", group: "send", wheels: "19/16", peak: 30, peakNote: "макс.", kwh: 3.96, kmh: 100, range: "100 км при 40 км/ч", seat: 860, kg: "99 кг", chassis: "хромомолибденовая рама, алюминиевый маятник", role: "Компактный спорт", status: "cand", paint: "#ff4a2b", trim: "CR" }),
-  L({ id: "gt-send-19", n: 8, name: "GT Send 19", ser: "sport", group: "send", wheels: "19/18", peak: 8, peakNote: "макс.", kwh: 2.35, kmh: 90, range: "от 80 км при 60 км/ч", seat: 810, kg: "71 кг", chassis: "алюминиевая рама, вилка 226 мм", role: "Взрослая база", status: "cand", paint: "#14161a", trim: "Base" }),
-  L({ id: "gt-send-19s", n: 9, name: "GT Send 19 S", ser: "sport", group: "send", wheels: "19/19", peak: 17, peakNote: "5 ном. / 17 пик", kwh: 3.24, kmh: 105, range: "140 км при 30-35 км/ч", seat: 850, kg: "73 кг", chassis: "гидравлика 220 мм", role: "Спортивный trail", status: "cand", paint: "#9cc9ff", trim: "S" }),
-  L({ id: "gt-send-19r", n: 10, name: "GT Send 19 R", ser: "sport", group: "send", wheels: "19/18", peak: 17, peakNote: "6 ном. / 17 пик", kwh: 4.32, kmh: 110, range: "120 км при 40 км/ч", seat: 890, kg: "86 кг с АКБ", chassis: "ход 200/208 мм, гидравлика 220/203 мм", role: "Основной Pro", status: "cand", paint: "#14161a", trim: "R" }),
-  L({ id: "gt-send-19x", n: 11, name: "GT Send 19 X", ser: "sport", group: "send", wheels: "19/18", peak: 25, peakNote: "мощность", kwh: 4.32, kmh: 100, range: "100 км", seat: null, kg: "85 кг", chassis: "4-поршневые суппорты", role: "Альтернатива Pro", status: "cand", paint: "#5e1224", trim: "X" }),
-  L({ id: "gt-send-19f", n: 12, name: "GT Send 19 Factory", ser: "sport", group: "send", wheels: "19/18", peak: 35, peakNote: "пик", kwh: null, kwhNote: "109 В, емкость уточняется", kmh: 100, range: "около 120 км при 45 км/ч", seat: 880, kg: "95 кг", chassis: "кованая алюминиевая рама, вилка 220 мм", role: "Флагман", status: "cand", paint: "#2a5bd7", trim: "Factory" }),
-  L({ id: "gt-ridge-21", n: 13, name: "GT Ridge 21", ser: "pro", group: "ridge", wheels: "21/18", peak: 10, peakNote: "пик", kwh: 2.52, kmh: 90, range: "80 км", seat: null, kg: "71 кг", chassis: "дисковые тормоза", role: "Легкий эндуро", status: "cand", paint: "#eef1f4", trim: "Base" }),
-  L({ id: "gt-ridge-21s", n: 14, name: "GT Ridge 21 S", ser: "pro", group: "ridge", wheels: "21/18", peak: 12, peakNote: "мощность", kwh: 3.6, kmh: 100, range: "100 км", seat: 950, kg: "98,5 кг", chassis: "гидравлика, мотор QS138", role: "Большая батарея", status: "cand", paint: "#ff4a2b", trim: "S" }),
-  L({ id: "gt-pulse-17c", n: 15, name: "GT Pulse 17 C", ser: "road", group: "road", wheels: "17", peak: 5, peakNote: "центральный мотор", kwh: 2.88, kmh: 100, range: "около 120 км при 45 км/ч", seat: null, kg: "91 кг", chassis: "гидравлика, газовый амортизатор", role: "Компактный город", status: "cand", paint: "#9cc9ff", trim: "C" }),
-  L({ id: "gt-pulse-17", n: 16, name: "GT Pulse 17", ser: "road", group: "road", wheels: "17/17", peak: 7.5, peakNote: "номинал", kwh: 3.24, kmh: 105, range: "до 120 км", seat: 840, kg: "уточняется", chassis: "центральный мотор, дисковые тормоза", role: "Опора серии: первая партия", status: "order", paint: "#eef1f4", trim: "Base" }),
-  L({ id: "gt-pulse-duo", n: 17, name: "GT Pulse 17 Duo", ser: "road", group: "road", wheels: "17/17", peak: 8.7, peakNote: "макс.", kwh: 5.04, kwhNote: "2 сменные батареи", kmh: 100, range: "150 км при 60 км/ч", seat: 780, kg: "146 кг", chassis: "ABS, низкое седло", role: "Практичный город", status: "cand", paint: "#2a2e35", trim: "Duo" }),
-  L({ id: "gt-drift-19", n: 18, name: "GT Drift 19", ser: "road", group: "road", wheels: "19/17", peak: 10, peakNote: "мощность", kwh: 4.32, kmh: 95, range: "100 км", seat: 800, kg: "104 кг", chassis: "скрэмблер, NCM-батарея", role: "Прогулочный скрэмблер", status: "reserve", paint: "#ff4a2b", trim: "Base" }),
-  L({ id: "gt-pulse-17r", n: 19, name: "GT Pulse 17 R", ser: "road", group: "road", wheels: "17/17", peak: 6, peakNote: "номинал", kwh: 4.14, kwhNote: "2 батареи", kmh: 100, range: "100 км", seat: null, kg: "110 кг", chassis: "ABS + трекшн-контроль", role: "Старшая дорожная", status: "reserve", paint: "#14161a", trim: "R" }),
-  L({ id: "gt-grand", n: 20, name: "GT Grand", ser: "road", group: "road", wheels: "уточняются", peak: 20, peakNote: "10,5 ном. / 20 пик", kwh: 8.35, kmh: 130, range: "до 300 км", seat: null, kg: "193 кг", chassis: "двухканальная ABS", role: "Дорожный флагман", status: "reserve", paint: "#5e1224", trim: "Grand" }),
+  L({ id: "gt-mini-12", n: 1, name: "GT Mini 12", ser: "base", group: "mini", wheels: "12/10", peak: 1, peakNote: "мощность", kwh: 0.37, kmh: 33, range: "20 км", seat: 700, kg: "42,5 кг", chassis: "гидравлические дисковые тормоза", role: "Первый байк", status: "cand", paint: "#eef1f4", trim: "Mini" }),
+  L({ id: "gt-trail-14", n: 2, name: "GT Trail 14", ser: "base", group: "trail", wheels: "14/12", peak: 3, peakNote: "2-3 кВт", kwh: 0.96, kwhNote: "48 В", kmh: null, range: U, seat: null, kg: U, chassis: "действующая модель GT", role: "Базовый питбайк", status: "sale", paint: "#ff4a2b", trim: "Base", photo: false }),
+  L({ id: "gt-trail-17", n: 3, name: "GT Trail 17", ser: "base", group: "trail", wheels: "17/14", peak: 5, peakNote: "3-5 кВт", kwh: 1.8, kwhNote: "60 В", kmh: null, range: U, seat: null, kg: U, chassis: "действующая модель GT", role: "Средний питбайк", status: "sale", paint: "#ff4a2b", trim: "Base", photo: false }),
+  L({ id: "gt-trail-19", n: 4, name: "GT Trail 19", ser: "sport", group: "trail", wheels: "19/16", peak: 8, peakNote: "3 ном. / 8+ макс.", kwh: 2.16, kmh: 88, range: U, seat: 845, kg: "77 кг", chassis: "компактная посадка", role: "Переход во взрослый класс", status: "cand", paint: "#ff4a2b", trim: "Base" }),
+  L({ id: "gt-trail-21", n: 5, name: "GT Trail 21", ser: "pro", group: "trail", wheels: "21/18", peak: 10, peakNote: "пик", kwh: 2.52, kmh: 90, range: "80 км", seat: null, kg: "71 кг", chassis: "дисковые тормоза", role: "Легкий эндуро", status: "cand", paint: "#ff4a2b", trim: "Base" }),
+  L({ id: "gt-trail-14-pro", n: 6, name: "GT Trail 14 Pro", ser: "base", group: "trailpro", wheels: "14/12", peak: 4, peakNote: "1,8 ном. / 4 макс.", kwh: 1.8, kwhNote: "60 В", kmh: 79, range: "74 км", seat: null, kg: U, chassis: "батарея вдвое больше Trail 14", role: "Старший питбайк", status: "cand", paint: "#14161a", trim: "Pro", photo: false }),
+  L({ id: "gt-trail-17-pro", n: 7, name: "GT Trail 17 Pro", ser: "base", group: "trailpro", wheels: "17/14", peak: 8, peakNote: "3 ном. / 8+ макс.", kwh: 2.16, kmh: 80, range: U, seat: 800, kg: "75,5 кг", chassis: "база 1240 мм", role: "Старшая версия 17", status: "cand", paint: "#14161a", trim: "Pro" }),
+  L({ id: "gt-trail-19-pro", n: 8, name: "GT Trail 19 Pro", ser: "sport", group: "trailpro", wheels: "19/19", peak: 15, peakNote: "пик", kwh: 2.52, kwhNote: "72 В", kmh: null, range: U, seat: 830, kg: "71 кг", chassis: "алюминиевая рама, дисковые тормоза", role: "Основной Pro", status: "cand", paint: "#14161a", trim: "Pro", photo: false }),
+  L({ id: "gt-trail-21-pro", n: 9, name: "GT Trail 21 Pro", ser: "pro", group: "trailpro", wheels: "21/18", peak: 12, peakNote: "мощность", kwh: 3.6, kmh: 100, range: "100 км", seat: 950, kg: "98,5 кг", chassis: "гидравлика, мотор QS138", role: "Большая батарея", status: "cand", paint: "#14161a", trim: "Pro" }),
+  L({ id: "gt-race-17", n: 10, name: "GT Race 17", ser: "sport", group: "race", wheels: "17/14", peak: 10, peakNote: "4 ном. / 10 пик", kwh: 2.52, kmh: 90, range: "80 км при 40 км/ч", seat: 770, kg: "74,5 кг", chassis: "кованые алюминиевые рама и маятник", role: "Вход в Race", status: "cand", paint: "#eef1f4", trim: "17", photo: false }),
+  L({ id: "gt-race-19", n: 11, name: "GT Race 19", ser: "sport", group: "race", wheels: "19/18", peak: 35, peakNote: "пик", kwh: null, kwhNote: "109 В, емкость уточняется", kmh: 100, range: "около 120 км при 45 км/ч", seat: 880, kg: "95 кг", chassis: "кованая алюминиевая рама, вилка 220 мм", role: "Основа Race", status: "cand", paint: "#2a5bd7", trim: "19" }),
+  L({ id: "gt-race-sm", n: 12, name: "GT Race SM", ser: "sport", group: "race", wheels: "17/17", peak: null, peakNote: "платформа Race 19", kwh: null, kmh: null, range: U, seat: null, kg: U, chassis: "супермото, шины 110/70-17 и 140/60-17", role: "Супермото", status: "cand", paint: "#eef1f4", trim: "SM", photo: false }),
+  L({ id: "gt-race-track", n: 13, name: "GT Race Track", ser: "sport", group: "race", wheels: "колесо + гусеница", peak: null, peakNote: "платформа Race 19", kwh: null, kmh: null, range: U, seat: null, kg: U, chassis: "задняя гусеница, переднее колесо", role: "Зимний байк", status: "cand", paint: "#eef1f4", trim: "Track", photo: false }),
+  L({ id: "gt-race-21", n: 14, name: "GT Race 21", ser: "pro", group: "race", wheels: "21/18", peak: 65, peakNote: "мощность", kwh: 6.72, kmh: 150, range: "до 150 км", seat: 960, kg: "116 кг", chassis: "ход вилки 310 мм, заднего колеса 280 мм", role: "Флагман", status: "cand", paint: "#14161a", trim: "21" }),
+  L({ id: "gt-city-compact", n: 15, name: "GT City Compact", ser: "road", group: "road", wheels: "17", peak: 5, peakNote: "центральный мотор", kwh: 2.88, kmh: 100, range: "около 120 км при 45 км/ч", seat: null, kg: "91 кг", chassis: "гидравлика, газовый амортизатор", role: "Компактный город", status: "request", paint: "#9cc9ff", trim: "Compact" }),
+  L({ id: "gt-city", n: 16, name: "GT City", ser: "road", group: "road", wheels: "17/17", peak: 7.5, peakNote: "номинал", kwh: 3.24, kmh: 105, range: "до 120 км", seat: 840, kg: U, chassis: "центральный мотор, дисковые тормоза", role: "Опора серии: первая партия", status: "order", paint: "#eef1f4", trim: "Base" }),
+  L({ id: "gt-scrambler", n: 17, name: "GT Scrambler", ser: "road", group: "road", wheels: "19/17", peak: 10, peakNote: "мощность", kwh: 4.32, kmh: 95, range: "100 км", seat: 800, kg: "104 кг", chassis: "скрэмблер, NCM-батарея", role: "Прогулочный скрэмблер", status: "request", paint: "#ff4a2b", trim: "Scrambler" }),
+  L({ id: "gt-utility", n: 18, name: "GT Utility", ser: "road", group: "road", wheels: "17/17", peak: 8.7, peakNote: "макс.", kwh: 5.04, kwhNote: "2 сменные батареи", kmh: 100, range: "150 км при 60 км/ч", seat: 780, kg: "146 кг", chassis: "ABS, низкое седло", role: "Практичный город", status: "request", paint: "#2a2e35", trim: "Utility" }),
+  L({ id: "gt-city-pro", n: 19, name: "GT City Pro", ser: "road", group: "road", wheels: "17/17", peak: 6, peakNote: "номинал", kwh: 4.14, kwhNote: "2 батареи", kmh: 100, range: "100 км", seat: null, kg: "110 кг", chassis: "ABS и трекшн-контроль", role: "Старшая дорожная", status: "cand", paint: "#14161a", trim: "Pro" }),
+  L({ id: "gt-roadster", n: 20, name: "GT Roadster", ser: "road", group: "road", wheels: U, peak: 20, peakNote: "10,5 ном. / 20 пик", kwh: 8.35, kmh: 130, range: "до 300 км", seat: null, kg: "193 кг", chassis: "двухканальная ABS", role: "Дорожный флагман", status: "request", paint: "#5e1224", trim: "Roadster" }),
 ];
 export const L_BY: Record<string, LModel> = Object.fromEntries(LINEUP.map((m) => [m.id, m]));
-/** 3D-модель для позиции линейки: дорожные R и Grand получают темную версию. */
-export const glbKey = (m: LModel): string => (m.ser === "road" && (m.trim === "R" || m.trim === "Grand" || m.trim === "Duo") ? "roadpro" : m.ser);
-export const GROUPS: { key: LModel["group"] | "all"; ru: string; note: string }[] = [
+/** 3D-модель для позиции линейки: старшие дорожные получают темную версию. */
+export const glbKey = (m: LModel): string => (m.ser === "road" && (m.trim === "Pro" || m.trim === "Roadster" || m.trim === "Utility") ? "roadpro" : m.ser);
+export const GROUPS: { key: Group | "all"; ru: string; note: string }[] = [
   { key: "all", ru: "Все 20", note: "вся линейка" },
-  { key: "spark", ru: "Spark", note: "питбайки 12-17" },
-  { key: "send", ru: "Send", note: "trail 19" },
-  { key: "ridge", ru: "Ridge", note: "эндуро 21" },
-  { key: "road", ru: "Pulse / Drift / Grand", note: "дорога" },
+  { key: "mini", ru: "Mini", note: "первый байк 12" },
+  { key: "trail", ru: "Trail", note: "14-21, база" },
+  { key: "trailpro", ru: "Trail Pro", note: "14-21, усиленные" },
+  { key: "race", ru: "Race", note: "спорт и флагман" },
+  { key: "road", ru: "Road", note: "город и дорога" },
 ];
+export const GROUP_RU: Record<Group, string> = { mini: "Mini", trail: "Trail", trailpro: "Trail Pro", race: "Race", road: "Road" };
 export const STATUS: Record<Status, [string, string]> = {
+  sale: ["в продаже", "#ff4a2b"],
   order: ["первая партия", "#ff4a2b"],
   cand: ["в отборе", "#9cc9ff"],
-  reserve: ["резерв", "#8d97a2"],
+  request: ["под заказ", "#8d97a2"],
 };
 export const num = (x: number) => String(x).replace(".", ",");
 export const lSpec = (m: LModel) => [
   { k: "колеса", v: m.wheels },
   { k: "мощность", v: m.peak ? `${num(m.peak)} кВт` : "уточняется", s: m.peakNote },
   { k: "батарея", v: m.kwh ? `${num(m.kwh)} кВт·ч` : "уточняется", s: m.kwhNote },
-  { k: "скорость", v: `${m.kmh} км/ч` },
+  { k: "скорость", v: m.kmh ? `${m.kmh} км/ч` : "уточняется" },
   { k: "запас хода", v: m.range },
   { k: "седло", v: m.seat ? `${m.seat} мм` : "уточняется" },
   { k: "масса", v: m.kg },
@@ -108,7 +116,7 @@ export const lSpec = (m: LModel) => [
 
 export const GT_BY: Record<string, GTModel> = GT_BY_HERO;
 export const fmtRange = (r: [number, number]) => `${num(r[0])}-${num(r[1])}`;
-export const verLabel = (v: Ver) => (v === "base" ? "Spark" : v === "sport" ? "Send" : v === "pro" ? "Ridge" : "Road");
+export const verLabel = (v: Ver) => (v === "base" ? "Trail" : v === "sport" ? "Race" : v === "pro" ? "Trail Pro" : "Road");
 export const verOf = (id: string): Ver => L_BY[id]?.ser ?? GT_BY_HERO[id]?.ver ?? "sport";
 
 export const modelName = (id: string) => (L_BY[id] ? L_BY[id].name : GT_BY[id] ? GT_BY[id].name : CATALOG[id] ? CATALOG[id].model : id);
@@ -118,12 +126,12 @@ export const priceOf = (_id: string) => DEPOSIT;
 export type DirKey = "first" | "enduro" | "city" | "buggy" | "quad" | "snow";
 export interface Dir { key: DirKey; ru: string; en: string; note: [string, string]; ids: string[]; cats: string[]; photo: string }
 export const DIRS: Dir[] = [
-  { key: "first", ru: "Первый байк", en: "pit / first ride", note: ["питбайк для старта: низкое седло, понятная мощность", "первый байк для подростка: низкое седло и плавная мощность"], ids: ["gt-spark-12", "gt-spark-14", "gt-spark-17"], cats: [], photo: "kid_rider" },
-  { key: "enduro", ru: "Эндуро", en: "enduro / trail", note: ["лес, песок, овраги, send it", "лес, грунт и бездорожье с запасом хода"], ids: ["gt-send-19", "gt-send-19r", "gt-ridge-21"], cats: ["ebike-enduro", "moto"], photo: "forest_orange" },
-  { key: "city", ru: "Город", en: "city / road", note: ["двор, набережная, ночной asphalt", "ежедневные поездки: тихо, быстро, удобно"], ids: ["gt-pulse-17", "gt-pulse-duo", "gt-drift-19"], cats: ["ebike-city", "ebike-sport"], photo: "night_blur" },
+  { key: "first", ru: "Первый байк", en: "pit / first ride", note: ["питбайк для старта: низкое седло, понятная мощность", "первый байк для подростка: низкое седло и плавная мощность"], ids: ["gt-mini-12", "gt-trail-14", "gt-trail-17"], cats: [], photo: "kid_rider" },
+  { key: "enduro", ru: "Эндуро", en: "enduro / trail", note: ["лес, песок, овраги, send it", "лес, грунт и бездорожье с запасом хода"], ids: ["gt-trail-19", "gt-trail-21-pro", "gt-race-19"], cats: ["ebike-enduro", "moto"], photo: "forest_orange" },
+  { key: "city", ru: "Город", en: "city / road", note: ["двор, набережная, ночной asphalt", "ежедневные поездки: тихо, быстро, удобно"], ids: ["gt-city", "gt-utility", "gt-scrambler"], cats: ["ebike-city", "ebike-sport"], photo: "night_blur" },
   { key: "buggy", ru: "Багги", en: "buggy / UTV", note: ["вдвоем и вчетвером, roost по полю", "для семьи, фермы и дальних выездов"], ids: [], cats: ["utv"], photo: "utv_dunes" },
   { key: "quad", ru: "Квадрик", en: "ATV", note: ["грязь, брод, drop с горки", "полный привод и высокая грузоподъемность"], ids: [], cats: ["quad"], photo: "atv_mud" },
-  { key: "snow", ru: "Снег", en: "snow", note: ["пухляк, склон, зимний roost", "зимние выезды: лыжи, гусеница, тишина"], ids: [], cats: ["snow"], photo: "snow_powder" },
+  { key: "snow", ru: "Снег", en: "snow", note: ["пухляк, склон, зимний roost", "зимние выезды: лыжи, гусеница, тишина"], ids: ["gt-race-track"], cats: ["snow"], photo: "snow_powder" },
 ];
 
 /** Ориентиры по классу техники под заказ (без названий и фото, только диапазоны по каталогу). */
@@ -144,20 +152,19 @@ export const gtSpec = (g: GTModel) => [
 ];
 export const heroOf = (id: string) => L_BY[id] ?? L_BY[GT_BY_HERO[id]?.id ?? ""];
 
-export const COMPARE_IDS = ["gt-spark-14", "gt-send-19r", "gt-pulse-17"];
+export const COMPARE_IDS = ["gt-trail-17", "gt-race-19", "gt-city"];
 
 /** Фото-атмосфера: файлы в public/photos (Unsplash, лицензия Unsplash). */
 export const photo = (n: string, sm = false) => `${import.meta.env.BASE_URL}photos/${sm ? "sm-" : ""}${n}.webp`;
-/** Фото модели (вырезанное, прозрачный фон). n – номер позиции 1-20. */
-export const prod = (n: number, sm = false) => `${import.meta.env.BASE_URL}products/${sm ? "sm-" : ""}m${String(n).padStart(2, "0")}.webp`;
 /** Кадры «в деле» для коллажа модели: по группе. Сток до собственной съемки. */
-export const SCENES: Record<LModel["group"], string[]> = {
-  spark: ["kid_rider", "kids_pair", "backlit_dust", "forest_sun"],
-  send: ["dust_rider", "orange_dust", "dust_turn", "bw_dust"],
-  ridge: ["forest_orange", "trail_green", "hill_silhouette", "forest_sun"],
+export const SCENES: Record<Group, string[]> = {
+  mini: ["kid_rider", "kids_pair", "backlit_dust", "forest_sun"],
+  trail: ["dust_rider", "forest_orange", "trail_green", "backlit_dust"],
+  trailpro: ["forest_orange", "trail_green", "hill_silhouette", "forest_sun"],
+  race: ["dust_rider", "orange_dust", "dust_turn", "bw_dust"],
   road: ["night_city", "night_motion", "night_road", "rider_sea"],
 };
 /** Студийный кадр модели: профиль вправо, общий масштаб (540 px на метр), линия земли на 93% высоты кадра 16:9. */
 export const studio = (n: number, sm = false) => `${import.meta.env.BASE_URL}products/studio/${sm ? "sm-" : ""}s${String(n).padStart(2, "0")}.webp`;
 /** Реальные кадры моделей в деле из базы знаний (номер позиции → фото). */
-export const LIFE: Record<number, string[]> = { 3: ["life_m03a", "life_m03b"], 8: ["life_m08a", "life_m08b"] };
+export const LIFE: Record<number, string[]> = {};

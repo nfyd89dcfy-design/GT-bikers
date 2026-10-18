@@ -54,11 +54,11 @@ export function Assembly() {
       <div className="container-x relative flex flex-1 flex-col">
         <Eyebrow dark>конструкция / скролль</Eyebrow>
         <h2 id="build-h" className="font-display text-[clamp(28px,4.6vw,72px)] font-extrabold uppercase leading-[0.95]">
-          {t("Смотри, из чего собран", "Из чего собран")} <span className="chrome-text">GT Send 19 R</span>
+          {t("Смотри, из чего собран", "Из чего собран")} <span className="chrome-text">GT Race 19</span>
         </h2>
         <div className="relative mt-2 flex-1">
           <div className="relative mx-auto w-full max-w-[1500px] lg:absolute lg:inset-0">
-            <Bike3D ref={bike} variant="sport" yaw={1.0} pitch={0.1} sway={0} label="GT Send 19 R: 3D-модель, вращается при прокрутке" className="h-[300px] sm:h-[420px] lg:h-full" />
+            <Bike3D ref={bike} variant="sport" yaw={1.0} pitch={0.1} sway={0} label="GT Race 19: 3D-модель, вращается при прокрутке" className="h-[300px] sm:h-[420px] lg:h-full" />
             {CALLS.map((c, i) => (
               <div key={c.l} className={cn("asm-call pointer-events-none absolute z-10 hidden items-center gap-2 sm:flex", `asm-call-${i}`)} style={{ left: `${c.x}%`, top: `${c.y}%` }}>
                 <span className="relative grid h-3 w-3 place-items-center"><span className="ping absolute h-3 w-3 rounded-full bg-flare/70" /><span className="h-2 w-2 rounded-full bg-flare" /></span>

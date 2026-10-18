@@ -105,7 +105,7 @@ const OTHER = [
   { t: "Мощный эндуро", v: "74-104 В", p: "от 20 кВт", n: 12, peak: 30, range: 80 },
 ] as const;
 const GROUPS: { k: LModel["group"] | "other"; t: string }[] = [
-  { k: "spark", t: "Spark" }, { k: "send", t: "Send" }, { k: "ridge", t: "Ridge" }, { k: "road", t: "Pulse / Drift / Grand" }, { k: "other", t: "Другой байк" },
+  { k: "mini", t: "Mini" }, { k: "trail", t: "Trail" }, { k: "trailpro", t: "Trail Pro" }, { k: "race", t: "Race" }, { k: "road", t: "Road" }, { k: "other", t: "Другой байк" },
 ];
 type Goal = "power" | "range" | "winter" | "city" | "dirt" | "protect";
 const GOALS: { k: Goal; i: LucideIcon; t: string; d: string; parts: [PartKey, string][] }[] = [
@@ -120,7 +120,7 @@ type Item = { k: PartKey; i: LucideIcon; t: string; d: string; h: number; tag: s
 
 function tuneFor(m: LModel | null, o: Other | null, goals: Goal[]) {
   const road = m?.group === "road";
-  const ctrl = m ? (m.id === "gt-send-19f" ? "S1201500" : m.id === "gt-grand" ? "S120650" : "S801100") : o!.cls === 2 ? "S120650" : "S801100";
+  const ctrl = m ? (m.id === "gt-race-19" || m.id === "gt-race-21" ? "S1201500" : m.id === "gt-roadster" ? "S120650" : "S801100") : o!.cls === 2 ? "S120650" : "S801100";
   const wheels = m ? m.wheels : "под ваш размер";
   const items: Item[] = [];
   if (goals.includes("power")) {
@@ -170,7 +170,7 @@ function tuneFor(m: LModel | null, o: Other | null, goals: Goal[]) {
 export function TunePicker({ at, onClose }: { at: Origin; onClose: () => void }) {
   const { t, say } = useApp();
   const [step, setStep] = useState(0);
-  const [tab, setTab] = useState<(typeof GROUPS)[number]["k"]>("send");
+  const [tab, setTab] = useState<(typeof GROUPS)[number]["k"]>("trail");
   const [bike, setBike] = useState<string | null>(null);
   const [other, setOther] = useState<Other | null>(null);
   const [goals, setGoals] = useState<Goal[]>(["power"]);

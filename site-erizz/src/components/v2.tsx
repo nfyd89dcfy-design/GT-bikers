@@ -58,13 +58,14 @@ export function Header2() {
   );
 }
 
-/* ---------------------------------------------------------------- Первый экран: днем Send 19 S, ночью флагман Factory */
+/* ---------------------------------------------------------------- Первый экран: днем Trail 21 Pro, ночью Race 19 */
 type Spec = [number, number, string, string];
+const hb = (b: [number, number, number, number], l: string, x?: boolean): Hud => ({ x: b[0], y: b[1], w: b[2], h: b[3], l, ...(x ? { b: true } : {}) });
 const HEROES: Record<Theme, { id: string; label: string; specs: Spec[]; hud: Hud[]; parts: Roam[] }> = {
-  day: { id: "gt-send-19s", label: "серия Send / спортивный trail", specs: [[17, 0, "кВт", "пиковая мощность"], [3.24, 2, "кВт·ч", "батарея"], [105, 0, "км/ч", "максимальная скорость"], [140, 0, "км", "запас хода при 30-35 км/ч"]], hud: [{ x: 41, y: 42.7, w: 17.1, h: 18.1, l: "АКБ · 3,24 кВт·ч" }, { x: 44, y: 62.8, w: 13.1, h: 14.1, l: "мотор · 17 кВт пик", b: true }, { x: 60.1, y: 53.8, w: 23.1, h: 40.2, l: "колесо · 19″" }],
-    parts: [{ k: "bat", box: PARTS[9].bat, l: "АКБ · 3,24 кВт·ч" }, { k: "mot", box: PARTS[9].mot, l: "мотор · 17 кВт пик" }, { k: "fw", box: PARTS[9].fw, l: "переднее колесо · 19″" }, { k: "fork", box: PARTS[9].fork, l: "вилка · гидравлика 220 мм" }, { k: "rw", box: PARTS[9].rw, l: "заднее колесо · 19″" }, { k: "all", box: PARTS[9].all, l: "GT Send 19 S · 73 кг · 105 км/ч" }] },
-  night: { id: "gt-send-19f", label: "серия Send / флагман", specs: [[35, 0, "кВт", "пиковая мощность"], [100, 0, "км/ч", "максимальная скорость"], [120, 0, "км", "запас хода при 45 км/ч"], [95, 0, "кг", "снаряженная масса"]], hud: [{ x: 35.6, y: 36.8, w: 24.4, h: 23.3, l: "рама · кованый алюминий" }, { x: 45.2, y: 61.2, w: 11.7, h: 14.8, l: "мотор · 35 кВт пик", b: true }, { x: 60, y: 54.9, w: 23.3, h: 39.2, l: "вилка · 220 мм" }],
-    parts: [{ k: "ctl", box: PARTS[12].ctl, l: "рама · кованый алюминий" }, { k: "bat", box: PARTS[12].bat, l: "АКБ · система 109 В" }, { k: "mot", box: PARTS[12].mot, l: "мотор · 35 кВт пик" }, { k: "fork", box: PARTS[12].fork, l: "вилка · 220 мм" }, { k: "fw", box: PARTS[12].fw, l: "переднее колесо · 19″" }, { k: "rw", box: PARTS[12].rw, l: "заднее колесо · 18″" }, { k: "all", box: PARTS[12].all, l: "GT Send 19 Factory · 95 кг" }] },
+  day: { id: "gt-trail-21-pro", label: "серия Trail Pro / эндуро 21", specs: [[12, 0, "кВт", "мощность"], [3.6, 1, "кВт·ч", "батарея"], [100, 0, "км/ч", "максимальная скорость"], [100, 0, "км", "запас хода"]], hud: [hb(PARTS[9].bat, "АКБ · 3,6 кВт·ч"), hb(PARTS[9].mot, "мотор · 12 кВт", true), hb(PARTS[9].fw, "колесо · 21″")],
+    parts: [{ k: "bat", box: PARTS[9].bat, l: "АКБ · 3,6 кВт·ч" }, { k: "mot", box: PARTS[9].mot, l: "мотор · 12 кВт" }, { k: "fw", box: PARTS[9].fw, l: "переднее колесо · 21″" }, { k: "fork", box: PARTS[9].fork, l: "вилка · гидравлика" }, { k: "rw", box: PARTS[9].rw, l: "заднее колесо · 18″" }, { k: "all", box: PARTS[9].all, l: "GT Trail 21 Pro · 98,5 кг · 100 км/ч" }] },
+  night: { id: "gt-race-19", label: "серия Race / основа серии", specs: [[35, 0, "кВт", "пиковая мощность"], [100, 0, "км/ч", "максимальная скорость"], [120, 0, "км", "запас хода при 45 км/ч"], [95, 0, "кг", "снаряженная масса"]], hud: [{ x: 35.6, y: 36.8, w: 24.4, h: 23.3, l: "рама · кованый алюминий" }, { x: 45.2, y: 61.2, w: 11.7, h: 14.8, l: "мотор · 35 кВт пик", b: true }, { x: 60, y: 54.9, w: 23.3, h: 39.2, l: "вилка · 220 мм" }],
+    parts: [{ k: "ctl", box: PARTS[11].ctl, l: "рама · кованый алюминий" }, { k: "bat", box: PARTS[11].bat, l: "АКБ · система 109 В" }, { k: "mot", box: PARTS[11].mot, l: "мотор · 35 кВт пик" }, { k: "fork", box: PARTS[11].fork, l: "вилка · 220 мм" }, { k: "fw", box: PARTS[11].fw, l: "переднее колесо · 19″" }, { k: "rw", box: PARTS[11].rw, l: "заднее колесо · 18″" }, { k: "all", box: PARTS[11].all, l: "GT Race 19 · 95 кг" }] },
 };
 
 function Count({ v, dec }: { v: number; dec: number }) {
@@ -134,7 +135,7 @@ export function Hero2() {
 }
 
 /* цвет серии в ливрее GT */
-const SER_C: Record<string, string> = { spark: "#9cc9ff", send: "#ff4a2b", ridge: "#b0283f", road: "#2a5bd7" };
+const SER_C: Record<string, string> = { mini: "#9cc9ff", trail: "#ff4a2b", trailpro: "#b0283f", race: "#ff8a2b", road: "#2a5bd7" };
 
 /* ---------------------------------------------------------------- Каталог как у Zero: профиль, один масштаб, клик раскрывает коллаж */
 export function Catalog() {
@@ -154,7 +155,7 @@ export function Catalog() {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="mono t-label">линейка GT / 20 моделей</p>
-            <h2 id="cat-h" className="h-hero mt-3 text-[clamp(36px,5vw,76px)]">Шесть серий,<br />одна марка</h2>
+            <h2 id="cat-h" className="h-hero mt-3 text-[clamp(36px,5vw,76px)]">Пять серий,<br />одна марка</h2>
           </div>
           <p className="t-mute max-w-md leading-snug">{t("Внешка решает. Одна ливрея GT на всю линейку: цвет серии, крупный знак GT и твой номер на табличке, его печатаем при покупке.", "Внешка решает. Одна ливрея GT на всю линейку: цвет серии, крупный знак GT и ваш номер на табличке, его печатаем при покупке.")}</p>
         </div>
@@ -206,7 +207,7 @@ export function BuildScroll() {
       <div className="container-x flex h-full flex-col pb-6 pt-20 sm:pt-24">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="mono text-sky">сборка / GT Send 19 Factory</p>
+            <p className="mono text-sky">сборка / GT Race 19</p>
             <h2 id="build-h" className="h-hero mt-3 text-[clamp(30px,4.4vw,66px)]">{t("Смотри, из чего", "Посмотрите, из чего")}<br />собран флагман</h2>
           </div>
           <p className="max-w-xs text-frost/70">{t("Прокручивай: байк соберется из шести узлов.", "Прокрутите: байк соберется из шести узлов.")}</p>
@@ -216,7 +217,7 @@ export function BuildScroll() {
             <div className="build-glow absolute inset-[10%_12%_12%] rounded-full blur-[70px]" aria-hidden="true" />
             <div className="build-floor absolute bottom-[5%] left-1/2 h-[6%] w-[62%] -translate-x-1/2 rounded-full blur-[14px]" aria-hidden="true" />
             {["frame", ...LAYERS.map((l) => l.k)].map((k) => (
-              <img key={k} data-l={k} src={`${import.meta.env.BASE_URL}build/${k}.webp`} alt={k === "frame" ? "GT Send 19 Factory собирается из узлов" : ""} className="absolute inset-0 h-full w-full object-contain will-change-transform" />
+              <img key={k} data-l={k} src={`${import.meta.env.BASE_URL}build/${k}.webp`} alt={k === "frame" ? "GT Race 19 собирается из узлов" : ""} className="absolute inset-0 h-full w-full object-contain will-change-transform" />
             ))}
           </div>
         </div>
@@ -236,7 +237,7 @@ export function BuildScroll() {
 }
 
 /* ---------------------------------------------------------------- Бегущая строка GT: разбавляет ритм между блоками */
-const TICK = ["Spark", "питбайки 12-17″", "Send", "trail 19″", "Ridge", "эндуро 21″", "Pulse", "Drift", "Grand", "до 35 кВт пик", "тест-драйв в Ростове"];
+const TICK = ["Mini", "первый байк 12″", "Trail", "14-21″", "Trail Pro", "больше батарея", "Race", "до 65 кВт", "Road", "город и трасса", "тест-драйв в Ростове"];
 export function Ticker() {
   const row = (k: string) => (
     <div key={k} className="flex shrink-0 items-center" aria-hidden={k === "b"}>
@@ -249,7 +250,7 @@ export function Ticker() {
     </div>
   );
   return (
-    <div className="dark-zone relative overflow-hidden border-y border-frost/10 bg-ink py-5 text-frost" role="marquee" aria-label="Серии GT: Spark, Send, Ridge, Pulse, Drift, Grand">
+    <div className="dark-zone relative overflow-hidden border-y border-frost/10 bg-ink py-5 text-frost" role="marquee" aria-label="Серии GT: Mini, Trail, Trail Pro, Race, Road">
       <div className="ticker">{row("a")}{row("b")}</div>
     </div>
   );
