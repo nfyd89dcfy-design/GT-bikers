@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Menu, Moon, ShoppingBag, Sun, X } from "lucide-react";
+import { Menu, ShoppingBag, X } from "lucide-react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useApp, reduceMotion, scrollToId, type Theme } from "@/lib/state";
 import { GROUPS, LINEUP, L_BY, studio } from "@/lib/data";
 import { LCard } from "./product";
+import { CineSwitch, Cta, HeroBackdrop, CellsBackdrop, Tracker, switchTheme, type Hud } from "./fx";
 import { cn } from "@/lib/utils";
 
 /* ---------------------------------------------------------------- Логотип: шильд GT слева, E-Rizz справа */
@@ -21,15 +22,7 @@ const NAV: [string, string][] = [["catalog", "Модели"], ["build", "Сбо�
 
 export function ThemeSwitch({ className }: { className?: string }) {
   const { theme, setTheme } = useApp();
-  return (
-    <div role="group" aria-label="Оформление" className={cn("flex overflow-hidden rounded-full border t-line text-sm", className)}>
-      {(["day", "night"] as Theme[]).map((v) => (
-        <button key={v} aria-pressed={theme === v} onClick={() => setTheme(v)} className={cn("flex min-h-10 min-w-10 cursor-pointer items-center gap-1.5 px-3 transition-colors", theme === v ? "bg-[var(--t-chip)] text-[var(--t-chip-fg)]" : "opacity-70 hover:opacity-100")}>
-          {v === "day" ? <Sun size={15} aria-hidden="true" /> : <Moon size={15} aria-hidden="true" />}<span className="hidden sm:inline">{v === "day" ? "день" : "ночь"}</span>
-        </button>
-      ))}
-    </div>
-  );
+  return <CineSwitch theme={theme} className={className} onChange={(v, from) => switchTheme(v, setTheme, from)} />;
 }
 
 export function Header2() {
@@ -60,7 +53,7 @@ export function Header2() {
             <ShoppingBag size={18} />
             {n > 0 && <span className="absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-flare px-1 text-[11px] font-bold text-ink">{n}</span>}
           </button>
-          <button className="btn-solid hidden !min-h-10 items-center sm:inline-flex" onClick={() => go("drive")}>Тест-драйв</button>
+          <Cta className="hidden !min-h-10 !px-5 text-sm sm:inline-flex" onClick={() => go("drive")}>Тест-драйв</Cta>
           <button className="grid min-h-10 min-w-10 cursor-pointer place-items-center rounded-full border t-line lg:hidden" aria-expanded={open} aria-label={open ? "Закрыть меню" : "Меню"} onClick={() => setOpen((o) => !o)}>{open ? <X size={18} /> : <Menu size={18} />}</button>
         </div>
       </div>
@@ -75,9 +68,9 @@ export function Header2() {
 
 /* ---------------------------------------------------------------- Первый экран: днем Send 19 S, ночью флагман Factory */
 type Spec = [number, number, string, string];
-const HEROES: Record<Theme, { id: string; label: string; specs: Spec[] }> = {
-  day: { id: "gt-send-19s", label: "серия Send / спортивный trail", specs: [[17, 0, "кВт", "пиковая мощность"], [3.24, 2, "кВт·ч", "батарея"], [105, 0, "км/ч", "максимальная скорость"], [140, 0, "км", "запас хода при 30-35 км/ч"]] },
-  night: { id: "gt-send-19f", label: "серия Send / флагман", specs: [[35, 0, "кВт", "пиковая мощность"], [100, 0, "км/ч", "максимальная скорость"], [120, 0, "км", "запас хода при 45 км/ч"], [95, 0, "кг", "снаряженная масса"]] },
+const HEROES: Record<Theme, { id: string; label: string; specs: Spec[]; hud: Hud[] }> = {
+  day: { id: "gt-send-19s", label: "серия Send / спортивный trail", specs: [[17, 0, "кВт", "пиковая мощность"], [3.24, 2, "кВт·ч", "батарея"], [105, 0, "км/ч", "максимальная скорость"], [140, 0, "км", "запас хода при 30-35 км/ч"]], hud: [{ x: 41, y: 43, w: 17, h: 18, l: "АКБ · 3,24 кВт·ч" }, { x: 44, y: 63, w: 13, h: 14, l: "мотор · 17 кВт пик", b: true }, { x: 60, y: 54, w: 23, h: 40, l: "колесо · 19″" }] },
+  night: { id: "gt-send-19f", label: "серия Send / флагман", specs: [[35, 0, "кВт", "пиковая мощность"], [100, 0, "км/ч", "максимальная скорость"], [120, 0, "км", "запас хода при 45 км/ч"], [95, 0, "кг", "снаряженная масса"]], hud: [{ x: 37, y: 40, w: 23, h: 22, l: "рама · кованый алюминий" }, { x: 46, y: 63, w: 11, h: 14, l: "мотор · 35 кВт пик", b: true }, { x: 60, y: 57, w: 22, h: 37, l: "вилка · 220 мм" }] },
 };
 
 function Count({ v, dec }: { v: number; dec: number }) {
@@ -105,7 +98,8 @@ export function Hero2() {
     return () => ctx.revert();
   }, []);
   return (
-    <section id="top" ref={root} className="t-zone relative overflow-hidden pt-20 sm:pt-24" aria-labelledby="hero-h">
+    <section id="top" ref={root} className="relative isolate overflow-hidden pt-20 sm:pt-24" style={{ color: "var(--t-fg)" }} aria-labelledby="hero-h">
+      <HeroBackdrop theme={theme} />
       <div className="container-x relative">
         <div className="grid items-center gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
           <div className="relative z-10 max-w-[760px]">
@@ -113,7 +107,7 @@ export function Hero2() {
             <h1 id="hero-h" className="hero-in h-hero mt-4 text-[clamp(32px,4.9vw,76px)]">Харизма<br />на электротяге</h1>
             <p className="hero-in t-mute mt-5 max-w-[26rem] text-lg leading-snug">{t("Свои электробайки GT: тест-драйв, сервис и честные цифры.", "Собственные электробайки GT: тест-драйв, сервис и честные цифры.")}</p>
             <div className="hero-in mt-7 flex flex-wrap items-center gap-5">
-              <button className="btn-solid !min-h-13 px-7 text-base" onClick={() => scrollToId("drive")}>Записаться на тест-драйв</button>
+              <Cta className="!min-h-14 px-8 text-base" onClick={() => scrollToId("drive")}>Записаться на тест-драйв</Cta>
               <button className="min-h-11 cursor-pointer font-semibold underline-offset-4 hover:underline" onClick={() => scrollToId("catalog")}>Вся линейка →</button>
             </div>
           </div>
@@ -122,7 +116,12 @@ export function Hero2() {
             {(["day", "night"] as Theme[]).map((k) => (
               <div key={k} className={cn("absolute inset-0 transition-opacity duration-700", theme === k ? "opacity-100" : "opacity-0")} aria-hidden={theme !== k}>
                 <div className="glow" /><div className="floor" />
-                <img src={studio(L_BY[HEROES[k].id].n)} alt={theme === k ? `${L_BY[HEROES[k].id].name}, фото в профиль` : ""} className="absolute inset-0 h-full w-full origin-[50%_93%] scale-[1.12] object-contain" fetchPriority={k === theme ? "high" : "low"} />
+                <div className="absolute inset-0 origin-[50%_93%] scale-[1.12]">
+                  <div className="bike-idle absolute inset-0">
+                    <img src={studio(L_BY[HEROES[k].id].n)} alt={theme === k ? `${L_BY[HEROES[k].id].name}, фото в профиль` : ""} className="absolute inset-0 h-full w-full object-contain" fetchPriority={k === theme ? "high" : "low"} />
+                    <Tracker boxes={HEROES[k].hud} run={theme === k} />
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -204,7 +203,8 @@ export function BuildScroll() {
     return () => ctx.revert();
   }, []);
   return (
-    <section ref={root} id="build" className="relative h-[100svh] min-h-[600px] overflow-hidden bg-[#0b0d10] text-frost" aria-labelledby="build-h">
+    <section ref={root} id="build" className="relative isolate h-[100svh] min-h-[600px] overflow-hidden bg-[#0b0d10] text-frost" aria-labelledby="build-h">
+      <CellsBackdrop />
       <div className="container-x flex h-full flex-col pb-6 pt-20 sm:pt-24">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -234,5 +234,25 @@ export function BuildScroll() {
       </div>
       <div className="build-bar absolute bottom-0 left-0 h-[2px] w-full origin-left bg-flare" />
     </section>
+  );
+}
+
+/* ---------------------------------------------------------------- Бегущая строка GT: разбавляет ритм между блоками */
+const TICK = ["Spark", "питбайки 12-17″", "Send", "trail 19″", "Ridge", "эндуро 21″", "Pulse", "Drift", "Grand", "до 35 кВт пик", "тест-драйв в Ростове"];
+export function Ticker() {
+  const row = (k: string) => (
+    <div key={k} className="flex shrink-0 items-center" aria-hidden={k === "b"}>
+      {TICK.map((w, i) => (
+        <span key={i} className="flex items-center gap-6 pr-6">
+          {i % 2 === 0 ? <span className="h-hero text-[clamp(22px,2.6vw,40px)]">{w}</span> : <span className="mono text-frost/60">{w}</span>}
+          <span className="gt-plate text-[13px] text-flare">GT</span>
+        </span>
+      ))}
+    </div>
+  );
+  return (
+    <div className="relative overflow-hidden border-y border-frost/10 bg-ink py-5 text-frost" role="marquee" aria-label="Серии GT: Spark, Send, Ridge, Pulse, Drift, Grand">
+      <div className="ticker">{row("a")}{row("b")}</div>
+    </div>
   );
 }

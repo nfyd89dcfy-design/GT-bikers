@@ -10,6 +10,7 @@ import { InteractiveHoverButton } from "./ui/interactive-hover-button";
 import { GlowCard } from "./ui/spotlight-card";
 import { MorphTile } from "./morph";
 import { cn } from "@/lib/utils";
+import { CellsBackdrop, MetalFigure } from "./fx";
 
 /* ---------------------------------------------------------------- Media */
 const SOCS = [
@@ -108,7 +109,8 @@ const SVC = [
 export function Service() {
   const { t } = useApp();
   return (
-    <section id="service" className="relative py-24 sm:py-36" aria-labelledby="svc-h">
+    <section id="service" className="light-zone bg-silk relative isolate py-24 sm:py-36" aria-labelledby="svc-h">
+      <div className="grain pointer-events-none absolute inset-0 -z-10" aria-hidden="true" />
       <div className="container-x">
         <Reveal>
           <Eyebrow n="13">сервис</Eyebrow>
@@ -161,7 +163,10 @@ export function Drive() {
     setDone({ no: "TD-" + Math.floor(1000 + Math.random() * 9000) });
   };
   return (
-    <section id="drive" className="relative bg-ink py-20 text-frost dark-zone sm:py-28" aria-labelledby="drive-h">
+    <section id="drive" className="relative isolate overflow-hidden bg-ink py-20 text-frost dark-zone sm:py-28" aria-labelledby="drive-h">
+      <div className="bg-ember absolute inset-0 -z-10" aria-hidden="true" />
+      <CellsBackdrop tone="flare" />
+      <MetalFigure kind="liquid" className="absolute -right-24 -top-24 -z-10 hidden h-[440px] w-[440px] lg:block" />
       <div className="container-x grid gap-10 lg:grid-cols-[1fr_1fr]">
         <Reveal>
           <Eyebrow n="14" dark>тест-драйв</Eyebrow>

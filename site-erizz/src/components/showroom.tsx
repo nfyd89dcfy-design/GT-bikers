@@ -202,7 +202,8 @@ function Tour() {
 export function Showroom() {
   const { t } = useApp();
   return (
-    <section id="showroom" className="relative py-28 sm:py-40" aria-labelledby="show-h">
+    <section id="showroom" className="light-zone bg-silk relative isolate py-28 sm:py-40" aria-labelledby="show-h">
+      <div className="grain pointer-events-none absolute inset-0 -z-10" aria-hidden="true" />
       <div className="container-x">
         <Reveal>
           <Eyebrow n="10">шоурум</Eyebrow>

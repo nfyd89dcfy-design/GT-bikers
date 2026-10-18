@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
 import { Smartphone, ScanLine, Ruler } from "lucide-react";
 import { useApp } from "@/lib/state";
-import { BlockGrid } from "./shaders";
 import { Bike3D, type BikeApi } from "./bike";
 import { Eyebrow, H2, Reveal } from "./ui-bits";
 import { InteractiveHoverButton } from "./ui/interactive-hover-button";
 import { openAR, type ARKey } from "./ar";
+import { MetalFigure } from "./fx";
 
 const PAINT: [string, string | undefined][] = [["Заводской", undefined], ["Flare", "#ff4a2b"], ["Иней", "#eef1f4"], ["Графит", "#23272d"], ["Небо", "#9cc9ff"], ["Бордо", "#7a1b2e"]];
 const MODELS: { k: ARKey; n: string; w: string; size: string }[] = [
@@ -25,9 +25,11 @@ export function Viewer3D() {
   const m = MODELS[i];
   return (
     <section id="viewer" className="dark-zone relative isolate overflow-hidden py-24 sm:py-36" aria-labelledby="viewer-h">
-      <BlockGrid a="#07080a" b="#1b2026" line="#59616b" gain={0.85} cells={20} lineAmt={0.25} react={0.7} seed={21} className="absolute inset-0 -z-10 h-full w-full opacity-70" />
+      <div className="bg-horizon absolute inset-0 -z-10" aria-hidden="true" />
+      <div className="grain pointer-events-none absolute inset-0 -z-10" aria-hidden="true" />
+      <MetalFigure kind="chrome" className="absolute right-[3%] top-6 hidden h-72 w-72 lg:block" />
       <div className="container-x">
-        <Reveal>
+        <Reveal className="lg:pr-[320px]">
           <Eyebrow n="05" dark>3D / AR</Eyebrow>
           <H2><span id="viewer-h">{t("Покрути и поставь", "Рассмотрите и поставьте")}</span> <span className="text-sky">{t("у себя дома", "у себя дома")}</span></H2>
           <p className="muted mt-4 max-w-2xl text-lg">

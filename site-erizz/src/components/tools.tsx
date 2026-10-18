@@ -3,7 +3,6 @@ import { RotateCcw } from "lucide-react";
 import { gsap } from "@/lib/gsap";
 import { useApp, reduceMotion, scrollToId } from "@/lib/state";
 import { DEPOSIT, DIRS, GT, LINEUP, L_BY, STATUS, glbKey, lSpec, num, rub, studio, verLabel, type DirKey, type Ver } from "@/lib/data";
-import { BlockGrid } from "./shaders";
 import { ObjectTracker } from "./effects";
 import { Bike3D } from "./bike";
 import { ProductShot, STUDIO } from "./product";
@@ -11,6 +10,7 @@ import { Eyebrow, H2, Reveal } from "./ui-bits";
 import { InteractiveHoverButton } from "./ui/interactive-hover-button";
 import { ARButton, type ARKey } from "./ar";
 import { cn } from "@/lib/utils";
+import { MetalFigure } from "./fx";
 
 /* ---------------------------------------------------------------- Configurator */
 const BATT = [{ n: "Стандарт", k: 1, p: 0 }, { n: "+20% емкости", k: 1.2, p: 60000 }, { n: "Вторая батарея", k: 2, p: 140000 }];
@@ -59,6 +59,9 @@ export function Configurator() {
   );
   return (
     <section id="config" className="dark-zone relative isolate overflow-hidden py-24 sm:py-36" aria-labelledby="config-h">
+      <div className="bg-horizon absolute inset-0 -z-10 opacity-70" aria-hidden="true" />
+      <div className="grain pointer-events-none absolute inset-0 -z-10" aria-hidden="true" />
+      <MetalFigure kind="voxels" className="absolute right-[4%] top-10 hidden h-64 w-64 xl:block" />
             <div className="container-x">
         <Reveal>
           <Eyebrow n="06" dark>конструктор</Eyebrow>
@@ -171,7 +174,8 @@ export function Quiz() {
   const m = res && res.id ? L_BY[res.id] : null;
 
   return (
-    <section id="quiz" className="relative py-24 sm:py-36" aria-labelledby="quiz-h">
+    <section id="quiz" className="light-zone bg-silk relative isolate py-24 sm:py-36" aria-labelledby="quiz-h">
+      <div className="grain pointer-events-none absolute inset-0 -z-10" aria-hidden="true" />
       <div className="container-x grid gap-10 lg:grid-cols-[1fr_1.1fr]">
         <Reveal>
           <Eyebrow n="07">подбор</Eyebrow>

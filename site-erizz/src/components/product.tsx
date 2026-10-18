@@ -2,6 +2,7 @@ import { DEPOSIT, LIFE, SCENES, lSpec, num, photo, rub, studio, type LModel, typ
 import { useApp, scrollToId } from "@/lib/state";
 import { cn } from "@/lib/utils";
 import { MorphTile } from "./morph";
+import { Cta } from "./fx";
 
 /* Фон под фото модели берется из темы (день: студия как у Zero, ночь: темная студия с подсветкой). */
 export const STUDIO: Record<Ver, string> = { base: "var(--t-tile)", sport: "var(--t-tile)", pro: "var(--t-tile)", road: "var(--t-tile)" };
@@ -24,7 +25,7 @@ const specLine = (m: LModel) => `${m.peak ? `${num(m.peak)} кВт` : "кВт у
 /** Лицевая сторона карточки: только фото, название и одна строка цифр. */
 export function ProductFace({ m }: { m: LModel }) {
   return (
-    <div className="t-tile relative flex h-full flex-col justify-between overflow-hidden rounded-xl p-4 sm:p-5" style={{ color: "var(--t-fg)" }}>
+    <div className="t-tile spot relative flex h-full flex-col justify-between overflow-hidden rounded-xl p-4 sm:p-5" style={{ color: "var(--t-fg)" }}>
       <div className="flex items-start justify-between gap-2">
         <span className="mono t-mute">{String(m.n).padStart(2, "0")}</span>
         {m.status === "order" && <span className="mono rounded-full bg-flare px-2.5 py-1 text-ink">первая партия</span>}
@@ -71,7 +72,7 @@ export function ProductCollage({ m }: { m: LModel }) {
           <div className="flex flex-col justify-between gap-4">
             <p className="leading-snug">{m.chassis[0].toUpperCase() + m.chassis.slice(1)}. {t("Приезжай на тест-драйв: шлем и защиту дадим.", "Приезжайте на тест-драйв: шлем и защиту дадим.")}</p>
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-              <button className="btn-solid" onClick={() => { addCart({ id: m.id, name: m.name, sub: `бронь · ${m.wheels}`, price: DEPOSIT, variant: "sport", paint: m.paint }); setCartOpen(true); }}>Бронь {rub(DEPOSIT)}</button>
+              <Cta onClick={() => { addCart({ id: m.id, name: m.name, sub: `бронь · ${m.wheels}`, price: DEPOSIT, variant: "sport", paint: m.paint }); setCartOpen(true); }}>Бронь {rub(DEPOSIT)}</Cta>
               <button className="min-h-11 cursor-pointer font-semibold underline-offset-4 hover:underline" onClick={() => { setDriveFor(m.id); close(); setTimeout(() => scrollToId("drive"), 850); }}>Тест-драйв</button>
               <button className="min-h-11 cursor-pointer font-semibold underline-offset-4 hover:underline" onClick={() => toggleCompare(m.id)}>{inCmp ? "В сравнении ✓" : "Сравнить"}</button>
             </div>

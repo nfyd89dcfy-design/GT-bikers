@@ -50,7 +50,8 @@ export function Delivery() {
     return `M${x1},${y1} Q${mx},${my - d * 0.22} ${x2},${y2}`;
   };
   return (
-    <section id="delivery" className="relative py-28 sm:py-40" aria-labelledby="del-h">
+    <section id="delivery" className="light-zone bg-silk-blue relative isolate py-28 sm:py-40" aria-labelledby="del-h">
+      <div className="grain pointer-events-none absolute inset-0 -z-10" aria-hidden="true" />
       <div className="container-x">
         <Reveal>
           <Eyebrow n="09">доставка</Eyebrow>

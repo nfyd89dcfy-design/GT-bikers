@@ -2,7 +2,8 @@ import { useEffect } from "react";
 import { AppProvider, useApp } from "@/lib/state";
 import { ScrollTrigger } from "@/lib/gsap";
 import { ToneGate } from "@/components/top";
-import { BuildScroll, Catalog, Header2, Hero2 } from "@/components/v2";
+import { BuildScroll, Catalog, Header2, Hero2, Ticker } from "@/components/v2";
+import { FxCursor, useHeadingReveal, useSpotlight } from "@/components/fx";
 import { Directions } from "@/components/models";
 import { Viewer3D } from "@/components/viewer";
 import { Compare, Configurator, Quiz } from "@/components/tools";
@@ -18,7 +19,9 @@ function Toast() {
 }
 
 function Page() {
-  const { dir, gateOpen } = useApp();
+  const { dir, gateOpen, theme } = useApp();
+  useSpotlight();
+  useHeadingReveal();
   useEffect(() => {
     const r = () => ScrollTrigger.refresh();
     window.addEventListener("load", r);
@@ -33,6 +36,7 @@ function Page() {
       <Header2 />
       <main>
         <Hero2 />
+        <Ticker />
         <Catalog />
         <BuildScroll />
         <Directions />
@@ -51,6 +55,7 @@ function Page() {
       <Toast />
       <ARLayer />
       <ToneGate />
+      <FxCursor theme={theme} />
     </>
   );
 }

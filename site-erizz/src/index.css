@@ -144,3 +144,123 @@ body { background: var(--t-bg); }
 .gt-plate { font-family: "Archivo Black", var(--font-display); font-size: 1em; line-height: 1; letter-spacing: -.045em; padding: .2em .4em .17em; border: .13em solid currentColor; border-radius: .3em; }
 .logo-lockup .logo-w1 { font-size: 1.12em; }
 .btn-ghost { color: inherit; }
+.light-zone { background: var(--color-sleet); color: var(--color-ink); }
+
+/* ===================== v3: живее. Зерно, шелковые градиенты, подсветка, CTA, тумблер, HUD ===================== */
+.grain { pointer-events: none; opacity: .32; mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 240px 240px; }
+.dark-zone .grain, [data-theme="night"] .grain { opacity: .42; mix-blend-mode: overlay; }
+/* серый шелк */
+.bg-silk { background:
+  radial-gradient(70% 90% at 78% 30%, #fbfcfd 0%, rgb(251 252 253 / 0) 60%),
+  radial-gradient(60% 70% at 12% 85%, #c9d1da 0%, rgb(201 209 218 / 0) 65%),
+  radial-gradient(50% 60% at 40% 10%, #e3e8ee 0%, rgb(227 232 238 / 0) 70%),
+  linear-gradient(165deg, #eef1f4 0%, #dfe4e9 55%, #e8ecf0 100%); }
+/* синий шелк */
+.bg-silk-blue { background:
+  radial-gradient(80% 90% at 85% 20%, #f4f8fe 0%, rgb(244 248 254 / 0) 60%),
+  radial-gradient(70% 80% at 5% 95%, #b9d3f6 0%, rgb(185 211 246 / 0) 65%),
+  radial-gradient(55% 55% at 55% 60%, #dce9fb 0%, rgb(220 233 251 / 0) 70%),
+  linear-gradient(160deg, #eaf1fb 0%, #d4e3f7 60%, #e6eef9 100%); color: var(--color-ink); }
+/* темно-синий горизонт */
+.bg-horizon { background:
+  radial-gradient(120% 55% at 50% 108%, #3c6ee6 0%, #1a3576 28%, rgb(16 32 74 / 0) 62%),
+  radial-gradient(60% 40% at 82% 12%, rgb(156 201 255 / .14) 0%, rgb(156 201 255 / 0) 70%),
+  linear-gradient(180deg, #050608 0%, #070a12 45%, #0c1630 80%, #12245a 100%); }
+/* оранжевое зерно */
+.bg-ember { background:
+  radial-gradient(70% 80% at 88% 18%, #ff9a4d 0%, rgb(255 154 77 / 0) 55%),
+  radial-gradient(80% 90% at 70% 100%, #ff4a2b 0%, rgb(255 74 43 / 0) 60%),
+  radial-gradient(60% 70% at 8% 10%, #1a0c09 0%, rgb(26 12 9 / 0) 70%),
+  linear-gradient(120deg, #120807 0%, #3a120b 38%, #a52a14 72%, #ff5a2e 100%); }
+
+/* подсветка рамок за курсором (как GlowCard, но без backdrop-filter, чтобы не ломать морф) */
+@layer components { .spot, .btn-solid, .btn-ghost, .t-chip, .chip, .cta { position: relative; } }
+.spot::after, .btn-solid::after, .btn-ghost::after, .t-chip::after, .chip::after, .cta::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; pointer-events: none; z-index: 3;
+  background: radial-gradient(170px circle at var(--mx, -999px) var(--my, -999px), var(--spot-c, #ff4a2b) 0%, rgb(255 74 43 / .5) 30%, transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: var(--so, 0); transition: opacity .3s ease; }
+.spot { isolation: isolate; }
+.spot::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 0;
+  background: radial-gradient(320px circle at var(--mx, -999px) var(--my, -999px), var(--spot-fill, rgb(255 74 43 / .09)), transparent 65%);
+  opacity: var(--so, 0); transition: opacity .3s ease; }
+[data-theme="night"] .spot { --spot-fill: rgb(156 201 255 / .10); }
+.btn-solid, .cta--flare { --spot-c: #fff; }
+.dark-zone .btn-ghost, [data-theme="night"] .t-chip { --spot-c: #9cc9ff; }
+
+@layer components {
+/* CTA: точка разливается в заливку */
+.cta { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 0 28px; border-radius: 6px; overflow: hidden; cursor: pointer; font-weight: 700; isolation: isolate; border: 0; }
+.cta--flare { background: var(--color-flare); color: var(--color-ink); --cta-fill: var(--color-ink); --cta-fg: var(--color-frost); }
+.cta--ink { background: var(--color-ink); color: var(--color-frost); --cta-fill: var(--color-flare); --cta-fg: var(--color-ink); }
+.cta--frost { background: var(--color-frost); color: var(--color-ink); --cta-fill: var(--color-flare); --cta-fg: var(--color-ink); }
+.cta__dot { position: absolute; left: 18px; top: 50%; width: 7px; height: 7px; margin-top: -3.5px; border-radius: 2px; background: var(--cta-fill); z-index: 0; transition: transform .5s cubic-bezier(.7,0,.2,1), border-radius .5s; }
+.cta__a { position: relative; z-index: 1; padding-left: 10px; transition: transform .4s cubic-bezier(.7,0,.2,1), opacity .3s; }
+.cta__b { position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--cta-fg); transform: translateX(40%); opacity: 0; transition: transform .45s cubic-bezier(.7,0,.2,1), opacity .3s; }
+.cta:hover .cta__dot, .cta:focus-visible .cta__dot { transform: scale(90); border-radius: 50%; }
+.cta:hover .cta__a, .cta:focus-visible .cta__a { transform: translateX(45%); opacity: 0; }
+.cta:hover .cta__b, .cta:focus-visible .cta__b { transform: none; opacity: 1; }
+.cta:active { transform: translateY(1px); }
+}
+
+/* кинематографичный тумблер */
+.cine { position: relative; width: 64px; height: 34px; border-radius: 999px; cursor: pointer; overflow: hidden; border: 1px solid rgb(14 16 19 / .14);
+  background: linear-gradient(180deg, #bcd8fb 0%, #9cc9ff 60%, #d8e8fd 100%); box-shadow: inset 0 2px 6px rgb(14 16 19 / .18); transition: background .6s, border-color .6s; }
+.cine--night { background: linear-gradient(180deg, #05070c 0%, #0c1630 70%, #1a3576 100%); border-color: rgb(238 241 244 / .16); }
+.cine__knob { position: absolute; top: 3px; left: 3px; width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffb08f, #ff4a2b 60%, #d93516);
+  box-shadow: 0 0 0 4px rgb(255 74 43 / .18), 0 0 18px rgb(255 120 60 / .7); transition: transform .7s cubic-bezier(.68,-.35,.27,1.35), background .6s, box-shadow .6s; }
+.cine--night .cine__knob { transform: translateX(30px) rotate(-200deg); background: radial-gradient(circle at 35% 30%, #ffffff, #e3e8ee 60%, #b9c2cc); box-shadow: 0 0 0 4px rgb(238 241 244 / .08), 0 0 16px rgb(156 201 255 / .55); }
+.cine__crater { position: absolute; border-radius: 50%; background: rgb(141 151 162 / .55); opacity: 0; transition: opacity .5s .2s; }
+.cine__crater:nth-child(1) { width: 7px; height: 7px; left: 6px; top: 6px; }
+.cine__crater:nth-child(2) { width: 5px; height: 5px; left: 14px; top: 14px; }
+.cine__crater:nth-child(3) { width: 3px; height: 3px; left: 7px; top: 17px; }
+.cine--night .cine__crater { opacity: 1; }
+.cine__stars i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff; opacity: 0; transform: translateY(6px); transition: opacity .5s, transform .6s; }
+.cine__stars i:nth-child(1) { left: 9px; top: 8px; } .cine__stars i:nth-child(2) { left: 18px; top: 20px; transition-delay: .08s; }
+.cine__stars i:nth-child(3) { left: 26px; top: 9px; transition-delay: .16s; } .cine__stars i:nth-child(4) { left: 12px; top: 25px; width: 1.5px; height: 1.5px; transition-delay: .22s; }
+.cine__stars i:nth-child(5) { left: 30px; top: 22px; width: 1.5px; height: 1.5px; transition-delay: .3s; }
+.cine--night .cine__stars i { opacity: .9; transform: none; animation: twinkle 2.4s ease-in-out infinite alternate; }
+.cine--night .cine__stars i:nth-child(2n) { animation-delay: -1.2s; }
+@keyframes twinkle { to { opacity: .25; } }
+.cine__clouds i { position: absolute; height: 9px; border-radius: 9px; background: #fff; box-shadow: 0 1px 2px rgb(14 16 19 / .08); transition: transform .7s cubic-bezier(.7,0,.2,1), opacity .5s; }
+.cine__clouds i:nth-child(1) { width: 22px; right: 6px; top: 7px; } .cine__clouds i:nth-child(2) { width: 16px; right: 12px; top: 19px; opacity: .85; }
+.cine--night .cine__clouds i { transform: translateX(40px); opacity: 0; }
+.cine:focus-visible { outline-offset: 2px; }
+
+/* View Transitions: свой круг вместо кроссфейда */
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+.vt-ring { position: fixed; z-index: 2147483000; pointer-events: none; border-radius: 50%; transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 1.5px rgb(255 74 43 / .9), 0 0 40px 6px rgb(255 120 60 / .45), inset 0 0 60px 10px rgb(255 74 43 / .18); }
+.vt-ring--night { box-shadow: 0 0 0 1.5px rgb(156 201 255 / .9), 0 0 40px 6px rgb(42 91 215 / .5), inset 0 0 60px 10px rgb(156 201 255 / .15); }
+
+/* HUD-трекер */
+.hud__scan { position: absolute; left: 6%; right: 6%; top: 30%; height: 1px; background: linear-gradient(90deg, transparent, var(--hud-c, #ff4a2b), transparent); opacity: 0; }
+.hud--on .hud__scan { animation: hud-scan 3.6s cubic-bezier(.6,0,.4,1) .6s infinite; }
+@keyframes hud-scan { 0% { top: 30%; opacity: 0; } 10% { opacity: .9; } 55% { top: 92%; opacity: .9; } 65%, 100% { top: 92%; opacity: 0; } }
+.hud__box { position: absolute; --hud-c: #ff4a2b; opacity: 0; transform: scale(1.25); transition: opacity .5s calc(.9s + var(--i) * .22s), transform .7s cubic-bezier(.2,.9,.2,1) calc(.9s + var(--i) * .22s); }
+[data-theme="night"] .hud__box { --hud-c: #9cc9ff; }
+.hud--on .hud__box { opacity: 1; transform: none; animation: hud-jit 4s steps(1) calc(1.6s + var(--i) * .5s) infinite; }
+@keyframes hud-jit { 0%, 100% { translate: 0 0; } 30% { translate: 1px -1px; } 31% { translate: 0 0; } 70% { translate: -1px 0; } 71% { translate: 0 0; } }
+.hud__box i { position: absolute; width: 14px; height: 14px; border: 1.5px solid var(--hud-c); }
+.hud__box i:nth-child(1) { left: 0; top: 0; border-right: 0; border-bottom: 0; }
+.hud__box i:nth-child(2) { right: 0; top: 0; border-left: 0; border-bottom: 0; }
+.hud__box i:nth-child(3) { left: 0; bottom: 0; border-right: 0; border-top: 0; }
+.hud__box i:nth-child(4) { right: 0; bottom: 0; border-left: 0; border-top: 0; }
+.hud__label { position: absolute; left: -1px; bottom: calc(100% + 4px); white-space: nowrap; padding: 3px 6px; font-size: 9.5px; color: #0e1013; background: var(--hud-c); border-radius: 2px; }
+
+/* CSS-запас для фигур */
+.css-orb { border-radius: 50%; background: radial-gradient(circle at 32% 28%, #ffffff 0%, #d9dee3 18%, #8d97a2 45%, #1c2026 75%, #0e1013 100%); box-shadow: 0 30px 60px rgb(0 0 0 / .35), inset -10px -14px 30px rgb(255 74 43 / .25); animation: orb-float 7s ease-in-out infinite alternate; }
+.css-orb--blocks { border-radius: 18%; }
+@keyframes orb-float { from { transform: translateY(-8px) rotate(-4deg); } to { transform: translateY(10px) rotate(5deg); } }
+
+/* байк на первом экране слегка "дышит" */
+@keyframes bike-idle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+.bike-idle { animation: bike-idle 5.5s ease-in-out infinite; }
+
+/* бегущая строка в стиле GT */
+.ticker { display: flex; width: max-content; animation: marq 38s linear infinite; }
+.ticker:hover { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .bike-idle, .ticker, .css-orb, .hud--on .hud__scan, .hud--on .hud__box, .cine--night .cine__stars i { animation: none !important; } }
+.hud__label--b { bottom: auto; top: calc(100% + 4px); }
