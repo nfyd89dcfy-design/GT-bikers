@@ -352,7 +352,7 @@ function gearFor(teen: boolean, h: number, ride: Ride, full: boolean) {
   const out: GearItem[] = [
     { k: "helmet", art: "helmet", t: ride === "city" ? "Шлем с визором" : "Кроссовый шлем", size: helmet, note: "Точный размер меряем по обхвату головы" },
   ];
-  if (ride !== "city") out.push({ k: "goggles", img: "goggles", t: ride === "winter" ? "Маска с двойной линзой" : "Маска с прозрачной линзой", size: teen && h < 150 ? "Youth" : "один размер", note: ride === "winter" ? "Не запотевает на морозе" : "Подходит под очки по форме шлема" });
+  if (ride !== "city") out.push({ k: "goggles", img: "goggles", t: ride === "winter" ? "Маска с двойной линзой" : "Маска с прозрачной линзой", size: teen && h < 150 ? "Youth" : "один размер", note: ride === "winter" ? "Не запотевает на морозе" : "Плотно садится в вырез шлема" });
   out.push({ k: "gloves", img: "gloves", t: ride === "winter" ? "Утепленные перчатки" : "Перчатки для кросса", size: gloves, note: "Пальцы чувствуют рычаги" });
   out.push({ k: "boots", img: "boots", t: "Мотоботы", size: `${boots} EU`, note: "Защита голеностопа и голени" });
   if (full || ride === "mx") out.push({ k: "kit", img: "kit", t: ride === "city" ? "Брюки и джерси" : "Джерси и штаны", size: form, note: "Свободно поверх защиты" });
