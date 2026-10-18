@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Menu, ShoppingBag, X } from "lucide-react";
 import { gsap, SplitText } from "@/lib/gsap";
 import { useApp, reduceMotion, scrollToId, type Voice } from "@/lib/state";
-import { GT_BY, fmtRange, rub } from "@/lib/data";
+import { DEPOSIT, L_BY, rub } from "@/lib/data";
+import { openAR } from "./ar";
 import { BlockGrid, ChromeText } from "./shaders";
 import { Bike3D } from "./bike";
 import { ParticleField, ObjectTracker } from "./effects";
@@ -11,7 +12,7 @@ import { cn } from "@/lib/utils";
 
 /* ---------------------------------------------------------------- Header */
 const NAV: [string, string][] = [
-  ["models", "Линейка"], ["build", "Сборка"], ["config", "Конструктор"], ["viewer", "3D"], ["delivery", "Доставка"], ["showroom", "Шоурум"], ["media", "Медиа"],
+  ["models", "Серии"], ["lineup", "20 моделей"], ["config", "Конструктор"], ["viewer", "3D / AR"], ["delivery", "Доставка"], ["showroom", "Шоурум"], ["media", "Медиа"],
 ];
 
 export function Header() {
@@ -97,22 +98,22 @@ export function ToneGate() {
 }
 
 /* ---------------------------------------------------------------- Hero */
-function CountR({ lo, hi, dec = 0 }: { lo: number; hi: number; dec?: number }) {
+function CountV({ v, dec = 0 }: { v: number; dec?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const f = (n: number) => n.toFixed(dec).replace(".", ",").replace(/,0$/, "");
+  const f = (n: number) => n.toFixed(dec).replace(".", ",");
   useEffect(() => {
     const el = ref.current!;
-    if (reduceMotion()) { el.textContent = fmtRange([lo, hi]); return; }
-    const o = { a: 0, b: 0 };
-    const tw = gsap.to(o, { a: lo, b: hi, duration: 1.6, ease: "power3.out", delay: 0.3, onUpdate: () => { el.textContent = `${f(o.a)}-${f(o.b)}`; } });
+    if (reduceMotion()) { el.textContent = f(v); return; }
+    const o = { a: 0 };
+    const tw = gsap.to(o, { a: v, duration: 1.6, ease: "power3.out", delay: 0.3, onUpdate: () => { el.textContent = f(o.a); } });
     return () => { tw.kill(); };
-  }, [lo, hi]); // eslint-disable-line
-  return <span ref={ref}>{fmtRange([lo, hi])}</span>;
+  }, [v]); // eslint-disable-line
+  return <span ref={ref}>{f(v)}</span>;
 }
 
 export function Hero() {
   const { t } = useApp();
-  const g = GT_BY["gt-sport"];
+  const g = L_BY["gt-send-19r"];
   const root = useRef<HTMLElement>(null);
   const h1 = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
@@ -141,21 +142,22 @@ export function Hero() {
       </div>
       <div className="container-x relative z-10 flex h-full flex-col">
         <div className="relative z-10 pt-[calc(max(96px,20vw)+30px)] lg:max-w-[40%]">
-          <p className="mono mb-3 flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-flare" />GT / коллекция 01</p>
+          <p className="mono mb-3 flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-flare" />GT / 20 моделей / 4 серии</p>
           <h1 ref={h1} className="font-display text-[clamp(26px,3.1vw,52px)] font-extrabold uppercase leading-[1] [overflow-wrap:normal] [hyphens:none]" aria-label="Электробайки с характером">
             {t("Электробайки с характером", "Электробайки с характером")}
           </h1>
           <p className="mt-3 max-w-md text-base text-ink/85">
-            {t("Три модели: Base, Sport и Pro. Электробайки, ATV, UTV и снег. Розница и опт, шоурум в Ростове, доставка по всей России.", "Три модели: Base, Sport и Pro. Электробайки, ATV, UTV и снежная техника. Розница и опт, шоурум в Ростове-на-Дону, доставка по всей России.")}
+            {t("Серии Spark, Send, Ridge и Pulse: от первого питбайка до дорожного флагмана. ATV, UTV и снег под заказ. Розница и опт, шоурум в Ростове, доставка по России.", "Серии Spark, Send, Ridge и Pulse: от первого питбайка до дорожного флагмана. ATV, UTV и снежная техника под заказ. Розница и опт, шоурум в Ростове-на-Дону, доставка по России.")}
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <InteractiveHoverButton text={t("Собрать свой", "Собрать байк")} className="h-14 w-52 bg-ink text-frost" onClick={() => scrollToId("config")} />
-            <InteractiveHoverButton text="Линейка GT" className="h-14 w-48" onClick={() => scrollToId("models")} />
+            <InteractiveHoverButton text="Линейка GT" className="h-14 w-48" onClick={() => scrollToId("lineup")} />
+            <button className="btn-ghost !min-h-14 inline-flex items-center gap-2" onClick={() => openAR("sport", "GT Send 19 R")}>AR у себя</button>
           </div>
         </div>
         <div className="hero-bike pointer-events-none relative z-0 mt-2 lg:absolute lg:inset-x-0 lg:bottom-[11%] lg:mt-0">
           <div className="relative ml-auto w-full lg:w-[74%] lg:max-w-[1300px]">
-            <Bike3D variant="sport" yaw={-0.55} pitch={0.1} sway={0.14} label="GT Sport, 3D-модель" className="h-[300px] sm:h-[420px] lg:h-[min(64svh,640px)]" />
+            <Bike3D variant="sport" yaw={-0.55} pitch={0.1} sway={0.14} label="GT Send 19 R, 3D-модель" className="h-[300px] sm:h-[420px] lg:h-[min(64svh,640px)]" />
             <ObjectTracker wheels={g.wheels} facing="right" className="absolute inset-0 h-full w-full" />
           </div>
         </div>
@@ -163,11 +165,11 @@ export function Hero() {
           <div className="grid grid-cols-2 items-end gap-x-6 gap-y-3 border-t border-ink/30 pt-4 sm:grid-cols-4">
             <div className="col-span-2 sm:col-span-1">
               <div className="mono">{g.name}</div>
-              <div className="mt-1 text-sm">примерная цена от <b>{rub(g.price)}</b></div>
-              <div className="mono mt-1 text-mute">целевая спецификация, уточняется</div>
+              <div className="mt-1 text-sm">бронь <b>{rub(DEPOSIT)}</b>, цена после теста</div>
+              <div className="mono mt-1 text-mute">данные производителя, уточняются</div>
             </div>
-            <div><div className="font-display text-[clamp(26px,3.4vw,56px)] font-extrabold leading-none"><CountR lo={g.kw[0]} hi={g.kw[1]} /><span className="ml-1 text-[0.4em] font-semibold">кВт</span></div><div className="mono mt-1 text-mute">пик</div></div>
-            <div><div className="font-display text-[clamp(26px,3.4vw,56px)] font-extrabold leading-none"><CountR lo={g.kwh[0]} hi={g.kwh[1]} dec={1} /><span className="ml-1 text-[0.4em] font-semibold">кВт·ч</span></div><div className="mono mt-1 text-mute">энергия</div></div>
+            <div><div className="font-display text-[clamp(26px,3.4vw,56px)] font-extrabold leading-none"><CountV v={g.peak ?? 0} /><span className="ml-1 text-[0.4em] font-semibold">кВт</span></div><div className="mono mt-1 text-mute">пик</div></div>
+            <div><div className="font-display text-[clamp(26px,3.4vw,56px)] font-extrabold leading-none"><CountV v={g.kwh ?? 0} dec={2} /><span className="ml-1 text-[0.4em] font-semibold">кВт·ч</span></div><div className="mono mt-1 text-mute">батарея</div></div>
             <div><div className="font-display text-[clamp(26px,3.4vw,56px)] font-extrabold leading-none">{g.wheels}</div><div className="mono mt-1 text-mute">колеса, дюймы</div></div>
           </div>
         </div>

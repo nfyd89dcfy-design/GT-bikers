@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import { DIRS, type DirKey } from "./data";
+import { COMPARE_IDS, DIRS, type DirKey } from "./data";
 
 /* ---------- голос: ты / вы ---------- */
 export type Voice = "ty" | "vy";
@@ -25,7 +25,7 @@ interface AppCtx {
   driveFor: string;
   setDriveFor: (id: string) => void;
 }
-export interface CartItem { id: string; name: string; sub: string; price: number; variant: "base" | "sport" | "pro"; paint?: string; qty: number }
+export interface CartItem { id: string; name: string; sub: string; price: number; variant: string; paint?: string; qty: number }
 
 const Ctx = createContext<AppCtx>(null as unknown as AppCtx);
 export const useApp = () => useContext(Ctx);
@@ -43,14 +43,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
   });
   const [gateOpen, setGateOpen] = useState(() => !new URLSearchParams(location.search).has("skip"));
   const [cart, setCart] = useState<CartItem[]>(() => {
-    try { return JSON.parse(safe.get("erizz-cart") || "[]"); } catch { return []; }
+    try { return (JSON.parse(safe.get("erizz-cart4") || "[]") as CartItem[]); } catch { return []; }
   });
   const [cartOpen, setCartOpen] = useState(false);
   const [toast, setToast] = useState("");
-  const [compare, setCompare] = useState<string[]>(["gt-base", "gt-sport", "gt-pro"]);
-  const [driveFor, setDriveFor] = useState("gt-sport");
+  const [compare, setCompare] = useState<string[]>(COMPARE_IDS);
+  const [driveFor, setDriveFor] = useState("gt-pulse-17");
 
-  useEffect(() => { safe.set("erizz-cart", JSON.stringify(cart)); }, [cart]);
+  useEffect(() => { safe.set("erizz-cart4", JSON.stringify(cart)); }, [cart]);
   const setVoice = (v: Voice) => { setVoiceS(v); safe.set("erizz-voice", v); };
   const setDir = (d: DirKey) => { setDirS(d); safe.set("erizz-dir", d); };
   const t = useCallback((ty: string, vy: string) => (voice === "ty" ? ty : vy), [voice]);

@@ -7,19 +7,20 @@ import { Eyebrow, H2, Reveal } from "./ui-bits";
 import { BlockGrid } from "./shaders";
 import { Bike3D, type BikeApi } from "./bike";
 import { cn } from "@/lib/utils";
+import { photo } from "@/lib/data";
 
 /* ---------------------------------------------------------------- Assembly (3D, scroll) */
 const STEPS = [
-  ["Колеса и тормоза", "Обода с настоящими спицами, шины с шашками и дисковые тормоза"],
-  ["Рама и батарея", "Рама вокруг батареи с ребрами охлаждения"],
-  ["Вилка и руль", "Перевернутая вилка, траверсы и широкий руль"],
-  ["Мотор и подвеска", "Мотор с ребрами, цепь и моноамортизатор с пружиной"],
+  ["Колеса и тормоза", "19/18, шины с шашками, гидравлика 220/203 мм"],
+  ["Рама и батарея", "Батарея 72 В 60 А·ч в корпусе с охлаждением"],
+  ["Вилка и руль", "Перевернутая вилка, ход 200 мм, широкий руль"],
+  ["Мотор и подвеска", "6 кВт номинал, 17 кВт пик, моноамортизатор 208 мм"],
 ];
 const CALLS = [
-  { l: "батарея 4,5-5,5 кВт·ч", x: 47, y: 50, at: 0.52 },
-  { l: "пик 25-35 кВт", x: 40, y: 72, at: 0.6 },
-  { l: "вилка и обода синие", x: 71, y: 36, at: 0.68 },
-  { l: "моноамортизатор", x: 27, y: 44, at: 0.76 },
+  { l: "батарея 4,32 кВт·ч", x: 50, y: 52, at: 0.52 },
+  { l: "пик 17 кВт", x: 44, y: 70, at: 0.6 },
+  { l: "ход вилки 200 мм", x: 70, y: 36, at: 0.68 },
+  { l: "110 км/ч / 120 км", x: 24, y: 40, at: 0.76 },
 ];
 
 export function Assembly() {
@@ -53,11 +54,11 @@ export function Assembly() {
       <div className="container-x relative flex flex-1 flex-col">
         <Eyebrow n="04" dark>конструкция / скролль</Eyebrow>
         <h2 id="build-h" className="font-display text-[clamp(28px,4.6vw,72px)] font-extrabold uppercase leading-[0.95]">
-          {t("Смотри, из чего собран", "Из чего собран")} <span className="chrome-text">GT Pro</span>
+          {t("Смотри, из чего собран", "Из чего собран")} <span className="chrome-text">GT Send 19 R</span>
         </h2>
         <div className="relative mt-2 flex-1">
           <div className="relative mx-auto w-full max-w-[1500px] lg:absolute lg:inset-0">
-            <Bike3D ref={bike} variant="pro" yaw={1.0} pitch={0.1} sway={0} label="GT Pro: 3D-модель, вращается при прокрутке" className="h-[300px] sm:h-[420px] lg:h-full" />
+            <Bike3D ref={bike} variant="sport" yaw={1.0} pitch={0.1} sway={0} label="GT Send 19 R: 3D-модель, вращается при прокрутке" className="h-[300px] sm:h-[420px] lg:h-full" />
             {CALLS.map((c, i) => (
               <div key={c.l} className={cn("asm-call pointer-events-none absolute z-10 hidden items-center gap-2 sm:flex", `asm-call-${i}`)} style={{ left: `${c.x}%`, top: `${c.y}%` }}>
                 <span className="relative grid h-3 w-3 place-items-center"><span className="ping absolute h-3 w-3 rounded-full bg-flare/70" /><span className="h-2 w-2 rounded-full bg-flare" /></span>
@@ -83,11 +84,11 @@ export function Assembly() {
 
 /* ---------------------------------------------------------------- Perks */
 const PERKS = [
-  { icon: MapPin, h: "Шоурум", ty: "Приходи, потрогай, сядь. Ростов-на-Дону, прототип 3D-тура ниже.", vy: "Приезжайте, посмотрите и сядьте на технику. Ростов-на-Дону, 3D-тур ниже.", span: "lg:col-span-7" },
-  { icon: Gauge, h: "Тест-драйв", ty: "Кати до покупки: выбираешь город, дату и модель.", vy: "Прокатитесь до покупки: выберите город, дату и модель.", span: "lg:col-span-5" },
-  { icon: Wrench, h: "Сервис", ty: "Диагностика, батареи, расходники. Свой склад запчастей.", vy: "Диагностика, обслуживание батарей, расходники. Собственный склад запчастей.", span: "lg:col-span-4" },
-  { icon: Truck, h: "Доставка", ty: "Москва, Ростов, Краснодарский край. Опт отдельным рейсом.", vy: "Москва, Ростов-на-Дону, Краснодарский край. Оптовые партии отдельным рейсом.", span: "lg:col-span-4" },
-  { icon: PaintBucket, h: "Custom", ty: "Цвет, наклейки, грипсы, батарея: собери свой build.", vy: "Цвет, наклейки, аксессуары, батарея: соберите свою конфигурацию.", span: "lg:col-span-4" },
+  { icon: MapPin, ph: "garage_moody", h: "Шоурум", ty: "Приходи, потрогай, сядь. Ростов-на-Дону, прототип 3D-тура ниже.", vy: "Приезжайте, посмотрите и сядьте на технику. Ростов-на-Дону, 3D-тур ниже.", span: "lg:col-span-7" },
+  { icon: Gauge, ph: "backlit_dust", h: "Тест-драйв", ty: "Кати до покупки: выбираешь город, дату и модель.", vy: "Прокатитесь до покупки: выберите город, дату и модель.", span: "lg:col-span-5" },
+  { icon: Wrench, ph: "garage_service", h: "Сервис", ty: "Диагностика, батареи, расходники. Свой склад запчастей.", vy: "Диагностика, обслуживание батарей, расходники. Собственный склад запчастей.", span: "lg:col-span-4" },
+  { icon: Truck, ph: "night_road", h: "Доставка", ty: "Москва, Ростов, Краснодарский край. Опт отдельным рейсом.", vy: "Москва, Ростов-на-Дону, Краснодарский край. Оптовые партии отдельным рейсом.", span: "lg:col-span-4" },
+  { icon: PaintBucket, ph: "workshop", h: "Custom", ty: "Цвет, наклейки, грипсы, батарея: собери свой build.", vy: "Цвет, наклейки, аксессуары, батарея: соберите свою конфигурацию.", span: "lg:col-span-4" },
 ];
 export function Perks() {
   const { t } = useApp();
@@ -103,8 +104,7 @@ export function Perks() {
             <Reveal key={p.h} className={p.span}>
               <GlowCard customSize glowColor="flare" className="touch-pan-y! h-[300px] !p-0 sm:h-[340px]">
                 <div className="relative row-span-2 h-full overflow-hidden rounded-2xl">
-                  <div className="brushed-dark absolute inset-0 opacity-60" />
-                  <p.icon className="absolute right-5 top-5 text-frost/10" size={150} strokeWidth={1} aria-hidden="true" />
+                  <img src={photo(p.ph, true)} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover opacity-70 transition-transform duration-700 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-gradient-to-t from-deep via-deep/30 to-transparent" />
                   <div className="relative flex h-full flex-col justify-end p-5">
                     <p.icon className="mb-3 text-sky" size={28} aria-hidden="true" />

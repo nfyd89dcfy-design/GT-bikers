@@ -87,6 +87,7 @@ img { max-width: 100%; }
 .badge-base { background: #1c2026; color: #eef1f4; border: 1px solid #ff4a2b; }
 .badge-sport { background: rgba(185,194,204,.16); color: #eef1f4; border: 1px solid #8d97a2; }
 .badge-pro { background: rgba(42,91,215,.22); color: #b9d8ff; border: 1px solid #2a5bd7; }
+.badge-road { background: rgba(156,201,255,.12); color: #dbeaff; border: 1px solid #9cc9ff; }
 .has-bolt, .has-bolt * { cursor: none !important; }
 .bolt { position: fixed; left: 0; top: 0; z-index: 500; pointer-events: none; width: 34px; height: 44px; display: none; will-change: transform; }
 .bolt.on { display: block; }

@@ -2,31 +2,33 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { RotateCcw } from "lucide-react";
 import { gsap } from "@/lib/gsap";
 import { useApp, reduceMotion, scrollToId } from "@/lib/state";
-import { DIRS, GT, GT_BY, fmtRange, gtSpec, rub, verLabel, type Ver } from "@/lib/data";
+import { DEPOSIT, DIRS, GT, LINEUP, L_BY, STATUS, glbKey, lSpec, num, rub, verLabel, type DirKey, type Ver } from "@/lib/data";
 import { BlockGrid } from "./shaders";
 import { ObjectTracker } from "./effects";
 import { Bike3D, BikeThumb } from "./bike";
 import { Eyebrow, H2, Reveal } from "./ui-bits";
 import { InteractiveHoverButton } from "./ui/interactive-hover-button";
+import { ARButton, type ARKey } from "./ar";
 import { cn } from "@/lib/utils";
 
 /* ---------------------------------------------------------------- Configurator */
-const BATT = [{ n: "Стандарт", k: 1, p: 0 }, { n: "+10%", k: 1.1, p: 35000 }, { n: "+20%", k: 1.2, p: 80000 }, { n: "Dual", k: 2, p: 150000 }];
-const CTRL = [{ n: "Stock", p: 0, d: "ровный отклик" }, { n: "Sport", p: 25000, d: "резкий старт" }, { n: "Pro tune", p: 60000, d: "тонкая настройка" }];
-const PAINT: { n: string; c?: string }[] = [{ n: "Стандарт" }, { n: "Flare", c: "#ff4a2b" }, { n: "Бордо", c: "#7a1b2e" }, { n: "Сталь", c: "#aeb7c1" }, { n: "Графит", c: "#23272d" }];
-const DECAL = [{ n: "Без наклеек", p: 0, txt: "" }, { n: "GT", p: 7000, txt: "GT" }, { n: "E-RIZZ", p: 7000, txt: "E-RIZZ" }, { n: "custom plate", p: 14000, txt: "RIZZ 01" }];
+const BATT = [{ n: "Стандарт", k: 1, p: 0 }, { n: "+20% емкости", k: 1.2, p: 60000 }, { n: "Вторая батарея", k: 2, p: 140000 }];
+const CTRL = [{ n: "Stock", p: 0, d: "ровный отклик" }, { n: "Sport", p: 25000, d: "резкий старт" }, { n: "Pro tune", p: 60000, d: "тонкая настройка под райдера" }];
+const PAINT: { n: string; c?: string }[] = [{ n: "Заводской" }, { n: "Flare", c: "#ff4a2b" }, { n: "Иней", c: "#eef1f4" }, { n: "Графит", c: "#23272d" }, { n: "Небо", c: "#9cc9ff" }, { n: "Бордо", c: "#7a1b2e" }];
+const DECAL = [{ n: "Без наклеек", p: 0, txt: "" }, { n: "GT", p: 7000, txt: "GT" }, { n: "E-RIZZ", p: 7000, txt: "E-RIZZ" }, { n: "Номер райдера", p: 14000, txt: "RIZZ 01" }];
+const KIT = [{ n: "Без пакета", p: 0 }, { n: "Защита: рама, радиатор, руки", p: 18000 }, { n: "Свет и номер для дороги", p: 26000 }];
 
 function Price({ value }: { value: number }) {
   const ref = useRef<HTMLSpanElement>(null);
   const cur = useRef(value);
   useEffect(() => {
     const el = ref.current!;
-    if (reduceMotion()) { el.textContent = rub(value); cur.current = value; return; }
+    if (reduceMotion()) { el.textContent = "+" + rub(value); cur.current = value; return; }
     const o = { v: cur.current };
-    const tw = gsap.to(o, { v: value, duration: 0.5, ease: "power2.out", onUpdate: () => { el.textContent = rub(o.v); cur.current = o.v; } });
+    const tw = gsap.to(o, { v: value, duration: 0.5, ease: "power2.out", onUpdate: () => { el.textContent = "+" + rub(o.v); cur.current = o.v; } });
     return () => { tw.kill(); };
   }, [value]);
-  return <span ref={ref}>{rub(value)}</span>;
+  return <span ref={ref}>+{rub(value)}</span>;
 }
 
 export function Configurator() {
@@ -36,23 +38,25 @@ export function Configurator() {
   const [ct, setCt] = useState(0);
   const [cl, setCl] = useState(0);
   const [dc, setDc] = useState(0);
+  const [kt, setKt] = useState(0);
   const m = GT.find((g) => g.ver === ver)!;
-  const total = m.price + BATT[bt].p + CTRL[ct].p + (cl ? 12000 : 0) + DECAL[dc].p;
-  const kwhTop = Math.round(m.kwh[1] * BATT[bt].k * 10) / 10;
-  const summary = `${m.name}, АКБ до ${String(kwhTop).replace(".", ",")} кВт·ч (${BATT[bt].n}), контроллер ${CTRL[ct].n}, цвет: ${PAINT[cl].n}${DECAL[dc].txt ? ", наклейки " + DECAL[dc].n : ""}`;
-  const id = `build-${ver}${bt}${ct}${cl}${dc}`;
+  const hero = L_BY[m.id];
+  const opts = BATT[bt].p + CTRL[ct].p + (cl ? 12000 : 0) + DECAL[dc].p + KIT[kt].p;
+  const kwh = hero?.kwh ? Math.round(hero.kwh * BATT[bt].k * 100) / 100 : null;
+  const summary = `${m.name}: батарея ${BATT[bt].n}${kwh ? ` (${num(kwh)} кВт·ч)` : ""}, контроллер ${CTRL[ct].n}, цвет ${PAINT[cl].n}${DECAL[dc].txt ? ", " + DECAL[dc].n : ""}${kt ? ", " + KIT[kt].n : ""}`;
+  const id = `build-${ver}${bt}${ct}${cl}${dc}${kt}`;
 
   const Opt = ({ label, children }: { label: string; children: React.ReactNode }) => (
     <fieldset className="border-0 p-0"><legend className="mono mb-2 text-sky">{label}</legend><div className="flex flex-wrap gap-2">{children}</div></fieldset>
   );
   return (
     <section id="config" className="dark-zone relative isolate overflow-hidden py-24 sm:py-36" aria-labelledby="config-h">
-      <BlockGrid a="#07080a" b="#1f242b" line="#6b747e" gain={0.9} cells={15} lineAmt={0.3} react={0.8} seed={9} className="absolute inset-0 -z-10 h-full w-full opacity-80" />
+      <BlockGrid a="#07080a" b="#1f242b" line="#6b747e" gain={0.9} cells={15} lineAmt={0.3} react={0.8} seed={9} className="absolute inset-0 -z-10 h-full w-full opacity-70" />
       <div className="container-x">
         <Reveal>
-          <Eyebrow n="05" dark>конструктор</Eyebrow>
+          <Eyebrow n="06" dark>конструктор</Eyebrow>
           <H2><span id="config-h">{t("Собери", "Соберите")}</span> <span className="chrome-text">{t("свой build", "свою конфигурацию")}</span></H2>
-          <p className="muted mt-4 max-w-2xl text-lg">{t("Модель, батарея, контроллер, цвет, наклейки. Цена пересчитывается сразу, она примерная.", "Модель, батарея, контроллер, цвет и наклейки. Стоимость пересчитывается сразу, цена примерная.")}</p>
+          <p className="muted mt-4 max-w-2xl text-lg">{t("Серия, батарея, контроллер, цвет, наклейки, пакет. Стоимость опций пересчитывается сразу, базовую цену фиксируем после теста образца.", "Серия, батарея, контроллер, цвет, наклейки и пакет. Стоимость опций пересчитывается сразу, базовая цена фиксируется после теста образца.")}</p>
         </Reveal>
         <div className="mt-8 grid gap-4 lg:grid-cols-[1.6fr_1fr] lg:gap-6">
           <div className="relative min-h-[320px] overflow-hidden rounded-3xl border border-frost/20 bg-deep/45 sm:min-h-[520px]">
@@ -61,14 +65,17 @@ export function Configurator() {
               <Bike3D variant={m.ver} paint={PAINT[cl].c} interactive yaw={-0.5} sway={0.08} label={`${m.name}, цвет: ${PAINT[cl].n}. Потяни, чтобы повернуть`} className="h-full w-full" />
               <ObjectTracker wheels={m.wheels} facing="right" className="pointer-events-none absolute inset-0 h-full w-full" />
             </div>
-            {DECAL[dc].txt && <div className="font-display pointer-events-none absolute left-[44%] top-[46%] -rotate-[8deg] rounded bg-flare px-2 py-0.5 text-[clamp(9px,1.5vw,18px)] font-extrabold text-ink shadow-lg">{DECAL[dc].txt}</div>}
-            <div className="absolute bottom-4 left-4 right-4">
-              <div className="mono text-sky">{m.name}</div>
-              <div className="mono muted max-w-[20rem] truncate sm:max-w-none">{summary}</div>
+            {DECAL[dc].txt && <div className="font-display pointer-events-none absolute left-[44%] top-[44%] -rotate-[8deg] rounded bg-flare px-2 py-0.5 text-[clamp(9px,1.5vw,18px)] font-extrabold text-ink shadow-lg">{DECAL[dc].txt}</div>}
+            <div className="absolute bottom-4 left-4 right-4 flex flex-wrap items-end justify-between gap-3">
+              <div className="min-w-0">
+                <div className="mono text-sky">{m.name}</div>
+                <div className="mono muted max-w-[20rem] truncate sm:max-w-[36rem]">{summary}</div>
+              </div>
+              <ARButton k={m.ver as ARKey} name={m.name} className="!min-h-11 text-sm" />
             </div>
           </div>
           <div className="space-y-5 rounded-3xl border border-frost/20 bg-deep/55 p-5 backdrop-blur sm:p-6">
-            <Opt label="01 модель">
+            <Opt label="01 серия">
               {GT.map((x) => <button key={x.id} className="chip !text-frost aria-pressed:!text-ink" aria-pressed={ver === x.ver} onClick={() => setVer(x.ver)}>{x.short} · {x.wheels}</button>)}
             </Opt>
             <Opt label="02 батарея">
@@ -81,18 +88,23 @@ export function Configurator() {
               {PAINT.map((p, i) => (
                 <button key={p.n} aria-pressed={cl === i} aria-label={`Цвет: ${p.n}`} onClick={() => setCl(i)}
                   className={cn("h-11 w-11 cursor-pointer rounded-full border-2", cl === i ? "border-flare ring-2 ring-flare/40" : "border-frost/40")}
-                  style={{ background: p.c ?? "linear-gradient(135deg,#222,#9aa3ad)" }} />
+                  style={{ background: p.c ?? "linear-gradient(135deg,#222,#ff4a2b)" }} />
               ))}
             </Opt>
-            <Opt label="05 кастом-наклейки">
+            <Opt label="05 наклейки">
               {DECAL.map((x, i) => <button key={x.n} className="chip !text-frost aria-pressed:!text-ink" aria-pressed={dc === i} onClick={() => setDc(i)}>{x.n}</button>)}
             </Opt>
-            <p className="muted text-xs">{t("Цвет перекрашивает пластик в 3D, наклейки в макете показаны плашкой. Спецификации целевые.", "Цвет перекрашивает пластик в 3D, наклейки в макете показаны плашкой. Спецификации целевые.")}</p>
+            <Opt label="06 пакет">
+              {KIT.map((x, i) => <button key={x.n} className="chip !text-frost aria-pressed:!text-ink" aria-pressed={kt === i} onClick={() => setKt(i)}>{x.n}</button>)}
+            </Opt>
             <div className="border-t border-frost/25 pt-4">
-              <div className="mono muted">примерная цена</div>
-              <div className="font-display text-4xl font-extrabold" aria-live="polite"><Price value={total} /></div>
+              <div className="flex flex-wrap items-end justify-between gap-3">
+                <div><div className="mono muted">опции</div><div className="font-display text-3xl font-extrabold" aria-live="polite"><Price value={opts} /></div></div>
+                <div className="text-right"><div className="mono muted">бронь сейчас</div><div className="font-display text-3xl font-extrabold text-flare">{rub(DEPOSIT)}</div></div>
+              </div>
+              <p className="muted mt-2 text-xs">{t("Цена опций ориентировочная. Базовую цену модели назовем после теста образца, бронь вернем, если не подойдет.", "Цена опций ориентировочная. Базовая цена модели фиксируется после теста образца, бронь возвращается.")}</p>
               <div className="mt-4 flex flex-wrap gap-3">
-                <InteractiveHoverButton text="В корзину" className="h-14 w-52 border-frost/40 bg-transparent text-frost" onClick={() => addCart({ id, name: `E-Rizz build · ${m.name}`, sub: summary, price: total, variant: m.ver, paint: PAINT[cl].c })} data-testid="cfg-add" />
+                <InteractiveHoverButton text="Забронировать" className="h-14 w-56 border-frost/40 bg-transparent text-frost" onClick={() => addCart({ id, name: `Build · ${m.name}`, sub: `${summary}; опции ${rub(opts)}`, price: DEPOSIT, variant: m.ver, paint: PAINT[cl].c })} data-testid="cfg-add" />
                 <button className="btn-ghost" onClick={() => { setDriveFor(m.id); scrollToId("drive"); }}>Сначала тест-драйв</button>
               </div>
             </div>
@@ -104,29 +116,30 @@ export function Configurator() {
 }
 
 /* ---------------------------------------------------------------- Quiz */
-interface Q { q: [string, string]; a: { l: [string, string]; s: Partial<Record<string, number>> }[] }
+type Sc = Partial<Record<string, number>>;
+interface Q { q: [string, string]; a: { l: [string, string]; s: Sc; d?: DirKey }[] }
 const QUIZ: Q[] = [
   { q: ["Что катаем?", "Какая техника вас интересует?"], a: [
-    { l: ["Эндуро", "Эндуро"], s: { enduro: 5 } },
-    { l: ["Город", "Город"], s: { city: 5 } },
-    { l: ["Багги", "Багги"], s: { buggy: 5 } },
-    { l: ["Квадрик", "Квадроцикл"], s: { quad: 5 } },
-    { l: ["Снег", "Снег"], s: { snow: 5 } },
+    { l: ["Первый байк для подростка", "Первый байк для подростка"], s: { "gt-spark-14": 4, "gt-spark-17": 3 }, d: "first" },
+    { l: ["Эндуро и лес", "Эндуро и бездорожье"], s: { "gt-send-19": 3, "gt-send-19r": 3, "gt-ridge-21": 2 }, d: "enduro" },
+    { l: ["Город и трасса", "Город и трасса"], s: { "gt-pulse-17": 4, "gt-pulse-duo": 2, "gt-drift-19": 2 }, d: "city" },
+    { l: ["Багги, квадрик, снег", "Багги, квадроцикл, снегоход"], s: {}, d: "buggy" },
   ] },
-  { q: ["Какая нужна посадка?", "Какая посадка вам подходит?"], a: [
-    { l: ["Компактная, 17/14", "Компактная, колеса 17/14"], s: { base: 3 } },
-    { l: ["Взрослый легкий трейл, 19/18", "Взрослый легкий трейл, колеса 19/18"], s: { sport: 3 } },
-    { l: ["Полноразмерный эндуро, 21/18", "Полноразмерный эндуро, колеса 21/18"], s: { pro: 3 } },
+  { q: ["Кто поедет?", "Кто будет ездить?"], a: [
+    { l: ["Подросток, рост до 165", "Подросток, рост до 165 см"], s: { "gt-spark-12": 2, "gt-spark-14": 3, "gt-spark-14s": 2 } },
+    { l: ["Подросток повыше или новичок", "Подросток повыше или новичок"], s: { "gt-spark-17": 3, "gt-spark-17s": 2, "gt-send-19c": 2, "gt-pulse-17c": 2 } },
+    { l: ["Взрослый, есть опыт", "Взрослый с опытом"], s: { "gt-send-19r": 3, "gt-send-19s": 2, "gt-ridge-21": 2, "gt-pulse-17": 2 } },
   ] },
   { q: ["Где будешь кататься?", "Где вы планируете ездить?"], a: [
-    { l: ["Двор и ровные дорожки", "Двор и ровные дорожки"], s: { base: 2 } },
-    { l: ["Лес, песок, овраги", "Лес, песок, грунтовые дороги"], s: { sport: 2 } },
-    { l: ["Горы и тяжелый рельеф", "Горы и тяжелый рельеф"], s: { pro: 2 } },
+    { l: ["Двор, парк, дача", "Двор, парк, дача"], s: { "gt-spark-14": 2, "gt-pulse-17c": 2, "gt-pulse-duo": 2 } },
+    { l: ["Лес, песок, овраги", "Лес, песок, грунт"], s: { "gt-send-19": 2, "gt-send-19r": 2, "gt-spark-17s": 1 } },
+    { l: ["Горы и тяжелый рельеф", "Горы и тяжелый рельеф"], s: { "gt-ridge-21": 3, "gt-ridge-21s": 2, "gt-send-19x": 1 } },
+    { l: ["Асфальт каждый день", "Асфальт каждый день"], s: { "gt-pulse-17": 3, "gt-pulse-duo": 2, "gt-pulse-17r": 1 } },
   ] },
   { q: ["Что важнее?", "Что для вас важнее?"], a: [
-    { l: ["Цена и простота", "Цена и простота"], s: { base: 3 } },
-    { l: ["Баланс", "Баланс"], s: { sport: 3 } },
-    { l: ["Мощность и оснащение", "Мощность и оснащение"], s: { pro: 3 } },
+    { l: ["Простота и цена", "Простота и цена"], s: { "gt-spark-14": 2, "gt-send-19": 2, "gt-pulse-17c": 2 } },
+    { l: ["Запас хода", "Запас хода"], s: { "gt-send-19r": 2, "gt-pulse-duo": 3, "gt-send-19s": 2 } },
+    { l: ["Мощность и оснащение", "Мощность и оснащение"], s: { "gt-send-19x": 2, "gt-send-19f": 3, "gt-pulse-17r": 2 } },
   ] },
 ];
 
@@ -134,30 +147,31 @@ export function Quiz() {
   const { t, addCart, toggleCompare, setDriveFor, setDir } = useApp();
   const [step, setStep] = useState(0);
   const [score, setScore] = useState<Record<string, number>>({});
+  const [dk, setDk] = useState<DirKey | null>(null);
   const done = step >= QUIZ.length;
-  const pick = (s: Partial<Record<string, number>>) => {
+  const pick = (a: Q["a"][number]) => {
     const n = { ...score };
-    for (const k in s) n[k] = (n[k] || 0) + (s[k] || 0);
+    for (const k in a.s) n[k] = (n[k] || 0) + (a.s[k] || 0);
+    if (a.d) setDk(a.d);
     setScore(n); setStep(step + 1);
   };
   const res = useMemo(() => {
     if (!done) return null;
-    const dirs = DIRS.map((d) => [d.key, score[d.key] || 0] as const).sort((a, b) => b[1] - a[1]);
-    const d = DIRS.find((x) => x.key === dirs[0][0])!;
-    if (d.ids.length === 0) return { d, id: null as string | null };
-    const vs = (["base", "sport", "pro"] as const).map((v) => [v, score[v] || 0] as const).sort((a, b) => b[1] - a[1]);
-    const pick = d.key === "city" ? "base" : vs[0][0];
-    return { d, id: `gt-${pick}` as string | null };
-  }, [done, score]);
-  const gt = res && res.id ? GT_BY[res.id] : null;
+    const d = DIRS.find((x) => x.key === dk) ?? DIRS[1];
+    if (d.key === "buggy" || d.key === "quad" || d.key === "snow") return { d, id: null as string | null };
+    const pool = LINEUP.filter((m) => (d.key === "first" ? m.group === "spark" : d.key === "city" ? m.group === "road" : m.group === "send" || m.group === "ridge"));
+    const best = pool.map((m) => [m.id, score[m.id] || 0] as const).sort((a, b) => b[1] - a[1])[0];
+    return { d, id: best ? best[0] : null };
+  }, [done, score, dk]);
+  const m = res && res.id ? L_BY[res.id] : null;
 
   return (
     <section id="quiz" className="relative py-24 sm:py-36" aria-labelledby="quiz-h">
       <div className="container-x grid gap-10 lg:grid-cols-[1fr_1.1fr]">
         <Reveal>
-          <Eyebrow n="06">подбор</Eyebrow>
+          <Eyebrow n="07">подбор</Eyebrow>
           <H2><span id="quiz-h">{t("Не знаешь, что", "Не знаете, что")}</span><br /><span className="text-flare">выбрать?</span></H2>
-          <p className="mt-4 max-w-md text-lg text-mute">{t("Четыре вопроса, и мы подскажем направление и модель: Base, Sport или Pro.", "Четыре вопроса, и мы подскажем направление и модель: Base, Sport или Pro.")}</p>
+          <p className="mt-4 max-w-md text-lg text-mute">{t("Четыре вопроса, и мы подскажем модель из 20. Если не наше, подберем под заказ.", "Четыре вопроса, и мы подскажем модель из двадцати. Если подходящей нет, подберем технику под заказ.")}</p>
         </Reveal>
         <div className="rounded-3xl bg-ink p-6 text-frost sm:p-8" aria-live="polite">
           {!done ? (
@@ -166,29 +180,28 @@ export function Quiz() {
               <h3 className="font-display text-2xl font-extrabold uppercase leading-tight sm:text-3xl">{t(QUIZ[step].q[0], QUIZ[step].q[1])}</h3>
               <div className="mt-6 grid gap-3">
                 {QUIZ[step].a.map((a) => (
-                  <button key={a.l[0]} onClick={() => pick(a.s)} className="min-h-14 cursor-pointer rounded-2xl border border-frost/30 px-5 py-3 text-left text-lg font-semibold transition hover:border-flare hover:bg-flare hover:text-ink">{t(a.l[0], a.l[1])}</button>
+                  <button key={a.l[0]} onClick={() => pick(a)} className="min-h-14 cursor-pointer rounded-2xl border border-frost/30 px-5 py-3 text-left text-lg font-semibold transition hover:border-flare hover:bg-flare hover:text-ink">{t(a.l[0], a.l[1])}</button>
                 ))}
               </div>
             </>
           ) : res && (
             <div>
-              <div className="mono text-sky">{t("твой результат", "ваш результат")}: {res.d.ru}{gt ? ` / ${verLabel(gt.ver)}` : ""}</div>
+              <div className="mono text-sky">{t("твой результат", "ваш результат")}: {res.d.ru}{m ? ` / серия ${verLabel(m.ser)}` : ""}</div>
               <div className="mt-4 grid items-center gap-4 sm:grid-cols-2">
-                {gt ? <div className="rounded-2xl p-2" style={{ background: `linear-gradient(160deg, ${gt.bg}, #0e1013)` }}><BikeThumb variant={gt.ver} yaw={-0.5} w={560} h={380} alt={`${gt.name}, 3D-рендер`} className="w-full" /></div> : <div className="grid min-h-[200px] place-items-center rounded-2xl bg-kelp p-6 text-center"><span className="font-display chrome-text text-4xl font-extrabold uppercase">{res.d.ru}</span></div>}
+                {m ? <div className="rounded-2xl bg-kelp p-2"><BikeThumb variant={glbKey(m) as ARKey} paint={m.paint} yaw={-0.5} w={560} h={380} alt={`${m.name}, 3D-рендер`} className="w-full" /></div> : <div className="grid min-h-[200px] place-items-center rounded-2xl bg-kelp p-6 text-center"><span className="font-display chrome-text text-4xl font-extrabold uppercase">{res.d.ru}</span></div>}
                 <div>
-                  <h3 className="font-display text-3xl font-extrabold uppercase leading-none">{gt ? gt.name : t("Под заказ", "Под заказ")}</h3>
-                  {gt ? <p className="muted mt-1">{t(gt.tag[0], gt.tag[1])}</p> : <p className="muted mt-1">{t("Такую технику мы подбираем под заказ: оставь заявку, и мы пришлем варианты.", "Такую технику мы подбираем под заказ: оставьте заявку, и мы пришлем варианты.")}</p>}
-                  {gt && <ul className="mt-3 text-sm">{gtSpec(gt).map((x) => <li key={x.k}><span className="muted">{x.k}:</span> {x.v}</li>)}</ul>}
-                  {gt && <p className="mono mt-1 text-sky">целевая спецификация, уточняется</p>}
-                  {gt && <div className="mt-3 font-display text-xl font-extrabold">{rub(gt.price)} <span className="mono muted">примерная цена</span></div>}
+                  <h3 className="font-display text-3xl font-extrabold uppercase leading-none">{m ? m.name : t("Под заказ", "Под заказ")}</h3>
+                  {m ? <p className="muted mt-1">{m.role}. {m.chassis}.</p> : <p className="muted mt-1">{t("Такую технику мы подбираем под заказ: оставь заявку, и мы пришлем варианты.", "Такую технику мы подбираем под заказ: оставьте заявку, и мы пришлем варианты.")}</p>}
+                  {m && <ul className="mt-3 text-sm">{lSpec(m).slice(0, 5).map((x) => <li key={x.k}><span className="muted">{x.k}:</span> {x.v}</li>)}</ul>}
                 </div>
               </div>
               <div className="mt-5 flex flex-wrap gap-3">
-                {gt && <button className="btn-solid" onClick={() => addCart({ id: gt.id, name: gt.name, sub: "примерная цена", price: gt.price, variant: gt.ver })}>В корзину</button>}
-                {gt && <button className="btn-ghost" onClick={() => { toggleCompare(gt.id); scrollToId("compare"); }}>Сравнить</button>}
-                <button className="btn-ghost" onClick={() => { setDriveFor(gt ? gt.id : "gt-sport"); scrollToId("drive"); }}>{gt ? "Тест-драйв" : "Оставить заявку"}</button>
-                <button className="btn-ghost" onClick={() => { setDir(res.d.key); scrollToId(gt ? "lineup" : "directions"); }}>{gt ? "Вся линейка" : "Все в направлении"}</button>
-                <button className="mono inline-flex min-h-11 cursor-pointer items-center gap-2 px-2 text-frost/80 hover:text-sky" onClick={() => { setStep(0); setScore({}); }}><RotateCcw size={16} />еще раз</button>
+                {m && <button className="btn-solid" onClick={() => addCart({ id: m.id, name: m.name, sub: "бронь", price: DEPOSIT, variant: glbKey(m), paint: m.paint })}>Забронировать</button>}
+                {m && <ARButton k={glbKey(m) as ARKey} name={m.name} />}
+                {m && <button className="btn-ghost" onClick={() => { toggleCompare(m.id); scrollToId("compare"); }}>Сравнить</button>}
+                <button className="btn-ghost" onClick={() => { setDriveFor(m ? m.id : "gt-pulse-17"); scrollToId("drive"); }}>{m ? "Тест-драйв" : "Оставить заявку"}</button>
+                <button className="btn-ghost" onClick={() => { setDir(res.d.key); scrollToId("directions"); }}>Все в направлении</button>
+                <button className="mono inline-flex min-h-11 cursor-pointer items-center gap-2 px-2 text-frost/80 hover:text-sky" onClick={() => { setStep(0); setScore({}); setDk(null); }}><RotateCcw size={16} />еще раз</button>
               </div>
             </div>
           )}
@@ -199,39 +212,42 @@ export function Quiz() {
 }
 
 /* ---------------------------------------------------------------- Compare */
-type Row = { k: string; get: (id: string) => number | string | null; unit?: string; best?: "max" | "min"; show?: (id: string) => string };
+type Row = { k: string; get: (id: string) => number | string | null; best?: "max" | "min"; show?: (id: string) => string };
 const ROWS: Row[] = [
-  { k: "Колеса, дюймы", get: (i) => GT_BY[i].wheels },
-  { k: "Пик, целевой", get: (i) => GT_BY[i].kw[1], show: (i) => `${fmtRange(GT_BY[i].kw)} кВт`, best: "max" },
-  { k: "Энергия, целевая", get: (i) => GT_BY[i].kwh[1], show: (i) => `${fmtRange(GT_BY[i].kwh)} кВт·ч`, best: "max" },
-  { k: "Модель", get: (i) => verLabel(GT_BY[i].ver) },
-  { k: "Примерная цена", get: (i) => GT_BY[i].price, show: (i) => rub(GT_BY[i].price), best: "min" },
+  { k: "Серия", get: (i) => verLabel(L_BY[i].ser) },
+  { k: "Колеса, дюймы", get: (i) => L_BY[i].wheels },
+  { k: "Мощность", get: (i) => L_BY[i].peak, show: (i) => (L_BY[i].peak ? `${num(L_BY[i].peak!)} кВт` : "уточняется"), best: "max" },
+  { k: "Батарея", get: (i) => L_BY[i].kwh, show: (i) => (L_BY[i].kwh ? `${num(L_BY[i].kwh!)} кВт·ч` : "уточняется"), best: "max" },
+  { k: "Скорость", get: (i) => L_BY[i].kmh, show: (i) => `${L_BY[i].kmh} км/ч`, best: "max" },
+  { k: "Запас хода", get: (i) => L_BY[i].range },
+  { k: "Седло", get: (i) => L_BY[i].seat, show: (i) => (L_BY[i].seat ? `${L_BY[i].seat} мм` : "уточняется") },
+  { k: "Масса", get: (i) => L_BY[i].kg },
+  { k: "Статус", get: (i) => STATUS[L_BY[i].status][0] },
 ];
 export function Compare() {
   const { t, compare, toggleCompare, addCart } = useApp();
-  const ids = compare.filter((id) => GT_BY[id]);
+  const ids = compare.filter((id) => L_BY[id]);
   return (
     <section id="compare" className="relative bg-frost py-24 sm:py-36" aria-labelledby="cmp-h">
       <div className="container-x">
         <Reveal>
-          <Eyebrow n="07">сравнение</Eyebrow>
+          <Eyebrow n="08">сравнение</Eyebrow>
           <H2><span id="cmp-h">{t("Сравни", "Сравните")}</span> <span className="text-flare">2-3 модели</span></H2>
         </Reveal>
         <div className="mt-6 flex flex-wrap gap-2" role="group" aria-label="Выбор моделей для сравнения">
-          {GT.map((g) => g.id).map((id) => <button key={id} className="chip !min-h-11 text-sm" aria-pressed={compare.includes(id)} onClick={() => toggleCompare(id)}>{GT_BY[id].name.replace("GT ", "")}</button>)}
+          {LINEUP.map((m) => <button key={m.id} className="chip !min-h-10 !px-3 text-sm" aria-pressed={compare.includes(m.id)} onClick={() => toggleCompare(m.id)}>{m.name.replace("GT ", "")}</button>)}
         </div>
         <p className="mono mt-2 text-mute">{t("выбери от 2 до 3 моделей", "выберите от 2 до 3 моделей")}</p>
         <div className="mt-6 overflow-x-auto rounded-3xl border border-ink/20 bg-sleet">
-          <table className="w-full min-w-[470px] border-collapse text-left">
+          <table className="w-full min-w-[520px] border-collapse text-left">
             <caption className="sr-only-x">Сравнение выбранных моделей</caption>
             <thead>
               <tr>
-                <th className="w-[20%] p-2 sm:p-4" scope="col"><span className="sr-only-x">Параметр</span></th>
+                <th className="w-[18%] p-2 sm:p-4" scope="col"><span className="sr-only-x">Параметр</span></th>
                 {ids.map((id) => (
                   <th key={id} scope="col" className="p-2 align-bottom sm:p-4">
-                    <div className="grid place-items-center overflow-hidden rounded-xl" style={{ background: `linear-gradient(160deg, ${GT_BY[id].bg}, #0e1013)` }}><BikeThumb variant={GT_BY[id].ver} yaw={-0.5} w={420} h={280} alt={`${GT_BY[id].name}, 3D-рендер`} className="h-24 w-auto sm:h-36" /></div>
-                    <div className="mono mt-2 text-mute">{verLabel(GT_BY[id].ver)}</div>
-                    <div className="font-display text-base font-extrabold uppercase sm:text-xl">{GT_BY[id].name}</div>
+                    <div className="grid place-items-center overflow-hidden rounded-xl bg-ink"><BikeThumb variant={glbKey(L_BY[id]) as ARKey} paint={L_BY[id].paint} yaw={-0.5} w={420} h={280} alt={`${L_BY[id].name}, 3D-рендер`} className="h-24 w-auto sm:h-36" /></div>
+                    <div className="font-display mt-2 text-base font-extrabold uppercase sm:text-xl">{L_BY[id].name}</div>
                   </th>
                 ))}
               </tr>
@@ -245,19 +261,19 @@ export function Compare() {
                   <tr key={r.k} className="border-t border-ink/15">
                     <th scope="row" className="mono p-4 font-normal text-mute">{r.k}</th>
                     {vals.map((v, i) => (
-                      <td key={ids[i]} className="p-4 text-lg font-semibold"><span className={cn(best !== null && v === best && "rounded-full bg-flare px-3 py-1")}>{r.show ? r.show(ids[i]) : v}</span></td>
+                      <td key={ids[i]} className="p-4 text-base font-semibold sm:text-lg"><span className={cn(best !== null && v === best && "rounded-full bg-flare px-3 py-1")}>{r.show ? r.show(ids[i]) : v}</span></td>
                     ))}
                   </tr>
                 );
               })}
               <tr className="border-t border-ink/15">
                 <th scope="row" className="p-4" />
-                {ids.map((id) => <td key={id} className="p-4"><button className="btn-ghost" onClick={() => addCart({ id, name: GT_BY[id].name, sub: "примерная цена", price: GT_BY[id].price, variant: GT_BY[id].ver })}>В корзину</button></td>)}
+                {ids.map((id) => <td key={id} className="p-4"><button className="btn-ghost" onClick={() => addCart({ id, name: L_BY[id].name, sub: "бронь", price: DEPOSIT, variant: glbKey(L_BY[id]), paint: L_BY[id].paint })}>Забронировать</button></td>)}
               </tr>
             </tbody>
           </table>
         </div>
-        <p className="mt-3 text-sm text-mute">{t("Цветом отмечено лучшее значение в строке (для цены: минимальное). Мощность и энергия целевые, уточняются.", "Цветом отмечено лучшее значение в строке (для цены: минимальное). Мощность и энергия целевые, уточняются.")}</p>
+        <p className="mt-3 text-sm text-mute">{t("Цветом отмечено лучшее значение в строке. Данные производителей, уточняются на тестах.", "Цветом отмечено лучшее значение в строке. Данные производителей, уточняются на тестах.")}</p>
       </div>
     </section>
   );

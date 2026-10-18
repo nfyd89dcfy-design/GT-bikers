@@ -10,8 +10,10 @@ import { Compare, Configurator, Quiz } from "@/components/tools";
 import { Delivery } from "@/components/delivery";
 import { Showroom } from "@/components/showroom";
 import { CartDrawer, Drive, Footer, Media, Service } from "@/components/media";
+import { ARLayer } from "@/components/ar";
+import { Atmos } from "@/components/atmos";
 
-const WORDS = ["base", "17/14", "sport", "19/18", "pro", "21/18", "e-rizz"];
+const WORDS = ["spark", "14/12", "send", "19/18", "ridge", "21/18", "pulse", "17/17", "e-rizz"];
 
 function Marquee({ reverse, dark }: { reverse?: boolean; dark?: boolean }) {
   const row = [...WORDS, ...WORDS];
@@ -73,6 +75,7 @@ function Page() {
         <Quiz />
         <Compare />
         <Delivery />
+        <Atmos />
         <Showroom />
         <Media />
         <Service />
@@ -81,6 +84,7 @@ function Page() {
       <Footer />
       <CartDrawer />
       <Toast />
+      <ARLayer />
       <ToneGate />
       <BoltCursor />
     </>

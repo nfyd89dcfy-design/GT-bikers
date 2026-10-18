@@ -6,9 +6,10 @@ import * as THREE from "three";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 
 declare const __GLB_LIST__: string[];
-export type Variant = "base" | "sport" | "pro";
+export type Variant = "base" | "sport" | "pro" | "road" | "roadpro";
 export type Lod = "hi" | "lo";
 
 interface Pal {
@@ -16,7 +17,7 @@ interface Pal {
   lowers: string; stanch: string; spring: string; battery: string; batteryM: number; batteryR: number; clamp: string; clampM: number; clampR: number;
   caliper: string; seat: string; decal: string; stripe: string | null; trim: string | null; wheelsIn: [number, number]; s: number;
 }
-export const PAL: Record<Variant, Pal> = {
+export const PAL: Record<"base" | "sport" | "pro", Pal> = {
   base: { frame: "#101216", frameM: 0.45, frameR: 0.62, plastic: "#15171b", plasticClear: false, rim: "#3d434b", rimM: 0.95, rimR: 0.38, lowers: "#1b1e23", stanch: "#4a5058", spring: "#ff4a2b", battery: "#1a1d22", batteryM: 0.6, batteryR: 0.5, clamp: "#16181c", clampM: 0.7, clampR: 0.4, caliper: "#ff4a2b", seat: "#0c0d0f", decal: "#ff4a2b", stripe: "#ff4a2b", trim: null, wheelsIn: [17, 14], s: 0.9 },
   sport: { frame: "#9aa3ad", frameM: 0.95, frameR: 0.32, plastic: "#1f242a", plasticClear: true, rim: "#ff4a2b", rimM: 0.55, rimR: 0.3, lowers: "#c4ccd4", stanch: "#eef1f4", spring: "#ff4a2b", battery: "#262b32", batteryM: 0.8, batteryR: 0.35, clamp: "#e4e8ec", clampM: 1, clampR: 0.08, caliper: "#e4e8ec", seat: "#0c0d0f", decal: "#f2f4f6", stripe: "#ff4a2b", trim: "#e4e8ec", wheelsIn: [19, 18], s: 0.96 },
   pro: { frame: "#4d0f1e", frameM: 0.2, frameR: 0.32, plastic: "#6c1629", plasticClear: true, rim: "#2a5bd7", rimM: 0.85, rimR: 0.28, lowers: "#2a5bd7", stanch: "#c4d9f2", spring: "#9cc9ff", battery: "#dfe4e9", batteryM: 1, batteryR: 0.1, clamp: "#8db4e8", clampM: 1, clampR: 0.2, caliper: "#9cc9ff", seat: "#0c0d0f", decal: "#bcd9ff", stripe: "#9cc9ff", trim: "#bcd0e8", wheelsIn: [21, 18], s: 1 },
@@ -30,21 +31,40 @@ function loadGLB(v: Variant): Promise<THREE.Group | null> {
   if (!glbCache.has(v)) {
     glbCache.set(v, fetch(`${import.meta.env.BASE_URL}models/${name}`).then((r) => (r.ok ? r.arrayBuffer() : null)).then((buf) => {
       if (!buf || new TextDecoder().decode(buf.slice(0, 4)) !== "glTF") return null;
-      return new Promise<THREE.Group | null>((res) => new GLTFLoader().parse(buf, "", (g) => res(g.scene), () => res(null)));
+      const ld = new GLTFLoader(); ld.setMeshoptDecoder(MeshoptDecoder);
+      return new Promise<THREE.Group | null>((res) => ld.parse(buf, "", (g) => res(g.scene), () => res(null)));
     }).catch(() => null));
   }
   return glbCache.get(v)!.then((g) => (g ? (g.clone(true) as THREE.Group) : null));
 }
-function normalizeGLB(g: THREE.Group): THREE.Group {
-  const box = new THREE.Box3().setFromObject(g);
+/** Перекраска основного пластика GLB (материал GT_paint). */
+function paintGLB(g: THREE.Object3D, paint?: string) {
+  g.traverse((o) => {
+    const m = o as THREE.Mesh; if (!m.isMesh) return;
+    const arr = Array.isArray(m.material) ? m.material : [m.material];
+    m.material = arr.map((mt) => {
+      const mm = mt as THREE.MeshStandardMaterial;
+      if (paint && mm.name === "GT_paint") { const c = mm.clone(); c.color.set(paint); return c; }
+      return mt;
+    }) as unknown as THREE.Material;
+    if (Array.isArray(m.material) && m.material.length === 1) m.material = m.material[0];
+  });
+  return g;
+}
+const REAL_LEN: Record<string, number> = { base: 1.62, sport: 1.98, pro: 2.14, road: 2.02, roadpro: 2.06 };
+function normalizeGLB(g: THREE.Group, v: Variant): THREE.Group {
+  g.updateMatrixWorld(true);
+  const box = new THREE.Box3().setFromObject(g, true);
   const size = box.getSize(new THREE.Vector3());
   const wrap = new THREE.Group();
   if (size.z > size.x) g.rotation.y = Math.PI / 2;
-  const b2 = new THREE.Box3().setFromObject(g);
+  g.updateMatrixWorld(true);
+  const b2 = new THREE.Box3().setFromObject(g, true);
   const s2 = b2.getSize(new THREE.Vector3());
-  const k = 1.95 / Math.max(s2.x, s2.z);
-  g.scale.multiplyScalar(k);
-  const b3 = new THREE.Box3().setFromObject(g);
+  const L = Math.max(s2.x, s2.z) || 1;
+  g.scale.multiplyScalar((REAL_LEN[v] ?? 1.95) / L);
+  g.updateMatrixWorld(true);
+  const b3 = new THREE.Box3().setFromObject(g, true);
   const c = b3.getCenter(new THREE.Vector3());
   g.position.set(-c.x, -b3.min.y, -c.z);
   g.traverse((o) => { const m = o as THREE.Mesh; if (m.isMesh) { m.castShadow = true; m.receiveShadow = false; } });
@@ -198,7 +218,7 @@ function makeWheel(o: WheelOpts) {
 
 /* ------------------------------------------------------------ bike */
 export interface BikeBuild { group: THREE.Group; wheels: THREE.Group[]; rearZ: number }
-export function buildBike(variant: Variant, lod: Lod, paint?: string): BikeBuild {
+export function buildBike(variant: "base" | "sport" | "pro", lod: Lod, paint?: string): BikeBuild {
   const p = PAL[variant]; const s = p.s; const m = mats(p, paint);
   const root = new THREE.Group(); const bike = new THREE.Group(); root.add(bike);
   const wheels: THREE.Group[] = [];
@@ -411,8 +431,9 @@ function makeScene(variant: Variant, lod: Lod, paint?: string) {
 async function fillBike(S: ReturnType<typeof makeScene>, variant: Variant, paint?: string) {
   S.holder.clear();
   const glb = await loadGLB(variant);
-  if (glb) { S.holder.add(normalizeGLB(glb)); S.wheels = []; return; }
-  const b = buildBike(variant, S.lod, paint);
+  if (glb) { S.holder.add(normalizeGLB(paintGLB(glb, paint) as THREE.Group, variant)); S.wheels = []; return; }
+  const pv = (variant === "road" || variant === "roadpro" ? "base" : variant) as "base" | "sport" | "pro";
+  const b = buildBike(pv, S.lod, paint);
   S.holder.add(b.group); S.wheels = b.wheels;
 }
 

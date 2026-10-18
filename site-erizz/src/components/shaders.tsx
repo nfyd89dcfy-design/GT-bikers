@@ -105,8 +105,17 @@ export function ShaderCanvas({ frag, uniforms, className, style, fallback, fps =
   const [ok, setOk] = useState(true);
   const uref = useRef(uniforms);
   uref.current = uniforms;
+  const [live, setLive] = useState(false);
+  // WebGL-контекст создаем только рядом с экраном: браузер держит не больше ~16 контекстов.
+  useEffect(() => {
+    const cv = ref.current!;
+    const io = new IntersectionObserver((e) => { if (e[0].isIntersecting) { setLive(true); io.disconnect(); } }, { rootMargin: "400px" });
+    io.observe(cv);
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
+    if (!live) return;
     const cv = ref.current!;
     const gl = (cv.getContext("webgl", { antialias: false, alpha: false }) as WebGLRenderingContext | null);
     if (!gl) { setOk(false); return; }
@@ -171,7 +180,7 @@ export function ShaderCanvas({ frag, uniforms, className, style, fallback, fps =
       window.removeEventListener("pointermove", mv);
       gl.getExtension("WEBGL_lose_context")?.loseContext();
     };
-  }, [frag, fps, dpr, pointer]);
+  }, [frag, fps, dpr, pointer, live]);
 
   if (!ok) return <div className={className} style={{ ...style, background: fallback }} role="presentation" />;
   return <canvas ref={ref} className={className} style={style} aria-hidden={label ? undefined : true} aria-label={label} />;

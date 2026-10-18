@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Play, X, Send, Clapperboard, Camera, Users, Wrench, Truck, ShieldCheck, KeyRound, Minus, Plus, Trash2, Check } from "lucide-react";
 import { useApp, scrollToId } from "@/lib/state";
-import { GT, GT_BY, modelName, rub } from "@/lib/data";
+import { DEPOSIT, LINEUP, L_BY, glbKey, modelName, photo, rub } from "@/lib/data";
+import type { Variant } from "@/lib/bike3d";
 import { Bike3D, BikeThumb } from "./bike";
 import { Boids, ChromeText } from "./shaders";
 import { Eyebrow, H2, Reveal } from "./ui-bits";
@@ -17,23 +18,26 @@ const SOCS = [
   { n: "Instagram", h: "@erizz.stub", d: ["Фото клиентов и кастом-билды", "Фото клиентов и кастомные сборки"], icon: Camera },
   { n: "VK", h: "vk.com/erizz_stub", d: ["Сообщество и розыгрыши", "Сообщество, новости и отзывы"], icon: Users },
 ];
-type Shot = { t: string; d?: string; v: "base" | "sport" | "pro"; yaw: number; c: string };
+type Shot = { t: string; d?: string; p: string; c: string };
 const VIDS: Shot[] = [
-  { t: "GT Sport в песках", d: "0:48", v: "sport", yaw: -0.9, c: "Тест на песке, 3 камеры" },
-  { t: "GT Pro: первый выезд", d: "1:12", v: "pro", yaw: -0.4, c: "Обзор и замеры" },
-  { t: "Ночной город, GT Base", d: "0:36", v: "base", yaw: -0.7, c: "Город после заката" },
-  { t: "Прыжок на GT Pro", d: "0:29", v: "pro", yaw: 0.5, c: "Замедленная съемка" },
-  { t: "Юг, GT Sport у моря", d: "1:05", v: "sport", yaw: 0.2, c: "Поездка к морю" },
-  { t: "Custom build за 10 минут", d: "0:58", v: "base", yaw: -0.2, c: "Сборка в шоуруме" },
+  { t: "Ночной трек: Send 19 R", d: "0:48", p: "night_motion", c: "Ночная сессия, 3 камеры" },
+  { t: "Пыль и вираж", d: "1:12", p: "dust_turn", c: "Тест тормозов и подвески" },
+  { t: "Осенний лес", d: "0:36", p: "forest_sun", c: "Тихий трейл на рассвете" },
+  { t: "Закат и прыжок", d: "0:29", p: "hero_sunset", c: "Замедленная съемка" },
+  { t: "Город после полуночи", d: "1:05", p: "night_city", c: "Pulse 17 на набережной" },
+  { t: "Зимний выезд", d: "0:58", p: "snow_sunset", c: "Снегоходы под заказ" },
 ];
 
 const PHOTOS: Shot[] = [
-  { t: "Рассвет и песок", v: "sport", yaw: -0.6, c: "Дюны под Ростовом" },
-  { t: "Бордо и синий", v: "pro", yaw: -0.9, c: "Студийный кадр" },
-  { t: "Лесной трейл", v: "base", yaw: -0.3, c: "Утро в лесу" },
-  { t: "Хром и сталь", v: "sport", yaw: 0.7, c: "Детали подвески" },
-  { t: "Город на закате", v: "base", yaw: 0.4, c: "Трасса на закате" },
-  { t: "Синие обода", v: "pro", yaw: 0.2, c: "Колесо крупно" },
+  { t: "Пыль", p: "bw_dust", c: "Черно-белая серия" },
+  { t: "Контровой свет", p: "backlit_dust", c: "Поле под Ростовом" },
+  { t: "Силуэт", p: "hill_silhouette", c: "Гребень на закате" },
+  { t: "Оранжевый час", p: "orange_dust", c: "Трек, вираж" },
+  { t: "Перевал ночью", p: "night_mountain", c: "Дорога над городом" },
+  { t: "Юг и море", p: "rider_sea", c: "Краснодарский край" },
+  { t: "Первые метры", p: "kids_pair", c: "Самые младшие райдеры" },
+  { t: "Гараж", p: "garage_moody", c: "Шоурум после закрытия" },
+  { t: "Дюны", p: "utv_jump", c: "Багги под заказ" },
 ];
 
 export function Media() {
@@ -45,7 +49,7 @@ export function Media() {
       <Boids className="absolute inset-0 -z-10 h-full w-full opacity-50" count={170} a="#8d97a2" b="#ff4a2b" />
       <div className="container-x">
         <Reveal>
-          <Eyebrow n="11" dark>медиа</Eyebrow>
+          <Eyebrow n="12" dark>медиа</Eyebrow>
           <H2><span id="media-h">{t("Наше", "Наши")}</span> <span className="chrome-text">{t("комьюнити", "каналы и видео")}</span></H2>
           <p className="muted mt-4 max-w-2xl text-lg">{t("Подпишись, смотри обзоры и присылай свои билды. Нажми на плитку: она раскроется на весь экран.", "Подписывайтесь на каналы и смотрите обзоры. Нажмите на плитку: она раскроется на весь экран.")}</p>
         </Reveal>
@@ -69,13 +73,13 @@ export function Media() {
           <div id={`panel-${tab}`} role="tabpanel" aria-labelledby={`tab-${tab}`} className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((v) => (
               <MorphTile key={tab + v.t} label={`${v.vid ? "Видео" : "Фото"}: ${v.t}`} className="aspect-video"
-                media={<div className="absolute inset-0" style={{ background: `linear-gradient(150deg, ${GT_BY[`gt-${v.v}`].bg}, #0e1013 85%)` }}><BikeThumb variant={v.v} yaw={v.yaw} w={720} h={405} alt="" className="absolute inset-0 h-full w-full object-contain" /></div>}
+                media={<img src={photo(v.p)} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />}
                 detail={
                   <div className="relative flex h-full min-h-[320px] flex-col justify-end bg-gradient-to-t from-deep/95 via-deep/30 to-transparent p-6 text-frost sm:p-10">
                     {v.vid && <div className="absolute left-1/2 top-1/2 grid h-24 w-24 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-flare text-ink"><Play fill="currentColor" size={36} /></div>}
-                    <p className="mono text-sky">{v.vid ? "плеер-заглушка" : "3D-рендер"} / {v.c}</p>
+                    <p className="mono text-sky">{v.vid ? "плеер-заглушка" : "фото"} / {v.c}</p>
                     <h3 className="font-display mt-2 text-3xl font-extrabold uppercase sm:text-5xl">{v.t}</h3>
-                    <p className="muted mt-2 max-w-xl">{v.vid ? "В рабочей версии здесь будет настоящий плеер. Сейчас это рендер-постер." : "Рендер модели. Свои фото можно будет отправить в канал."}</p>
+                    <p className="muted mt-2 max-w-xl">{v.vid ? "Здесь будет наше видео. Пока это постер из стока: снимем свое до запуска." : "Атмосферное фото из стока. Свои съемки заменят его до запуска."}</p>
                   </div>
                 }
               >
@@ -94,6 +98,7 @@ export function Media() {
 }
 
 /* ---------------------------------------------------------------- Service */
+const SVC_PH = ["garage_service", "night_road", "workshop", "garage_night"];
 const SVC = [
   { icon: Wrench, h: "Сервис", ty: "Диагностика, замена расходников, обслуживание батарей и подвески.", vy: "Диагностика, замена расходников, обслуживание батарей и подвески.", l: ["свой склад запчастей", "ремонт в день обращения (по возможности)"] },
   { icon: Truck, h: "Доставка по России", ty: "Привезем в Москву, по Ростову и Краснодарскому краю. Опт отдельным рейсом.", vy: "Доставка в Москву, по Ростову-на-Дону и Краснодарскому краю. Оптовые партии отдельным рейсом.", l: ["сборка и проверка перед выдачей", "самовывоз из шоурума"] },
@@ -106,17 +111,20 @@ export function Service() {
     <section id="service" className="relative py-24 sm:py-36" aria-labelledby="svc-h">
       <div className="container-x">
         <Reveal>
-          <Eyebrow n="12">сервис</Eyebrow>
+          <Eyebrow n="13">сервис</Eyebrow>
           <H2><span id="svc-h">{t("После покупки", "После покупки")}</span> <span className="text-flare">{t("мы рядом", "мы на связи")}</span></H2>
         </Reveal>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {SVC.map((s, i) => (
             <Reveal key={s.h} delay={i * 0.06}>
-              <article className="h-full rounded-3xl border border-ink/25 bg-frost p-6 transition hover:-translate-y-1 hover:border-flare">
+              <article className="h-full overflow-hidden rounded-3xl border border-ink/25 bg-frost transition hover:-translate-y-1 hover:border-flare">
+                <div className="relative h-40 overflow-hidden"><img src={photo(SVC_PH[i], true)} alt="" loading="lazy" className="h-full w-full object-cover grayscale-[.35]" /><div className="absolute inset-0 bg-gradient-to-t from-frost/90 to-transparent" /></div>
+                <div className="p-6 pt-2">
                 <s.icon size={30} className="text-flare" aria-hidden="true" />
                 <h3 className="font-display mt-4 text-xl font-extrabold uppercase">{s.h}</h3>
                 <p className="mt-2 text-mute">{t(s.ty, s.vy)}</p>
                 <ul className="mt-3 space-y-1 text-sm">{s.l.map((x) => <li key={x} className="flex gap-2"><Check size={16} className="mt-0.5 shrink-0 text-flare" aria-hidden="true" />{x}</li>)}</ul>
+                </div>
               </article>
             </Reveal>
           ))}
@@ -140,7 +148,8 @@ export function Drive() {
   const [phone, setPhone] = useState("");
   const [err, setErr] = useState<Record<string, string>>({});
   const [done, setDone] = useState<null | { no: string }>(null);
-  const ids = GT.map((g) => g.id);
+  const ids = LINEUP.map((m) => m.id);
+  const dm = L_BY[driveFor] ?? L_BY["gt-pulse-17"];
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const er: Record<string, string> = {};
@@ -155,10 +164,10 @@ export function Drive() {
     <section id="drive" className="relative bg-ink py-20 text-frost dark-zone sm:py-28" aria-labelledby="drive-h">
       <div className="container-x grid gap-10 lg:grid-cols-[1fr_1fr]">
         <Reveal>
-          <Eyebrow n="13" dark>тест-драйв</Eyebrow>
+          <Eyebrow n="14" dark>тест-драйв</Eyebrow>
           <H2><span id="drive-h">{t("Кати", "Запишитесь")}</span> <span className="text-sky">{t("до покупки", "на тест-драйв")}</span></H2>
           <p className="muted mt-4 max-w-md text-lg">{t("Выбери город, дату и модель. Мы подтвердим время и подготовим байк.", "Выберите город, дату и модель. Мы подтвердим время и подготовим технику.")}</p>
-          <div className="mt-8 w-full max-w-xl overflow-hidden rounded-3xl" style={{ aspectRatio: "16/10", background: `linear-gradient(150deg, ${(GT_BY[driveFor] ?? GT[1]).bg}, #0e1013 85%)` }}><Bike3D variant={(GT_BY[driveFor] ?? GT[1]).ver} yaw={-0.5} sway={0.1} label={`${modelName(driveFor)}, 3D-модель`} className="h-full w-full" /></div>
+          <div className="relative mt-8 w-full max-w-xl overflow-hidden rounded-3xl bg-kelp" style={{ aspectRatio: "16/10" }}><img src={photo("garage_moody")} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" /><Bike3D variant={glbKey(dm) as Variant} paint={dm.paint} yaw={-0.5} sway={0.1} label={`${dm.name}, 3D-модель`} className="relative h-full w-full" /></div>
         </Reveal>
         <div className="rounded-3xl bg-frost p-6 text-ink sm:p-8" aria-live="polite">
           {done ? (
@@ -225,11 +234,16 @@ export function Footer() {
             <ul className="space-y-1 text-sm">{["Telegram", "YouTube", "Instagram", "VK"].map((s) => <li key={s}><a href="#" onClick={stub} className="inline-flex min-h-9 items-center underline underline-offset-4 hover:text-sky">{s}</a></li>)}</ul>
           </div>
         </div>
+        <details className="mt-8 border-t border-frost/20 pt-4 text-sm text-frost/70">
+          <summary className="mono cursor-pointer text-sky">лицензии и авторы</summary>
+          <p className="mt-3">3D-модели (CC BY 4.0, перекрашены и доработаны под GT): «X-Pro Dirt bike», автор JJDYT; «pitbike», автор edol-ask; «eScrambler Low Poly», автор Abhishek Jathan. Источник: Sketchfab через Objaverse.</p>
+          <p className="mt-2">Фото: Unsplash, лицензия Unsplash. Ссылки на авторов в файле credits/photos.json репозитория.</p>
+        </details>
         <div className="relative mt-10 h-[22vw] min-h-[90px] w-full">
           <ChromeText text="E-RIZZ" className="h-full w-full" />
         </div>
         <div className="mono flex flex-wrap justify-between gap-2 border-t border-frost/20 py-5 text-frost/70">
-          <span>макет сайта / цены примерные / платежи и контакты: заглушки</span>
+          <span>макет сайта / характеристики по данным производителей / платежи и контакты: заглушки</span>
           <span>розница и опт / Москва, Ростов-на-Дону, Краснодарский край</span>
         </div>
       </div>
@@ -278,10 +292,10 @@ export function CartDrawer() {
           {view === "ok" && order ? (
             <div data-testid="order-ok">
               <div className="grid h-14 w-14 place-items-center rounded-full bg-flare"><Check size={30} /></div>
-              <h3 className="font-display mt-4 text-2xl font-extrabold uppercase">{t("Заказ принят", "Заказ принят")}</h3>
+              <h3 className="font-display mt-4 text-2xl font-extrabold uppercase">{t("Бронь принята", "Бронь принята")}</h3>
               <p className="mono mt-1 text-mute">№ {order.no} / макет, ничего не отправляется</p>
-              <p className="mt-3">Позиций: {order.n}. Сумма: <b>{rub(order.sum)}</b> <span className="text-mute">(примерная)</span>.</p>
-              <p className="mt-2 text-mute">{t("Мы позвоним, уточним детали, цену и доставку.", "Мы позвоним, чтобы уточнить детали, итоговую цену и доставку.")}</p>
+              <p className="mt-3">Броней: {order.n}. Сумма брони: <b>{rub(order.sum)}</b>.</p>
+              <p className="mt-2 text-mute">{t("Мы позвоним, подтвердим бронь и сроки. Цену модели зафиксируем после теста образца, бронь вернем, если передумаешь.", "Мы позвоним, подтвердим бронь и сроки. Цена модели фиксируется после теста образца, бронь возвращается.")}</p>
               <button className="btn-solid mt-5" onClick={() => setCartOpen(false)}>Отлично</button>
             </div>
           ) : view === "form" ? (
@@ -293,7 +307,7 @@ export function CartDrawer() {
                   <option>Самовывоз, шоурум в Ростове-на-Дону</option><option>Доставка по Краснодарскому краю</option><option>Доставка в Москву</option><option>Опт: запрос условий</option>
                 </select></div>
               <div><label htmlFor="o-note" className="mono mb-1 block text-mute">комментарий</label><textarea id="o-note" rows={3} className="input" value={f.note} onChange={(e) => setF({ ...f, note: e.target.value })} /></div>
-              <p className="mono text-mute">Оплата: заглушка. Платежей нет, данные никуда не уходят.</p>
+              <p className="mono text-mute">Оплата брони: СБП или карта (в макете платежей нет, данные никуда не уходят).</p>
             </form>
           ) : cart.length === 0 ? (
             <div className="grid place-items-center py-16 text-center"><p className="font-display text-2xl font-extrabold uppercase">Пусто</p><p className="mt-2 text-mute">{t("Добавь байк из линейки или собери свой в конструкторе.", "Добавьте технику из линейки или соберите свою в конструкторе.")}</p>
@@ -302,7 +316,7 @@ export function CartDrawer() {
             <ul className="grid gap-4" data-testid="cart-list">
               {cart.map((c) => (
                 <li key={c.id} className="grid grid-cols-[84px_1fr_auto] items-center gap-3 border-b border-ink/10 pb-4">
-                  <div className="h-[64px] w-[84px] overflow-hidden rounded-lg" style={{ background: `linear-gradient(150deg, ${GT.find((g) => g.ver === c.variant)!.bg}, #0e1013)` }}><BikeThumb variant={c.variant} paint={c.paint} yaw={-0.5} w={168} h={128} alt="" className="h-full w-full object-contain" /></div>
+                  <div className="h-[64px] w-[84px] overflow-hidden rounded-lg bg-ink"><BikeThumb variant={c.variant as Variant} paint={c.paint} yaw={-0.5} w={168} h={128} alt="" className="h-full w-full object-contain" /></div>
                   <div className="min-w-0"><div className="truncate font-semibold">{c.name}</div><div className="truncate text-xs text-mute">{c.sub}</div>
                     <div className="mt-1 flex items-center gap-1">
                       <button className="grid h-11 w-11 cursor-pointer place-items-center rounded-full border border-ink/30 hover:bg-ink/10" aria-label={`Меньше: ${c.name}`} onClick={() => setQty(c.id, -1)}><Minus size={16} /></button>
@@ -318,9 +332,9 @@ export function CartDrawer() {
         </div>
         {view !== "ok" && cart.length > 0 && (
           <div className="border-t border-ink/15 p-5">
-            <div className="flex items-end justify-between"><span className="mono text-mute">итого ({n}) / примерная цена</span><span className="font-display text-2xl font-extrabold" data-testid="cart-total">{rub(total)}</span></div>
+            <div className="flex items-end justify-between"><span className="mono text-mute">бронь ({n})</span><span className="font-display text-2xl font-extrabold" data-testid="cart-total">{rub(total)}</span></div>
             {view === "list" ? (
-              <InteractiveHoverButton text="Оформить заказ" className="mt-4 h-14 w-full bg-ink pl-8 text-frost" onClick={() => setView("form")} data-testid="checkout" />
+              <InteractiveHoverButton text="Оформить бронь" className="mt-4 h-14 w-full bg-ink pl-8 text-frost" onClick={() => setView("form")} data-testid="checkout" />
             ) : (
               <div className="mt-4 flex gap-2"><button className="btn-ghost" onClick={() => setView("list")}>Назад</button><InteractiveHoverButton type="submit" form="order-form" text="Подтвердить" className="h-12 flex-1 bg-ink text-frost" data-testid="order-submit" /></div>
             )}
