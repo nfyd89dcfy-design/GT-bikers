@@ -39,7 +39,7 @@ export function Viewer3D() {
         <div className="mt-8 grid items-stretch gap-4 lg:grid-cols-[1fr_360px] lg:gap-6">
           <div className="relative min-h-[360px] overflow-hidden rounded-3xl border border-frost/20 bg-deep/40 sm:min-h-[580px]" data-cursor="drag">
             <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_58%,rgba(185,194,204,.2),transparent_70%)]" />
-            <Bike3D ref={api} variant={m.k} paint={PAINT[paint][1]} interactive yaw={-0.55} sway={0.05} label={`${m.n}, 3D-модель: тяните, чтобы повернуть`} className="absolute inset-0 h-full w-full" />
+            <Bike3D ref={api} variant={m.k} paint={PAINT[paint][1]} poster={`${import.meta.env.BASE_URL}models/poster-${m.k}.webp`} interactive yaw={-0.55} sway={0.05} label={`${m.n}, 3D-модель: тяните, чтобы повернуть`} className="absolute inset-0 h-full w-full" />
             <span className="mono absolute left-4 top-4 rounded-full bg-deep/70 px-3 py-1 text-sky">{m.n} / колеса {m.w}</span>
             <span className="mono absolute bottom-4 left-4 flex items-center gap-2 rounded-full bg-deep/70 px-3 py-1 text-frost/80"><Ruler size={14} aria-hidden="true" />длина {m.size}</span>
           </div>

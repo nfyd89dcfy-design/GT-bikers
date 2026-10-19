@@ -60,19 +60,31 @@ export function Header() {
 }
 
 /* ---------------------------------------------------------------- Tone gate (единственная заставка) */
+/* Содержимое стартового экрана. ghost: копия для темного слоя, без кликов и фокуса. */
+function GateBody({ pick, ghost }: { pick?: (v: Voice) => void; ghost?: boolean }) {
+  const b = (text: string, v: Voice) => (
+    <InteractiveHoverButton text={text} tabIndex={ghost ? -1 : undefined} className="h-16 w-60 border-frost/40 bg-transparent text-lg text-frost" onClick={ghost ? undefined : () => pick?.(v)} />
+  );
+  return (
+    <div className="relative mx-auto flex max-w-4xl flex-col items-center py-12 text-center">
+      <span><Logo size={2} /></span>
+      <div className="chrome-line my-8 w-40" />
+      {ghost ? <p className="font-display chrome-text text-[clamp(34px,7vw,92px)] font-extrabold uppercase leading-[0.95]">Мне комфортно общаться</p>
+        : <h1 className="font-display chrome-text text-[clamp(34px,7vw,92px)] font-extrabold uppercase leading-[0.95]">Мне комфортно общаться</h1>}
+      <p className="muted mt-4 max-w-md">От выбора зависит тон текстов на сайте.</p>
+      <div className="mt-9 flex flex-wrap justify-center gap-4">{b("на ты", "ty")}{b("на вы", "vy")}</div>
+    </div>
+  );
+}
+
 export function ToneGate() {
   const { gateOpen, setGateOpen, setVoice } = useApp();
   const ref = useRef<HTMLDivElement>(null);
-  const narrow = typeof innerWidth !== "undefined" && innerWidth < 700;
+  const [flashing, setFlashing] = useState(true);
   useEffect(() => {
     document.body.style.overflow = gateOpen ? "hidden" : "";
     if (!gateOpen || !ref.current) return;
-    ref.current.querySelector<HTMLElement>("button")?.focus({ preventScroll: true });
-    if (reduceMotion()) return;
-    const ctx = gsap.context(() => {
-      gsap.from(".gate-in", { y: 34, opacity: 0, stagger: 0.1, duration: 0.8, ease: "power3.out", delay: bootDelay() });
-    }, ref);
-    return () => ctx.revert();
+    ref.current.focus({ preventScroll: true });
   }, [gateOpen]);
   if (!gateOpen) return null;
   const pick = (v: Voice) => {
@@ -81,20 +93,19 @@ export function ToneGate() {
     if (reduceMotion() || !ref.current) return done();
     gsap.to(ref.current, { yPercent: -100, duration: 0.85, ease: "power4.inOut", onComplete: done });
   };
+  /* Страница открывается белой и полностью собранной. Поверх лежит темная копия того же экрана,
+     ее прозрачность мигает CSS-анимацией (gate-flash в index.css): темный на 1 с, затем короткие вспышки.
+     Анимация только через opacity, поэтому браузер рисует ее отдельно от скриптов и кадры не теряются. */
   return (
-    <div ref={ref} role="dialog" aria-modal="true" aria-label="Выбор обращения" className="dark-zone gate-night fixed inset-0 z-[200] isolate grid place-items-center overflow-y-auto px-5">
-      <PaintBackdrop />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_45%_at_50%_50%,rgba(7,8,10,.62),transparent_80%)]" />
-      <div className="relative mx-auto flex max-w-4xl flex-col items-center py-12 text-center">
-        <span className="gate-in"><Logo size={2} /></span>
-        <div className="chrome-line gate-in my-8 w-40" />
-        <h1 className="gate-in font-display chrome-text text-[clamp(34px,7vw,92px)] font-extrabold uppercase leading-[0.95]">Мне комфортно общаться</h1>
-        <p className="gate-in muted mt-4 max-w-md">От выбора зависит тон текстов на сайте.</p>
-        <div className="gate-in mt-9 flex flex-wrap justify-center gap-4">
-          <InteractiveHoverButton text="на ты" className="h-16 w-60 border-frost/40 bg-transparent text-lg text-frost" onClick={() => pick("ty")} />
-          <InteractiveHoverButton text="на вы" className="h-16 w-60 border-frost/40 bg-transparent text-lg text-frost" onClick={() => pick("vy")} />
+    <div ref={ref} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Выбор обращения" className="dark-zone gate-light fixed inset-0 z-[200] isolate grid place-items-center overflow-y-auto px-5 outline-none">
+      <GateBody pick={pick} />
+      {flashing && (
+        <div aria-hidden="true" inert className="dark-zone gate-dark pointer-events-none absolute inset-0 grid place-items-center px-5" onAnimationEnd={() => setFlashing(false)}>
+          <PaintBackdrop />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_45%_at_50%_50%,rgba(7,8,10,.62),transparent_80%)]" />
+          <GateBody ghost />
         </div>
-      </div>
+      )}
     </div>
   );
 }

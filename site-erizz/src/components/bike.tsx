@@ -7,14 +7,17 @@ export interface BikeApi { setYaw(v: number): void; setPitch(v: number): void; s
 const isTouch = () => typeof matchMedia !== "undefined" && matchMedia("(pointer: coarse)").matches;
 const reduce = () => typeof matchMedia !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-interface Props { variant: Variant; paint?: string; yaw?: number; pitch?: number; sway?: number; interactive?: boolean; className?: string; label?: string; spin?: number }
+interface Props { variant: Variant; paint?: string; yaw?: number; pitch?: number; sway?: number; interactive?: boolean; className?: string; label?: string; spin?: number; poster?: string }
 
 /** Живая 3D-модель байка. Создается лениво при приближении к экрану, рендер на паузе вне экрана. */
-export const Bike3D = forwardRef<BikeApi, Props>(function Bike3D({ variant, paint, yaw = -0.55, pitch = 0.14, sway = 0.18, interactive, className, label, spin = 0.35 }, ref) {
+export const Bike3D = forwardRef<BikeApi, Props>(function Bike3D({ variant, paint, yaw = -0.55, pitch = 0.14, sway = 0.18, interactive, className, label, spin = 0.35, poster }, ref) {
   const cv = useRef<HTMLCanvasElement>(null);
   const view = useRef<BikeView | null>(null);
   const [on, setOn] = useState(false);
+  const [shown, setShown] = useState(false);
+  /* текущие параметры: если модель успели переключить, пока грузился 3D-модуль, создаем вид уже с новой */
   const first = useRef({ variant, paint, yaw, pitch, sway, interactive, spin });
+  first.current = { ...first.current, variant, paint };
   useImperativeHandle(ref, () => ({ setYaw: (v) => view.current?.setYaw(v), setPitch: (v) => view.current?.setPitch(v), setSway: (v) => view.current?.setSway(v) }), []);
   useEffect(() => {
     const el = cv.current!; let dead = false;
@@ -27,14 +30,23 @@ export const Bike3D = forwardRef<BikeApi, Props>(function Bike3D({ variant, pain
     let dead = false; const f = first.current;
     import("@/lib/bike3d").then((m) => {
       if (dead || !cv.current) return;
-      view.current = m.createBikeView(cv.current, { ...f, sway: reduce() ? 0 : f.sway, spin: reduce() ? 0 : f.spin, lod: isTouch() ? "lo" : "hi", interactive: f.interactive && !isTouch() });
+      const g = first.current;
+      view.current = m.createBikeView(cv.current, { ...f, variant: g.variant, paint: g.paint, sway: reduce() ? 0 : f.sway, spin: reduce() ? 0 : f.spin, lod: isTouch() ? "lo" : "hi", interactive: f.interactive && !isTouch(), onReady: (ok) => setShown(ok) });
     });
     return () => { dead = true; };
   }, [on]);
   const mounted = useRef(false);
   useEffect(() => { if (!mounted.current) { mounted.current = true; return; } view.current?.setVariant(variant, paint); }, [variant, paint]);
   useEffect(() => { view.current?.setPitch(pitch); }, [pitch]);
-  return <canvas ref={cv} role="img" aria-label={label ?? "3D-модель байка GT"} className={cn("block w-full", className)} style={{ touchAction: "pan-y" }} />;
+  const cvEl = <canvas ref={cv} role="img" aria-label={label ?? "3D-модель байка GT"} className={cn("block w-full", className)} style={{ touchAction: "pan-y" }} />;
+  if (!poster) return cvEl;
+  /* постер: готовый кадр модели, виден, пока грузится или пересобирается 3D */
+  return (
+    <>
+      <img src={poster} alt="" aria-hidden="true" className={cn("pointer-events-none object-contain transition-opacity duration-300", className, shown ? "opacity-0" : "opacity-100")} />
+      {cvEl}
+    </>
+  );
 });
 
 /** Превью-картинка: рендер 3D-модели в PNG (корзина, сравнение, карточки). */

@@ -402,8 +402,21 @@ function getShared(): Shared {
   r.setPixelRatio(1); r.toneMapping = THREE.ACESFilmicToneMapping; r.toneMappingExposure = 1.05; r.outputColorSpace = THREE.SRGBColorSpace;
   r.shadowMap.enabled = true; r.shadowMap.type = THREE.PCFShadowMap; r.setClearColor(0x000000, 0);
   const pm = new THREE.PMREMGenerator(r); const env = pm.fromScene(new RoomEnvironment(), 0.03).texture; pm.dispose();
-  shared = { r, env, w: 4, h: 4 };
-  return shared;
+  const me: Shared = { r, env, w: 4, h: 4 };
+  shared = me;
+  /* Браузер может отнять WebGL-контекст (много графики на странице, сон ноутбука, сброс GPU).
+     Тогда пересобираем рендерер и все живые сцены, иначе 3D-окно остается пустым. */
+  let timer = 0;
+  r.domElement.addEventListener("webglcontextlost", () => {
+    timer = window.setTimeout(() => { if (shared === me) { shared = null; try { r.dispose(); } catch { /* контекст уже потерян */ } } rebuildAll(); }, 1200);
+  });
+  r.domElement.addEventListener("webglcontextrestored", () => {
+    window.clearTimeout(timer);
+    if (shared !== me) return;
+    const pm2 = new THREE.PMREMGenerator(r); me.env = pm2.fromScene(new RoomEnvironment(), 0.03).texture; pm2.dispose();
+    rebuildAll();
+  });
+  return me;
 }
 function ensure(w: number, h: number) { const s = getShared(); if (w > s.w || h > s.h) { s.w = Math.max(s.w, w); s.h = Math.max(s.h, h); s.r.setSize(s.w, s.h, false); } return s; }
 
@@ -448,11 +461,12 @@ function frame(camera: THREE.PerspectiveCamera, aspect: number, pitch: number) {
 }
 
 /* ------------------------------------------------------------ live view */
-export interface ViewOpts { variant: Variant; paint?: string; yaw?: number; pitch?: number; sway?: number; interactive?: boolean; lod?: Lod; fps?: number; spin?: number }
+export interface ViewOpts { variant: Variant; paint?: string; yaw?: number; pitch?: number; sway?: number; interactive?: boolean; lod?: Lod; fps?: number; spin?: number; onReady?: (ok: boolean) => void }
 export interface BikeView {
   setYaw(v: number): void; setPitch(v: number): void; setSway(v: number): void; setVariant(v: Variant, paint?: string): void; setPaint(c?: string): void; dispose(): void; ready: Promise<void>;
 }
-const views = new Set<{ tick(t: number): void; visible: boolean }>();
+const views = new Set<{ tick(t: number): void; visible: boolean; rebuild(): void }>();
+function rebuildAll() { views.forEach((v) => v.rebuild()); kick(); }
 let looping = false; let lastT = 0;
 function loop(now: number) {
   let any = false;
@@ -467,12 +481,13 @@ export function createBikeView(canvas: HTMLCanvasElement, o: ViewOpts): BikeView
   const lod: Lod = o.lod ?? "hi";
   const dpr = Math.min(window.devicePixelRatio || 1, lod === "hi" ? 2 : 1.5);
   const ctx2d = canvas.getContext("2d")!;
-  let S = makeScene(o.variant, lod, o.paint); let variant = o.variant;
+  let S = makeScene(o.variant, lod, o.paint); let variant = o.variant; let paint = o.paint; let shown = false; let gen = 0;
+  const load = () => { const g = ++gen; ready = false; shown = false; o.onReady?.(false); ctx2d.clearRect(0, 0, canvas.width, canvas.height); return fillBike(S, variant, paint).then(() => { if (g === gen) { ready = true; kick(); } }); };
   const cam = new THREE.PerspectiveCamera(24, 1, 0.1, 40);
   const st = { yaw: o.yaw ?? -0.55, pitch: o.pitch ?? 0.14, sway: o.sway ?? 0.18, dragYaw: 0, hx: 0, hy: 0, spin: o.spin ?? 0.35 };
   let tx = 0, ty = 0; let drag = false, lx = 0; let ready = false; let dead = false; let lastDraw = 0;
   const fps = o.fps ?? (lod === "hi" ? 60 : 30);
-  const ready$ = fillBike(S, variant, o.paint).then(() => { ready = true; });
+  const ready$ = load();
   const view = {
     visible: false,
     tick(now: number) {
@@ -489,8 +504,11 @@ export function createBikeView(canvas: HTMLCanvasElement, o: ViewOpts): BikeView
       frame(cam, w / h, st.pitch - st.hy * 0.06);
       r.setViewport(0, 0, w, h); r.setScissor(0, 0, w, h); r.setScissorTest(true); r.clear();
       r.render(S.scene, cam);
+      if (r.getContext().isContextLost()) return;
       ctx2d.clearRect(0, 0, w, h); ctx2d.drawImage(r.domElement, 0, sh.h - h, w, h, 0, 0, w, h);
+      if (!shown) { shown = true; o.onReady?.(true); }
     },
+    rebuild() { if (dead) return; S = makeScene(variant, lod, paint); void load(); },
   };
   views.add(view);
   const io = new IntersectionObserver((e) => { view.visible = e[0].isIntersecting; if (view.visible) kick(); }, { rootMargin: "120px" });
@@ -506,8 +524,8 @@ export function createBikeView(canvas: HTMLCanvasElement, o: ViewOpts): BikeView
   return {
     ready: ready$,
     setYaw: (v) => { st.yaw = v; }, setPitch: (v) => { st.pitch = v; }, setSway: (v) => { st.sway = v; },
-    setVariant(v, paint) { variant = v; ready = false; S.holder.clear(); fillBike(S, v, paint).then(() => { ready = true; kick(); }); },
-    setPaint(c) { ready = false; fillBike(S, variant, c).then(() => { ready = true; kick(); }); },
+    setVariant(v, p) { variant = v; paint = p; S.holder.clear(); void load(); },
+    setPaint(c) { paint = c; void load(); },
     dispose() { dead = true; views.delete(view); io.disconnect(); canvas.removeEventListener("pointermove", pm); canvas.removeEventListener("pointerdown", pd); canvas.removeEventListener("pointerup", pu); canvas.removeEventListener("pointerleave", pl); S.holder.clear(); },
   };
 }
