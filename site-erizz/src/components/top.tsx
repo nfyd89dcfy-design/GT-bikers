@@ -67,8 +67,7 @@ function GateBody({ pick, ghost }: { pick?: (v: Voice) => void; ghost?: boolean 
   );
   return (
     <div className="relative mx-auto flex max-w-4xl flex-col items-center py-12 text-center">
-      <span><Logo size={2} /></span>
-      <div className="chrome-line my-8 w-40" />
+      <span className="mb-10"><Logo size={2} /></span>
       {ghost ? <p className="font-display chrome-text text-[clamp(34px,7vw,92px)] font-extrabold uppercase leading-[0.95]">Мне комфортно общаться</p>
         : <h1 className="font-display chrome-text text-[clamp(34px,7vw,92px)] font-extrabold uppercase leading-[0.95]">Мне комфортно общаться</h1>}
       <p className="muted mt-4 max-w-md">От выбора зависит тон текстов на сайте.</p>
@@ -80,32 +79,38 @@ function GateBody({ pick, ghost }: { pick?: (v: Voice) => void; ghost?: boolean 
 export function ToneGate() {
   const { gateOpen, setGateOpen, setVoice } = useApp();
   const ref = useRef<HTMLDivElement>(null);
-  const [flashing, setFlashing] = useState(true);
+  const [done, setDone] = useState(false);
   useEffect(() => {
     document.body.style.overflow = gateOpen ? "hidden" : "";
     if (!gateOpen || !ref.current) return;
     ref.current.focus({ preventScroll: true });
   }, [gateOpen]);
+  /* в момент, когда экран остается темным, цвета переключаем без плавного перехода */
+  useEffect(() => {
+    if (!done || !ref.current) return;
+    const el = ref.current; el.classList.add("gate-snap");
+    let r2 = 0; const r1 = requestAnimationFrame(() => { r2 = requestAnimationFrame(() => el.classList.remove("gate-snap")); });
+    return () => { cancelAnimationFrame(r1); cancelAnimationFrame(r2); };
+  }, [done]);
   if (!gateOpen) return null;
   const pick = (v: Voice) => {
     setVoice(v);
-    const done = () => { setGateOpen(false); window.scrollTo(0, 0); };
-    if (reduceMotion() || !ref.current) return done();
-    gsap.to(ref.current, { yPercent: -100, duration: 0.85, ease: "power4.inOut", onComplete: done });
+    const fin = () => { setGateOpen(false); window.scrollTo(0, 0); };
+    if (reduceMotion() || !ref.current) return fin();
+    gsap.to(ref.current, { yPercent: -100, duration: 0.85, ease: "power4.inOut", onComplete: fin });
   };
   /* Страница открывается белой и полностью собранной. Поверх лежит темная копия того же экрана,
-     ее прозрачность мигает CSS-анимацией (gate-flash в index.css): темный на 1 с, затем короткие вспышки.
+     ее прозрачность мигает CSS-анимацией (gate-flash в index.css) и в конце остается темной.
+     Тогда темный слой уходит под кнопки и становится фоном, а сам экран переключается на темные цвета.
      Анимация только через opacity, поэтому браузер рисует ее отдельно от скриптов и кадры не теряются. */
   return (
-    <div ref={ref} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Выбор обращения" className="dark-zone gate-light fixed inset-0 z-[200] isolate grid place-items-center overflow-y-auto px-5 outline-none">
+    <div ref={ref} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Выбор обращения" className={cn("dark-zone fixed inset-0 z-[200] isolate grid place-items-center overflow-y-auto px-5 outline-none", done ? "gate-pal-dark gate-final" : "gate-pal-light")}>
+      <div aria-hidden="true" inert className="dark-zone gate-pal-dark gate-flash pointer-events-none absolute inset-0 grid place-items-center px-5" style={{ zIndex: done ? -1 : 10 }} onAnimationEnd={() => setDone(true)}>
+        <PaintBackdrop />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_45%_at_50%_50%,rgba(7,8,10,.62),transparent_80%)]" />
+        <div style={{ visibility: done ? "hidden" : "visible" }}><GateBody ghost /></div>
+      </div>
       <GateBody pick={pick} />
-      {flashing && (
-        <div aria-hidden="true" inert className="dark-zone gate-dark pointer-events-none absolute inset-0 grid place-items-center px-5" onAnimationEnd={() => setFlashing(false)}>
-          <PaintBackdrop />
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_45%_at_50%_50%,rgba(7,8,10,.62),transparent_80%)]" />
-          <GateBody ghost />
-        </div>
-      )}
     </div>
   );
 }
