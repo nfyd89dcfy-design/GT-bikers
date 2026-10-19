@@ -117,6 +117,48 @@ export function PaintBackdrop() {
   );
 }
 
+/* ---------------------------------------------------------------- Выезд плашек при прокрутке
+   Карточки и панели выезжают при появлении на экране: левые слева, правые справа, широкие снизу.
+   Не трогаем первый экран, закрепленную сборку, каталог (у него своя анимация) и все фиксированное. */
+const PLATE = '[class*="rounded-3xl"], [class*="rounded-2xl"], .t-tile, .tile';
+const PLATE_SKIP = '#top, #build, [role="dialog"], header, .dive, [data-plate="off"]';
+export function usePlateReveal() {
+  useEffect(() => {
+    if (reduceMotion()) return;
+    const seen = new WeakSet<HTMLElement>();
+    let timer = 0;
+    const scan = () => {
+      timer = 0;
+      const vw = innerWidth;
+      const fresh: HTMLElement[] = [];
+      document.querySelectorAll<HTMLElement>(`main ${PLATE}, section ${PLATE}`).forEach((el) => {
+        if (seen.has(el) || el.closest(PLATE_SKIP)) return;
+        const up = el.parentElement?.closest<HTMLElement>(PLATE);
+        if (up && !up.closest(PLATE_SKIP)) return; // выезжает только внешняя плашка, вложенные едут вместе с ней
+        const r = el.getBoundingClientRect();
+        if (r.width < 140 || r.height < 90) return;
+        seen.add(el);
+        const cx = r.left + r.width / 2;
+        const dir = r.width > vw * 0.62 ? "b" : cx < vw * 0.45 ? "l" : cx > vw * 0.55 ? "r" : "b";
+        el.dataset.plate = dir;
+        gsap.set(el, { opacity: 0, x: dir === "l" ? -90 : dir === "r" ? 90 : 0, y: dir === "b" ? 70 : 0 });
+        fresh.push(el);
+      });
+      if (!fresh.length) return;
+      ScrollTrigger.batch(fresh, {
+        start: "top 92%", once: true,
+        onEnter: (batch) => gsap.to(batch, { opacity: 1, x: 0, y: 0, duration: 0.9, ease: "power3.out", stagger: 0.09, overwrite: true, clearProps: "transform,opacity" }),
+      });
+      ScrollTrigger.refresh();
+    };
+    const later = () => { if (!timer) timer = window.setTimeout(scan, 250); };
+    later();
+    const mo = new MutationObserver(later);
+    mo.observe(document.body, { childList: true, subtree: true });
+    return () => { mo.disconnect(); window.clearTimeout(timer); };
+  }, []);
+}
+
 /* ---------------------------------------------------------------- Подсветка рамок (как GlowCard, без backdrop-filter) */
 const SPOT = ".spot, .btn-solid, .btn-ghost, .t-chip, .chip, .cta";
 export function useSpotlight() {

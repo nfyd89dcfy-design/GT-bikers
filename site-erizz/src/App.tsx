@@ -3,7 +3,7 @@ import { AppProvider, useApp } from "@/lib/state";
 import { ScrollTrigger } from "@/lib/gsap";
 import { ToneGate } from "@/components/top";
 import { BuildScroll, Catalog, Header2, Hero2, Ticker } from "@/components/v2";
-import { FxCursor, useHeadingReveal, useSpotlight } from "@/components/fx";
+import { FxCursor, useHeadingReveal, usePlateReveal, useSpotlight } from "@/components/fx";
 import { Directions } from "@/components/models";
 import { Viewer3D } from "@/components/viewer";
 import { Compare, Configurator, Quiz } from "@/components/tools";
@@ -22,6 +22,7 @@ function Toast() {
 function Page() {
   const { dir, gateOpen, theme } = useApp();
   useSpotlight();
+  usePlateReveal();
   useHeadingReveal();
   useEffect(() => {
     const r = () => ScrollTrigger.refresh();

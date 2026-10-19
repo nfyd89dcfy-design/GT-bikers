@@ -162,7 +162,7 @@ export function Catalog() {
         <div className="sticky top-16 z-20 -mx-5 mt-8 flex gap-2 overflow-x-auto px-5 py-2 sm:static sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:py-0" style={{ background: "var(--t-bg)" }} role="tablist" aria-label="Серии">
           {GROUPS.map((g) => <button key={g.key} role="tab" aria-selected={grp === g.key} className="t-chip inline-flex min-h-10 shrink-0 cursor-pointer items-center gap-2 whitespace-nowrap rounded-full px-4 text-sm font-semibold" onClick={() => setGrp(g.key)}>{SER_C[g.key] && <span className="h-2.5 w-2.5 rounded-full" style={{ background: SER_C[g.key] }} aria-hidden="true" />}{g.ru}</button>)}
         </div>
-        <div ref={ref} className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+        <div ref={ref} data-plate="off" className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
           {list.map((m) => <LCard key={m.id} m={m} />)}
         </div>
       </div>
