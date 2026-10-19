@@ -5,7 +5,7 @@ import { DEPOSIT, LINEUP, L_BY, glbKey, modelName, photo, rub, studio } from "@/
 import type { Variant } from "@/lib/bike3d";
 import { Bike3D, BikeThumb } from "./bike";
 import { Boids } from "./shaders";
-import { GTMark } from "./logo";
+import { GTLockup } from "./logo";
 import { Eyebrow, H2, Reveal } from "./ui-bits";
 import { InteractiveHoverButton } from "./ui/interactive-hover-button";
 import { GlowCard } from "./ui/spotlight-card";
@@ -245,7 +245,7 @@ export function Footer() {
           <p className="mt-3">3D-модели (CC BY 4.0, перекрашены и доработаны под GT): «X-Pro Dirt bike», автор JJDYT; «pitbike», автор edol-ask; «eScrambler Low Poly», автор Abhishek Jathan. Источник: Sketchfab через Objaverse.</p>
           <p className="mt-2">Фото: Unsplash, лицензия Unsplash. Ссылки на авторов в файле credits/photos.json репозитория.</p>
         </details>
-        <div className="mt-10 flex justify-center opacity-90"><GTMark className="w-[min(34vw,260px)]" /></div>
+        <div className="mt-10 flex justify-center opacity-90"><GTLockup className="w-[min(72vw,560px)]" title="GT электробайки" /></div>
         <div className="mono flex flex-wrap justify-between gap-2 border-t border-frost/20 py-5 text-frost/70">
           <span>макет сайта / характеристики по данным производителей / платежи и контакты: заглушки</span>
           <span>розница и опт / Москва, Ростов-на-Дону, Краснодарский край</span>

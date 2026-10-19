@@ -82,11 +82,11 @@ export function ToneGate() {
     gsap.to(ref.current, { yPercent: -100, duration: 0.85, ease: "power4.inOut", onComplete: done });
   };
   return (
-    <div ref={ref} role="dialog" aria-modal="true" aria-label="Выбор обращения" className="dark-zone fixed inset-0 z-[200] isolate grid place-items-center overflow-y-auto px-5">
+    <div ref={ref} role="dialog" aria-modal="true" aria-label="Выбор обращения" className="dark-zone gate-night fixed inset-0 z-[200] isolate grid place-items-center overflow-y-auto px-5">
       <PaintBackdrop />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_45%_at_50%_50%,rgba(7,8,10,.62),transparent_80%)]" />
       <div className="relative mx-auto flex max-w-4xl flex-col items-center py-12 text-center">
-        <span className="gate-in"><Logo size={1.4} /></span>
+        <span className="gate-in"><Logo size={2} /></span>
         <div className="chrome-line gate-in my-8 w-40" />
         <h1 className="gate-in font-display chrome-text text-[clamp(34px,7vw,92px)] font-extrabold uppercase leading-[0.95]">Мне комфортно общаться</h1>
         <p className="gate-in muted mt-4 max-w-md">От выбора зависит тон текстов на сайте.</p>

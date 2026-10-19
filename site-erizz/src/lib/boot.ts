@@ -1,8 +1,10 @@
-/* Заставка при загрузке: синий экран держится, пока грузится сайт (не меньше 0,8 с),
-   потом страница дважды мигает "бам-бам" и включается. Сама анимация в index.html (CSS, идет даже при занятом потоке). */
+/* Заставка при загрузке (19.10): белый экран плавно уходит в темный, 1,1 с темного,
+   затем мигание белый 20 мс, черный 20 мс, белый 50 мс и снова темный.
+   Само мигание в index.html (CSS от первого кадра). Здесь только снимаем заставку,
+   когда мигание закончилось и сайт готов: стартовый экран под ней тоже темный. */
 const W = window as unknown as { __gtBoot0?: number; __gtBootEnd?: number };
-const HOLD = 800; // мс синего экрана от начала загрузки
-const FLICK = 390; // мс до включения страницы: белый, синий, белый
+const SEQ = 1600; // мс: вся последовательность, после нее экран снова темный
+const FADE = 280; // мс: заставка растворяется в темный стартовый экран
 
 let started = false;
 export function startBoot() {
@@ -11,12 +13,13 @@ export function startBoot() {
   const el = document.getElementById("boot");
   if (!el) { W.__gtBootEnd = performance.now(); return; }
   el.dataset.go = "1";
-  const wait = Math.max(250, HOLD - (performance.now() - (W.__gtBoot0 ?? 0)));
-  W.__gtBootEnd = performance.now() + wait + FLICK;
-  el.style.setProperty("--d", `${Math.round(wait)}ms`);
-  el.classList.add("go");
-  window.setTimeout(() => el.remove(), wait + 700);
+  const wait = Math.max(0, (W.__gtBoot0 ?? 0) + SEQ - performance.now());
+  W.__gtBootEnd = performance.now() + wait + FADE * 0.5;
+  window.setTimeout(() => {
+    el.classList.add("out");
+    window.setTimeout(() => el.remove(), FADE + 60);
+  }, wait);
 }
 
-/** Сколько секунд осталось до того, как страница "включится". Для задержки входных анимаций. */
+/** Сколько секунд осталось до того, как заставка уйдет. Для задержки входных анимаций. */
 export const bootDelay = () => Math.max(0, ((W.__gtBootEnd ?? 0) - performance.now()) / 1000);

@@ -10,7 +10,7 @@ import { PARTS } from "@/lib/parts";
 import { cn } from "@/lib/utils";
 
 export { Logo } from "./logo";
-import { Logo } from "./logo";
+import { GTMark, Logo } from "./logo";
 
 /* ---------------------------------------------------------------- Шапка */
 const NAV: [string, string][] = [["catalog", "Модели"], ["tuning", "Тюнинг"], ["gear", "Экипировка"], ["config", "Конструктор"], ["viewer", "3D и AR"], ["showroom", "Шоурум"]];
@@ -244,7 +244,7 @@ export function Ticker() {
       {TICK.map((w, i) => (
         <span key={i} className="flex items-center gap-6 pr-6">
           {i % 2 === 0 ? <span className="h-hero text-[clamp(22px,2.6vw,40px)]">{w}</span> : <span className="mono text-frost/60">{w}</span>}
-          <span className="gt-plate text-[13px] text-flare">GT</span>
+          <GTMark className="w-[38px] shrink-0" />
         </span>
       ))}
     </div>
