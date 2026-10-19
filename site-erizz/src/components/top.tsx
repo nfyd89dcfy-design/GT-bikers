@@ -84,14 +84,10 @@ export function ToneGate() {
     document.body.style.overflow = gateOpen ? "hidden" : "";
     if (!gateOpen || !ref.current) return;
     ref.current.focus({ preventScroll: true });
+    /* запасной таймер: если браузер не прислал конец анимации, все равно переходим в темный режим */
+    const t = window.setTimeout(() => setDone(true), 4000);
+    return () => window.clearTimeout(t);
   }, [gateOpen]);
-  /* в момент, когда экран остается темным, цвета переключаем без плавного перехода */
-  useEffect(() => {
-    if (!done || !ref.current) return;
-    const el = ref.current; el.classList.add("gate-snap");
-    let r2 = 0; const r1 = requestAnimationFrame(() => { r2 = requestAnimationFrame(() => el.classList.remove("gate-snap")); });
-    return () => { cancelAnimationFrame(r1); cancelAnimationFrame(r2); };
-  }, [done]);
   if (!gateOpen) return null;
   const pick = (v: Voice) => {
     setVoice(v);
@@ -101,16 +97,18 @@ export function ToneGate() {
   };
   /* Страница открывается белой и полностью собранной. Поверх лежит темная копия того же экрана,
      ее прозрачность мигает CSS-анимацией (gate-flash в index.css) и в конце остается темной.
-     Тогда темный слой уходит под кнопки и становится фоном, а сам экран переключается на темные цвета.
+     Тогда кнопки темной копии становятся рабочими, а светлая копия под ней прячется.
      Анимация только через opacity, поэтому браузер рисует ее отдельно от скриптов и кадры не теряются. */
   return (
-    <div ref={ref} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Выбор обращения" className={cn("dark-zone fixed inset-0 z-[200] isolate grid place-items-center overflow-y-auto px-5 outline-none", done ? "gate-pal-dark gate-final" : "gate-pal-light")}>
-      <div aria-hidden="true" inert className="dark-zone gate-pal-dark gate-flash pointer-events-none absolute inset-0 grid place-items-center px-5" style={{ zIndex: done ? -1 : 10 }} onAnimationEnd={() => setDone(true)}>
-        <PaintBackdrop />
+    <div ref={ref} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Выбор обращения" className="dark-zone gate-pal-light fixed inset-0 z-[200] isolate grid place-items-center overflow-y-auto px-5 outline-none">
+      <div aria-hidden={done ? undefined : true} inert={!done} className={cn("dark-zone gate-pal-dark gate-flash absolute inset-0 z-10 grid place-items-center px-5", done ? "gate-done" : "pointer-events-none")}
+        onAnimationEnd={(e) => { if (e.target === e.currentTarget && e.animationName === "gate-flash") setDone(true); }}>
+        {/* фон без WebGPU-шейдера: шейдер внутри мигающего слоя давал в Chrome белый экран */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10"><div className="bg-horizon absolute inset-0" /><div className="grain absolute inset-0" /></div>
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_45%_at_50%_50%,rgba(7,8,10,.62),transparent_80%)]" />
-        <div style={{ visibility: done ? "hidden" : "visible" }}><GateBody ghost /></div>
+        <GateBody ghost={!done} pick={pick} />
       </div>
-      <GateBody pick={pick} />
+      <div aria-hidden={done ? true : undefined} style={{ visibility: done ? "hidden" : "visible" }}><GateBody pick={pick} /></div>
     </div>
   );
 }

@@ -394,14 +394,14 @@ body { background: var(--t-bg); }
 [data-theme] .gate-pal-light .muted { color: #5a626c; }
 [data-theme] .dark-zone.gate-pal-dark, .dark-zone.gate-pal-dark { --color-ink: #000000; --color-deep: #000000; --color-kelp: #121316; --color-frost: #eef1f4; --color-sky: #9cc9ff; --color-aqua: #a7afb8; --color-steel: #8d97a2; --color-sleet: #000000; background: #000; color: #eef1f4; }
 [data-theme] .gate-pal-dark .muted { color: #a7afb8; }
-[data-theme] .dark-zone.gate-final, .dark-zone.gate-final { background: transparent; }
 [data-theme] .gate-pal-dark .bg-horizon { background:
   radial-gradient(120% 55% at 50% 108%, #3c6ee6 0%, #1a3576 28%, rgb(16 32 74 / 0) 62%),
   radial-gradient(60% 40% at 82% 12%, rgb(156 201 255 / .14) 0%, rgb(156 201 255 / 0) 70%),
   linear-gradient(180deg, #050608 0%, #070a12 45%, #0c1630 80%, #12245a 100%); }
 [data-theme] .gate-pal-dark .grain { opacity: .42; mix-blend-mode: overlay; }
 .gate-flash { opacity: 0; will-change: opacity; animation: gate-flash 2100ms linear forwards; }
-.gate-flash *, .gate-snap, .gate-snap * { transition: none !important; }
+.gate-flash:not(.gate-done) * { transition: none !important; }
+.gate-flash.gate-done { animation: none; opacity: 1; }
 @keyframes gate-flash {
   0%, 38.09% { opacity: 0; }
   38.1%, 85.71% { opacity: 1; }
