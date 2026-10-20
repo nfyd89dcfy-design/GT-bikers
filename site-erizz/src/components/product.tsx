@@ -41,7 +41,7 @@ export function ProductFace({ m }: { m: LModel }) {
 
 /** Раскрытая карточка: коллаж в сетке 12 колонок. */
 export function ProductCollage({ m }: { m: LModel }) {
-  const { t, addCart, setDriveFor, toggleCompare, compare, setCartOpen } = useApp();
+  const { t, setDriveFor, toggleCompare, compare, openReserve } = useApp();
   const sc = LIFE[m.n] ?? SCENES[m.group];
   const inCmp = compare.includes(m.id);
   const close = () => (document.querySelector(".morph-open button[aria-label=Закрыть]") as HTMLElement | null)?.click();
@@ -72,7 +72,7 @@ export function ProductCollage({ m }: { m: LModel }) {
           <div className="flex flex-col justify-between gap-4">
             <p className="leading-snug">{m.chassis[0].toUpperCase() + m.chassis.slice(1)}. {t("Приезжай на тест-драйв: шлем и защиту дадим.", "Приезжайте на тест-драйв: шлем и защиту дадим.")}</p>
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-              <Cta onClick={() => { addCart({ id: m.id, name: m.name, sub: `бронь · ${m.wheels}`, price: DEPOSIT, variant: "sport", paint: m.paint }); setCartOpen(true); }}>Бронь {rub(DEPOSIT)}</Cta>
+              <Cta onClick={(e) => openReserve(m.id, { x: e.clientX || innerWidth / 2, y: e.clientY || innerHeight / 2 })} data-testid="reserve-open">Забронировать</Cta>
               <button className="min-h-11 cursor-pointer font-semibold underline-offset-4 hover:underline" onClick={() => { setDriveFor(m.id); close(); setTimeout(() => scrollToId("drive"), 850); }}>Тест-драйв</button>
               <button className="min-h-11 cursor-pointer font-semibold underline-offset-4 hover:underline" onClick={() => toggleCompare(m.id)}>{inCmp ? "В сравнении ✓" : "Сравнить"}</button>
             </div>

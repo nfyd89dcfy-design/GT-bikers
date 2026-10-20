@@ -344,6 +344,23 @@ body { background: var(--t-bg); }
 .build-floor { background: rgb(0 0 0 / .8); }
 [data-theme="day"] .build-glow { background: #eef0f3; opacity: 1; }
 [data-theme="day"] .build-floor { background: rgb(14 16 19 / .35); }
+/* сборка: чертеж, сканеры, блик */
+.build-grid { opacity: .3;
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-sky) 22%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-sky) 22%, transparent) 1px, transparent 1px),
+    linear-gradient(to right, color-mix(in srgb, var(--color-sky) 9%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-sky) 9%, transparent) 1px, transparent 1px);
+  background-size: 6.25% 11.11%, 6.25% 11.11%, 1.5625% 2.7778%, 1.5625% 2.7778%;
+  -webkit-mask-image: radial-gradient(closest-side, #000 45%, transparent); mask-image: radial-gradient(closest-side, #000 45%, transparent); }
+.build-outline { background: var(--color-sky); }
+.build-vscan { background: var(--color-sky); box-shadow: 0 0 12px 2px color-mix(in srgb, var(--color-sky) 70%, transparent), 0 0 40px 8px color-mix(in srgb, var(--color-sky) 25%, transparent); }
+.build-hscan { background: var(--color-flare); box-shadow: 0 0 12px 2px color-mix(in srgb, var(--color-flare) 70%, transparent), 0 0 44px 10px color-mix(in srgb, var(--color-flare) 22%, transparent); }
+.build-sheen { mix-blend-mode: screen; opacity: .9; }
+[data-theme="day"] .build-sheen { mix-blend-mode: normal; opacity: .55; }
+.build-sheen-bar { background: linear-gradient(100deg, transparent 0%, rgb(255 255 255 / .2) 35%, rgb(255 255 255 / .75) 50%, rgb(255 255 255 / .2) 65%, transparent 100%); transform: skewX(-12deg); }
+.build-label { text-shadow: 0 1px 10px var(--color-ink); }
+.build-stage svg { color: var(--color-sky); }
 
 /* тюнинг: полосы мощности заполняются при появлении */
 @keyframes tier-in { from { transform: scaleX(0); } }
@@ -412,4 +429,17 @@ body { background: var(--t-bg); }
   96.49%, 97.12% { opacity: 1; }
   97.13%, 99.39% { opacity: 0; }
   99.4%, 100% { opacity: 1; }
+}
+
+/* Логотип GREEN TRAIL (20.10): прорисовка знака штрихами, как рукой, затем подпись */
+.sig-stroke { stroke-dasharray: 1 2; stroke-dashoffset: 1; animation: sig-draw var(--sl, .4s) cubic-bezier(.5,.05,.4,1) var(--sd, 0s) forwards; }
+@keyframes sig-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.sig-full { opacity: 0; animation: sig-fade .3s ease 1.42s forwards; }
+@keyframes sig-fade { to { opacity: 1; } }
+.sig-word { opacity: 0; clip-path: inset(0 100% 0 0); animation: sig-word .75s cubic-bezier(.3,.7,.2,1) 1.25s forwards; }
+@keyframes sig-word { to { opacity: 1; clip-path: inset(0 0 0 0); } }
+@media (prefers-reduced-motion: reduce) {
+  .sig-stroke { animation: none; stroke-dashoffset: 0; }
+  .sig-full { animation: none; opacity: 1; }
+  .sig-word { animation: none; opacity: 1; clip-path: none; }
 }

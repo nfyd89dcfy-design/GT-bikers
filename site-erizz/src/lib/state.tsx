@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { COMPARE_IDS, DIRS, type DirKey } from "./data";
+import type { BuildCfg } from "./options";
 
 /* ---------- голос: ты / вы ---------- */
 export type Voice = "ty" | "vy";
@@ -27,8 +28,14 @@ interface AppCtx {
   toggleCompare: (id: string) => void;
   driveFor: string;
   setDriveFor: (id: string) => void;
+  /** Бронь с настройкой: открывает экран сборки байка перед корзиной. */
+  reserve: Reserve | null;
+  openReserve: (id: string, at?: { x: number; y: number }, cfg?: Partial<BuildCfg>) => void;
+  closeReserve: () => void;
 }
-export interface CartItem { id: string; name: string; sub: string; price: number; variant: string; paint?: string; qty: number }
+export interface Reserve { id: string; at: { x: number; y: number }; cfg?: Partial<BuildCfg> }
+/** model: id модели в линейке; opts: строки сборки; extra: ориентировочная цена опций, оплата при выдаче. */
+export interface CartItem { id: string; name: string; sub: string; price: number; variant: string; paint?: string; qty: number; model?: string; opts?: string[]; extra?: number }
 
 const Ctx = createContext<AppCtx>(null as unknown as AppCtx);
 export const useApp = () => useContext(Ctx);
@@ -52,6 +59,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [toast, setToast] = useState("");
   const [compare, setCompare] = useState<string[]>(COMPARE_IDS);
   const [driveFor, setDriveFor] = useState("gt-city");
+  const [reserve, setReserve] = useState<Reserve | null>(null);
+  const openReserve = (id: string, at?: { x: number; y: number }, cfg?: Partial<BuildCfg>) =>
+    setReserve({ id, at: at ?? { x: innerWidth / 2, y: innerHeight / 2 }, cfg });
+  const closeReserve = () => setReserve(null);
 
   useEffect(() => { safe.set("erizz-cart4", JSON.stringify(cart)); }, [cart]);
   const setVoice = (v: Voice) => { setVoiceS(v); safe.set("erizz-voice", v); };
@@ -76,9 +87,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setCompare((c) => (c.includes(id) ? (c.length > 2 ? c.filter((x) => x !== id) : c) : c.length >= 3 ? [...c.slice(1), id] : [...c, id]));
 
   const value = useMemo(
-    () => ({ theme, setTheme, voice, setVoice, t, dir, setDir, gateOpen, setGateOpen, cart, addCart, setQty, removeCart, clearCart, cartOpen, setCartOpen, toast, say, compare, toggleCompare, driveFor, setDriveFor }),
+    () => ({ theme, setTheme, voice, setVoice, t, dir, setDir, gateOpen, setGateOpen, cart, addCart, setQty, removeCart, clearCart, cartOpen, setCartOpen, toast, say, compare, toggleCompare, driveFor, setDriveFor, reserve, openReserve, closeReserve }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [theme, voice, t, dir, gateOpen, cart, cartOpen, toast, say, compare, driveFor]
+    [theme, voice, t, dir, gateOpen, cart, cartOpen, toast, say, compare, driveFor, reserve]
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

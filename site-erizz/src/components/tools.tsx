@@ -3,6 +3,7 @@ import { RotateCcw } from "lucide-react";
 import { gsap } from "@/lib/gsap";
 import { useApp, reduceMotion, scrollToId } from "@/lib/state";
 import { DEPOSIT, DIRS, GROUP_RU, GT, LINEUP, L_BY, STATUS, glbKey, lSpec, num, rub, studio, type DirKey, type Ver } from "@/lib/data";
+import { BATT, CTRL, DECAL, PAINT } from "@/lib/options";
 import { ObjectTracker } from "./effects";
 import { Bike3D } from "./bike";
 import { ProductShot, STUDIO } from "./product";
@@ -13,10 +14,6 @@ import { cn } from "@/lib/utils";
 import { MetalFigure } from "./fx";
 
 /* ---------------------------------------------------------------- Configurator */
-const BATT = [{ n: "Стандарт", k: 1, p: 0 }, { n: "+20% емкости", k: 1.2, p: 60000 }, { n: "Вторая батарея", k: 2, p: 140000 }];
-const CTRL = [{ n: "Stock", p: 0, d: "ровный отклик" }, { n: "Sport", p: 25000, d: "резкий старт" }, { n: "Pro tune", p: 60000, d: "тонкая настройка под райдера" }];
-const PAINT: { n: string; c?: string }[] = [{ n: "Заводской" }, { n: "Flare", c: "#ff4a2b" }, { n: "Иней", c: "#eef1f4" }, { n: "Графит", c: "#23272d" }, { n: "Небо", c: "#9cc9ff" }, { n: "Бордо", c: "#7a1b2e" }];
-const DECAL = [{ n: "Без наклеек", p: 0, txt: "" }, { n: "GT", p: 7000, txt: "GT" }, { n: "Номер райдера", p: 14000, txt: "GT 01" }];
 /* Конструктор показывает фото героя серии; цвет пластика имитируем фильтром (черное, белое и хром не меняются). */
 /* оттенок акцента на фото героя: Mini небо, Trail и Race flare, Trail Pro бордо, Road кобальт */
 const BASE_HUE: Record<Ver, number> = { base: 213, sport: 9, pro: 350, road: 222 };
@@ -40,7 +37,7 @@ function Price({ value }: { value: number }) {
 }
 
 export function Configurator() {
-  const { t, addCart, setDriveFor } = useApp();
+  const { t, setDriveFor, openReserve } = useApp();
   const [sel, setSel] = useState("gt-trail-19");
   const [bt, setBt] = useState(0);
   const [ct, setCt] = useState(0);
@@ -109,11 +106,10 @@ export function Configurator() {
             <div className="border-t border-frost/25 pt-4">
               <div className="flex flex-wrap items-end justify-between gap-3">
                 <div><div className="mono muted">опции</div><div className="font-display text-3xl font-extrabold" aria-live="polite"><Price value={opts} /></div></div>
-                <div className="text-right"><div className="mono muted">бронь сейчас</div><div className="font-display text-3xl font-extrabold text-flare">{rub(DEPOSIT)}</div></div>
               </div>
               <p className="muted mt-2 text-xs">{t("Цена опций ориентировочная. Базовую цену модели назовем после теста образца, бронь вернем, если не подойдет.", "Цена опций ориентировочная. Базовая цена модели фиксируется после теста образца, бронь возвращается.")}</p>
               <div className="mt-4 flex flex-wrap gap-3">
-                <InteractiveHoverButton text="Забронировать" className="h-14 w-56 border-frost/40 bg-transparent text-frost" onClick={() => addCart({ id, name: `Build · ${m.name}`, sub: `${summary}; опции ${rub(opts)}`, price: DEPOSIT, variant: m.ver, paint: PAINT[cl].c })} data-testid="cfg-add" />
+                <InteractiveHoverButton text="Забронировать" className="h-14 w-56 border-frost/40 bg-transparent text-frost" onClick={(e) => openReserve(m.id, { x: e.clientX || innerWidth / 2, y: e.clientY || innerHeight / 2 }, { paint: cl, batt: bt, ctrl: ct, decal: dc, kits: kt ? [kt - 1] : [] })} data-testid="cfg-add" />
                 <button className="btn-ghost" onClick={() => { setDriveFor(m.id); scrollToId("drive"); }}>Сначала тест-драйв</button>
               </div>
             </div>
@@ -153,7 +149,7 @@ const QUIZ: Q[] = [
 ];
 
 export function Quiz() {
-  const { t, addCart, toggleCompare, setDriveFor } = useApp();
+  const { t, toggleCompare, setDriveFor, openReserve } = useApp();
   const [step, setStep] = useState(0);
   const [score, setScore] = useState<Record<string, number>>({});
   const [dk, setDk] = useState<DirKey | null>(null);
@@ -206,7 +202,7 @@ export function Quiz() {
                 </div>
               </div>
               <div className="mt-5 flex flex-wrap gap-3">
-                {m && <button className="btn-solid" onClick={() => addCart({ id: m.id, name: m.name, sub: "бронь", price: DEPOSIT, variant: glbKey(m), paint: m.paint })}>Забронировать</button>}
+                {m && <button className="btn-solid" onClick={(e) => openReserve(m.id, { x: e.clientX || innerWidth / 2, y: e.clientY || innerHeight / 2 })}>Забронировать</button>}
                 {m && <ARButton k={glbKey(m) as ARKey} name={m.name} />}
                 {m && <button className="btn-ghost" onClick={() => { toggleCompare(m.id); scrollToId("compare"); }}>Сравнить</button>}
                 <button className="btn-ghost" onClick={() => { setDriveFor(m ? m.id : "gt-city"); scrollToId("drive"); }}>{m ? "Тест-драйв" : "Оставить заявку"}</button>
@@ -234,7 +230,7 @@ const ROWS: Row[] = [
   { k: "Статус", get: (i) => STATUS[L_BY[i].status][0] },
 ];
 export function Compare() {
-  const { t, compare, toggleCompare, addCart } = useApp();
+  const { t, compare, toggleCompare, openReserve } = useApp();
   const ids = compare.filter((id) => L_BY[id]);
   return (
     <section id="compare" className="light-zone relative bg-frost py-24 sm:py-36" aria-labelledby="cmp-h">
@@ -277,7 +273,7 @@ export function Compare() {
               })}
               <tr className="border-t border-ink/15">
                 <th scope="row" className="p-4" />
-                {ids.map((id) => <td key={id} className="p-4"><button className="btn-ghost" onClick={() => addCart({ id, name: L_BY[id].name, sub: "бронь", price: DEPOSIT, variant: glbKey(L_BY[id]), paint: L_BY[id].paint })}>Забронировать</button></td>)}
+                {ids.map((id) => <td key={id} className="p-4"><button className="btn-ghost" onClick={(e) => openReserve(id, { x: e.clientX || innerWidth / 2, y: e.clientY || innerHeight / 2 })}>Забронировать</button></td>)}
               </tr>
             </tbody>
           </table>

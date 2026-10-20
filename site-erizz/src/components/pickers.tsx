@@ -54,7 +54,7 @@ export function Dive({ at, onClose, label, children }: { at: Origin; onClose: ()
 }
 
 /** Шапка шага: подпись, полоска шагов, назад и закрыть. */
-function DiveHead({ title, steps, cur, onBack, close }: { title: string; steps: string[]; cur: number; onBack?: () => void; close: Close }) {
+export function DiveHead({ title, steps, cur, onBack, close }: { title: string; steps: string[]; cur: number; onBack?: () => void; close: Close }) {
   return (
     <header className="dive__head sticky top-0 z-20 border-b t-line">
       <div className="container-x flex min-h-16 items-center gap-4 py-3">
@@ -79,7 +79,7 @@ function DiveHead({ title, steps, cur, onBack, close }: { title: string; steps: 
 /** Где ставить подпись у рамки, чтобы соседние не налезали. */
 const LABEL_AT: Record<PartKey, "t" | "b" | "r"> = { rw: "t", fw: "t", bat: "t", ctl: "b", mot: "b", fork: "r", bar: "t", all: "t" };
 /** Фото байка с рамками узлов. silhouette: схема для "другого байка". */
-function BikeHud({ n, marks, silhouette, className }: { n: number; marks: { k: PartKey; l: string }[]; silhouette?: boolean; className?: string }) {
+export function BikeHud({ n, marks, silhouette, className }: { n: number; marks: { k: PartKey; l: string }[]; silhouette?: boolean; className?: string }) {
   const P = PARTS[n];
   return (
     <div className={cn("relative aspect-[16/9] w-full", className)}>

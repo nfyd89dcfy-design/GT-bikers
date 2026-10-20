@@ -2,7 +2,7 @@
    Модели: Base / Sport / Pro. Если в public/models лежит base.glb | sport.glb | pro.glb,
    используется он (GLTFLoader), иначе строится процедурная модель.
    Координаты: +X вперед, +Y вверх, Z вбок. Единицы: метры. */
-import { ICON_BODY, ICON_T } from "@/components/logo";
+import { MARK_D } from "@/components/logo-paths";
 import * as THREE from "three";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
@@ -133,9 +133,9 @@ function logoTex(color: string, sub: string) {
   const draw = () => {
     const x = c.getContext("2d")!; x.clearRect(0, 0, 768, 256);
     x.fillStyle = color; x.textAlign = "left"; x.textBaseline = "middle";
-    // новый знак GT (19.10): плашка с вырезанной G и оранжевая T
-    const k = 150 / 184; x.save(); x.translate(24 - 112.9 * k, 22 - 164 * k); x.scale(k, k);
-    x.fill(new Path2D(ICON_BODY), "evenodd"); x.fillStyle = "#FF4A2B"; x.fill(new Path2D(ICON_T)); x.restore();
+    // знак GREEN TRAIL (20.10): рукописный GT
+    const k = 160 / 446; x.save(); x.translate(24 - 177 * k, 18 - 361 * k); x.scale(k, k);
+    x.fill(new Path2D(MARK_D), "evenodd"); x.restore();
     x.fillStyle = color; x.font = "600 44px 'Martian Mono Variable', Menlo, monospace"; x.globalAlpha = 0.85; x.fillText(sub, 30, 212);
     tex.needsUpdate = true;
   };

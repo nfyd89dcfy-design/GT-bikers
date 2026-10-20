@@ -10,6 +10,7 @@ import { Compare, Configurator, Quiz } from "@/components/tools";
 import { Delivery } from "@/components/delivery";
 import { Showroom } from "@/components/showroom";
 import { CartDrawer, Drive, Footer, Service } from "@/components/media";
+import { ReserveLayer } from "@/components/reserve";
 import { ARLayer } from "@/components/ar";
 import { Atmos } from "@/components/atmos";
 import { Gear, Tuning } from "@/components/shop";
@@ -56,6 +57,7 @@ function Page() {
       </main>
       <Footer />
       <CartDrawer />
+      <ReserveLayer />
       <Toast />
       <ARLayer />
       <ToneGate />

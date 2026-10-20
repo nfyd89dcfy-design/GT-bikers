@@ -9,6 +9,7 @@ import { BlockGrid, ChromeText } from "./shaders";
 import { Bike3D } from "./bike";
 import { ParticleField, ObjectTracker } from "./effects";
 import { InteractiveHoverButton } from "./ui/interactive-hover-button";
+import { GTLockup } from "./logo";
 import { cn } from "@/lib/utils";
 import { Logo } from "./v2";
 import { PaintBackdrop } from "./fx";
@@ -67,7 +68,7 @@ function GateBody({ pick, ghost }: { pick?: (v: Voice) => void; ghost?: boolean 
   );
   return (
     <div className="relative mx-auto flex max-w-4xl flex-col items-center py-12 text-center">
-      <span className="mb-10"><Logo size={2} /></span>
+      <GTLockup mode="draw" className="mb-8 w-[min(62vw,360px)]" title="GREEN TRAIL" />
       {ghost ? <p className="font-display chrome-text text-[clamp(34px,7vw,92px)] font-extrabold uppercase leading-[0.95]">Мне комфортно общаться</p>
         : <h1 className="font-display chrome-text text-[clamp(34px,7vw,92px)] font-extrabold uppercase leading-[0.95]">Мне комфортно общаться</h1>}
       <p className="muted mt-4 max-w-md">От выбора зависит тон текстов на сайте.</p>

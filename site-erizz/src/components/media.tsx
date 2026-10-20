@@ -265,6 +265,7 @@ export function CartDrawer() {
   const closeBtn = useRef<HTMLButtonElement>(null);
   const total = cart.reduce((a, c) => a + c.price * c.qty, 0);
   const n = cart.reduce((a, c) => a + c.qty, 0);
+  const extra = cart.reduce((a, c) => a + (c.extra ?? 0) * c.qty, 0);
   useEffect(() => {
     if (!cartOpen) return;
     setView("list");
@@ -320,8 +321,8 @@ export function CartDrawer() {
             <ul className="grid gap-4" data-testid="cart-list">
               {cart.map((c) => (
                 <li key={c.id} className="grid grid-cols-[84px_1fr_auto] items-center gap-3 border-b border-ink/10 pb-4">
-                  <div className="h-[64px] w-[84px] overflow-hidden rounded-lg bg-ink">{L_BY[c.id] ? <img src={studio(L_BY[c.id].n, true)} alt="" className="h-full w-full object-contain p-1" /> : <BikeThumb variant={c.variant as Variant} paint={c.paint} yaw={-0.5} w={168} h={128} alt="" className="h-full w-full object-contain" />}</div>
-                  <div className="min-w-0"><div className="truncate font-semibold">{c.name}</div><div className="truncate text-xs text-mute">{c.sub}</div>
+                  <div className="h-[64px] w-[84px] overflow-hidden rounded-lg bg-ink">{L_BY[c.model ?? c.id] ? <img src={studio(L_BY[c.model ?? c.id].n, true)} alt="" className="h-full w-full object-contain p-1" /> : <BikeThumb variant={c.variant as Variant} paint={c.paint} yaw={-0.5} w={168} h={128} alt="" className="h-full w-full object-contain" />}</div>
+                  <div className="min-w-0"><div className="truncate font-semibold">{c.name}</div>{c.opts?.length ? <ul className="mt-0.5 text-xs leading-snug text-mute">{c.opts.map((o) => <li key={o}>{o}</li>)}{c.extra ? <li className="font-semibold">опции ≈ {rub(c.extra)}, при выдаче</li> : null}</ul> : <div className="truncate text-xs text-mute">{c.sub}</div>}
                     <div className="mt-1 flex items-center gap-1">
                       <button className="grid h-11 w-11 cursor-pointer place-items-center rounded-full border border-ink/30 hover:bg-ink/10" aria-label={`Меньше: ${c.name}`} onClick={() => setQty(c.id, -1)}><Minus size={16} /></button>
                       <span className="w-6 text-center font-bold" aria-live="polite">{c.qty}</span>
@@ -337,6 +338,7 @@ export function CartDrawer() {
         {view !== "ok" && cart.length > 0 && (
           <div className="border-t border-ink/15 p-5">
             <div className="flex items-end justify-between"><span className="mono text-mute">бронь ({n})</span><span className="font-display text-2xl font-extrabold" data-testid="cart-total">{rub(total)}</span></div>
+            {extra > 0 && <div className="mt-1 flex items-end justify-between text-sm text-mute"><span className="mono">опции, при выдаче</span><span>≈ {rub(extra)}</span></div>}
             {view === "list" ? (
               <InteractiveHoverButton text="Оформить бронь" className="mt-4 h-14 w-full bg-ink pl-8 text-frost" onClick={() => setView("form")} data-testid="checkout" />
             ) : (
